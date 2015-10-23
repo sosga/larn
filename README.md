@@ -1,2 +1,2 @@
 # RL_M
-Maintenance releases for XRogue and Advanced Rogue
+Maintenance releases for XRogue and Larn
