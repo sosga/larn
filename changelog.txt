@@ -8,6 +8,7 @@ December 14 2015
 4. Player can now pickup scrolls and potions without segfaults (segfaults will still happen when in WIZARD mode (investigating).  But that is only for testing the game anyway.
 5. Teleporting now works :)
 6. Trapdoors are fixed and happen much more frequently.
+7. Fixed segfault on OSX due to setmode.
 
 ~Gibbon
 
