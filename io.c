@@ -511,7 +511,7 @@ int lcreat(char *str)
     setmode(lfd, O_BINARY);
 #endif
 #if defined DARWIN || BSD
-    /*setmode(lfd);*/
+    /* nothing to do */
 #endif
     return lfd;
 }
@@ -543,7 +543,7 @@ int lopen(char *str)
     setmode(fd, O_BINARY);
 #endif
 #if defined DARWIN || BSD
-    /*setmode(fd);*/
+    /* nothing to do */
 #endif
     return fd;
 
@@ -573,7 +573,7 @@ int lappend(char *str)
     setmode(lfd, O_BINARY);
 #endif
 #if defined DARWIN || BSD
-    /*setmode(lfd);*/
+    /* nothing to do */
 #endif
 
     lseek(lfd,0L,2);    /* seek to end of file */
