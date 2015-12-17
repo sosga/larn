@@ -2,15 +2,19 @@
 #include "larndata.h"
 #include "larnfunc.h"
 
+#if defined WIN32
+#include "win/curses.h"
+#endif
+#if defined LINUX || DARWIN || BSD
+#include <curses.h>
+#endif
 
 static int	qshowstr(char);
 
 static void	t_setup(int);
 static void	t_endup(int);
 
-static int	show2(int);
-
-
+static int	show2(int); /*static, so it needs to stay here ~Gibbon*/
 
 /* Allow only 26 items (a to z) in the player's inventory */
 #define MAXINVEN 26
@@ -507,38 +511,26 @@ int showquaff(void)
     return 0;
 }
 
-
-
+/*I fixed this function.  It is in 12.4alpha2 and it was broken beyond belief.
+ *Chars for OPOTION and OSCROLL were not added to the strings and duplicate namings were shown.
+ *It is now actually possible to win the game because this was
+ *the cause of the segfaults upon picking up discovered scrolls and potions.
+ *
+ *I also cleaned up and made this fucntion readable. ~Gibbon.
+ */
 void show1(int idx)
 {
-    signed char o;
-
     lprc('\n');
-
     cltoeoln();
-
-    o = iven[idx];
-
-    lprintf("%c)   %s", idx + 'a', objectname[o]);
-
-    if (o == OPOTION && potionname[ivenarg[idx]][0] != '\0')
+    if (iven[idx] == OPOTION && potionname[ivenarg[idx]][0] != '\0')
         {
-
-            lprintf(" of%s", idx + 'a',
-                    objectname[o],  potionname[ivenarg[idx]]
-                   );
-
+            lprintf("%c) %s of%s",idx + 'a',objectname[iven[idx]],potionname[ivenarg[idx]]);
         }
-    if (o == OSCROLL && scrollname[ivenarg[idx]][0] != '\0')
+    if (iven[idx] == OSCROLL && scrollname[ivenarg[idx]][0] != '\0')
         {
-
-            lprintf(" of%s", idx + 'a',
-                    objectname[o],  scrollname[ivenarg[idx]]
-                   );
+            lprintf("%c) %s of%s",idx + 'a',objectname[iven[idx]],scrollname[ivenarg[idx]]);
         }
 }
-
-
 
 int show3(int index)
 {
@@ -547,8 +539,6 @@ int show3(int index)
 
     return show2(index);
 }
-
-
 
 static int show2(int index)
 {

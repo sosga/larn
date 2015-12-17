@@ -70,38 +70,33 @@ static int	spattack(int, int, int);
 void createmonster(int mon)
 {
     int x, y, k, i;
-
-    if (mon<1 || mon>MAXMONST+8)    /* check for monster number out of bounds */
-        {
-            lprintf("\ncan't createmonst(%d)\n",(long)mon);
-            nap(3000);
-            return;
-        }
-    while (monster[mon].genocided && mon<MAXMONST) mon++; /* genocided? */
-    for (k=rnd(8), i= -8; i<0; i++,k++) /* choose direction, then try all */
-        {
-            if (k>8) k=1;   /* wraparound the diroff arrays */
-            x = playerx + diroffx[k];
-            y = playery + diroffy[k];
-            if (cgood(x,y,0,1)) /* if we can create here */
-                {
+    if (mon < 1 || mon > MAXMONST + 8) {
+        lprintf("\ncan't createmonst(%d)\n", (long) mon);
+        nap(3000);
+        return;
+    }
+    while ((monster[mon].genocided) != 0 && mon < MAXMONST) mon++; /* genocided? */
+        /* choose direction, then try all */
+        for (k = rnd(8), i = -8; i < 0; i++, k++) {
+            if (k > 8)
+                k = 1;	/* wraparound the diroff arrays */
+                x = playerx + diroffx[k];
+                y = playery + diroffy[k];
+                /* if we can create here */
+                if (cgood(x, y, 0, 1)) {
                     mitem[x][y] = mon;
                     hitp[x][y] = monster[mon].hitpoints;
-                    stealth[x][y]=0;
-                    know[x][y] &= ~KNOWHERE;
-                    switch(mon)
-                        {
+                    stealth[x][y] = know[x][y] = 0;
+                    switch (mon) {
                         case ROTHE:
                         case POLTERGEIST:
                         case VAMPIRE:
-                            stealth[x][y]=1;
-                        };
+                            stealth[x][y] = 1;
+                    };
                     return;
                 }
         }
 }
-
-
 
 /*
  *  int cgood(x,y,itm,monst)      Function to check location for emptiness
@@ -220,28 +215,29 @@ void createitem(int it, int arg)
 int vxy(int *x, int *y)
 {
     int flag = 0;
-
-    if (*x<0)
-        {
-            *x=0;
-            flag++;
-        }
-    if (*y<0)
-        {
-            *y=0;
-            flag++;
-        }
-    if (*x>=MAXX)
-        {
-            *x=MAXX-1;
-            flag++;
-        }
-    if (*y>=MAXY)
-        {
-            *y=MAXY-1;
-            flag++;
-        }
-    return(flag);
+    
+    if (*x < 0) {
+        *x = 0;
+        flag++;
+        
+    }
+    if (*y < 0) {
+        *y = 0;
+        flag++;
+        
+    }
+    if (*x >= MAXX) {
+        *x = MAXX - 1;
+        flag++;
+        
+    }
+    if (*y >= MAXY) {
+        *y = MAXY - 1;
+        flag++;
+        
+    }
+    return (flag);
+    
 }
 
 

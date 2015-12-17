@@ -599,9 +599,6 @@ void show1cell(int x, int y)
     know[x][y] = KNOWALL;
 }
 
-
-
-
 /*
     showplayer()
 
@@ -617,11 +614,6 @@ void showplayer(void)
     oldx=playerx;
     oldy=playery;
 }
-
-
-
-
-
 
 /*
     moveplayer(dir)
@@ -653,15 +645,20 @@ int moveplayer(int dir)
         }
     i = item[k][m];
     j = mitem[k][m];
+    
+    /*
+     * Now this actually works 'again'
+     * I decided to reimplement it as it is more faithfull to the game
+     * rather than making a separate spell.
+     * ~Gibbon
+     */
 
-    /* prevent the player from moving onto a wall, or a closed door,
-    unless the character has Walk-Through-Walls.
-    */
-    if (i==OCLOSEDDOOR || (i==OWALL && c[WTW]==0))
-        {
-            nomove=1;
-            return(yrepcount = 0);
-        }
+    if ((i==OCLOSEDDOOR && c[WTW]==0) || (i==OWALL) && c[WTW]==0)
+    {
+        nomove = 1;
+        return(yrepcount = 0);
+    }
+    
     if (k==33 && m==MAXY-1 && level==1)
         {
             newcavelevel(0);

@@ -206,8 +206,7 @@ void movemonst(void)
             move the monster and update the lasthit x,y position.
             */
             if ( ( lasthx < tmp3 || lasthx >= tmp4 ) ||
-                    ( lasthy < tmp1 || lasthy >= tmp2 ) &&
-                    mitem[lasthx][lasthy] || !stealth[lasthx][lasthy] )
+                    ( lasthy < tmp1 || lasthy >= tmp2) && mitem[lasthx][lasthy] || !stealth[lasthx][lasthy] )
                 {
                     if ( c[SCAREMONST] )
                         move_scared( lasthx, lasthy );

@@ -62,15 +62,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
-#if defined WINDOWS
-#include <conio.h>
-#endif
+#include "kbhit.h"
 
 #if defined LINUX || DARWIN || BSD
 #include <sys/ioctl.h>
 #include <termios.h>
-#include "conio.h"
 #endif
 
 #include "larncons.h"
@@ -1046,7 +1042,7 @@ void lflushall(void)
     while (kbhit())
         {
 
-            getch();
+            ttgetch();
         }
 }
 
@@ -1126,7 +1122,7 @@ static void warn(char *msg)
 
 void enter_name(void)
 {
-    int c, i;
+    int i;
 
     lprcat("\n\nEnter character name:\n");
 

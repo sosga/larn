@@ -262,7 +262,7 @@ int		showeat(void);
 
 int		showquaff(void);
 
-void		show1(int);
+void            show1(int);
 
 int		show3(int);
 

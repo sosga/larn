@@ -1,4 +1,4 @@
-
+#include "larnfunc.h"
 
 #if defined WINDOWS
 

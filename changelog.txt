@@ -1,3 +1,15 @@
+December 17 2015
+
+1. Fixed segfault when picking up identified scrolls and potions (WIZARD and normal play).
+2. Cleaned up several functions and removed unused variables.
+3. Removed conio.h from the code and replaced it with a kbhit function.
+4. Fixed closed doors blocking a WTW spell cast.
+5. Added some extra text when being a cheapskate at a Holy Altar.
+
+The game is now beatable and can be played normally.
+
+~Gibbon
+
 December 14 2015
 
 1. A ton of fixes for segfaults

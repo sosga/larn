@@ -102,35 +102,30 @@ void makeplayer(void)
  */
 void newcavelevel(int x)
 {
-    int i, j;
-
-    if (beenhere[level]) savelevel();   /* put the level back into storage  */
-    level = x;              /* get the new level and put in working storage */
-    if (beenhere[x])
-        {
+    int i,j;
+    
+    if (beenhere[level])
+        savelevel(); /* put the level back into storage*/
+        level = x; /* get the new level and put in working storage*/
+        if (beenhere[x]) {
             getlevel();
             sethp(0);
-            positionplayer();
             checkgen();
             return;
         }
-
-    /* fill in new level
-    */
-    for (i=0; i<MAXY; i++)
-        for (j=0; j<MAXX; j++)
-            know[j][i]=mitem[j][i]=0;
-    makemaze(x);
-    makeobject(x);
-    beenhere[x]=1;
-    sethp(1);
-    positionplayer();
-    checkgen();   /* wipe out any genocided monsters */
-
+        for (i=0; i<MAXY; i++)
+            for (j=0; j<MAXX; j++)
+                know[j][i]=mitem[j][i]=0;
+            makemaze(x);
+        makeobject(x);
+        beenhere[x]=1;   /* first time here */
+        sethp(1);
+        checkgen(); /* wipe out any genocided monsters */
+        
 #if WIZID
-    if (wizard || x==0)
+        if (wizard || x==0)
 #else
-    if (x==0)
+        if (x==0)
 #endif
         for (j=0; j<MAXY; j++)
             for (i=0; i<MAXX; i++)
@@ -357,7 +352,7 @@ static int cannedlevel(int k)
                         case '.':
                             if (k < MAXLEVEL)
                             break;
-                            mit = makemonst(k + 1);
+                            mit = makemonst(k+1);
                             marg = monster[mit].hitpoints;
                             break;
 			case '-':
@@ -392,7 +387,7 @@ static void treasureroom(int lv)
     int tx, ty, xsize, ysize;
 
     for (tx=1+rnd(10);  tx<MAXX-10;  tx+=10)
-        if ( (lv==MAXLEVEL-1) || (lv==MAXLEVEL+MAXVLEVEL-1) || rnd(13)==2)
+        if ( (lv==MAXLEVEL-1) || (lv==MAXLEVEL+MAXVLEVEL-1) || rnd(10)<=2) /* give it some randomness ~Gibbon */ 
             {
                 xsize = rnd(6)+3;
                 ysize = rnd(3)+3;

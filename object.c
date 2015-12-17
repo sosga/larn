@@ -5,6 +5,12 @@
 #include "larndata.h"
 #include "larnfunc.h"
 
+#if defined WIN32
+#include "win/curses.h"
+#endif
+#if defined LINUX || DARWIN || BSD
+#include <curses.h>
+#endif
 
 static void	ostairs(int);
 

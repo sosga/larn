@@ -399,13 +399,26 @@ void act_donation_pray(void)
                     bottomline();
 
                     /* if player gave less than 10% of _original_ gold, make a monster
-                    */
-                    if (k < temp || k < rnd(50))
+                     * also for wizard, you wanna cheat, then
+                     * you can kill bigger monsters cheapskates :)
+                     * ~Gibbon
+                     */
+                    if (k < temp && k < rnd(50) && !wizard)
                         {
+                            /* added by ~Gibbon */
+                            lprcat("\"The Gods are not happy with your offering\"");
                             createmonster(makemonst(level+1));
                             c[AGGRAVATE] += 200;
                             return;
                         }
+                        if (k < temp && k < rnd(60) && wizard) {
+                            /* added by ~Gibbon */
+                            lprcat("\"The Gods are offended by the offering they received from a Wizard!\""); 
+                            createmonster(PLATINUMDRAGON);
+                            c[AGGRAVATE] += 1000;
+                            return;
+                        }
+                        
                     if (rnd(101) > 50)
                         {
                             act_prayer_heard();

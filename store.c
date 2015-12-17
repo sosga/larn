@@ -27,6 +27,12 @@ Routines:
 #include "larndata.h"
 #include "larnfunc.h"
 
+#if defined WIN32
+#include "win/curses.h"
+#endif
+#if defined LINUX || DARWIN || BSD
+#include <curses.h>
+#endif
 
 static void	dnd_2hed(void);
 static void	dnd_hed(void);

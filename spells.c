@@ -223,7 +223,7 @@ ws:
             return; /* cure blindness   */
 
         case 11:
-            createmonster(makemonst(level+1)+8);
+            createmonster(makemonst(level + 1) + 8);
             return;
 
         case 12:
