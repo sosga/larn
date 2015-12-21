@@ -6,3 +6,4 @@ void	ansiterm_out(const char *, int);
 
 int	ansiterm_getch(void);
 int	ansiterm_getche(void);
+void ansiterm_delch(void);

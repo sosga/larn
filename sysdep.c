@@ -1,12 +1,12 @@
-#include "larnfunc.h"
 
-#if defined WINDOWS
+
 
 /********************************************
  *                 WINDOWS                  *
  ********************************************/
-
+#ifdef WINDOWS
 #include <windows.h>
+#include "larnfunc.h"
 
 
 /*
@@ -15,31 +15,24 @@
 void nap(int x)
 {
 
-    /* eliminate chance for infinite loop */
-    if (x <= 0)
-        {
+	/* eliminate chance for infinite loop */
+	if (x <= 0) {
 
-            return;
-        }
-
-    lflush();
-
-    Sleep(x);
+		return; 
+	}
+	
+	lflush();
+	
+	Sleep(x);
 }
-
-
-#endif
-
-
-
-
-#if defined LINUX || DARWIN || BSD
+#else
 
 /********************************************
  *                 UNIX                     *
  ********************************************/
 
 #include <unistd.h>
+#include "larnfunc.h"
 
 
 /*
@@ -48,16 +41,15 @@ void nap(int x)
 void nap(int x)
 {
 
-    /* eliminate chance for infinite loop */
-    if (x <= 0)
-        {
+	/* eliminate chance for infinite loop */
+	if (x <= 0) {
 
-            return;
-        }
-
-    lflush();
-
-    usleep(x);
+		return; 
+	}
+	
+	lflush();
+	
+	usleep(x*1000);
 }
 
 

@@ -3,4 +3,4 @@ LIBS= -O -pipe -Wall -Wextra -ansi -pedantic -Wpointer-arith -Wstrict-prototypes
 DEPS=*.h
 STRIP_BINARY=no
 larn: $(DEPS) *.c
-	$(CC) *.c -o larn1250_debug $(LIBS)
+	$(CC) *.c -o larn1251_osx_debug $(LIBS)

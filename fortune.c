@@ -1,9 +1,10 @@
 /* fortune.c */
-#include <stdio.h>
+# include <stdio.h>
+
+# include <sys/types.h>
+# include <sys/stat.h>
+#
 #include <fcntl.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 
 #include "larncons.h"
 #include "larndata.h"
@@ -24,104 +25,83 @@ static int		fortsize = 0;
 void outfortune(void)
 {
 
-    lprcat("\nThe cookie was delicious.");
+	lprcat("\nThe cookie was delicious.");
 
-    if (c[BLINDCOUNT])
-        {
+	if (cdesc[BLINDCOUNT]) {
 
-            return;
-        }
+		return;
+	}
 
-    msdosfortune();
+	msdosfortune();
 }
 
 
 
-/*
- * Rumors has been entirely rewritten to be disk based.  This is marginally
- * slower, but requires no mallocked memory.  Notice this in only valid for
- * files smaller than 32K.
- */
+/* 
+* Rumors has been entirely rewritten to be disk based.  This is marginally
+* slower, but requires no mallocked memory.  Notice this in only valid for
+* files smaller than 32K.
+*/
 static void msdosfortune(void)
 {
-    int fd, status, i;
-    char buf[BUFSIZ], ch;
+	int status, i;
+	FILE *fp;
+	char buf[BUFSIZ], ch;
 
-    /* We couldn't open fortunes */
-    if (fortsize < 0)
-        {
-            return;
-        }
+	/* We couldn't open fortunes */
+	if (fortsize < 0) {
+		return;
+	}
 
-#if defined WIN32
-    fd = open(fortfile, O_RDONLY | O_BINARY);
-#else
-    fd = open(fortfile, O_RDONLY);
-#endif
+	fp = fopen(fortfile, "r");
 
-    if (fd < 0)
-        {
+	if (fp == 0) {
 
-            /* Don't try opening it again */
-            fortsize = -1;
+		/* Don't try opening it again */
+		fortsize = -1; 
 
-            return;
-        }
+		return;
+	}
 
-    if (fortsize == 0)
-        {
+	if (fortsize == 0) {
+		fseek(fp, 0L, SEEK_END);
+		fortsize = ftell(fp);
+	}
 
-            fortsize = (int)lseek(fd, 0L, 2);
-        }
+	if (fseek(fp, (long)rund(fortsize), SEEK_SET) < 0) {
+		return;
+	}
 
-    if (lseek(fd, (long)rund(fortsize), 0) < 0)
-        {
+	/* 
+	* Skip to next newline or EOF
+	*/
+	do {
+		status = fread(&ch, sizeof(char), 1, fp);
+	} while (status != EOF && ch != '\n');
 
-            return;
-        }
+	if (status == EOF) {
+		/* back to the beginning */
+		if (fseek(fp, 0L, SEEK_SET) < 0) {
+			return;
+		}
+	}
 
-    /*
-     * Skip to next newline or EOF
-     */
-    do
-        {
+	/* 
+	* Read in the line.  
+	*/
+	for (i = 0; i < BUFSIZ - 1; i++) {
+		if (fread(&buf[i], sizeof(char), 1, fp) != 1 || buf[i] == '\n') {
+			break;
+		}
+	}
+	buf[i] = '\0';
 
-            status = read(fd, &ch, 1);
+	/* 
+	* And spit it out
+	*/
+	lprcat("  Inside you find a scrap of paper that says:\n");
+	lprcat(buf);
 
-        }
-    while (status != EOF && ch != '\n');
-
-    if (status == EOF)
-        {
-
-            /* back to the beginning */
-            if (lseek(fd, 0L, 0) < 0)
-                {
-                    return;
-                }
-        }
-
-    /*
-    * Read in the line.  Search for CR ('\r'), not NL
-           */
-    for (i = 0; i < BUFSIZ - 1; i++)
-        {
-
-            if (read(fd, &buf[i], 1) == EOF || buf[i] == '\r')
-                {
-
-                    break;
-                }
-        }
-
-    buf[i] = '\0';
-
-    /*
-    * And spit it out
-           */
-    lprcat("  Inside you find a scrap of paper that says:\n");
-    lprcat(buf);
-
-    close(fd);
+	fclose(fp);
 }
 

@@ -1,35 +1,35 @@
 /*  global.c
- *
- *  raiselevel()        subroutine to raise the player one level
- *  loselevel()         subroutine to lower the player by one level
- *  raiseexperience(x)  subroutine to increase experience points
- *  loseexperience(x)   subroutine to lose experience points
- *  losehp(x)           subroutine to remove hit points from the player
- *  losemhp(x)          subroutine to remove max # hit points from the player
- *  raisehp(x)          subroutine to gain hit points
- *  raisemhp(x)         subroutine to gain maximum hit points
- *  losemspells(x)      subroutine to lose maximum spells
- *  raisemspells(x)     subroutine to gain maximum spells
- *  makemonst(lev)      function to return monster number for a randomly selected monster
- *  positionplayer()    function to be sure player is not in a wall
- *  recalc()            function to recalculate the armor class of the player
- *  quit()              subroutine to ask if the player really wants to quit
- *  more()
- *  take()
- *  drop_object()
- *  enchantarmor()
- *  enchweapon()
- *  pocketfull()
- *  nearbymonst()
- *  stealsomething()
- *  emptyhanded()
- *  creategem()
- *  adjustcvalues()
- *  gettokstr()
- *  getpassword()
- *  getyn()
- *  packweight()
- */
+*
+*  raiselevel()        subroutine to raise the player one level
+*  loselevel()         subroutine to lower the player by one level
+*  raiseexperience(x)  subroutine to increase experience points
+*  loseexperience(x)   subroutine to lose experience points
+*  losehp(x)           subroutine to remove hit points from the player
+*  losemhp(x)          subroutine to remove max # hit points from the player
+*  raisehp(x)          subroutine to gain hit points
+*  raisemhp(x)         subroutine to gain maximum hit points
+*  losemspells(x)      subroutine to lose maximum spells
+*  raisemspells(x)     subroutine to gain maximum spells
+*  makemonst(lev)      function to return monster number for a randomly selected monster
+*  positionplayer()    function to be sure player is not in a wall
+*  recalc()            function to recalculate the armor class of the player
+*  quit()              subroutine to ask if the player really wants to quit
+*  more()
+*  take()
+*  drop_object()
+*  enchantarmor()
+*  enchweapon()
+*  pocketfull()
+*  nearbymonst()
+*  stealsomething()
+*  emptyhanded()
+*  creategem()
+*  adjustcvalues()
+*  gettokstr()
+*  getpassword()
+*  getyn()
+*  packweight()
+*/
 
 #include <string.h>
 #include <ctype.h>
@@ -41,165 +41,162 @@
 
 
 /*
- * raiselevel()
- *
- * subroutine to raise the player one level
- * uses the skill[] array to find level boundarys
- * uses c[EXPERIENCE]  c[LEVEL]
- */
+* raiselevel()
+*
+* subroutine to raise the player one level
+* uses the skill[] array to find level boundarys
+* uses cdesc[EXPERIENCE]  cdesc[LEVEL]
+*/
 void raiselevel(void)
 {
 
-    if (c[LEVEL] < MAXPLEVEL) raiseexperience((long)(skill[c[LEVEL]]-c[EXPERIENCE]));
+	if (cdesc[LEVEL] < MAXPLEVEL) raiseexperience((skill[cdesc[LEVEL]]-cdesc[EXPERIENCE]));
 }
 
 
 
 /*
- * loselevel()
- *
- * subroutine to lower the players character level by one
- */
+* loselevel()
+* 
+* subroutine to lower the players character level by one
+*/
 void loselevel(void)
 {
-    if (c[LEVEL] > 1) loseexperience((long)(c[EXPERIENCE] - skill[c[LEVEL]-1] + 1));
+	if (cdesc[LEVEL] > 1) loseexperience((cdesc[EXPERIENCE] - skill[cdesc[LEVEL]-1] + 1));
 }
 
 
 
 /*
- * raiseexperience(x)
- *
- * subroutine to increase experience points
- */
+* raiseexperience(x)
+*
+* subroutine to increase experience points
+*/
 void raiseexperience(long x)
 {
-    int i,tmp;
+	int i,tmp;
 
-    i=c[LEVEL];
-    c[EXPERIENCE]+=x;
-    while (c[EXPERIENCE] >= skill[c[LEVEL]] && (c[LEVEL] < MAXPLEVEL))
-        {
-            tmp = (c[CONSTITUTION]-c[HARDGAME])>>1;
-            c[LEVEL]++;
-            raisemhp((int)(rnd(3)+rnd((tmp>0)?tmp:1)));
-            raisemspells((int)rund(3));
-            if (c[LEVEL] < 7-c[HARDGAME]) raisemhp((int)(c[CONSTITUTION]>>2));
-        }
-    if (c[LEVEL] != i)
-        {
-            cursors();
-            lprintf("\nWelcome to level %d",(long)c[LEVEL]);    /* if we changed levels */
-        }
-    bottomline();
+	i=cdesc[LEVEL];
+	cdesc[EXPERIENCE]+=x;
+	while (cdesc[EXPERIENCE] >= skill[cdesc[LEVEL]] && (cdesc[LEVEL] < MAXPLEVEL))
+	{
+		tmp = (cdesc[CONSTITUTION]-cdesc[HARDGAME])>>1;
+		cdesc[LEVEL]++;
+		raisemhp( (int)(rnd(3) + rnd((tmp>0) ? tmp : 1)) );
+		raisemspells((int)rund(3));
+		if (cdesc[LEVEL] < 7-cdesc[HARDGAME])
+			raisemhp((int)(cdesc[CONSTITUTION]>>2));
+	}
+	if (cdesc[LEVEL] != i)
+	{
+		cursors();
+		lprintf("\nWelcome to level %d",(int)cdesc[LEVEL]);    /* if we changed levels */
+	}
+	bottomline();
 }
 
 
 
 /*
- * loseexperience(x)
- *
- * subroutine to lose experience points
- */
+* loseexperience(x)
+*
+* subroutine to lose experience points
+*/
 void loseexperience(long x)
 {
-    int i, tmp;
+	int i, tmp;
 
-    i=c[LEVEL];
-    c[EXPERIENCE]-=x;
-    if (c[EXPERIENCE] < 0) c[EXPERIENCE]=0;
-    while (c[EXPERIENCE] < skill[c[LEVEL]-1])
-        {
-            if (--c[LEVEL] <= 1) c[LEVEL]=1;    /*  down one level      */
-            tmp = (c[CONSTITUTION]-c[HARDGAME])>>1; /* lose hpoints */
-            losemhp((int)rnd((tmp>0)?tmp:1));   /* lose hpoints */
-            if (c[LEVEL] < 7-c[HARDGAME]) losemhp((int)(c[CONSTITUTION]>>2));
-            losemspells((int)rund(3));              /*  lose spells     */
-        }
-    if (i!=c[LEVEL])
-        {
-            cursors();
-            lprintf("\nYou went down to level %d!",(long)c[LEVEL]);
-        }
-    bottomline();
+	i=cdesc[LEVEL];     cdesc[EXPERIENCE]-=x;
+	if (cdesc[EXPERIENCE] < 0) cdesc[EXPERIENCE]=0;
+	while (cdesc[EXPERIENCE] < skill[cdesc[LEVEL]-1])
+	{
+		if (--cdesc[LEVEL] <= 1) cdesc[LEVEL]=1;    /*  down one level      */
+		tmp = (cdesc[CONSTITUTION]-cdesc[HARDGAME])>>1; /* lose hpoints */
+		losemhp((int)rnd((tmp>0)?tmp:1));   /* lose hpoints */
+		if (cdesc[LEVEL] < 7-cdesc[HARDGAME]) losemhp((int)(cdesc[CONSTITUTION]>>2));
+		losemspells((int)rund(3));              /*  lose spells     */
+	}
+	if (i!=cdesc[LEVEL])
+	{
+		cursors();
+		lprintf("\nYou went down to level %d!",(int)cdesc[LEVEL]);
+	}
+	bottomline();
 }
 
 
 
 /*
- *  losehp(x)
- *  losemhp(x)
- *
- *  subroutine to remove hit points from the player
- *  warning -- will kill player if hp goes to zero
- */
+*  losehp(x)
+*  losemhp(x)
+*
+*  subroutine to remove hit points from the player
+*  warning -- will kill player if hp goes to zero
+*/
 void losehp(int x)
 {
-    if ((c[HP] -= x) <= 0)
-        {
-            lprcat("\n");
-            nap(3000);
-            died(lastnum);
-        }
+	if ((cdesc[HP] -= x) <= 0)
+	{
+		lprcat("\nYou have been slain.");
+		nap(NAPTIME);
+		died(lastnum);
+	}
 }
 
 void losemhp(int x)
 {
-    c[HP] -= x;
-    if (c[HP] < 1)      c[HP]=1;
-    c[HPMAX] -= x;
-    if (c[HPMAX] < 1)   c[HPMAX]=1;
+	cdesc[HP] -= x;     if (cdesc[HP] < 1)      cdesc[HP]=1;
+	cdesc[HPMAX] -= x;  if (cdesc[HPMAX] < 1)   cdesc[HPMAX]=1;
 }
 
 
 
 /*
- *  raisehp(x)
- *  raisemhp(x)
- *
- *  subroutine to gain maximum hit points
- */
+*  raisehp(x)
+*  raisemhp(x)
+*
+*  subroutine to gain maximum hit points
+*/
 void raisehp(int x)
 {
 
-    if ((c[HP] += x) > c[HPMAX])
-        {
+	if ((cdesc[HP] += x) > cdesc[HPMAX]) {
 
-            c[HP] = c[HPMAX];
-        }
+		cdesc[HP] = cdesc[HPMAX];
+	}
 }
 
 void raisemhp(int x)
 {
 
-    c[HPMAX] += x;
-    c[HP] += x;
+	cdesc[HPMAX] += x;
+	cdesc[HP] += x;
 }
 
 
 /*
- * raisemspells(x)
- *
- * subroutine to gain maximum spells
- */
+* raisemspells(x)
+*
+* subroutine to gain maximum spells
+*/
 void raisemspells(int x)
 {
 
-    c[SPELLMAX] += x;
-    c[SPELLS] += x;
+	cdesc[SPELLMAX] += x;
+	cdesc[SPELLS] += x;
 }
 
 
 /*
- * losemspells(x)
- *
- *  subroutine to lose maximum spells
- */
+* losemspells(x)
+*
+*  subroutine to lose maximum spells
+*/
 void losemspells(int x)
 {
 
-    if ((c[SPELLMAX] -= x) < 0) c[SPELLMAX]=0;
-    if ((c[SPELLS] -= x) < 0) c[SPELLS]=0;
+	if ((cdesc[SPELLMAX] -= x) < 0) cdesc[SPELLMAX]=0;
+	if ((cdesc[SPELLS] -= x) < 0) cdesc[SPELLS]=0;
 }
 
 
@@ -210,677 +207,530 @@ void losemspells(int x)
  *
  * function to return monster number for a randomly selected monster
  * for the given cave level
+ * 
+ * FIXED by ~Gibbon.  Randomness was removed prior to 12.4alpha2 for some reason, so
+ * monsters were being taken based on the int of monstlevel (5,11 etc).
+ * 
+ * Basically unchanged from 12.3 but cleaned up.  Don't fix what isn't broken.
  */
-int makemonst(int lev)
+int makemonst (int lev)
 {
-    int x;
-
+    int x, tmp;
     if (lev < 1)
-        {
-
-            lev = 1;
-
-        }
+    {
+        lev = 1;
+    }
     else if (lev > 12)
-        {
-
-            lev = 12;
-        }
-
+    {
+      lev = 12;
+    }
     if (lev < 5)
-        {
-
-            x = monstlevel[lev-1];
-
-            if (x == 0) x = 1;
-
-        }
-    else
-        {
-
-            x = monstlevel[lev - 1] - monstlevel[lev - 4];
-
-            if (x == 0) x = 1;
-
-            x += monstlevel[lev - 4];
-        }
-
-    while (monster[x].genocided && x < MAXMONST)
-        {
-
-            x++; /* genocided? */
-        }
-
-    return x;
+    {
+        tmp = rnd((x = monstlevel[lev - 1])?x :1);
+    } else {
+        tmp = rnd((x = monstlevel[lev - 1] - monstlevel[lev-4])?x :1) + monstlevel[lev - 4];
+    }
+    while (monster[tmp].genocided && tmp < MAXMONST)
+    {
+        tmp++; /* genocided? */
+    }
+    return tmp;
 }
 
-
-
 /*
- * positionplayer()
- *
- * Insure player is not in a wall or on top of a monster.  Could be more
- * intelligent about what kinds of objects the player can land on.
- */
+* positionplayer()
+*
+* Insure player is not in a wall or on top of a monster.  Could be more
+* intelligent about what kinds of objects the player can land on.
+*/
 void positionplayer(void)
 {
-    int z, try = 2;
+	int z, try = 2;
 
-    /* set the previous player x,y position to the new one, so that
-       clearing the player indicator from the previous location will
-       not do the wrong thing.
-    */
-    oldx = playerx ;
-    oldy = playery ;
+	/* set the previous player x,y position to the new one, so that
+	clearing the player indicator from the previous location will
+	not do the wrong thing.
+	*/
+	oldx = playerx ;
+	oldy = playery ;
 
-    /* short-circuit the testing if current position empty
-    */
-    if (!item[playerx][playery] &&
-            !mitem[playerx][playery])
-        return;
+	/* short-circuit the testing if current position empty
+	*/
+	if (!item[playerx][playery] &&
+		!mitem[playerx][playery])
+		return;
 
-    /* make at most two complete passes across the dungeon, looking
-       for a clear space.  In most situations, should find a clear
-       spot right around the current player position.
-    */
-    do
-        {
+	/* make at most two complete passes across the dungeon, looking
+	for a clear space.  In most situations, should find a clear
+	spot right around the current player position.
+	*/
+	do
+	{
 
-            /* check all around the player position for a clear space.
-            */
-            for (z=1; z<9 ; z++)
-                {
-                    int tmpx = playerx + diroffx[z];
-                    int tmpy = playery + diroffy[z];
-                    if (!item[tmpx][tmpy] &&
-                            !mitem[tmpx][tmpy])
-                        {
-                            playerx = tmpx ;
-                            playery = tmpy ;
-                            return;
-                        }
-                }
+		/* check all around the player position for a clear space.
+		*/
+		for (z=1; z<9 ; z++)
+		{
+			int tmpx = playerx + diroffx[z];
+			int tmpy = playery + diroffy[z];
+			if (!item[tmpx][tmpy] &&
+				!mitem[tmpx][tmpy])
+			{
+				playerx = tmpx ;
+				playery = tmpy ;
+				return;
+			}
+		}
 
-            /* no clear spots around the player. try another position,
-               wrapping around the dungeon.
-            */
-            if (++playerx >= MAXX-1)
-                {
-                    playerx = 1;
-                    if (++playery >= MAXY-1)
-                        {
-                            playery = 1;
-                            try--;
-                        }
-                }
-        }
-    while (try);
+		/* no clear spots around the player. try another position,
+		wrapping around the dungeon.
+		*/
+		if (++playerx >= MAXX-1)
+		{
+			playerx = 1;
+			if (++playery >= MAXY-1)
+			{
+				playery = 1;
+				try--;
+			}
+		}
+	}
+	while (try);
 
-    /* no spot found.
-    */
-    lprcat("Failure in positionplayer\n");
+	/* no spot found.
+	*/
+	lprcat("Failure in positionplayer\n");
 }
 
 
 
 /*
- * recalc()    function to recalculate the armor class of the player
- */
+* recalc()    function to recalculate the armor class of the player
+*/
 void recalc(void)
 {
-    int i,j,k;
+	int i,j,k;
 
-    c[AC] = c[MOREDEFENSES];
-    if (c[WEAR] >= 0)
-        switch(iven[c[WEAR]])
-            {
-            case OSHIELD:
-                c[AC] += 2 + ivenarg[c[WEAR]];
-                break;
-            case OLEATHER:
-                c[AC] += 2 + ivenarg[c[WEAR]];
-                break;
-            case OSTUDLEATHER:
-                c[AC] += 3 + ivenarg[c[WEAR]];
-                break;
-            case ORING:
-                c[AC] += 5 + ivenarg[c[WEAR]];
-                break;
-            case OCHAIN:
-                c[AC] += 6 + ivenarg[c[WEAR]];
-                break;
-            case OSPLINT:
-                c[AC] += 7 + ivenarg[c[WEAR]];
-                break;
-            case OPLATE:
-                c[AC] += 9 + ivenarg[c[WEAR]];
-                break;
-            case OPLATEARMOR:
-                c[AC] += 10 + ivenarg[c[WEAR]];
-                break;
-            case OSSPLATE:
-                c[AC] += 12 + ivenarg[c[WEAR]];
-                break;
-            }
+	cdesc[AC] = cdesc[MOREDEFENSES];
+	if (cdesc[WEAR] >= 0)  
+		switch(iven[cdesc[WEAR]])
+	{
+		case OSHIELD:       cdesc[AC] += 2 + ivenarg[cdesc[WEAR]]; break;
+		case OLEATHER:      cdesc[AC] += 2 + ivenarg[cdesc[WEAR]]; break;
+		case OSTUDLEATHER:  cdesc[AC] += 3 + ivenarg[cdesc[WEAR]]; break;
+		case ORING:         cdesc[AC] += 5 + ivenarg[cdesc[WEAR]]; break;
+		case OCHAIN:        cdesc[AC] += 6 + ivenarg[cdesc[WEAR]]; break;
+		case OSPLINT:       cdesc[AC] += 7 + ivenarg[cdesc[WEAR]]; break;
+		case OPLATE:        cdesc[AC] += 9 + ivenarg[cdesc[WEAR]]; break;
+		case OPLATEARMOR:   cdesc[AC] += 10 + ivenarg[cdesc[WEAR]]; break;
+		case OSSPLATE:      cdesc[AC] += 12 + ivenarg[cdesc[WEAR]]; break;
+	}
 
-    if (c[SHIELD] >= 0) if (iven[c[SHIELD]] == OSHIELD) c[AC] += 2 + ivenarg[c[SHIELD]];
-    if (c[WIELD] < 0)  c[WCLASS] = 0;
-    else
-        {
-            i = ivenarg[c[WIELD]];
-            switch(iven[c[WIELD]])
-                {
-                case ODAGGER:
-                    c[WCLASS] =  3 + i;
-                    break;
-                case OBELT:
-                    c[WCLASS] =  7 + i;
-                    break;
-                case OSHIELD:
-                    c[WCLASS] =  8 + i;
-                    break;
-                case OSPEAR:
-                    c[WCLASS] = 10 + i;
-                    break;
-                case OFLAIL:
-                    c[WCLASS] = 14 + i;
-                    break;
-                case OBATTLEAXE:
-                    c[WCLASS] = 17 + i;
-                    break;
-                case OLANCE:
-                    c[WCLASS] = 19 + i;
-                    break;
-                case OLONGSWORD:
-                    c[WCLASS] = 22 + i;
-                    break;
-                case O2SWORD:
-                    c[WCLASS] = 26 + i;
-                    break;
-                case OSWORD:
-                    c[WCLASS] = 32 + i;
-                    break;
-                case OSWORDofSLASHING:
-                    c[WCLASS] = 30 + i;
-                    break;
-                case OHAMMER:
-                    c[WCLASS] = 35 + i;
-                    break;
-                default:
-                    c[WCLASS] = 0;
-                }
-        }
-    c[WCLASS] += c[MOREDAM];
+	if (cdesc[SHIELD] >= 0) if (iven[cdesc[SHIELD]] == OSHIELD) cdesc[AC] += 2 + ivenarg[cdesc[SHIELD]];
+	if (cdesc[WIELD] < 0)  cdesc[WCLASS] = 0;  else
+	{
+		i = ivenarg[cdesc[WIELD]];
+		switch(iven[cdesc[WIELD]])
+		{
+		case ODAGGER:    cdesc[WCLASS] =  3 + i;  break;
+		case OBELT:      cdesc[WCLASS] =  7 + i;  break;
+		case OSHIELD:    cdesc[WCLASS] =  8 + i;  break;
+		case OSPEAR:     cdesc[WCLASS] = 10 + i;  break;
+		case OFLAIL:     cdesc[WCLASS] = 14 + i;  break;
+		case OBATTLEAXE: cdesc[WCLASS] = 17 + i;  break;
+		case OLANCE:     cdesc[WCLASS] = 19 + i;  break;
+		case OLONGSWORD: cdesc[WCLASS] = 22 + i;  break;
+		case O2SWORD:    cdesc[WCLASS] = 26 + i;  break;
+		case OSWORD:     cdesc[WCLASS] = 32 + i;  break;
+		case OSWORDofSLASHING: cdesc[WCLASS] = 30 + i; break;
+		case OHAMMER:    cdesc[WCLASS] = 35 + i;  break;
+		default:         cdesc[WCLASS] = 0;
+		}
+	}
+	cdesc[WCLASS] += cdesc[MOREDAM];
 
-    /*  now for regeneration abilities based on rings   */
-    c[REGEN]=1;
-    c[ENERGY]=0;
-    j=0;
-    for (k=25; k>0; k--)  if (iven[k])
-            {
-                j=k;
-                k=0;
-            }
-    for (i=0; i<=j; i++)
-        {
-            switch(iven[i])
-                {
-                case OPROTRING:
-                    c[AC]     += ivenarg[i] + 1;
-                    break;
-                case ODAMRING:
-                    c[WCLASS] += ivenarg[i] + 1;
-                    break;
-                case OBELT:
-                    c[WCLASS] += ((ivenarg[i]<<1)) + 2;
-                    break;
+	/*  now for regeneration abilities based on rings   */
+	cdesc[REGEN]=1;     cdesc[ENERGY]=0;
+	j=0;  for (k=25; k>0; k--)  if (iven[k]) {j=k; k=0; }
+	for (i=0; i<=j; i++)
+	{
+		switch(iven[i])
+		{
+		case OPROTRING: cdesc[AC]     += ivenarg[i] + 1;    break;
+		case ODAMRING:  cdesc[WCLASS] += ivenarg[i] + 1;    break;
+		case OBELT:     cdesc[WCLASS] += ((ivenarg[i]<<1)) + 2; break;
 
-                case OREGENRING:
-                    c[REGEN]  += ivenarg[i] + 1;
-                    break;
-                case ORINGOFEXTRA:
-                    c[REGEN]  += 5 * (ivenarg[i]+1);
-                    break;
-                case OENERGYRING:
-                    c[ENERGY] += ivenarg[i] + 1;
-                    break;
-                }
-        }
+		case OREGENRING:    cdesc[REGEN]  += ivenarg[i] + 1;    break;
+		case ORINGOFEXTRA:  cdesc[REGEN]  += 5 * (ivenarg[i]+1); break;
+		case OENERGYRING:   cdesc[ENERGY] += ivenarg[i] + 1;    break;
+		}
+	}
 }
 
 
 /*
- * quit()
- *
- * subroutine to ask if the player really wants to quit
- */
+* quit()
+*
+* subroutine to ask if the player really wants to quit
+*/
 void quit(void)
 {
-    int i;
+	int i;
 
-    cursors();
-    strcpy(lastmonst,"");
-    lprcat("\nDo you really want to quit?");
-    while (1)
-        {
-            i=ttgetch();
-            if ((i == 'y') || (i == 'Y'))
-                {
-                    died(300);
-                    return;
-                }
-            if ((i == 'n') || (i == 'N') || (i == '\33'))
-                {
-                    lprcat(" no");
-                    lflush();
-                    return;
-                }
-            lprcat("\n");
-            setbold();
-            lprcat("Yes");
-            resetbold();
-            lprcat(" or ");
-            setbold();
-            lprcat("No");
-            resetbold();
-            lprcat(" please?   Do you want to quit? ");
-        }
+	cursors();
+	strcpy(lastmonst,"");
+	lprcat("\nDo you really want to quit (all progress will be lost)?");
+	for (;;)
+	{
+		i=ttgetch();
+		if ((i == 'y') || (i == 'Y'))   
+		{ 
+			died(300); 
+			return; 
+		}
+		if ((i == 'n') || (i == 'N') || (i == '\33')) 
+		{ 
+			lprcat(" no"); 
+			lflush(); 
+			return; 
+		}
+	}   
 }
 
 
 
 /*
- * function to ask --more--. If the user enters a space, returns 0.  If user
- * enters Escape, returns 1.  If user enters alphabetic, then returns that
- *  value.
- */
+* function to ask --more--. If the user enters a space, returns 0.  If user
+* enters Escape, returns 1.  If user enters alphabetic, then returns that
+*  value.
+*/
 int more(char select_allowed)
 {
-    int i;
+	int i;
 
-    lprcat("\n  --- press ");
-    lstandout("space");
-    lprcat(" to continue --- ");
-    if (select_allowed)
-        lprcat("letter to select --- ");
+	lprcat("\n  --- press ");  lstandout("space");  lprcat(" to continue --- ");
+	if (select_allowed)
+		lprcat("letter to select --- ");
 
-    while (TRUE)
-        {
-            if ((i=ttgetch()) == ' ' || i == '\n')
-                return 0 ;
-            if (i== '\x1B')
-                return 1 ;
-            if (select_allowed)
-                {
-                    if (isupper(i))
-                        i = tolower(i);
-                    if  (i == '.' || ( i >= 'a' && i <= 'z'))
-                        return i;
-                }
-        }
+	for (;;)
+	{
+		if ((i=ttgetch()) == ' ' || i == '\n')
+			return 0 ;
+		if (i== '\x1B')
+			return 1 ;
+		if (select_allowed)
+		{
+			if (isupper(i))
+				i = tolower(i);
+			if ( (i >= 'a' && i <= 'z') || i == '.' )
+				return i;
+		}
+	}
 }
 
 
 
 /*
- * function to enchant armor player is currently wearing
- */
+* function to enchant armor player is currently wearing
+*/
 void enchantarmor(void)
 {
-    int tmp;
+	int tmp;
 
-    if (c[WEAR]<0)
-        {
-            if (c[SHIELD] < 0)
-                {
-                    cursors();
-                    lprcat("\nYou feel a sense of loss");
-                    return;
-                }
-            else
-                {
-                    tmp=iven[c[SHIELD]];
-                    if (tmp != OSCROLL) if (tmp != OPOTION)
-                            {
-                                ivenarg[c[SHIELD]]++;
-                                bottomline();
-                            }
-                }
-        }
-    tmp = iven[c[WEAR]];
-    if (tmp!=OSCROLL) if (tmp!=OPOTION)
-            {
-                ivenarg[c[WEAR]]++;
-                bottomline();
-            }
+	if (cdesc[WEAR]<0) {
+		if (cdesc[SHIELD] < 0) {
+			cursors();
+			lprcat("\nYou feel a sense of loss");
+			return;
+		} else {
+			tmp=iven[cdesc[SHIELD]];
+			if (tmp != OSCROLL)
+				if (tmp != OPOTION) {
+					ivenarg[cdesc[SHIELD]]++;
+					bottomline();
+				}
+		}
+	}
+	tmp = iven[cdesc[WEAR]];
+	if (tmp!=OSCROLL) if (tmp!=OPOTION)  { ivenarg[cdesc[WEAR]]++;  bottomline(); }
 }
 
 
 
 /*
- * function to enchant a weapon presently being wielded
- */
+* function to enchant a weapon presently being wielded
+*/
 void enchweapon(void)
 {
-    int tmp;
+	int tmp;
 
-    if (c[WIELD]<0)
-        {
-            cursors();
-            lprcat("\nYou feel a sense of loss");
-            return;
-        }
+	if (cdesc[WIELD]<0)
+	{ cursors(); lprcat("\nYou feel a sense of loss"); return; }
 
-    tmp = iven[c[WIELD]];
+	tmp = iven[cdesc[WIELD]];
 
-    if (tmp!=OSCROLL) if (tmp!=OPOTION)
-            {
-                ivenarg[c[WIELD]]++;
-                if (tmp==OCLEVERRING) c[INTELLIGENCE]++;
-                else if (tmp==OSTRRING)    c[STREXTRA]++;
-                else if (tmp==ODEXRING)    c[DEXTERITY]++;
-                bottomline();
-            }
+	if (tmp!=OSCROLL)
+		if (tmp!=OPOTION) {
+			ivenarg[cdesc[WIELD]]++;
+			if (tmp==OCLEVERRING)
+				cdesc[INTELLIGENCE]++;
+			else
+				if (tmp==OSTRRING)
+					cdesc[STREXTRA]++;
+				else
+					if (tmp==ODEXRING) 
+						cdesc[DEXTERITY]++;
+			bottomline(); }
 }
 
 
 
 /*
- * function to return 1 if a monster is next to the player else returns 0
- */
+* function to return 1 if a monster is next to the player else returns 0
+*/
 int nearbymonst(void)
 {
-    int tmp, tmp2;
+	int tmp, tmp2;
 
-    for (tmp=playerx-1; tmp<playerx+2; tmp++)
-        for (tmp2=playery-1; tmp2<playery+2; tmp2++)
-            if (mitem[tmp][tmp2]) return(1); /* if monster nearby */
+	for (tmp=playerx-1; tmp<playerx+2; tmp++)
+		for (tmp2=playery-1; tmp2<playery+2; tmp2++)
+			if (mitem[tmp][tmp2]) return(1); /* if monster nearby */
 
-    return 0;
+	return 0;
 }
 
 
 
 /*
- * function to steal an item from the players pockets
- * returns 1 if steals something else returns 0
- */
+* function to steal an item from the players pockets
+* returns 1 if steals something else returns 0
+*/
 int stealsomething(void)
 {
-    int i, j;
+	int i, j;
 
-    j = 100;
+	j = 100;
 
-    while (1)
-        {
+	for (;;)
+	{
 
-            i = rund(26);
+		i = rund(26);
 
-            if (iven[i] && c[WEAR] != i &&
-                    c[WIELD] != i && c[SHIELD] != i)
-                {
+		if (iven[i] && cdesc[WEAR] != i && 
+			cdesc[WIELD] != i && cdesc[SHIELD] != i) {
 
-                    show3(i);
-                    adjustcvalues(iven[i], ivenarg[i]);
-                    iven[i]=0;
+				show3(i);
+				adjustcvalues(iven[i], ivenarg[i]);
+				iven[i]=0;
 
-                    return 1;
-                }
+				return 1;
+		}
 
-            if (--j <= 0)
-                {
+		if (--j <= 0) {
 
-                    return 0;
-                }
-        }
+			return 0;
+		}
+	}
 }
 
 
 
 /*
- * function to return 1 is player carrys nothing else return 0
- */
+* function to return 1 is player carrys nothing else return 0
+*/
 int emptyhanded(void)
 {
-    int i;
+	int i;
 
-    for (i = 0; i < 26; i++)
-        {
+	for (i = 0; i < 26; i++) {
 
-            if (iven[i] && i != c[WIELD] &&
-                    i != c[WEAR] && i!= c[SHIELD])
-                {
+		if (iven[i] && i != cdesc[WIELD] &&
+			i != cdesc[WEAR] && i!= cdesc[SHIELD]) {
 
-                    return 0;
-                }
-        }
+				return 0;
+		}
+	}
 
-    return 1;
+	return 1;
 }
 
 
 
 /*
- * function to create a gem on a square near the player
- */
+* function to create a gem on a square near the player
+*/
 void creategem(void)
 {
-    int i, j;
+	int i, j;
 
-    switch(rnd(4))
-        {
-        case 1:
-            i=ODIAMOND;
-            j=50;
-            break;
-        case 2:
-            i=ORUBY;
-            j=40;
-            break;
-        case 3:
-            i=OEMERALD;
-            j=30;
-            break;
-        default:
-            i=OSAPPHIRE;
-            j=20;
-            break;
-        };
+	switch(rnd(4)) {
+		case 1:  i=ODIAMOND;    j=50;   break;
+		case 2:  i=ORUBY;       j=40;   break;
+		case 3:  i=OEMERALD;    j=30;   break;
+		default: i=OSAPPHIRE;   j=20;   break;
+	};
 
-    createitem(i, rnd(j) + j / 10);
+	createitem(i, rnd(j) + j / 10);
 }
 
 
 
 /*
- * function to change character levels as needed when dropping an object
- * that affects these characteristics
- */
+* function to change character levels as needed when dropping an object
+* that affects these characteristics
+*/
 void adjustcvalues(int itm, int arg)
 {
-    int flag;
+	int flag;
 
-    flag = 0;
+	flag = 0;
 
-    switch(itm)
-        {
-        case ODEXRING:
-            c[DEXTERITY] -= arg+1;
-            flag=1;
-            break;
-        case OSTRRING:
-            c[STREXTRA]  -= arg+1;
-            flag=1;
-            break;
-        case OCLEVERRING:
-            c[INTELLIGENCE] -= arg+1;
-            flag=1;
-            break;
-        case OHAMMER:
-            c[DEXTERITY] -= 10;
-            c[STREXTRA] -= 10;
-            c[INTELLIGENCE] += 10;
-            flag=1;
-            break;
-        case OSWORDofSLASHING:
-            c[DEXTERITY] -= 5;
-            flag=1;
-            break;
-        case OORBOFDRAGON:
-            --c[SLAYING];
-            return;
-        case OSPIRITSCARAB:
-            --c[NEGATESPIRIT];
-            return;
-        case OCUBEofUNDEAD:
-            --c[CUBEofUNDEAD];
-            return;
-        case ONOTHEFT:
-            --c[NOTHEFT];
-            return;
-        case OLANCE:
-            c[LANCEDEATH]=0;
-            return;
-        case OPOTION:
-        case OSCROLL:
-            return;
+	switch(itm) {
+		case ODEXRING:  cdesc[DEXTERITY] -= arg+1;  flag=1; break;
+		case OSTRRING:  cdesc[STREXTRA]  -= arg+1;  flag=1; break;
+		case OCLEVERRING: cdesc[INTELLIGENCE] -= arg+1;  flag=1; break;
+		case OHAMMER:   cdesc[DEXTERITY] -= 10; cdesc[STREXTRA] -= 10;
+			cdesc[INTELLIGENCE] += 10; flag=1; break;
+		case OSWORDofSLASHING:  cdesc[DEXTERITY] -= 5;  flag=1; break;
+		case OORBOFDRAGON:      --cdesc[SLAYING];       return;
+		case OSPIRITSCARAB:     --cdesc[NEGATESPIRIT];  return;
+		case OCUBEofUNDEAD:     --cdesc[CUBEofUNDEAD];  return;
+		case ONOTHEFT:          --cdesc[NOTHEFT];       return;
+		case OLANCE:        cdesc[LANCEDEATH]=0;    return;
+		case OPOTION:   case OSCROLL:   return;
 
-        default:
-            flag=1;
-        };
+		default:    flag=1;
+	};
 
-    if (flag)
-        {
+	if (flag) {
 
-            bottomline();
-        }
+		bottomline();
+	}
 }
 
 
 
 /*
- * function to ask user for a password (no echo)
- * returns 1 if entered correctly, 0 if not
- */
+* function to ask user for a password (no echo)
+* returns 1 if entered correctly, 0 if not
+*/
 static char gpwbuf[33];
 
 int getpassword(void)
 {
-    int i, j;
-    char *gpwp;
+	int i, j;
+	char *gpwp;
 
-    scbr(); /*  system("stty -echo cbreak"); */
+	scbr(); /*  system("stty -echo cbreak"); */
 
-    gpwp = gpwbuf;
-    lprcat("\nEnter Password: ");
-    lflush();
+	gpwp = gpwbuf;
+	lprcat("\nEnter Password: ");
+	lflush();
 
-    i = strlen(password);
+	i = strlen(password);
 
-    for (j = 0; j < i; j++)
-        {
+	for (j = 0; j < i; j++) {
 
-            *gpwp++ = ttgetch();
-        }
+		*gpwp++ = ttgetch();
+	}
 
-    gpwbuf[i] = 0;
+	gpwbuf[i] = 0;
 
-    sncbr(); /* system("stty echo -cbreak"); */
+	sncbr(); /* system("stty echo -cbreak"); */
 
-    if (strcmp(gpwbuf,password) != 0)
-        {
+	if (strcmp(gpwbuf,password) != 0) {
 
-            lprcat("\nSorry\n");
-            lflush();
+		lprcat("\nSorry\n");
+		lflush();
 
-            return 0;
-        }
+		return 0;
+	}
 
-    return 1;
+	return 1;
 }
 
 
 
 /*
- * subroutine to get a yes or no response from the user
- * returns y or n
- */
-int getyn(void)
+* subroutine to get a yes or no response from the user
+* returns y or n
+*/
+char getyn(void)
 {
-    int i = 0;
+	int i = 0;
 
-    while (i != 'y' && i != 'n' && i != '\33')
-        i = ttgetch();
+	while (i != 'y' && i != 'n' && i != '\33')
+		i = ttgetch();
 
-    return i;
+	return (char)i;
 }
 
 
 
 /*
- * function to calculate the pack weight of the player
- * returns the number of pounds the player is carrying
- */
+* function to calculate the pack weight of the player
+* returns the number of pounds the player is carrying
+*/
 int packweight(void)
 {
-    int i, j=25, k;
+	int i, j=25, k;
 
-    k=c[GOLD]/1000;
-    while ((iven[j]==0) && (j>0))
-        --j;
-    for (i=0; i<=j; i++)
-        switch(iven[i])
-            {
-            case 0:
-                break;
-            case OSSPLATE:
-            case OPLATEARMOR:
-                k += 40;
-                break;
-            case OPLATE:
-                k += 35;
-                break;
-            case OHAMMER:
-                k += 30;
-                break;
-            case OSPLINT:
-                k += 26;
-                break;
-            case OSWORDofSLASHING:
-            case OCHAIN:
-            case OBATTLEAXE:
-            case O2SWORD:
-                k += 23;
-                break;
-            case OLONGSWORD:
-            case OSWORD:
-            case ORING:
-            case OFLAIL:
-                k += 20;
-                break;
-            case OLANCE:
-            case OSTUDLEATHER:
-                k += 15;
-                break;
-            case OLEATHER:
-            case OSPEAR:
-                k += 8;
-                break;
-            case OORBOFDRAGON:
-            case OBELT:
-                k += 4;
-                break;
-            case OSHIELD:
-                k += 7;
-                break;
-            case OCHEST:
-                k += 30 + ivenarg[i];
-                break;
-            default:
-                k++;
-                break;
-            };
-    return(k);
+	k=cdesc[GOLD]/1000;
+	while ((iven[j]==0) && (j>0))
+		--j;
+	for (i=0; i<=j; i++)
+		switch(iven[i])
+	{
+		case 0:
+			break;
+		case OSSPLATE:
+		case OPLATEARMOR:
+			k += 40;
+			break;
+		case OPLATE:
+			k += 35;
+			break;
+		case OHAMMER:
+			k += 30;
+			break;
+		case OSPLINT:
+			k += 26;
+			break;
+		case OSWORDofSLASHING:
+		case OCHAIN:
+		case OBATTLEAXE:
+		case O2SWORD:
+			k += 23;
+			break;
+		case OLONGSWORD:
+		case OSWORD:
+		case ORING:
+		case OFLAIL:
+			k += 20;
+			break;
+		case OLANCE:
+		case OSTUDLEATHER:
+			k += 15;
+			break;
+		case OLEATHER:
+		case OSPEAR:
+			k += 8;
+			break;
+		case OORBOFDRAGON:
+		case OBELT:
+			k += 4;
+			break;
+		case OSHIELD:
+			k += 7;
+			break;
+		case OCHEST:
+			k += 30 + ivenarg[i];
+			break;
+		default:
+			k++;
+			break;
+	};
+	return(k);
 }
 
 
@@ -889,7 +739,7 @@ int packweight(void)
 int rnd(int x)
 {
 
-    return((((lrandx=lrandx*1103515245+12345)>>7)%(x))+1);
+	return((((lrandx=lrandx*1103515245+12345)>>7)%(x))+1);
 }
 
 
@@ -898,7 +748,7 @@ int rnd(int x)
 int rund(int x)
 {
 
-    return((((lrandx=lrandx*1103515245+12345)>>7)%(x)));
+	return((((lrandx=lrandx*1103515245+12345)>>7)%(x)));
 }
 
 

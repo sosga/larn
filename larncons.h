@@ -1,10 +1,10 @@
 /*
- *
- * constants
- *
- */
+*
+* constants
+*
+*/
 
-#define PATCHLEVEL 0
+#define PATCHLEVEL 1
 
 /* defines below are for use in the termcap mode only */
 #define ST_START 1
@@ -36,16 +36,6 @@
 #define TRUE 1
 #define FALSE 0
 
-#define SCORENAME	"data/larn.scorefile"
-#define LOGFNAME	"data/larn.logfile"
-#define HELPNAME	"data/larn.helpfile"
-#define LEVELSNAME	"data/larn.mazefile"
-#define FORTSNAME	"data/larn.fortsfile"
-#define PLAYERIDS	"data/larn.playerid"
-#define DIAGFILE	"data/diagfile"
-#define SAVEFILE	"data/larn.savefile"
-
-
 #define MAXLEVEL 11    /*  max # levels in the dungeon         */
 #define MAXVLEVEL 3    /*  max # of levels in the temple of the luran  */
 #define MAXX 67
@@ -68,10 +58,10 @@
 
 
 /*
- * monster related constants
- */
+* monster related constants
+*/
 /* maximum # monsters in the dungeon */
-#define MAXMONST 56
+#define MAXMONST 56     
 
 /*  defines for the monsters as objects  */
 #define BAT 1
@@ -85,30 +75,30 @@
 #define JACULI 9
 #define TROGLODYTE 10
 #define ANT 11
-#define EYE 12
+#define EYE 12 
 #define LEPRECHAUN 13
 #define NYMPH 14
-#define QUASIT 15
-#define RUSTMONSTER 16
-#define ZOMBIE 17
-#define ASSASSINBUG 18
-#define BUGBEAR 19
-#define HELLHOUND 20
-#define ICELIZARD 21
-#define CENTAUR 22
-#define TROLL 23
-#define YETI 24
+#define QUASIT 15 
+#define RUSTMONSTER 16 
+#define ZOMBIE 17 
+#define ASSASSINBUG 18 
+#define BUGBEAR 19 
+#define HELLHOUND 20 
+#define ICELIZARD 21 
+#define CENTAUR 22 
+#define TROLL 23 
+#define YETI 24 
 #define WHITEDRAGON 25
 #define ELF 26
-#define CUBE 27
-#define METAMORPH 28
-#define VORTEX 29
-#define ZILLER 30
-#define VIOLETFUNGI 31
-#define WRAITH 32
-#define FORVALAKA 33
-#define LAMANOBE 34
-#define OSEQUIP 35
+#define CUBE 27 
+#define METAMORPH 28 
+#define VORTEX 29 
+#define ZILLER 30 
+#define VIOLETFUNGI 31 
+#define WRAITH 32 
+#define FORVALAKA 33 
+#define LAMANOBE 34 
+#define OSEQUIP 35 
 #define ROTHE 36
 #define XORN 37
 #define VAMPIRE 38
@@ -136,9 +126,9 @@
 
 
 
-/*
- * defines for the character attribute array   c[]
- */
+/*  
+* defines for the character attribute array   cdesc[] 
+*/
 #define STRENGTH 0      /* characters physical strength not due to objects */
 #define INTELLIGENCE 1
 #define WISDOM 2
@@ -220,12 +210,13 @@
 #define LIFEPROT 78 /* life protection counter */
 
 
-
+/* nap related */
+#define NAPTIME 1000
 
 
 /*
- * object related constants
- */
+* object related constants
+*/
 #define MAXSCROLL 28    /* maximum number of scrolls that are possible */
 #define MAXSCROLLNAME	32
 
@@ -302,7 +293,7 @@
 #define OSCROLL 41
 #define OPOTION 42
 #define OBOOK 43
-#define OCHEST 44
+#define OCHEST 44             
 #define OAMULET 45
 
 #define OORBOFDRAGON 46

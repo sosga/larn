@@ -1,10 +1,10 @@
 
 
 /*
- *
- * macros
- *
- */
+*
+* macros
+*
+*/
 
 /* macro to create scroll #'s with probability of occurrence */
 #define newscroll() (scprob[rund(81)])
@@ -13,19 +13,19 @@
 #define newpotion() (potprob[rund(41)])
 
 /* macro to return the + points on created leather armor */
-#define newleather() (nlpts[rund(c[HARDGAME]?13:15)])
+#define newleather() (nlpts[rund(cdesc[HARDGAME]?13:15)])
 
 /* macro to return the + points on chain armor */
 #define newchain() (nch[rund(10)])
 
 /* macro to return + points on plate armor */
-#define newplate() (nplt[rund(c[HARDGAME]?4:12)])
+#define newplate() (nplt[rund(cdesc[HARDGAME]?4:12)])
 
 /* macro to return + points on new daggers */
 #define newdagger() (ndgg[rund(13)])
 
 /* macro to return + points on new swords */
-#define newsword() (nsw[rund(c[HARDGAME]?6:13)])
+#define newsword() (nsw[rund(cdesc[HARDGAME]?6:13)])
 
 /* macro to destroy object at present location */
 #define forget() (item[playerx][playery]=know[playerx][playery]=0)
@@ -46,7 +46,7 @@
 #define resetscroll() enable_scroll=0
 
 /* macro to clear the screen and home the cursor */
-#define clearscr() (*lpnt++ =CLEAR, regen_bottom=TRUE)
+#define clear() (*lpnt++ =CLEAR, regen_bottom=TRUE)
 
 /* macro to clear to end of line */
 #define cltoeoln() (*lpnt++ = CL_LINE)
@@ -55,22 +55,26 @@
 #define srand(x) (lrandx=x)
 
 /* min/max */
+#ifndef min
 #define min(x,y) (((x)>(y))?(y):(x))
+#endif
+#ifndef max
 #define max(x,y) (((x)>(y))?(x):(y))
+#endif
 
 
 
 /*
- *
- * function declarations
- *
- */
+*
+* function declarations
+*
+*/
 
 
 
 /*
- * action.c
- */
+* action.c
+*/
 void		act_remove_gems(int);
 
 void		act_sit_throne(int);
@@ -102,28 +106,28 @@ int		act_open_door(int, int);
 
 
 /*
- * bill.c
- */
-void		readmail(long);
+* bill.c
+*/
+void		readmail(int);
 
 
 
 /*
- * create.c
- */
+* create.c
+*/
 void		makeplayer(void);
 
 void		newcavelevel(int);
 
 void		eat(int, int);
 
-int		fillmonst(signed char);
+int		fillmonst(int);
 
 
 
 /*
- * diag.c
- */
+* diag.c
+*/
 #ifdef EXTRA
 int		diag(void);
 
@@ -137,8 +141,8 @@ void		restoregame(char *);
 
 
 /*
- * display.c
- */
+* display.c
+*/
 void		bottomline(void);
 
 void		bottomhp(void);
@@ -169,15 +173,15 @@ void		seemagic(int);
 
 
 /*
- * fortune.c
- */
+* fortune.c
+*/
 void		outfortune(void);
 
 
 
 /*
- * global.c
- */
+* global.c 
+*/
 void		raiselevel(void);
 
 void		loselevel(void);
@@ -224,7 +228,7 @@ void		adjustcvalues(int, int);
 
 int		getpassword(void);
 
-int		getyn(void);
+char	getyn(void);
 
 int		packweight(void);
 
@@ -235,8 +239,8 @@ int		rund(int);
 
 
 /*
- * help.c
- */
+* help.c
+*/
 void		help(void);
 
 void		welcome(void);
@@ -246,8 +250,8 @@ void		retcont(void);
 
 
 /*
- * iventory.c
- */
+* iventory.c
+*/
 void		init_inventory(void);
 
 int		showstr(char);
@@ -262,7 +266,7 @@ int		showeat(void);
 
 int		showquaff(void);
 
-void            show1(int);
+void		show1(int);
 
 int		show3(int);
 
@@ -274,8 +278,8 @@ int		pocketfull(void);
 
 
 /*
- * io.c
- */
+* io.c
+*/
 void		setupvt100(void);
 void		clearvt100(void);
 
@@ -288,15 +292,15 @@ void		newgame(void);
 
 void		lprintf(const char *, ...);
 
-void		lprint(long);
+void		lprint(int);
 
 void		lprc(char);
 
 void		lwrite(char *, int);
 
-long		lgetc(void);
+char		lgetc(void);
 
-long		larint(void);
+int		larint(void);
 
 void		lrfill(char *, int);
 
@@ -346,17 +350,17 @@ void		select_sex(void);
 
 
 /*
- * main.c
- */
+* main.c
+*/ 
 void		parse2(void);
 
-unsigned long	readnum(long);
+int	readnum(int);
 
 
 
 /*
- * monster.c
- */
+* monster.c
+*/
 void		checkloss(int);
 
 void		createitem(int, int);
@@ -380,8 +384,8 @@ int		vxy(int *, int *);
 
 
 /*
- * moreobj.c
- */
+* moreobj.c
+*/
 void		oaltar(void);
 
 void		othrone(int);
@@ -421,26 +425,26 @@ void		specify_object(void);
 
 
 /*
- * movem.c
- */
+* movem.c
+*/
 void		movemonst(void);
 
 
 
 /*
- * object.c
- */
+* object.c
+*/
 void		lookforobject(char, char, char);
 
 void		oteleport(int);
 
 void		quaffpotion(int, int);
 
-void		adjtime(long);
+void		adjtimel(int);
 
 void		read_scroll(int);
 
-void		readbook(int);
+void		readbook(int); 
 
 void		ohome(void);
 
@@ -451,15 +455,15 @@ void		ignore(void);
 
 
 /*
- * regen.c
- */
+* regen.c
+*/
 void		regen(void);
 
 
 
 /*
- * savelev.c
- */
+* savelev.c
+*/
 void		savelevel(void);
 
 void		getlevel(void);
@@ -467,15 +471,15 @@ void		getlevel(void);
 
 
 /*
- * scores.c
- */
+* scores.c
+*/
 int 		makeboard(void);
 
 int		hashewon(void);
 
 void		checkmail(void);
 
-long		paytaxes(long);
+int		paytaxes(int);
 
 void		showscores(void);
 
@@ -490,8 +494,8 @@ int		getplid(char *);
 
 
 /*
- * spells.c
- */
+* spells.c
+*/
 void		cast(void);
 
 int		fullhit(int);
@@ -507,8 +511,8 @@ void		annihilate(void);
 
 
 /*
- * spheres.c
- */
+* spheres.c
+*/
 int		newsphere(int, int, int, int);
 
 int		rmsphere(int, int);
@@ -519,8 +523,8 @@ void		movsphere(void);
 
 
 /*
- * store.c
- */
+* store.c
+*/
 void		dndstore(void);
 
 void		oschool(void);
@@ -537,26 +541,36 @@ void		olrs(void);
 
 
 /*
- * sysdep.c
- */
+* sysdep.c
+*/
 void		nap(int);
 
 
 
 /*
- * tgoto.c
- */
+* tgoto.c
+*/
 const char *	atgoto(const char *, int, int);
 
 
 
 /*
- * tok.c
- */
+* tok.c
+*/
 int		yylex(void);
 
 void		sethard(int);
 
-
-
-
+#ifndef WINDOWS
+#define _read read
+#define _creat creat
+#define _open open
+#define _lseek lseek
+#define _close close
+#define _write write
+#define _chmod chmod
+#define _kbhit kbhit
+#define _getch ansiterm_getch
+#define _S_IWRITE 0666
+#define	_setmode(x, y)
+#endif

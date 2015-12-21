@@ -1,7 +1,7 @@
 /*
- * this is hackjob that translates the ANSI escape sequences used by larn
- * to Curses API calls
- */
+* this is hackjob that translates the ANSI escape sequences used by larn
+* to Curses API calls
+*/
 
 
 #include <stdlib.h>
@@ -19,113 +19,106 @@ static void	ansiterm_command(int, const char *, const char *);
 
 static void	ansiterm_putchar(int);
 
-
+static void llrefresh(void);
 
 
 /*
- * writes to the terminal
- */
+* writes to the terminal
+*/
 void ansiterm_out(const char *output_buffer, int n_chars)
 {
-    int i;
+	int i;
 
-    i = 0;
+	i = 0;
 
-    while (i < n_chars)
-        {
+	while (i < n_chars) {
 
-            if (output_buffer[i] == ANSITERM_ESC)
-                {
-                    char ansi_param[10];
-                    char param1[5];
-                    char param2[5];
-                    int ansi_cmd;
-                    int j;
+		if (output_buffer[i] == ANSITERM_ESC) {
+			char ansi_param[10];
+			char param1[5];
+			char param2[5];
+			int ansi_cmd;
+			int j;
 
-                    *param1 = '\0';
-                    *param2 = '\0';
+			*param1 = '\0';
+			*param2 = '\0';
 
-                    ++i;
-                    ++i;
+			++i;
+			++i; 
 
-                    j = 0;
+			j = 0;
 
-                    while (!isalpha(output_buffer[i]))
-                        {
+			while (!isalpha(output_buffer[i])) {
 
-                            ansi_param[j] = output_buffer[i];
+				ansi_param[j] = output_buffer[i];
 
-                            ++i;
-                            ++j;
-                        }
+				++i;
+				++j;
+			}
 
-                    ansi_param[j] = '\0';
+			ansi_param[j] = '\0';
 
-                    ansi_cmd = output_buffer[i];
-                    ++i;
+			ansi_cmd = output_buffer[i];
+			++i;
 
-                    if (*ansi_param != '\0')
-                        {
-                            char *p;
-                            int k;
+			if (*ansi_param != '\0') {				
+				char *p;
+				int k;
 
-                            p = ansi_param;
+				p = ansi_param;
 
-                            k = 0;
-                            while (*p != ';' && *p != '\0')
-                                {
+				k = 0;
+				while (*p != ';' && *p != '\0') {
 
-                                    param1[k] = *p;
-                                    ++p;
-                                    ++k;
-                                }
-                            param1[k] = '\0';
+					param1[k] = *p;
+					++p;
+					++k;
+				}
+				param1[k] = '\0';
 
-                            if (*p == ';') ++p;
+				if (*p == ';') ++p;
 
-                            k = 0;
-                            while (*p != ';' && *p != '\0')
-                                {
+				k = 0;
+				while (*p != ';' && *p != '\0') {
 
-                                    param2[k] = *p;
-                                    ++p;
-                                    ++k;
-                                }
+					param2[k] = *p;
+					++p;
+					++k;
+				}
 
-                            param2[k] = '\0';
+				param2[k] = '\0';
 
-                        }
+			}
 
-                    ansiterm_command(ansi_cmd, param1, param2);
+			ansiterm_command(ansi_cmd, param1, param2);
 
-                }
-            else
-                {
+		} else {
 
-                    ansiterm_putchar(output_buffer[i]);
-                    ++i;
-                }
-        }
+			ansiterm_putchar(output_buffer[i]);
+			++i;
+		}
+	}
 
 
-    /*
-    ESC[;H
-    ESC[y;xH   ESC[24;01H
-    ESC[2J
-    ESC[1m standout on
-    ESC[m standout off
-    */
-
+	/* 
+	ESC[;H 
+	ESC[y;xH   ESC[24;01H
+	ESC[2J
+	ESC[1m standout on
+	ESC[m standout off
+	*/
+	llrefresh();
 }
 
 
 /********************************************
- *              CURSES BACK-END             *
- ********************************************/
+*              CURSES BACK-END             *
+********************************************/
 
-#if defined WIN32
+#if defined WINDOWS
 #include "win/curses.h"
 #endif
+
 #if defined LINUX || DARWIN || BSD
 #include <curses.h>
 #endif
@@ -135,212 +128,188 @@ static int llgetch(void);
 void ansiterm_init(void)
 {
 
-    initscr();
-    notimeout(stdscr, 1);
-    noecho();
-    cbreak();
-    nonl();
-    keypad(stdscr, 1);
+	initscr();
+	notimeout(stdscr, 1);
+	noecho();
+	cbreak();
+	nonl();
+	keypad(stdscr, 1);
+#ifdef WINDOWS
+	PDC_save_key_modifiers(1);
+#endif
 }
 
 
 void ansiterm_clean_up(void)
 {
 
-    nocbreak();
-    nl();
-    echo();
-    endwin();
+	nocbreak();
+	nl();
+	echo();
+	endwin();
 }
 
 
 
 /*
- * get char
- */
+* get char
+*/
 int ansiterm_getch(void)
 {
 
-    return llgetch();
+	return llgetch();
 }
 
 
 
 /*
- * get char (with echo)
- */
+* get char (with echo)
+*/
 int ansiterm_getche(void)
 {
-    int key;
+	int key;
 
-    echo();
-    key = llgetch();
-    noecho();
+	echo();
+	key = llgetch();
+	noecho();
 
-    return key;
+	return key;
 }
 
 
 static int llgetch(void)
 {
-    int key;
+	int key;
 
-    key = getch();
+	key = getch();
 
-    switch (key)
-        {
-
-        case KEY_UP:
-            return 'k';
-        case KEY_DOWN:
-            return 'j';
-        case KEY_LEFT:
-            return 'h';
-        case KEY_RIGHT:
-            return 'l';
-
-#if !defined(NCURSES_VERSION)
-        case KEY_A2:
-            return 'k';
-        case KEY_B1:
-            return 'h';
-        case KEY_B3:
-            return 'l';
-        case KEY_C2:
-            return 'j';
-        case PADENTER:
-            return 13;
+#ifdef WINDOWS
+	if (PDC_get_key_modifiers() & PDC_KEY_MODIFIER_SHIFT) {
+		switch (key) {
+			case '1': return 'B';
+			case '2': return 'J';
+			case '3': return 'N';
+			case '4': return 'H';
+			case '5': return '.';
+			case '6': return 'L';
+			case '7': return 'Y';
+			case '8': return 'K';
+			case '9': return 'U';
+		}
+	}
 #endif
 
-        case KEY_A1:
-            return 'y';
-        case KEY_A3:
-            return 'u';
-        case KEY_C1:
-            return 'b';
-        case KEY_C3:
-            return 'n';
+	switch (key) {
+	case KEY_UP: return 'k';
+	case KEY_DOWN: return 'j';
+	case KEY_LEFT: return 'h';
+	case KEY_RIGHT: return 'l';
+#ifdef WINDOWS
+	case KEY_A2: return 'k';
+	case KEY_B1: return 'h';
+	case KEY_B3: return 'l';
+	case KEY_C2: return 'j';
+	case PADENTER: return 13;
+#endif
+	case KEY_A1: return 'y';
+	case KEY_A3: return 'u';
+	case KEY_C1: return 'b';
+	case KEY_C3: return 'n';
+	case KEY_B2: return '.';
+	case KEY_ENTER: return 13; 
 
-        case KEY_ENTER:
-            return 13;
+	default: return key;
+	}
+}
 
-        default:
-            return key;
-
-        }
+void ansiterm_delch(void)
+{
+	delch();
 }
 
 
 
-
-static void ansiterm_command(int ansi_cmd, const char *param1,
-                             const char *param2
-                            )
+static void ansiterm_command(int ansi_cmd, const char *param1, 
+							 const char *param2
+							 )
 {
 
 
 
-    if (ansi_cmd == 'H')
-        {
-            int y, x;
+	if (ansi_cmd == 'H') {
+		int y, x;
 
-            if (*param1 == '\0')
-                {
+		if (*param1 == '\0') {
 
-                    y = 0;
+			y = 0;
 
-                }
-            else
-                {
+		} else {
 
-                    y = atoi(param1) - 1;
-                }
+			y = atoi(param1) - 1;
+		}
 
-            if (*param2 == '\0')
-                {
+		if (*param2 == '\0') {
 
-                    x = 0;
+			x = 0;
 
-                }
-            else
-                {
+		} else {
 
-                    x = atoi(param2) - 1;
-                }
+			x = atoi(param2) - 1;
+		}
 
-            move(y, x);
+		move(y, x);
 
-        }
-    else if (ansi_cmd == 'J')
-        {
+	} else if (ansi_cmd == 'J') {
 
-            clear();
+		clear();
 
-        }
-    else if (ansi_cmd == 'M')
-        {
-            int i, n_lines;
+	} else if (ansi_cmd == 'M') {
+		int i, n_lines;
 
-            if (*param1 != '\0')
-                {
+		if (*param1 != '\0') {
 
-                    n_lines = 1;
+			n_lines = 1;
 
-                }
-            else
-                {
+		} else {
 
-                    n_lines = atoi(param1);
-                }
+			n_lines = atoi(param1);
+		}
 
-            for (i = 0; i < n_lines; i++)
-                {
+		for (i = 0; i < n_lines; i++) {
 
-                    move(0, 0);
-                    clrtoeol();
-                }
+			move(0, 0);
+			clrtoeol();
+		}
 
-        }
-    else if (ansi_cmd == 'K')
-        {
+	} else if (ansi_cmd == 'K') {
 
-            clrtoeol();
+		clrtoeol();
 
-        }
-    else if (ansi_cmd == 'm')
-        {
-            int attribute;
+	} else if (ansi_cmd == 'm') {
+		int attribute;
 
-            if (*param1 == '\0')
-                {
+		if (*param1 == '\0') {
 
-                    attribute = 0;
+			attribute = 0;
 
-                }
-            else
-                {
+		} else {
 
-                    attribute = atoi(param1);
-                }
+			attribute = atoi(param1);
+		}
 
-            if (attribute == 0)
-                {
+		if (attribute == 0) {
 
-                    attrset(A_NORMAL);
+			attrset(A_NORMAL);
 
-                }
-            else if (attribute == 1)
-                {
+		} else if (attribute == 1) {
 
-                    attrset(A_BOLD);
-                }
+			attrset(A_REVERSE);
+		}
 
-        }
-    else
-        {
+	} else {
 
-            exit(EXIT_FAILURE);
-        }
+		exit(EXIT_FAILURE);
+	}
 }
 
 
@@ -349,30 +318,30 @@ static void ansiterm_putchar(int c)
 
 
 
-    if (c == '\n')
-        {
-            int y;
-			int x;
+	if (c == '\n') {
+		int y, x;
 
-            getyx(stdscr, y, x);
+		getyx(stdscr, y, x);
 
-            move(y + 1, 0);
+		move(y + 1, 0);
 
-            return;
-        }
+		return;
+	}
 
-    if (c == '\t')
-        {
+	if (c == '\t') {
 
-            addstr("    ");
-            return;
-        }
+		addstr("    ");
+		return;
+	}
 
-    addch(c);
+	addch(c);
 }
 
 
-
+void llrefresh(void)
+{
+	refresh();
+}
 
 
 
