@@ -1046,76 +1046,46 @@ void read_scroll(int typ)
 	};
 }
 
-
-
+/* FIXES for bool bug */
 static void opit(void)
 {
-	int i;
-
-	if (rnd(101) >= 81) {
-
-		return;
-	}
-
-	if (rnd(70) <= 9 * cdesc[DEXTERITY] - packweight() || 
-		rnd(101) >= 5) {
-
-			return;
-	}
-
-	if (level == MAXLEVEL - 1) {
-
-		obottomless();
-
-	} else if (level == MAXLEVEL + MAXVLEVEL - 1) {
-
-		obottomless();
-
-	} else {
-
-		if (rnd(101) < 20) {
-
-			i = 0;
-
-			lprcat(
-				"\nYou fell into a pit!  "
-				"Your fall is cushioned by an unknown force\n"
-				);
-
-		} else {
-
-			i = rnd(level * 3 + 3);
-
-			lprintf(
-				"\nYou fell into a pit!  "
-				"You suffer %d hit points damage", 
-				(int) i
-				);
-
-			/* if he dies scoreboard will say so */
-			lastnum = 261; 
-		}
-
-		losehp(i);
-
-		nap(NAPTIME);
-
-		newcavelevel(level + 1);
-
-		draws(0, MAXX, 0, MAXY);
-	}
+    int    i;
+    if (rnd(101) < 81) {
+        if (rnd(70) > 9 * cdesc[DEXTERITY] - packweight() || rnd(101) < 5) {
+            if (level == MAXLEVEL - 1)
+                obottomless();
+            else if (level == MAXLEVEL + MAXVLEVEL - 1)
+                obottomless();
+            else {
+                if (rnd(101) < 20) {
+                    i = 0;
+                    lprcat("\nYou fell into a pit!  Your fall is cushioned by an unknown force\n");
+                    
+                } else {
+                    i = rnd(level * 3 + 3);
+                    lprintf("\nYou fell into a pit!  You suffer %ld hit points damage", (long) i);
+                    lastnum = 261;	/* if he dies scoreboard * will say so */
+                    
+                }
+                losehp(i);
+                nap(2000);
+                newcavelevel(level + 1);
+                draws(0, MAXX, 0, MAXY);
+                
+            }
+            
+        }
+        
+    }
+    
 }
-
-
 
 static void obottomless(void)
 {
-
-	lprcat("\nYou fell into a bottomless pit!");
-	nap(NAPTIME);
-	died(262);
+    lprcat("\nYou fell into a bottomless pit!");
+    nap(3000);
+    died(262);
 }
-
 
 
 static void ostatue(void)
