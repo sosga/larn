@@ -477,23 +477,30 @@ int showquaff(void)
 }
 
 /*some backporting from 12.3 with my own changes and fixes.
- *To be cleaned up. ~Gibbon*/
+ *Cleaned up and squashed a bug with duplication of text shown. ~Gibbon
+ */
 void show1(int idx)
 {
     lprc('\n');
     cltoeoln();
-    if (iven[idx] == 0)
-        lprintf("%c)   %s", idx + 'a', objectname[iven[idx]]);
-    else if (ivenarg[idx]==0)
-        lprintf("%c)   %s",idx+'a',objectname[iven[idx]]);
     
+    /*not totally needed but it is cleaner.  Inventory will not be == 0 due to starting items. ~Gibbon
+     */
+    if (iven[idx] != 0)
+    {
+        lprintf("%c)   %s",idx +'a',objectname[iven[idx]]);
+    }
+    
+    /*we can remove the index to object name and concatenate the above with the below for scrolls and potions.
+     *since OPOTION and OSCROLL (object names) will be stuffed into the above, we can focus on identified names. ~Gibbon
+     */
     if (iven[idx] == OPOTION && potionname[ivenarg[idx]][0] != '\0')
         {
-            lprintf("%c)   %s of%s",idx + 'a',objectname[iven[idx]],potionname[ivenarg[idx]]);
+            lprintf(" of%s",potionname[ivenarg[idx]]);
         }
-    if (iven[idx] == OSCROLL && scrollname[ivenarg[idx]][0] != '\0')
+    else if (iven[idx] == OSCROLL && scrollname[ivenarg[idx]][0] != '\0')
         {
-            lprintf("%c)   %s of%s",idx + 'a',objectname[iven[idx]],scrollname[ivenarg[idx]]);
+            lprintf(" of%s",scrollname[ivenarg[idx]]);
         }
 }
 
