@@ -11,3 +11,10 @@ Patch release (MINOR) versions will only get a branch update of the sourcecode. 
 
 Bugs:
 Raise bugs in the issue tab.  Please tell me your platform, what you were doing and what the bug is.
+
+Building:
+On Windows, download TDM-GCC 64bit.  Install it completely into your path and then navigate to the directory where you unpacked the Larn-SNAPSHOT code and do 'mingw32-make -f mingwinrelease.mak'.  PDCurses is included but is compiled only for 64bit.
+
+On GNU/Linux install the ncurses devel package and gcc, make etc.  Then do a 'make -f gnulinuxrelease.mak'.
+
+On OSX this is a bit more complicated.  Open a terminal and type gcc.  This will prompt to install the cmdline tools.  Then grab the latest version of ncurses6 and compile it.  Do a make install and then you are ready to make Larn with 'make -f darwinrelease.mak'.
