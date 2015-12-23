@@ -58,7 +58,10 @@ void nap(int x)
  * 
  * This will be replaced by posix compliant functionality later anyway.
  */
-	usleep(x);
+
+/* added * 500 as a trade off.  Some functionality appeared too quickly using
+ * no slowdown. */
+	usleep(x * 500);
 }
 
 
