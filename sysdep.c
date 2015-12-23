@@ -25,7 +25,9 @@ void nap(int x)
 	
 	Sleep(x);
 }
-#else
+#endif
+
+#if defined LINUX || DARWIN || BSD
 
 /********************************************
  *                 UNIX                     *
@@ -49,7 +51,8 @@ void nap(int x)
 	
 	lflush();
 	
-	usleep(x*1000);
+/* removed *1000, doing this simply makes it wait much longer */
+	usleep(x);
 }
 
 
