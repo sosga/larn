@@ -51,7 +51,13 @@ void nap(int x)
 	
 	lflush();
 	
-/* removed *1000, doing this simply makes it wait much longer */
+/* removed *1000, doing this simply makes it wait much longer
+ * I know usleep acts differently (it usually needs slowing down) to really act as 'seconds'
+ * But this makes the game a little more responsive.  We don't need exact seconds, just a tiny
+ * amount of wait is ok.
+ * 
+ * This will be replaced by posix compliant functionality later anyway.
+ */
 	usleep(x);
 }
 
