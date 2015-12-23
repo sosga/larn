@@ -211,7 +211,7 @@
 
 
 /* nap related */
-#define NAPTIME 3000
+#define NAPTIME 1000
 
 
 /*

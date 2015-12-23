@@ -343,7 +343,7 @@ void lookforobject(char do_ident, char do_pickup, char do_action)
 			died(271);
 		}
 		i = rnd(5 + level);
-		lprintf("\nYou fall through a trap door!  You lose %d hit points.", (int) i);
+		lprintf("\nYou fall through a trap door!  You lose %d hit points.", (long) i);
 		losehp(i);
 		nap(NAPTIME);
 		newcavelevel(level + 1);
