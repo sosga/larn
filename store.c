@@ -290,7 +290,6 @@ void dndstore(void)
 				cdesc[GOLD] -= dnd_item[i].price * 10;
 				dnd_item[i].qty--;
 				take(dnd_item[i].obj, dnd_item[i].arg);
-
 				if (dnd_item[i].qty == 0) dnditem(i);  
 				lflush();
 				nap(NAPTIME);
@@ -678,7 +677,14 @@ static void obanksub(void)
 	}
 }
 
-
+/* new function for displaying gold in inventory inside trading posts.
+ * part of feature request by hymie0. ~Gibbon */
+static int
+amtgoldtrad()
+{
+    lprintf("\n\nYou have %-6d gold pieces.",(int)cdesc[GOLD]);
+    return 0;
+}
 /*
 function for the trading post
 */
@@ -784,11 +790,16 @@ void otradepost(void)
 		cl_dn(1,21);
 		lprcat("\nWhat item do you want to sell to us [");
 		lstandout("escape"); lprcat("] ? ");
-		i=0;
+                
+                /* display gold in inventory ~Gibbon */
+                amtgoldtrad();
+		
+                i=0;
 		while ( (i>'z' || i<'a') && i!=12 && i!='\33' )
 			i=ttgetch();
 		if (i == '\33')
 		{
+                    
 			recalc();
 			drawscreen();
 			return;
@@ -875,11 +886,20 @@ void otradepost(void)
 						adjustcvalues(iven[isub],ivenarg[isub]);
 						iven[isub]=0;
 						cleartradiven( isub );
+                                                
+                                                /* clear and display functions again so gold is re-calculated 
+                                                 * part of feature request from hymie0. ~Gibbon */
+                                                clear();
+                                                otradhead();
+                                                otradiven();
 					}
 					else
 					{
-						lprcat("no thanks.\n");
-						nap(500);
+						
+						/* refresh screen when saying no ~Gibbon */
+						clear();
+                                                otradhead();
+                                                otradiven();
 					}
 					break;          /* exit inner while */
 		}   /* end of inner while */
