@@ -81,10 +81,9 @@ int main(int argc, char *argv[])
 	/*
 	*  first task is to identify the player
 	*/
-	/* TODO : Curses gets initialized here, should move it after
-	 * the commandline arguments are handled */
-	
-
+           /*init curses ~Gibbon*/
+	init_term();    /* setup the terminal (find out what type) for termcap */
+	scbr();
 	/*
 	*  second task is to prepare the pathnames the player will need
 	*/
@@ -161,10 +160,6 @@ int main(int argc, char *argv[])
 				exit(EXIT_SUCCESS);
 		};
 	}
-	
-	/*init curses ~Gibbon*/
-	init_term();    /* setup the terminal (find out what type) for termcap */
-	scbr();
         
 	/*
 	*  He really wants to play, so malloc the memory for the dungeon.
