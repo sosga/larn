@@ -28,6 +28,12 @@ I have already scanned the usenet archives and gathered quite a few names.  I ev
 
 Any help in tracking down and getting contributors to release under the following license would be greatly appreciated.  Let's make Larn free software!  I put this here as it is noticeable.  This will at a later date go into a seperate LICENSE.txt file.
 
+People we need to locate and contact:
+James McNamara UNIX install notes, source and patch distribution
+Don Kneller Port for DECRainbow and PC compatible
+Daniel Kegel Enhanced ansi terminal decoding for DOS
+Kevin Routley Integration, enhancement and release
+
 Debian/Linux/GCC porting contributions are under modified BSD:
 Copyright (c) 2005 Alexander Perry <alex.perry@ieee.org>
 All rights reserved.
