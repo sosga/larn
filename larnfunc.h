@@ -75,53 +75,53 @@
 /*
 * action.c
 */
-void		act_remove_gems(int);
+void act_remove_gems (int);
 
-void		act_sit_throne(int);
+void act_sit_throne (int);
 
-void		act_up_stairs(void);
+void act_up_stairs (void);
 
-void		act_down_stairs(void);
+void act_down_stairs (void);
 
-void		act_drink_fountain(void);
+void act_drink_fountain (void);
 
-void		act_wash_fountain(void);
+void act_wash_fountain (void);
 
-void		act_down_shaft(void);
+void act_down_shaft (void);
 
-void		act_up_shaft(void);
+void act_up_shaft (void);
 
-void		act_desecrate_altar(void);
+void act_desecrate_altar (void);
 
-void		act_donation_pray(void);
+void act_donation_pray (void);
 
-void		act_just_pray(void);
+void act_just_pray (void);
 
-void		act_ignore_altar(void);
+void act_ignore_altar (void);
 
-void		act_open_chest(int, int);
+void act_open_chest (int, int);
 
-int		act_open_door(int, int);
+int act_open_door (int, int);
 
 
 
 /*
 * bill.c
 */
-void		readmail(int);
+void readmail (int);
 
 
 
 /*
 * create.c
 */
-void		makeplayer(void);
+void makeplayer (void);
 
-void		newcavelevel(int);
+void newcavelevel (int);
 
-void		eat(int, int);
+void eat (int, int);
 
-int		fillmonst(int);
+int fillmonst (int);
 
 
 
@@ -129,45 +129,45 @@ int		fillmonst(int);
 * diag.c
 */
 #ifdef EXTRA
-int		diag(void);
+int diag (void);
 
-void		diagdrawscreen(void);
+void diagdrawscreen (void);
 #endif
 
-int		savegame(char *);
+int savegame (char *);
 
-void		restoregame(char *);
+void restoregame (char *);
 
 
 
 /*
 * display.c
 */
-void		bottomline(void);
+void bottomline (void);
 
-void		bottomhp(void);
+void bottomhp (void);
 
-void		bottomspell(void);
+void bottomspell (void);
 
-void		bottomdo(void);
+void bottomdo (void);
 
-void		bot_linex(void);
+void bot_linex (void);
 
-void		bottomgold(void);
+void bottomgold (void);
 
-void		draws(int, int, int, int);
+void draws (int, int, int, int);
 
-void		drawscreen(void);
+void drawscreen (void);
 
-void		showcell(int, int);
+void showcell (int, int);
 
-void		show1cell(int, int);
+void show1cell (int, int);
 
-void		showplayer(void);
+void showplayer (void);
 
-int		moveplayer(int);
+int moveplayer (int);
 
-void		seemagic(int);
+void seemagic (int);
 
 
 
@@ -175,349 +175,349 @@ void		seemagic(int);
 /*
 * fortune.c
 */
-void		outfortune(void);
+void outfortune (void);
 
 
 
 /*
 * global.c 
 */
-void		raiselevel(void);
+void raiselevel (void);
 
-void		loselevel(void);
+void loselevel (void);
 
-void		raiseexperience(long);
+void raiseexperience (long);
 
-void		loseexperience(long);
+void loseexperience (long);
 
-void		losehp(int);
+void losehp (int);
 
-void		losemhp(int);
+void losemhp (int);
 
-void		raisehp(int);
+void raisehp (int);
 
-void		raisemhp(int);
+void raisemhp (int);
 
-void		raisemspells(int);
+void raisemspells (int);
 
-void		losemspells(int);
+void losemspells (int);
 
-int		makemonst(int);
+int makemonst (int);
 
-void		positionplayer(void);
+void positionplayer (void);
 
-void		recalc(void);
+void recalc (void);
 
-void		quit(void);
+void quit (void);
 
-int		more(char);
+int more (char);
 
-void		enchantarmor(void);
+void enchantarmor (void);
 
-void		enchweapon(void);
+void enchweapon (void);
 
-int		nearbymonst(void);
+int nearbymonst (void);
 
-int		stealsomething(void);
+int stealsomething (void);
 
-int		emptyhanded(void);
+int emptyhanded (void);
 
-void		creategem(void);
+void creategem (void);
 
-void		adjustcvalues(int, int);
+void adjustcvalues (int, int);
 
-int		getpassword(void);
+int getpassword (void);
 
-char	getyn(void);
+char getyn (void);
 
-int		packweight(void);
+int packweight (void);
 
-int		rnd(int);
+int rnd (int);
 
-int		rund(int);
+int rund (int);
 
 
 
 /*
 * help.c
 */
-void		help(void);
+void help (void);
 
-void		welcome(void);
+void welcome (void);
 
-void		retcont(void);
+void retcont (void);
 
 
 
 /*
 * iventory.c
 */
-void		init_inventory(void);
+void init_inventory (void);
 
-int		showstr(char);
+int showstr (char);
 
-int		showwear(void);
+int showwear (void);
 
-int		showwield(void);
+int showwield (void);
 
-int		showread(void);
+int showread (void);
 
-int		showeat(void);
+int showeat (void);
 
-int		showquaff(void);
+int showquaff (void);
 
-void		show1(int);
+void show1 (int);
 
-int		show3(int);
+int show3 (int);
 
-int		take(int, int);
+int take (int, int);
 
-int		drop_object(int);
+int drop_object (int);
 
-int		pocketfull(void);
+int pocketfull (void);
 
 
 /*
 * io.c
 */
-void		setupvt100(void);
-void		clearvt100(void);
+void setupvt100 (void);
+void clearvt100 (void);
 
-char		ttgetch(void);
+char ttgetch (void);
 
-void		scbr(void);
-void		sncbr(void);
+void scbr (void);
+void sncbr (void);
 
-void		newgame(void);
+void newgame (void);
 
-void		lprintf(const char *, ...);
+void lprintf (const char *, ...);
 
-void		lprint(int);
+void lprint (int);
 
-void		lprc(char);
+void lprc (char);
 
-void		lwrite(char *, int);
+void lwrite (char *, int);
 
-char		lgetc(void);
+char lgetc (void);
 
-int		larint(void);
+int larint (void);
 
-void		lrfill(char *, int);
+void lrfill (char *, int);
 
-char *		lgetw(void);
+char *lgetw (void);
 
-char *		lgetl(void);
+char *lgetl (void);
 
-int		lcreat(char *);
+int lcreat (char *);
 
-int		lopen(char *);
+int lopen (char *);
 
-int		lappend(char *);
+int lappend (char *);
 
-void		lrclose(void);
+void lrclose (void);
 
-void		lwclose(void);
+void lwclose (void);
 
-void		lprcat(char *);
+void lprcat (char *);
 
-void		cursor(int, int);
+void cursor (int, int);
 
-void		cursors(void);
+void cursors (void);
 
-void		init_term(void);
+void init_term (void);
 
-void		cl_line(int, int);
+void cl_line (int, int);
 
-void		cl_up(int, int);
+void cl_up (int, int);
 
-void		cl_dn(int, int);
+void cl_dn (int, int);
 
-void		lstandout(char *);
+void lstandout (char *);
 
-void		set_score_output(void);
+void set_score_output (void);
 
-void		lflush(void);
+void lflush (void);
 
-void		lflushall(void);
+void lflushall (void);
 
-char *		tmcapcnv(char *, char *);
+char *tmcapcnv (char *, char *);
 
-void		enter_name(void);
+void enter_name (void);
 
-void		select_sex(void);
+void select_sex (void);
 
 
 
 
 /*
 * main.c
-*/ 
-void		parse2(void);
+*/
+void parse2 (void);
 
-int	readnum(int);
+int readnum (int);
 
 
 
 /*
 * monster.c
 */
-void		checkloss(int);
+void checkloss (int);
 
-void		createitem(int, int);
+void createitem (int, int);
 
-void		createmonster(int);
+void createmonster (int);
 
-void		dropgold(int);
+void dropgold (int);
 
-int		hitm(int, int, int);
+int hitm (int, int, int);
 
-void		hitmonster(int, int);
+void hitmonster (int, int);
 
-void		hitplayer(int, int);
+void hitplayer (int, int);
 
-int		newobject(int, int *);
+int newobject (int, int *);
 
-void		something(int);
+void something (int);
 
-int		vxy(int *, int *);
+int vxy (int *, int *);
 
 
 
 /*
 * moreobj.c
 */
-void		oaltar(void);
+void oaltar (void);
 
-void		othrone(int);
+void othrone (int);
 
-void		odeadthrone(void);
+void odeadthrone (void);
 
-void		ochest(void);
+void ochest (void);
 
-void		ofountain(void);
+void ofountain (void);
 
-void		fntchange(int);
+void fntchange (int);
 
-void		drink_fountain(void);
+void drink_fountain (void);
 
-void		wash_fountain(void);
+void wash_fountain (void);
 
-void		enter(void);
+void enter (void);
 
-void		remove_gems(void);
+void remove_gems (void);
 
-void		sit_on_throne(void);
+void sit_on_throne (void);
 
-void		up_stairs(void);
+void up_stairs (void);
 
-void		down_stairs(void);
+void down_stairs (void);
 
-void		open_something(void);
+void open_something (void);
 
-void		close_something(void);
+void close_something (void);
 
-void		desecrate_altar(void);
+void desecrate_altar (void);
 
-void		pray_at_altar(void);
+void pray_at_altar (void);
 
-void		specify_object(void);
+void specify_object (void);
 
 
 
 /*
 * movem.c
 */
-void		movemonst(void);
+void movemonst (void);
 
 
 
 /*
 * object.c
 */
-void		lookforobject(char, char, char);
+void lookforobject (char, char, char);
 
-void		oteleport(int);
+void oteleport (int);
 
-void		quaffpotion(int, int);
+void quaffpotion (int, int);
 
-void		adjtimel(int);
+void adjtimel (int);
 
-void		read_scroll(int);
+void read_scroll (int);
 
-void		readbook(int); 
+void readbook (int);
 
-void		ohome(void);
+void ohome (void);
 
-void		iopts(void);
+void iopts (void);
 
-void		ignore(void);
+void ignore (void);
 
 
 
 /*
 * regen.c
 */
-void		regen(void);
+void regen (void);
 
 
 
 /*
 * savelev.c
 */
-void		savelevel(void);
+void savelevel (void);
 
-void		getlevel(void);
+void getlevel (void);
 
 
 
 /*
 * scores.c
 */
-int 		makeboard(void);
+int makeboard (void);
 
-int		hashewon(void);
+int hashewon (void);
 
-void		checkmail(void);
+void checkmail (void);
 
-int		paytaxes(int);
+int paytaxes (int);
 
-void		showscores(void);
+void showscores (void);
 
-void		showallscores(void);
+void showallscores (void);
 
-void		died(int);
+void died (int);
 
-void		diedlog(void);
+void diedlog (void);
 
-int		getplid(char *);
+int getplid (char *);
 
 
 
 /*
 * spells.c
 */
-void		cast(void);
+void cast (void);
 
-int		fullhit(int);
+int fullhit (int);
 
-void		godirect(int, int, char *, int, char);
+void godirect (int, int, char *, int, char);
 
-void		ifblind(int, int);
+void ifblind (int, int);
 
-int		dirsub(int *, int *);
+int dirsub (int *, int *);
 
-void		annihilate(void);
+void annihilate (void);
 
 
 
 /*
 * spheres.c
 */
-int		newsphere(int, int, int, int);
+int newsphere (int, int, int, int);
 
-int		rmsphere(int, int);
+int rmsphere (int, int);
 
-void		movsphere(void);
+void movsphere (void);
 
 
 
@@ -525,41 +525,41 @@ void		movsphere(void);
 /*
 * store.c
 */
-void		dndstore(void);
+void dndstore (void);
 
-void		oschool(void);
+void oschool (void);
 
-void		obank(void);
-void		obank2(void);
+void obank (void);
+void obank2 (void);
 
-void		ointerest(void);
+void ointerest (void);
 
-void		otradepost(void);
+void otradepost (void);
 
-void		olrs(void);
+void olrs (void);
 
 
 
 /*
 * sysdep.c
 */
-void		nap(int);
+void nap (int);
 
 
 
 /*
 * tgoto.c
 */
-const char *	atgoto(const char *, int, int);
+const char *atgoto (const char *, int, int);
 
 
 
 /*
 * tok.c
 */
-int		yylex(void);
+int yylex (void);
 
-void		sethard(int);
+void sethard (int);
 
 #ifndef WINDOWS
 #define _read read

@@ -30,28 +30,28 @@
 #define LARNHOME ""
 
 #ifndef WIZID
-#   define WIZID  1000
+#define WIZID  1000
 #endif
 
 #define TRUE 1
 #define FALSE 0
 
-#define MAXLEVEL 11    /*  max # levels in the dungeon         */
-#define MAXVLEVEL 3    /*  max # of levels in the temple of the luran  */
+#define MAXLEVEL 11		/*  max # levels in the dungeon         */
+#define MAXVLEVEL 3		/*  max # of levels in the temple of the luran  */
 #define MAXX 67
 #define MAXY 17
 
-#define SCORESIZE 10    /* this is the number of people on a scoreboard max */
-#define MAXPLEVEL 100   /* maximum player level allowed        */
-#define SPNUM 38        /* maximum number of spells in existance   */
-#define TIMELIMIT 30000 /* maximum number of moves before the game is called */
-#define TAXRATE 1/20    /* tax rate for the LRS */
+#define SCORESIZE 10		/* this is the number of people on a scoreboard max */
+#define MAXPLEVEL 100		/* maximum player level allowed        */
+#define SPNUM 38		/* maximum number of spells in existance   */
+#define TIMELIMIT 30000		/* maximum number of moves before the game is called */
+#define TAXRATE 1/20		/* tax rate for the LRS */
 
-#define BUFBIG  4096            /* size of the output buffer */
-#define MAXIBUF 4096            /* size of the input buffer */
-#define LOGNAMESIZE 20          /* max size of the player's name */
+#define BUFBIG  4096		/* size of the output buffer */
+#define MAXIBUF 4096		/* size of the input buffer */
+#define LOGNAMESIZE 20		/* max size of the player's name */
 
-#define SAVEFILENAMESIZE 128    /* max size of the savefile path */
+#define SAVEFILENAMESIZE 128	/* max size of the savefile path */
 
 #define STRING_BUFFER_SIZE	256
 
@@ -61,7 +61,7 @@
 * monster related constants
 */
 /* maximum # monsters in the dungeon */
-#define MAXMONST 56     
+#define MAXMONST 56
 
 /*  defines for the monsters as objects  */
 #define BAT 1
@@ -75,30 +75,30 @@
 #define JACULI 9
 #define TROGLODYTE 10
 #define ANT 11
-#define EYE 12 
+#define EYE 12
 #define LEPRECHAUN 13
 #define NYMPH 14
-#define QUASIT 15 
-#define RUSTMONSTER 16 
-#define ZOMBIE 17 
-#define ASSASSINBUG 18 
-#define BUGBEAR 19 
-#define HELLHOUND 20 
-#define ICELIZARD 21 
-#define CENTAUR 22 
-#define TROLL 23 
-#define YETI 24 
+#define QUASIT 15
+#define RUSTMONSTER 16
+#define ZOMBIE 17
+#define ASSASSINBUG 18
+#define BUGBEAR 19
+#define HELLHOUND 20
+#define ICELIZARD 21
+#define CENTAUR 22
+#define TROLL 23
+#define YETI 24
 #define WHITEDRAGON 25
 #define ELF 26
-#define CUBE 27 
-#define METAMORPH 28 
-#define VORTEX 29 
-#define ZILLER 30 
-#define VIOLETFUNGI 31 
-#define WRAITH 32 
-#define FORVALAKA 33 
-#define LAMANOBE 34 
-#define OSEQUIP 35 
+#define CUBE 27
+#define METAMORPH 28
+#define VORTEX 29
+#define ZILLER 30
+#define VIOLETFUNGI 31
+#define WRAITH 32
+#define FORVALAKA 33
+#define LAMANOBE 34
+#define OSEQUIP 35
 #define ROTHE 36
 #define XORN 37
 #define VAMPIRE 38
@@ -129,7 +129,7 @@
 /*  
 * defines for the character attribute array   cdesc[] 
 */
-#define STRENGTH 0      /* characters physical strength not due to objects */
+#define STRENGTH 0		/* characters physical strength not due to objects */
 #define INTELLIGENCE 1
 #define WISDOM 2
 #define CONSTITUTION 3
@@ -189,7 +189,7 @@
 #define MOVESMADE 57
 #define MONSTKILLED 58
 #define SPELLSCAST 59
-#define LANCEDEATH 60
+#define GREATSWORDDEATH 60
 #define SPIRITPRO 61
 #define UNDEADPRO 62
 #define SHIELD 63
@@ -203,11 +203,11 @@
 #define SEEINVISIBLE 71
 #define FILLROOM 72
 #define RANDOMWALK 73
-#define SPHCAST 74  /* nz if an active sphere of annihilation */
-#define WTW 75      /* walk through walls */
-#define STREXTRA 76 /* character strength due to objects or enchantments */
-#define TMP 77      /* misc scratch space */
-#define LIFEPROT 78 /* life protection counter */
+#define SPHCAST 74		/* nz if an active sphere of annihilation */
+#define WTW 75			/* walk through walls */
+#define STREXTRA 76		/* character strength due to objects or enchantments */
+#define TMP 77			/* misc scratch space */
+#define LIFEPROT 78		/* life protection counter */
 
 
 /* nap related */
@@ -217,13 +217,13 @@
 /*
 * object related constants
 */
-#define MAXSCROLL 28    /* maximum number of scrolls that are possible */
+#define MAXSCROLL 28		/* maximum number of scrolls that are possible */
 #define MAXSCROLLNAME	32
 
-#define MAXPOTION 35    /* maximum number of potions that are possible */
+#define MAXPOTION 35		/* maximum number of potions that are possible */
 #define MAXPOTIONNAME	32
 
-#define MAXOBJ 93       /* the maximum number of objects   n < MAXOBJ */
+#define MAXOBJ 93		/* the maximum number of objects   n < MAXOBJ */
 
 /*  defines for the objects in the game     */
 #define MAXOBJECT  92
@@ -275,7 +275,7 @@
 #define OBATTLEAXE 57
 #define OLONGSWORD 58
 #define OFLAIL 59
-#define OLANCE 65
+#define OGREATSWORD 65
 #define OVORPAL 90
 #define OSLAYER 91
 
@@ -293,7 +293,7 @@
 #define OSCROLL 41
 #define OPOTION 42
 #define OBOOK 43
-#define OCHEST 44             
+#define OCHEST 44
 #define OAMULET 45
 
 #define OORBOFDRAGON 46
@@ -320,15 +320,14 @@
 #define OTRADEPOST 77
 #define OIVTELETRAP 78
 #define ODEADTHRONE 79
-#define OANNIHILATION 80        /* sphere of annihilation */
+#define OANNIHILATION 80	/* sphere of annihilation */
 #define OTHRONE2 81
-#define OLRS 82             /* Larn Revenue Service */
+#define OLRS 82			/* Larn Revenue Service */
 #define OCOOKIE 83
 #define OURN 84
 #define OBRASSLAMP 85
-#define OHANDofFEAR 86      /* hand of fear */
-#define OSPHTAILSMAN 87     /* tailsman of the sphere */
-#define OWWAND 88           /* wand of wonder */
-#define OPSTAFF 89          /* staff of power */
+#define OHANDofFEAR 86		/* hand of fear */
+#define OSPHTAILSMAN 87		/* tailsman of the sphere */
+#define OWWAND 88		/* wand of wonder */
+#define OPSTAFF 89		/* staff of power */
 /* used up to 92 */
-

@@ -12,18 +12,20 @@
 /*
  *  routine to take a nap for n milliseconds
  */
-void nap(int x)
+void
+nap (int x)
 {
 
-	/* eliminate chance for infinite loop */
-	if (x <= 0) {
+  /* eliminate chance for infinite loop */
+  if (x <= 0)
+    {
 
-		return; 
-	}
-	
-	lflush();
-	
-	Sleep(x);
+      return;
+    }
+
+  lflush ();
+
+  Sleep (x);
 }
 #endif
 
@@ -40,17 +42,19 @@ void nap(int x)
 /*
  *  routine to take a nap for n milliseconds
  */
-void nap(int x)
+void
+nap (int x)
 {
 
-	/* eliminate chance for infinite loop */
-	if (x <= 0) {
+  /* eliminate chance for infinite loop */
+  if (x <= 0)
+    {
 
-		return; 
-	}
-	
-	lflush();
-	
+      return;
+    }
+
+  lflush ();
+
 /* removed *1000, doing this simply makes it wait much longer
  * I know usleep acts differently (it usually needs slowing down) to really act as 'seconds'
  * But this makes the game a little more responsive.  We don't need exact seconds, just a tiny
@@ -61,9 +65,8 @@ void nap(int x)
 
 /* added * 500 as a trade off.  Some functionality appeared too quickly using
  * no slowdown. */
-	usleep(x * 500);
+  usleep (x * 500);
 }
 
 
 #endif
-

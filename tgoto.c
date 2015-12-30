@@ -80,16 +80,16 @@
 
 #define MAXARGS 2
 
-const char * atgoto(const char *, int, int);
+const char *atgoto (const char *, int, int);
 
-static void	process(void);
+static void process (void);
 
 
-static const char *in;        /* Internal copy of input string pointer */
-static char *out;       /* Pointer to output array */
-static int args[MAXARGS];   /* Maximum number of args to convert */
-static int pcount;      /* Count of args processed */
-static char output[64];     /* Converted string */
+static const char *in;		/* Internal copy of input string pointer */
+static char *out;		/* Pointer to output array */
+static int args[MAXARGS];	/* Maximum number of args to convert */
+static int pcount;		/* Count of args processed */
+static char output[64];		/* Converted string */
 
 /*
  *  PSEUDO CODE
@@ -117,25 +117,33 @@ static char output[64];     /* Converted string */
  *
  */
 
-const char * atgoto(const char *cm, int destcol, int destline)
+const char *
+atgoto (const char *cm, int destcol, int destline)
 {
-    if (cm == NULL) {
-    return("OOPS");
-    } else {
-    in = cm;
-    out = output;
-    args[0] = destline;
-    args[1] = destcol;
-    pcount = 0;
-    while (*in != '\0') {
-        if (*in != '%') {
-        *out++ = *in++;
-        } else {
-        process();
-        }
+  if (cm == NULL)
+    {
+      return ("OOPS");
     }
-    *out = '\0';    /* rde 18-DEC-86: don't assume out was all zeros */
-    return(output);
+  else
+    {
+      in = cm;
+      out = output;
+      args[0] = destline;
+      args[1] = destcol;
+      pcount = 0;
+      while (*in != '\0')
+	{
+	  if (*in != '%')
+	    {
+	      *out++ = *in++;
+	    }
+	  else
+	    {
+	      process ();
+	    }
+	}
+      *out = '\0';		/* rde 18-DEC-86: don't assume out was all zeros */
+      return (output);
     }
 }
 
@@ -202,51 +210,56 @@ const char * atgoto(const char *cm, int destcol, int destline)
  *
  */
 
-static void process(void)
+static void
+process (void)
 {
-    int temp;
+  int temp;
 
-    in++;
-    switch(*in++) {
+  in++;
+  switch (*in++)
+    {
     case 'd':
-    sprintf(out,"%d",args[pcount++]);
-    out = &output[strlen(output)];  
-    break;
+      sprintf (out, "%d", args[pcount++]);
+      out = &output[strlen (output)];
+      break;
     case '2':
-    sprintf(out,"%02d",args[pcount++]);
-    out += 2 ;
+      sprintf (out, "%02d", args[pcount++]);
+      out += 2;
 /*
     out = &output[strlen(output)];
 */
-    break;
+      break;
     case '3':
-    sprintf(out,"%03d",args[pcount++]);
-    out = &output[strlen(output)];
-    break;
+      sprintf (out, "%03d", args[pcount++]);
+      out = &output[strlen (output)];
+      break;
     case '.':
-    *out++ = (char)args[pcount++];
-    break;
+      *out++ = (char) args[pcount++];
+      break;
     case '+':
-    *out++ = (char)args[pcount++] + *in++;
-    break;
+      *out++ = (char) args[pcount++] + *in++;
+      break;
     case '>':
-    if (args[pcount] > *in++) {
-        args[pcount] += *in++;
-    } else {
-        in++;
-    }
-    break;
+      if (args[pcount] > *in++)
+	{
+	  args[pcount] += *in++;
+	}
+      else
+	{
+	  in++;
+	}
+      break;
     case 'r':
-    temp = args[pcount];
-    args[pcount] = args[pcount+1];
-    args[pcount+1] = temp;
-    break;
+      temp = args[pcount];
+      args[pcount] = args[pcount + 1];
+      args[pcount + 1] = temp;
+      break;
     case 'i':
-    args[pcount]++;
-    args[pcount+1]++;
-    break;
+      args[pcount]++;
+      args[pcount + 1]++;
+      break;
     case '%':
-    *out++ = '%';
-    break;
+      *out++ = '%';
+      break;
     }
 }
