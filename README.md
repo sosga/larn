@@ -21,4 +21,4 @@ On OSX this is a bit more complicated.  Open a terminal and type gcc.  This will
 <b>License:</b><br \>
 I have found Noah Morgan's original License from 1986 in a usenet archive pertaining to Larn.
 
-Stay tuned, I'm forming a proper LICENSE.txt file for this.
+See LICENSE.txt in Larn-SNAPSHOT
