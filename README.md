@@ -46,8 +46,8 @@ Feel free to fork, fix a bug or implement a new feature and submit a pull reques
 <b>Why is (OS NAME) not officially supported by you?</b><br \>
 I am the only one who does all the releases, code changes and support.  I must limit myself to those systems which I have installed.
 
-<b>Why 64bit only for Unix-like systems?</b><br \>
-OS X and DragonflyBSD are 64bit only, 32bit support was dropped for these long ago.  It won't make sense for me to suport 32bit and 64bit just for Gnu/Linux, so all will be 64bit only.  Windows is still 32bit only to 'keep everyone happy' as it will be by far the most popular binary.
+<b>Why 64bit only for *nix systems?</b><br \>
+OS X and DragonflyBSD are 64bit only, 32bit support was dropped for these long ago.  It won't make sense for me to support 32bit and 64bit just for GNU/Linux, so all will be 64bit only.  Windows is still 32bit only to 'keep everyone happy' as it will be by far the most popular binary.
 
 <b>Why Dragonfly BSD and not (BSD NAME)?</b><br \>
 Because out of all the BSD's, Dragonfly BSD is very modern.  It has modern compilers, packages and design.  If you're using a different BSD, you'll need to build from source.
@@ -57,3 +57,6 @@ No, because the userbase would be so tiny, nobody would be using my binaries so 
 
 <b>When is the next release?</b><br \>
 When it's ready.
+
+<b>Why do you use the GNU/Linux naming convention?</b><br \>
+Because RMS is correct.  Linux is just a kernel and without GNU userland and utils it would be pretty much useless.
