@@ -59,6 +59,7 @@
 
 #ifdef WINDOWS
 #include <io.h>
+#include <conio.h>
 #else
 #include <unistd.h>
 #endif
@@ -66,13 +67,22 @@
 
 #include <setjmp.h>
 #include <fcntl.h>		/* For O_BINARY */
-#include "kbhit.h"
 
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
 #include "ansiterm.h"
+
+#if defined DARWIN || BSD || SOLARIS
+#include <sys/filio.h>
+#endif
+
+#if defined LINUX
+#include <sys/ioctl.h>
+#ifndef FIONREAD
+#include <sys/socket.h>
+#endif
+#endif
 
 
 #define LINBUFSIZE 128		/* size of the lgetw() and lgetl() buffer       */
@@ -503,7 +513,11 @@ lgetl (void)
     }
 }
 
-
+/* Just for the record, I removed all those _setmodes for *nix
+ * systems a while ago.  No need to declare these
+ * things to make it work on them,
+ * these systems just don't require it. ~Gibbon
+*/
 
 /*
 *  lcreat(filename)            Create a new file for write
@@ -587,7 +601,6 @@ lappend (char *str)
   _setmode (lfd, O_BINARY);
 #endif
   _lseek (lfd, 0L, 2);		/* seek to end of file */
-
   return lfd;
 }
 
@@ -1052,17 +1065,30 @@ flush_buf (void)
 
 /*
 *  flushall()  Function to flush all type-ahead in the input buffer
+*  
+*  I've fixed this mess.  I don't know who implemented this
+*  but kbhit is Windows only.  I'm guessing they never
+*  used a BSD or GNU/Linux system or never read a manpage.
+*  
+*  I prefer declaring each individually as it is safer
+*  and also prevent them from being compiled
+*  when not used by the systems defs.
+*
+*  Nowadays we can do a fflush(NULL) on Unix-like systems.
+*
+*  ~Gibbon
 */
+
+#if defined WINDOWS
 void
 lflushall (void)
 {
-
-  while (_kbhit ())
+  while (kbhit())
     {
-
-      _getch ();
+      getch();
     }
 }
+#endif
 
 
 /*

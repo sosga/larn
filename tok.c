@@ -1,7 +1,6 @@
 /* tok.c */
 /*
 yylex()
-flushall()
 sethard()
 */
 #include <stdlib.h>
@@ -15,7 +14,7 @@ sethard()
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
+#include "tok.h"
 
 
 

@@ -557,20 +557,16 @@ const char *atgoto (const char *, int, int);
 /*
 * tok.c
 */
-int yylex (void);
 
-void sethard (int);
 
 #ifndef WINDOWS
-#define _read read
 #define _creat creat
+#define _read read
 #define _open open
 #define _lseek lseek
 #define _close close
 #define _write write
 #define _chmod chmod
-#define _kbhit kbhit
 #define _getch ansiterm_getch
 #define _S_IWRITE 0666
-#define	_setmode(x, y)
 #endif

@@ -47,18 +47,13 @@
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
+#include <stdio.h>
 
 static int cgood (int, int, int, int);
 
 static void dropsomething (int);
 
 static int spattack (int, int, int);
-
-
-
-
-
 
 /*
 *  createmonster(monstno)      Function to create a monster next to the player
@@ -437,7 +432,13 @@ hitplayer (int x, int y)
       {
 	if (spattack (monster[mster].attack, x, y))
 	  {
-	    lflushall ();
+#if defined WINDOWS
+lflushall();
+#endif
+
+#if defined LINUX || DARWIN || BSD
+fflush(NULL);
+#endif 
 	    return;
 	  }
 	tmp = 1;
@@ -455,7 +456,13 @@ hitplayer (int x, int y)
 	{
 	  losehp (dam);
 	  bottomhp ();
-	  lflushall ();
+#if defined WINDOWS
+lflushall();
+#endif
+
+#if defined LINUX || DARWIN || BSD
+fflush(NULL);
+#endif 
 	}
     }
   if (tmp == 0)

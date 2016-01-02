@@ -1,4 +1,17 @@
 /*
+Larn was distributed to the net for the enjoyment of all.  One of my goals
+is to have larn available to whom ever wants to play it.  I therefore give
+permission to use the sources, to modify the sources, or to port the sources to
+another machine, provided that a profit is not made from larn or its sources,
+or the aforementioned activities.  Should a profit be made without permissions,
+I will exercise my copyright.
+
+Other than this case, enjoy it!
+
+For more information, see LICENSE.txt in this same folder location.
+*/
+
+/*
 action.c
 
 Routines to perform the actual actions associated with various

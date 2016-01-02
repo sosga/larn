@@ -3,4 +3,4 @@ LIBS= -Wall -Wextra -pedantic -Wpointer-arith -Wstrict-prototypes -Wmissing-prot
 DEPS=*.h
 STRIP_BINARY=no
 larn: $(DEPS) *.c
-	$(CC) *.c -o larn1251_win_debug $(LIBS)
+	$(CC) *.c -o larn1252_win_debug $(LIBS)

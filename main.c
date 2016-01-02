@@ -1,17 +1,7 @@
 /* main.c */
-
-
-#include <stdlib.h>
+#include "larn.h"
 #include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <setjmp.h>
-
-#include "larncons.h"
-#include "larndata.h"
-#include "larnfunc.h"
-
-#include "ansiterm.h"		/* needed for hack fix to handle endwin()
+		/* needed for hack fix to handle endwin()
 				   not being called after process commandline */
 
 #define SCORENAME	"data/scorefile.txt"
@@ -274,7 +264,13 @@ main (int argc, char *argv[])
 	viewflag = 0;
 
       if (hit3flag)
-	lflushall ();
+#if defined WINDOWS
+lflushall();
+#endif
+
+#if defined LINUX || DARWIN || BSD
+fflush(NULL);
+#endif 
       hitflag = hit3flag = 0;
       bot_linex ();		/* update bottom line */
 
@@ -284,7 +280,13 @@ main (int argc, char *argv[])
       while (nomove)
 	{
 	  if (hit3flag)
-	    lflushall ();
+#if defined WINDOWS
+lflushall();
+#endif
+
+#if defined LINUX || DARWIN || BSD
+fflush(NULL);
+#endif 
 	  nomove = 0;
 	  parse ();
 	}

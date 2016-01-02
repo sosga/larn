@@ -1,6 +1,6 @@
 
 
-                 LARN version 12.5.1
+                 LARN version 12.5.2
                  -------------------------------------------
 
 
@@ -25,7 +25,7 @@
      released for the UNIX environment in 1986 by Noah Morgan.  It was 
      subsequently ported to the MS-DOS environment by Don Kneller.  Kevin 
      Routley has been working on enhancements to LARN on and off for the
-     past two years. This version is for OSX, GNU/LINUX and WINDOWS environments.
+     past two years. This version is for OSX, BSD, GNU/LINUX and WINDOWS environments.
 
 
      2. System requirements
@@ -100,7 +100,7 @@
 	 roguebasin. Edwin Denicholas took 12.4 alpha 2 and caressed it into
 	 12.4.3 for Win32.
 
-	Gibbon has implemented many fixes and taken it to 12.5.1.  Which is
+	Gibbon has implemented many fixes and taken it to 12.5.2.  Which is
 	multi-platform.
 
      Other editions of Larn have been distributed by others, namely
