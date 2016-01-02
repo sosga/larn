@@ -24,7 +24,7 @@ I have found Noah Morgan's original License from 1986 in a usenet archive pertai
 See LICENSE.txt in Larn-SNAPSHOT
 
 <b>Contributing:</b><br \>
-Feel free to fork, fix a bug or implement a new feature and submit a pull request.  However I respectfully ask that contributors have:
+Feel free to fork, fix a bug or implement a new feature and submit a pull request.  However I respectfully ask contributors to:
 
 1. A good grounding in the C language, code should be clean, correct, and not throw warnings.
 2. Not to radically change gameplay and / or make the game different from it's historic roots.
