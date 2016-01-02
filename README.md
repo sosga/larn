@@ -53,7 +53,7 @@ OS X and DragonflyBSD are 64bit only, 32bit support was dropped for these long a
 Because out of all the BSD's, Dragonfly BSD is very modern.  It has modern compilers, packages and design.  If you're using a different BSD, you'll need to build from source.
 
 <b>No SYSVR4 compatible Support?</b><br \>
-No, because the userbase would be so tiny, nobody would be using my binaries so the effort doesn't make sense.
+No, because the userbase would be so tiny, nobody would be using my binaries so the effort doesn't make sense.  Plus these are not free to use.  OpenIndiana (Illumos kernel) would be closest but they don't include a compiler and my network hardware is not supported.
 
 <b>When is the next release?</b><br \>
 When it's ready.
