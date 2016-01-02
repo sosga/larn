@@ -7,7 +7,7 @@ Latest SNAPSHOT source code for Larn is in a separate branch (Larn-SNAPSHOT).  T
 <b>Releases:</b><br \>
 I will do a full release for every MAJOR version.  A full release includes OSX, GNU/Linux and Windows binaries with documentation and required files.  These releases will contain major functionality changes and improvements.<br \>
 
-Patch release (MINOR) versions will only get a branch update of the sourcecode.  Which you can use to build a release yourself for your platform.  These patch releases will have bugfixes only with no major functionality updates.
+Patch release (MINOR) versions will only get a branch update of the sourcecode with possibly binaries for systems which have had significant modifications, so users can test and report bugs. You can use the source code to build a release yourself for your platform.  These patch releases will have bugfixes and code cleanups only with no major functionality updates.
 
 <b>Bugs:</b><br \>
 Raise bugs in the issue tab.  Please tell me your platform, what you were doing and what the bug is.
@@ -22,3 +22,10 @@ On OSX this is a bit more complicated.  Open a terminal and type gcc.  This will
 I have found Noah Morgan's original License from 1986 in a usenet archive pertaining to Larn.
 
 See LICENSE.txt in Larn-SNAPSHOT
+
+<b>Contributing:</b><br \>
+Feel free to fork, fix a bug or implement a new feature and submit a pull request.  However I respectfully ask that contributors have:
+
+1. A good grounding in the C language, code should be clean, correct, and not throw warnings.
+2. Not to radically change gameplay and / or make the game different from it's historic roots.
+3. All code submitted and accepted will be under 'Noah's License' as listed in LICENSE.txt in Larn-SNAPSHOT.  By contributing to Larn, you agree to this licensing of your code.
