@@ -1,4 +1,5 @@
 /* bill.c */
+#include "bill.h"
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"

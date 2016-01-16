@@ -18,9 +18,7 @@
 *  diedlog()   Subroutine to read a log file and print it out in ascii format
 *  getplid(name)       Function to get players id # from id file
 */
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+
 #ifdef WINDOWS
 #include <io.h>
 #else
@@ -32,10 +30,8 @@
 #include <sys/stat.h>
 #include <time.h>
 
-#include "larncons.h"
-#include "larndata.h"
-#include "larnfunc.h"
-
+#include "bill.h"
+#include "larn.h"
 
 struct scofmt			/*  This is the structure for the scoreboard        */
 {

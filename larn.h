@@ -16,5 +16,4 @@
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-#include "tok.h"
 #include "ansiterm.h"

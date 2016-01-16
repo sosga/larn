@@ -129,9 +129,8 @@ char *levelname[] =
 
 char objnamelist[MAXOBJECT + 2] =
   ".:\\_^<_{%^6|2>_55}$'+#~[[[))))))========-?!?&~~~~~****899)))[[[[[)^.[1$$$.^^.3./0\\4,____________________________________________";
-
 char monstnamelist[] =
-  ".BGHJKOScjtAELNQRZabhiCTYdegmvzFWflorXV.pqsyUkMwDDPxnDDuD........,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
+".BGHJKOScjtAELNQRZabhiCTYdegmvzFWflorXV.pqsyUkMwDDPxnDDuD........,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
 
 char floorc = '.';
 char wallc = '#';
@@ -171,10 +170,8 @@ char *objectname[] =
   "a teleport trap", "a massive throne",
   "a sphere of annihilation", "a handsome jewel encrusted throne",
   "the Larn Revenue Service", "a fortune cookie", "", "", "", "", "", "",
-  "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-  ""
+	"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
 };
-
 
 /*
 *  for the monster data

@@ -1,5 +1,6 @@
 /* main.c */
 #include "larn.h"
+#include "tok.h"
 #include <stdio.h>
 		/* needed for hack fix to handle endwin()
 				   not being called after process commandline */

@@ -21,6 +21,7 @@ close_something()
 desecrate_altar()
 pray_at_altar()
 */
+#include "action.h"
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
