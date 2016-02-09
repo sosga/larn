@@ -1,3 +1,13 @@
+January 1st/2nd 2016
+
+1. Removed kbhit functions for Unix-like systems (inc kbhit.c .h).
+2. Implemented recommended standard C fflush(NULL) in-place of lflushall.
+For Windows, this is kept for now.
+3. Created larn.h for keeping most of the headers in.
+4. Fixed code so it can be built on BSD systems.
+
+=============================================================================
+
 December 29th 2015
 
 1. Renamed OLANCE and OLANCEDEATH to OGREATSWORD and OGREATSWORDDEATH
