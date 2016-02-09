@@ -2,6 +2,11 @@
 #include "larn.h"
 #include "tok.h"
 #include <stdio.h>
+#include "create.h"
+#include "diag.h"
+#include "display.h"
+
+
 		/* needed for hack fix to handle endwin()
 				   not being called after process commandline */
 

@@ -25,7 +25,8 @@ pray_at_altar()
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
+#include "create.h"
+#include "display.h"
 
 static void fch (int, long *);
 static void specify_obj_nocurs (void);

@@ -19,10 +19,11 @@ genmonst()         Function to ask for monster and genocide from game
 #include <ctype.h>
 #include <string.h>
 
+#include "create.h"
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
+#include "display.h"
 
 
 /* used for altar reality */

@@ -26,7 +26,7 @@ olrs          larn revenue service function
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
+#include "display.h"
 
 static void dnd_2hed (void);
 static void dnd_hed (void);

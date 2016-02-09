@@ -3,6 +3,7 @@
 #include "larndata.h"
 #include "larnfunc.h"
 #include "ansiterm.h"
+#include "display.h"
 
 static int openhelp (void);
 

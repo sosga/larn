@@ -4,6 +4,8 @@
 #include "larndata.h"
 #include "larnfunc.h"
 #include "ansiterm.h"
+#include "create.h"
+#include "display.h"
 
 #define botsub( _idx, _x, _y, _str )        \
 	if ( cdesc[(_idx)] != cbak[(_idx)] )        \

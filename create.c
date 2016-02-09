@@ -1,8 +1,6 @@
 /* create.c */
-#include "larncons.h"
-#include "larndata.h"
-#include "larnfunc.h"
-#include <stdio.h>
+#include "create.h"
+#include "larn.h"
 
 static void makemaze (int);
 static int cannedlevel (int);

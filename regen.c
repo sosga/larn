@@ -1,8 +1,7 @@
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
-
+#include "display.h"
 
 /*
 * regen()

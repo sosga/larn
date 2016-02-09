@@ -39,7 +39,8 @@ act_open_door           open a door
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
+#include "create.h"
+#include "display.h"
 
 static void volshaft_climbed (int);
 

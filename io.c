@@ -83,7 +83,7 @@
 #include <sys/socket.h>
 #endif
 #endif
-
+#include "display.h"
 
 #define LINBUFSIZE 128		/* size of the lgetw() and lgetl() buffer       */
 int lfd;			/*  output file numbers     */

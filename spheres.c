@@ -9,7 +9,7 @@
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
+#include "display.h"
 
 static void sphboom (int x, int y);
 

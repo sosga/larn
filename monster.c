@@ -48,6 +48,7 @@
 #include "larndata.h"
 #include "larnfunc.h"
 #include <stdio.h>
+#include "display.h"
 
 static int cgood (int, int, int, int);
 

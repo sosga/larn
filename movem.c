@@ -9,11 +9,11 @@
 *  mmove(x,y,xd,yd)    Function to actually perform the monster movement
 */
 #include <stdlib.h>
-
+#include "create.h"
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
+#include "display.h"
 
 static void build_proximity_ripple (void);
 static void move_scared (int, int);
