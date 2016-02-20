@@ -574,13 +574,14 @@ newscore (int score, char *whoo, int whyded, int winner)
   else if (!cheat)
 #if defined MULTIPLE_SCORE_ENTRY
     {
-      /* if he has a slot on the scoreboard update it if greater score */
+      /* if he has a slot on the scoreboard update it if greater score.  This is commented  out if multiple scores is defined.
       for (i = 0; i < SCORESIZE; i++)
 	if (strcmp (sco[i].who, logname) == 0)
 	  {
 	    new2sub (score, i, whoo, whyded);
 	    return;
 	  }
+*/
 #endif
       /* he had no entry. look for last entry and see if he has a greater score */
       for (i = 0; i < SCORESIZE; i++)
