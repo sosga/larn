@@ -27,6 +27,13 @@ pray_at_altar()
 #include "larnfunc.h"
 #include "create.h"
 #include "display.h"
+#include "global.h"
+#include "iventory.h"
+#include "io.h"
+#include "moreobj.h"
+#include "object.h"
+#include "spells.h"
+#include "store.h"
 
 static void fch (int, long *);
 static void specify_obj_nocurs (void);

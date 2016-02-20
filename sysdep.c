@@ -1,13 +1,12 @@
-
-
+#include "larnfunc.h"
+#include "io.h"
+#include "sysdep.h"
 
 /********************************************
  *                 WINDOWS                  *
  ********************************************/
 #ifdef WINDOWS
 #include <windows.h>
-#include "larnfunc.h"
-
 
 /*
  *  routine to take a nap for n milliseconds
@@ -36,8 +35,6 @@ nap (int x)
  ********************************************/
 
 #include <unistd.h>
-#include "larnfunc.h"
-
 
 /*
  *  routine to take a nap for n milliseconds

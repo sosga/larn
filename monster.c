@@ -49,6 +49,12 @@
 #include "larnfunc.h"
 #include <stdio.h>
 #include "display.h"
+#include "global.h"
+#include "iventory.h"
+#include "io.h"
+#include "monster.h"
+#include "spells.h"
+#include "sysdep.h"
 
 static int cgood (int, int, int, int);
 

@@ -8,6 +8,12 @@
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
+#include "global.h"
+#include "io.h"
+#include "savelev.h"
+#include "scores.h"
+#include "store.h"
+#include "sysdep.h"
 
 #ifdef ANTICHEAT
 static void greedy (void);

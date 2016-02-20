@@ -9,9 +9,9 @@
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
-
-
+#include "fortune.h"
+#include "global.h"
+#include "io.h"
 
 static void msdosfortune (void);
 

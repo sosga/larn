@@ -32,6 +32,10 @@
 
 #include "bill.h"
 #include "larn.h"
+#include "iventory.h"
+#include "io.h"
+#include "scores.h"
+#include "sysdep.h"
 
 struct scofmt			/*  This is the structure for the scoreboard        */
 {

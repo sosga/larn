@@ -5,7 +5,19 @@
 #include "create.h"
 #include "diag.h"
 #include "display.h"
-
+#include "fortune.h"
+#include "global.h"
+#include "help.h"
+#include "iventory.h"
+#include "io.h"
+#include "main.h"
+#include "moreobj.h"
+#include "movem.h"
+#include "object.h"
+#include "regen.h"
+#include "scores.h"
+#include "spells.h"
+#include "spheres.h"
 
 		/* needed for hack fix to handle endwin()
 				   not being called after process commandline */

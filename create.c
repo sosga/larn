@@ -1,6 +1,11 @@
 /* create.c */
 #include "create.h"
 #include "larn.h"
+#include "global.h"
+#include "io.h"
+#include "monster.h"
+#include "savelev.h"
+#include "scores.h"
 
 static void makemaze (int);
 static int cannedlevel (int);

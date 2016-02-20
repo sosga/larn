@@ -2,6 +2,8 @@
 #include "larndata.h"
 #include "larnfunc.h"
 #include <time.h>
+#include "io.h"
+#include "moreobj.h"
 
 #define VER    12
 #define SUBVER  5

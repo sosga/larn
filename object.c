@@ -6,6 +6,18 @@
 #include "larnfunc.h"
 #include "create.h"
 #include "display.h"
+#include "fortune.h"
+#include "global.h"
+#include "iventory.h"
+#include "io.h"
+#include "main.h"
+#include "monster.h"
+#include "moreobj.h"
+#include "object.h"
+#include "regen.h"
+#include "scores.h"
+#include "spells.h"
+#include "sysdep.h"
 
 static void ostairs (int);
 

@@ -24,7 +24,15 @@ genmonst()         Function to ask for monster and genocide from game
 #include "larndata.h"
 #include "larnfunc.h"
 #include "display.h"
-
+#include "global.h"
+#include "io.h"
+#include "main.h"
+#include "monster.h"
+#include "object.h"
+#include "scores.h"
+#include "spells.h"
+#include "spheres.h"
+#include "sysdep.h"
 
 /* used for altar reality */
 struct isave

@@ -41,6 +41,14 @@ act_open_door           open a door
 #include "larnfunc.h"
 #include "create.h"
 #include "display.h"
+#include "global.h"
+#include "io.h"
+#include "main.h"
+#include "monster.h"
+#include "moreobj.h"
+#include "object.h"
+#include "scores.h"
+#include "sysdep.h"
 
 static void volshaft_climbed (int);
 

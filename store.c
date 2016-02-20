@@ -27,6 +27,14 @@ olrs          larn revenue service function
 #include "larndata.h"
 #include "larnfunc.h"
 #include "display.h"
+#include "global.h"
+#include "iventory.h"
+#include "io.h"
+#include "main.h"
+#include "object.h"
+#include "scores.h"
+#include "store.h"
+#include "sysdep.h"
 
 static void dnd_2hed (void);
 static void dnd_hed (void);

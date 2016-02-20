@@ -16,7 +16,8 @@ sethard()
 #include "larnfunc.h"
 #include "tok.h"
 #include "display.h"
-
+#include "io.h"
+#include "scores.h"
 
 #define CHKPTINT   400
 

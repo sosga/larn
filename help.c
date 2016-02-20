@@ -4,6 +4,9 @@
 #include "larnfunc.h"
 #include "ansiterm.h"
 #include "display.h"
+#include "help.h"
+#include "io.h"
+#include "sysdep.h"
 
 static int openhelp (void);
 

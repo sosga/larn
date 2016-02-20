@@ -38,7 +38,12 @@
 #include "larndata.h"
 #include "larnfunc.h"
 #include "display.h"
-
+#include "global.h"
+#include "iventory.h"
+#include "io.h"
+#include "monster.h"
+#include "scores.h"
+#include "sysdep.h"
 
 /*
 * raiselevel()

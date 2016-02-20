@@ -6,6 +6,9 @@
 #include "ansiterm.h"
 #include "create.h"
 #include "display.h"
+#include "global.h"
+#include "io.h"
+#include "monster.h"
 
 #define botsub( _idx, _x, _y, _str )        \
 	if ( cdesc[(_idx)] != cbak[(_idx)] )        \

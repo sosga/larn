@@ -2,6 +2,10 @@
 #include "larndata.h"
 #include "larnfunc.h"
 #include "display.h"
+#include "global.h"
+#include "iventory.h"
+#include "io.h"
+#include "regen.h"
 
 /*
 * regen()

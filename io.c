@@ -84,6 +84,11 @@
 #endif
 #endif
 #include "display.h"
+#include "global.h"
+#include "io.h"
+#include "monster.h"
+#include "scores.h"
+#include "tgoto.h"
 
 #define LINBUFSIZE 128		/* size of the lgetw() and lgetl() buffer       */
 int lfd;			/*  output file numbers     */

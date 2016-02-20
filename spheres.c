@@ -10,6 +10,13 @@
 #include "larndata.h"
 #include "larnfunc.h"
 #include "display.h"
+#include "global.h"
+#include "help.h"
+#include "io.h"
+#include "monster.h"
+#include "scores.h"
+#include "spheres.h"
+#include "sysdep.h"
 
 static void sphboom (int x, int y);
 

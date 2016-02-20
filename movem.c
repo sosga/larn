@@ -14,6 +14,11 @@
 #include "larndata.h"
 #include "larnfunc.h"
 #include "display.h"
+#include "global.h"
+#include "io.h"
+#include "monster.h"
+#include "movem.h"
+#include "spheres.h"
 
 static void build_proximity_ripple (void);
 static void move_scared (int, int);

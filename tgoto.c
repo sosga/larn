@@ -77,6 +77,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "tgoto.h"
 
 #define MAXARGS 2
 

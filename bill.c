@@ -3,7 +3,8 @@
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-
+#include "help.h"
+#include "io.h"
 
 static int letter1 (int);
 static int letter2 (void);
