@@ -1,3 +1,10 @@
+February 11 - 19 2016
+
+1. Removed variables from larnfunc.h and added them to header files.
+2. Cleaned up some internal things.
+
+=============================================================================
+
 January 1st/2nd 2016
 
 1. Removed kbhit functions for Unix-like systems (inc kbhit.c .h).
@@ -78,6 +85,9 @@ The code still requires a large amount of cleaning up and modernizing, but for n
 Enjoy :)
 
 ~Gibbon
+
+=============================================================================
+
 Larn 12.4.4
 
 Joe Neff found a bug where known spells weren't being saved correctly. Fixed.
