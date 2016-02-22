@@ -14,6 +14,7 @@
 #include "scores.h"
 #include "store.h"
 #include "sysdep.h"
+#include "diag.h"
 
 #ifdef ANTICHEAT
 static void greedy (void);

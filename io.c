@@ -733,11 +733,17 @@ static const char CL[] = { 27, '[', ';', 'H', 27, '[', '2', 'J', 0 };
 static const char CM[] =
   { 27, '[', '%', 'i', '%', '2', ';', '%', '2', 'H', 0 };
 
+/* Removed the 'static' from the AL[] and DL[] as these are unused and static 
+   isn't really needed as the variable itself is never used which
+   negates the need for a local version which is why you would ever use
+   static anyway. /rant -Gibbon
+*/
+
 /* insert line */
-static const char AL[] = { 27, '[', 'L', 0 };
+const char AL[] = { 27, '[', 'L', 0 };
 
 /* delete line */
-static const char DL[] = { 27, '[', 'M', 0 };
+const char DL[] = { 27, '[', 'M', 0 };
 
 /* begin standout mode */
 static const char SO[] = { 27, '[', '1', 'm', 0 };

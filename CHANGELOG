@@ -1,3 +1,9 @@
+February 20 - 22 2016
+
+1. Fixed final warnings from debug and -Werror
+
+=============================================================================
+
 February 11 - 19 2016
 
 1. Removed variables from larnfunc.h and added them to header files.

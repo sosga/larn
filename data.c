@@ -129,7 +129,12 @@ char *levelname[] =
   "V2", "V3"
 };
 
-char objnamelist[MAXOBJECT + 2] =
+/* This char array was too short.  MAXOBJECT is defined as 92 and having this
+   as +2 (making it 94) was too short to hold the entire array. +36 fixes this as it
+   is the minimum required to hold all objects. -Gibbon
+*/
+
+char objnamelist[MAXOBJECT + 36] =
   ".:\\_^<_{%^6|2>_55}$'+#~[[[))))))========-?!?&~~~~~****899)))[[[[[)^.[1$$$.^^.3./0\\4,____________________________________________";
 char monstnamelist[] =
 ".BGHJKOScjtAELNQRZabhiCTYdegmvzFWflorXV.pqsyUkMwDDPxnDDuD........,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
