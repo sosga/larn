@@ -53,6 +53,21 @@ static void cnsitm (void);
 
 static int dndcount = 0, dnditm = 0;
 
+/* new function for displaying gold in inventory inside trading posts.
+ * part of feature request by hymie0. ~Gibbon */
+static int
+amtgoldtrad ()
+{
+  lprintf ("You have %-6d gold pieces.", (int) cdesc[GOLD]);
+  return 0;
+}
+static int
+amtgoldbank ()
+{
+  lprintf ("You have %-6d gold pieces in the bank.", (int) cdesc[BANKACCOUNT]);
+  return 0;
+}
+
 /* number of items in the dnd inventory table   */
 #define MAXITM 83
 
@@ -609,8 +624,6 @@ oschool (void)
     }
 }
 
-
-
 /*
 *  for the first national bank of Larn
 */
@@ -665,7 +678,6 @@ banktitle (char *str)
       drawscreen ();
       return;
     }
-  lprcat ("\n\n\tGemstone\t      Appraisal\t\tGemstone\t      Appraisal");
   obanksub ();
   drawscreen ();
 }
@@ -704,6 +716,8 @@ obanksub (void)
   int amt;
   int i, k, gems_sold = 0;
 
+  lprcat ("\n\n\tGemstone\t      Appraisal\t\tGemstone\t      Appraisal");
+
   /* credit any needed interest */
   ointerest ();
 
@@ -736,10 +750,16 @@ obanksub (void)
 	gemvalue[i] = 0;
 	gemorder[i] = 0;
       };
-  cursor (31, 17);
-  lprintf ("You have %8d gold pieces in the bank.", (int) cdesc[BANKACCOUNT]);
-  cursor (40, 18);
-  lprintf ("You have %8d gold pieces", (int) cdesc[GOLD]);
+
+/* Cleaning up the awful UI here for the text.
+   Also added reusable functions. -Gibbon
+*/
+  cursor(1,15);
+  lprintf("Account Summary");
+  cursor (1, 17);
+  amtgoldtrad();
+  cursor (1, 18);
+  amtgoldbank();
   if (cdesc[BANKACCOUNT] + cdesc[GOLD] >= 500000)
     lprcat
       ("\nNote:  Larndom law states that only deposits under 500,000gp  can earn interest.");
@@ -768,7 +788,13 @@ obanksub (void)
 	  amt = readnum ((int) cdesc[GOLD]);
 	  if (amt > cdesc[GOLD])
 	    {
-	      lprcat ("  You don't have that much.");
+	      lprcat ("You don't have that much.");
+	      nap (NAPTIME);
+	    }
+/* Added if statement for catching 0 value to deposit. -Gibbon */
+	  if (amt == 0)
+	    {
+	      lprcat ("You cannot deposit nothing");
 	      nap (NAPTIME);
 	    }
 	  else
@@ -840,20 +866,7 @@ obanksub (void)
 	case '\33':
 	  return;
 	};
-      cursor (40, 17);
-      lprintf ("%8d", (int) cdesc[BANKACCOUNT]);
-      cursor (49, 18);
-      lprintf ("%8d", (int) cdesc[GOLD]);
     }
-}
-
-/* new function for displaying gold in inventory inside trading posts.
- * part of feature request by hymie0. ~Gibbon */
-static int
-amtgoldtrad ()
-{
-  lprintf ("\n\nYou have %-6d gold pieces.", (int) cdesc[GOLD]);
-  return 0;
 }
 
 /*
@@ -972,6 +985,7 @@ otradepost (void)
       lprcat ("] ? ");
 
       /* display gold in inventory ~Gibbon */
+      cursor(1,18);
       amtgoldtrad ();
 
       i = 0;
