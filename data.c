@@ -142,6 +142,8 @@ char monstnamelist[] =
 char floorc = '.';
 char wallc = '#';
 
+/* Adding water for implementation in future builds. -Gibbon */
+char waterc = '~';
 
 
 char *objectname[] =

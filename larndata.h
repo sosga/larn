@@ -66,6 +66,10 @@ struct _itm
 */
 extern int regen_bottom;
 extern char floorc, wallc;
+
+/* extern char for the water. -Gibbon */
+extern char waterc;
+
 extern int VERSION, SUBVERSION;
 extern int beenhere[], cheat;
 extern int course[];
