@@ -50,7 +50,6 @@ static void otradiven (void);
 static void cleartradiven (int);
 static void cnsitm (void);
 
-
 static int dndcount = 0, dnditm = 0;
 
 /* new function for displaying gold in inventory inside trading posts.
@@ -59,12 +58,6 @@ static int
 amtgoldtrad ()
 {
   lprintf ("You have %-6d gold pieces.", (int) cdesc[GOLD]);
-  return 0;
-}
-static int
-amtgoldbank ()
-{
-  lprintf ("You have %-6d gold pieces in the bank.", (int) cdesc[BANKACCOUNT]);
   return 0;
 }
 
@@ -705,7 +698,6 @@ ointerest (void)
   lasttime = (gtime / 100) * 100;
 }
 
-
 static void
 obanksub (void)
 {
@@ -751,15 +743,18 @@ obanksub (void)
 	gemorder[i] = 0;
       };
 
-/* Cleaning up the awful UI here for the text.
-   Also added reusable functions. -Gibbon
-*/
-  cursor(1,15);
-  lprintf("Account Summary");
-  cursor (1, 17);
-  amtgoldtrad();
-  cursor (1, 18);
-  amtgoldbank();
+/* Cleaning up the awful UI here for the text. -Gibbon */
+
+	cursor(1,12);
+  	lprintf("Account Summary");
+	cursor(1,14);
+  	lprintf("Gold in Bank Account");
+	cursor (1, 15);
+	lprintf("%8d",(long)cdesc[BANKACCOUNT]);
+	cursor(1,17);
+  	lprintf("Gold in inventory");
+	cursor (1, 18);
+	lprintf("%8d",(long)cdesc[GOLD]);
   if (cdesc[BANKACCOUNT] + cdesc[GOLD] >= 500000)
     lprcat
       ("\nNote:  Larndom law states that only deposits under 500,000gp  can earn interest.");
@@ -866,6 +861,10 @@ obanksub (void)
 	case '\33':
 	  return;
 	};
+		cursor(1,15);
+		lprintf("%8d",(long)cdesc[BANKACCOUNT]);
+		cursor(1,18);
+		lprintf("%8d",(long)cdesc[GOLD]);
     }
 }
 
