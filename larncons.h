@@ -4,7 +4,7 @@
 *
 */
 
-#define PATCHLEVEL 9
+#define PATCHLEVEL 0
 
 /* defines below are for use in the termcap mode only */
 #define ST_START 1
