@@ -396,27 +396,18 @@ ansiterm_command (int ansi_cmd, const char *param1, const char *param2)
 static void
 ansiterm_putchar (int c)
 {
-
-
-
   if (c == '\n')
     {
       int y, x;
-
       getyx (stdscr, y, x);
-
       move (y + 1, 0);
-
       return;
     }
-
   if (c == '\t')
     {
-
       addstr ("    ");
       return;
     }
-
   addch (c);
 }
 
