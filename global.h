@@ -47,7 +47,3 @@ int getpassword (void);
 char getyn (void);
 
 int packweight (void);
-
-int rnd (int);
-
-int rund (int);

@@ -221,7 +221,7 @@ newgame (void)
 
   time (&initialtime);
 
-  srand ((int) initialtime);
+  srand ((unsigned)initialtime);
 
   lcreat ((char *) 0);		/* open buffering for output to terminal */
 }

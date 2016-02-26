@@ -51,8 +51,17 @@
 /* macro to clear to end of line */
 #define cltoeoln() (*lpnt++ = CL_LINE)
 
-/* macro to seed the random number generator */
-#define srand(x) (lrandx=x)
+/* macros to seed the random number generator */
+/* This is needed on Windows which throws an error due to 'random' not being defined on MingW.  I'll clean it up later. -Gibbon */
+#define srandom srand
+#define random rand
+
+/* New random seed function. -Gibbon */
+#define srand srandom
+#define rand random
+
+#define rnd(x)  ((int)(rand() % (x)) + 1)
+#define rund(x) ((int)(rand() % (x)))
 
 /* min/max */
 #ifndef min

@@ -31,6 +31,7 @@
 *  packweight()
 */
 
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -911,24 +912,4 @@ packweight (void)
 	break;
       };
   return (k);
-}
-
-
-
-/* generates random numbers   1<=rnd(N)<=N */
-int
-rnd (int x)
-{
-
-  return ((((lrandx = lrandx * 1103515245 + 12345) >> 7) % (x)) + 1);
-}
-
-
-
-/* generates random numbers   0<=rund(N)<=N-1 */
-int
-rund (int x)
-{
-
-  return ((((lrandx = lrandx * 1103515245 + 12345) >> 7) % (x)));
 }

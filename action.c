@@ -35,6 +35,7 @@ act_open_chest          open a chest
 act_open_door           open a door
 */
 
+#include <stdlib.h>
 #include "action.h"
 #include "larncons.h"
 #include "larndata.h"
