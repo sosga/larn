@@ -2,6 +2,8 @@ February 26 2016
 
 1. Replaced crusty 80's random seed macro with one that is easier to maintain (tested level generation, save and load).
 2. Added stdlib.h to relevant files for 'random' function.
+3. Cleaned up Bank display of text.
+4. Added ability to have multiple scores in the same scorefile.
 
 ~Gibbon
 

@@ -3,4 +3,4 @@ LIBS= -O -g -pipe -Wall -Wextra -ansi -pedantic -Wpointer-arith -Wstrict-prototy
 DEPS=*.h
 STRIP_BINARY=no
 larn: $(DEPS) *.c
-	$(CC) *.c -o larn13_gnulinux_debug $(LIBS)
+	$(CC) *.c -o larn13_bsd_debug $(LIBS)

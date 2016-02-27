@@ -3,4 +3,4 @@ LIBS= -Os -Wall -fomit-frame-pointer -DWINDOWS -DMULTIPLE_SCORE_ENTRY -Wl,-O1 -l
 DEPS=*.h
 STRIP_BINARY=yes
 larn: $(DEPS) *.c
-	$(CC) *.c -o larn1252_win $(LIBS)
+	$(CC) *.c -o larn13_win32 $(LIBS)

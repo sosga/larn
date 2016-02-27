@@ -3,4 +3,4 @@ LIBS= -Os -pipe -Wall -fomit-frame-pointer -DLINUX -DMULTIPLE_SCORE_ENTRY -Wl,-O
 DEPS=*.h
 STRIP_BINARY=yes
 larn: $(DEPS) *.c
-	$(CC) *.c -o larn1252_linux $(LIBS)
+	$(CC) *.c -o larn13_gnulinux $(LIBS)
