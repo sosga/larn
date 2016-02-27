@@ -1,9 +1,6 @@
 # RL_M
 I am the official maintainer of Larn (12.5 +) and official maintainer of my XRogue fork (8.0.5 +).
 
-<b>NOTE</b>
-Larn Release 13.0 will be done within the next week or so.  MingW fails to compile a macro relating to random seed generation for the mazes.  I will be switching the Windows builds to another compiler to debug.
-
 <b>Code:</b><br \>
 Latest SNAPSHOT source code for Larn is in a separate branch (Larn-SNAPSHOT).  There is the full complete code to build releases from, right from my local trunk.  XRogue will have a branch named XRogue-SNAPSHOT (release is when it is ready).
 
