@@ -85,8 +85,6 @@ makeplayer (void)
   clear ();
 
   enter_name ();
-
-  select_sex ();
 }
 
 

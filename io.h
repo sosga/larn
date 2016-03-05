@@ -61,5 +61,3 @@ void lflushall (void);
 char *tmcapcnv (char *, char *);
 
 void enter_name (void);
-
-void select_sex (void);
