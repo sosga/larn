@@ -1,3 +1,13 @@
+March 5th 2016
+
+1. Cleaned up io.c variables and custom declarations of termcap routines.
+2. De-fished io.c and tgoto to use standard termcap routines.
+3. Removed tgoto.c and .h (Fred Fish files).
+
+~Gibbon
+
+=============================================================================
+
 February 26 2016
 
 1. Replaced crusty 80's random seed macro with one that is easier to maintain (tested level generation, save and load).
