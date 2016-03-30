@@ -1213,30 +1213,3 @@ enter_name (void)
 
   scbr ();
 }
-
-
-void
-select_sex (void)
-{
-  int c;
-
-  lprcat ("\n\nSelect character sex (0=female,1=male):\n");
-
-  sncbr ();
-
-  c = ttgetch ();
-
-  if (c == '0')
-    {
-
-      sex = 0;
-
-    }
-  else
-    {
-
-      sex = 1;
-    }
-
-  scbr ();
-}
