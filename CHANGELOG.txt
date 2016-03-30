@@ -1,3 +1,13 @@
+March 30 2016
+
+1. Removed previous changes for termcap and fred fish files due to Linux somewhere
+Requiring them to run.  I'll remove these in the future but for GNU/Linux it'll need
+more research and a dedicated fix for this platform.
+
+~Gibbon
+
+=============================================================================
+
 March 5th 2016
 
 1. Cleaned up io.c variables and custom declarations of termcap routines.
