@@ -88,18 +88,24 @@
 #include "io.h"
 #include "monster.h"
 #include "scores.h"
-#include <term.h>
+#include "tgoto.h"
 
 #define LINBUFSIZE 128		/* size of the lgetw() and lgetl() buffer       */
 int lfd;			/*  output file numbers     */
 int fd;				/*  input file numbers      */
 
-/* Static variables */
+
 static int ipoint = MAXIBUF, iepoint = MAXIBUF;	/*  input buffering pointers    */
 static char lgetwbuf[LINBUFSIZE];	/* get line (word) buffer               */
+
+
 static int (*getchfn) (void);
-static int ttputch (int);
+
+static void ttputch (int);
+static void tputs (const char *);
+
 static void flush_buf (void);
+
 static void warn (char *);
 
 
@@ -707,7 +713,7 @@ cursors (void)
 */
 
 /* translated output buffer */
-static char *outbuf = 0;
+static char *outbuf = NULL;
 
 
 /*
@@ -727,27 +733,29 @@ static const char CL[] = { 27, '[', ';', 'H', 27, '[', '2', 'J', 0 };
 static const char CM[] =
   { 27, '[', '%', 'i', '%', '2', ';', '%', '2', 'H', 0 };
 
-/* Cleaned up the AL and DL as these are unused and static 
+/* Removed the 'static' from the AL[] and DL[] as these are unused and static 
    isn't really needed as the variable itself is never used which
    negates the need for a local version which is why you would ever use
-   static anyway.
-   
-   I have also removed TI and TE due to refactoring the tgoto code.
-   
-   /rant ~Gibbon
+   static anyway. /rant -Gibbon
 */
 
 /* insert line */
-char *AL;
+const char AL[] = { 27, '[', 'L', 0 };
 
 /* delete line */
-char *DL;
+const char DL[] = { 27, '[', 'M', 0 };
 
 /* begin standout mode */
 static const char SO[] = { 27, '[', '1', 'm', 0 };
 
 /* end standout mode */
 static const char SE[] = { 27, '[', 'm', 0 };
+
+/* terminal initialization */
+static const char TI[] = { 27, '[', 'm', 0 };
+
+/* terminal end */
+static const char TE[] = { 27, '[', 'm', 0 };
 
 
 /*
@@ -892,13 +900,7 @@ set_score_output (void)
 */
 static int scrline = 18;	/* line # for wraparound instead of scrolling if no DL */
 
-/* I have refactored this code.  Someone thought it was a great idea
- * to hardcode the implementation to a fred fish file which was yet another implementation
- * of termcap routines for tgoto etc..  I've ripped out that silliness and used
- * the standard implementation from term.h.
- 
- * I also took out the TI and TE as the new implementation takes care of that.  ~Gibbon
- */
+
 void
 lflush (void)
 {
@@ -938,81 +940,83 @@ lflush (void)
 	    switch (*str)
 	      {
 	      case CLEAR:
-		tputs (CL, 0, ttputch);
+		tputs (CL);
 		curx = cury = 0;
 		break;
 
 	      case CL_LINE:
-		tputs (CE, 0, ttputch);
+		tputs (CE);
 		break;
 
 	      case CL_DOWN:
-		tputs (CD, 0, ttputch);
+		tputs (CD);
 		break;
 
 	      case ST_START:
-		tputs (SO, 0, ttputch);
+		tputs (SO);
 		break;
 
 	      case ST_END:
-		tputs (SE, 0, ttputch);
+		tputs (SE);
 		break;
 
 	      case CURSOR:
 		curx = *++str - 1;
 		cury = *++str - 1;
-		tputs (tgoto (CM, curx, cury), 0, ttputch);
+		tputs (atgoto (CM, curx, cury));
 		break;
 
-/* Reimplementing based on term.h, docs and trial and error.  ~Gibbon */
-		case '\n':
+	      case '\n':
 		if ((cury == 23) && enable_scroll)
-		{
-		if (!DL || !AL) {
-		if (++scrline > 23)
+		  {
+
+		    if (++scrline > 23)
+		      {
+
 			scrline = 19;
-		if (++scrline > 23)
-			scrline = 19;
-				tputs(tgoto (CM, 0, scrline), 0, ttputch);
-				tputs(CE, 0, ttputch);
-		if (--scrline < 19)
-			scrline = 23;
-				tputs(tgoto (CM, 0, scrline), 0, ttputch);
-				tputs(CE, 0, ttputch);
-			}
-			else
-			{
-				tputs(tgoto (CM, 0, 19), 0, ttputch);
-				tputs(DL, 0, ttputch);
-				tputs(tgoto (CM, 0, 23), 0, ttputch);
-			}
-		}
-			else
-			{
-				ttputch ('\n');
-				cury++;
-			}
-				curx = 0;
-				break;
-				
-		default:
-			ttputch (*str);
-			curx++;
-			}
-		}
+		      }
+
+		    tputs (atgoto (CM, 0, scrline + 1));
+		    tputs (CE);
+
+		    tputs (atgoto (CM, 0, scrline));
+		    tputs (CE);
+
+		  }
+		else
+		  {
+
+		    ttputch ('\n');
+		    cury++;
+		  }
+
+		curx = 0;
+		break;
+
+	      case T_INIT:
+		tputs (TI);
+		break;
+	      case T_END:
+		tputs (TE);
+		break;
+	      default:
+		ttputch (*str);
+		curx++;
+	      }
 	}
-	lpnt = lpbuf;
-	flush_buf ();			/* flush real output buffer now */
+    }
+  lpnt = lpbuf;
+  flush_buf ();			/* flush real output buffer now */
 }
+
+
 
 static int index = 0;
 
 /*
 * ttputch(ch)      Print one character in decoded output buffer.
 */
-
-/* Changed to int.  Why use a void function when dealing with ints? -Gibbon */
-static int
+static void
 ttputch (int c)
 {
 
@@ -1023,8 +1027,26 @@ ttputch (int c)
 
       flush_buf ();
     }
-    return 0;
 }
+
+
+
+/*
+* Outputs string pointed to by cp.  Modified using public domain termcap
+* routines. ~Gibbon.
+*/
+static void
+tputs (const char *cp)
+{
+  if (cp == NULL)
+    {
+    }
+  while (*cp != '\0')
+    {
+      ttputch (*cp++);
+    }
+}
+
 
 /*
 * flush_buf()          Flush buffer with decoded output.
@@ -1188,6 +1210,33 @@ enter_name (void)
   while (i < LOGNAMESIZE - 1);
 
   logname[i] = '\0';
+
+  scbr ();
+}
+
+
+void
+select_sex (void)
+{
+  int c;
+
+  lprcat ("\n\nSelect character sex (0=female,1=male):\n");
+
+  sncbr ();
+
+  c = ttgetch ();
+
+  if (c == '0')
+    {
+
+      sex = 0;
+
+    }
+  else
+    {
+
+      sex = 1;
+    }
 
   scbr ();
 }
