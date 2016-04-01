@@ -99,8 +99,6 @@ int predostuff = 0;		/*  2 means that the trap handling routines must do a
 
 char logname[LOGNAMESIZE];	/* the player's name */
 
-
-int sex = 1;			/*  default is a man  0=woman                       */
 int cheat = 0;			/*  1 if the player has fudged save file            */
 int level = 0;			/*  cavelevel player is on = cdesc[CAVELEVEL]           */
 int wizard = 0;			/*  the wizard mode flag                            */
