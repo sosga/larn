@@ -2,7 +2,7 @@ April 5 2016
 
 1. Cleaned up some debug warnings in GNU/Linux
 2. Fixed some incorrectly written function definitions (old style)
-3. Removed the Flail and added Hymie's sword (because he has really contributed)
+3. Removed the Flail and added Hymie's sword (because he has really contributed).  This is not available in the store's, it    can only be found from adventuring and slaying.
 4. Fixed some tgoto definitions which were defined twice.
 5. Removed the need for a password for WIZARD mode.  It's in the source
    and it was a waste of keystrokes to keep typing it.
