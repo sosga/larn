@@ -2,24 +2,24 @@
 #include "io.h"
 #include "sysdep.h"
 
-#ifdef WINDOWS
+#if defined WINDOWS
 #include <windows.h>
-#elif _POSIX_C_SOURCE
+#endif
+
+#if defined LINUX || DARWIN || BSD
 #include <time.h>
-#else
-#include <unistd.h>
 #endif
 
 void nap(int milliseconds)
 {
 #ifdef WINDOWS
     Sleep(milliseconds);
-#elif _POSIX_C_SOURCE
-    struct timespec tmsc;
-    tmsc.tv_sec = milliseconds / 1000;
-    tmsc.tv_nsec = (milliseconds % 1000) * 1000000;
-    nanosleep(&tmsc, NULL);
-#else
-    usleep(milliseconds * 1000);
+#endif
+
+#if defined LINUX || DARWIN || BSD
+    struct timespec tc;
+    tc.tv_sec = milliseconds / 1000;
+    tc.tv_nsec = (milliseconds % 1000) * 1000000;
+    nanosleep(&tc, NULL);
 #endif
 }
