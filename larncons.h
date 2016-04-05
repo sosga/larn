@@ -223,7 +223,8 @@
 #define MAXPOTION 35		/* maximum number of potions that are possible */
 #define MAXPOTIONNAME	32
 
-#define MAXOBJ 93		/* the maximum number of objects   n < MAXOBJ */
+/* increased to 94 for the extra sword. ~Gibbon */
+#define MAXOBJ 94		/* the maximum number of objects   n < MAXOBJ */
 
 /*  defines for the objects in the game     */
 #define MAXOBJECT  92
@@ -266,10 +267,12 @@
 #define OSHIELD 68
 #define OELVENCHAIN 92
 
+
 #define OSWORDofSLASHING 26
 #define OHAMMER 27
 #define OSWORD 28
 #define O2SWORD 29
+#define OHSWORD 93
 #define OSPEAR 30
 #define ODAGGER 31
 #define OBATTLEAXE 57
@@ -330,4 +333,4 @@
 #define OSPHTAILSMAN 87		/* tailsman of the sphere */
 #define OWWAND 88		/* wand of wonder */
 #define OPSTAFF 89		/* staff of power */
-/* used up to 92 */
+/* used up to 93. ~Gibbon */

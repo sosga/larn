@@ -701,12 +701,6 @@ parse (void)
 	  yrepcount = 0;
 	  cursors ();
 	  nomove = 1;
-
-	  if (getpassword () == 0)
-	    {
-	      scbr ();		/* system("stty -echo cbreak"); */
-	      return;
-	    }
 	  wizard = 1;		/* disable to easily test win condition */
 	  scbr ();		/* system("stty -echo cbreak"); */
 	  for (i = 0; i < 6; i++)
@@ -721,7 +715,6 @@ parse (void)
 	  take (OGREATSWORD, 24);
 	  cdesc[WIELD] = 1;
 	  cdesc[GREATSWORDDEATH] = 1;
-	  cdesc[WEAR] = cdesc[SHIELD] = -1;
 	  raiseexperience (6000000L);
 	  cdesc[AWARENESS] += 25000;
 	  {
@@ -906,6 +899,13 @@ wield (void)
 	      return;
 
 	    }
+	  else if (cdesc[SHIELD] != -1 && iven[i - 'a'] == OHSWORD)
+	    {
+
+	      lprcat ("\nThe longsword of Hymie cannot be used while a shield is equipped!");
+	      return;
+
+	    }
 	  else
 	    {
 
@@ -1006,7 +1006,7 @@ wear (void)
 		    lprcat ("\nYou are already wearing a shield");
 		    return;
 		  }
-		if (iven[cdesc[WIELD]] == O2SWORD)
+		if (iven[cdesc[WIELD]] == O2SWORD || OHSWORD)
 		  {
 		    lprcat
 		      ("\nYour hands are busy with the two handed sword!");

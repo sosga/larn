@@ -671,6 +671,7 @@ quaffpotion (int pot, int set_known)
 	    case OHAMMER:
 	    case OSWORD:
 	    case O2SWORD:
+	    case OHSWORD:
 	    case OSPEAR:
 	    case ODAGGER:
 	    case OBATTLEAXE:

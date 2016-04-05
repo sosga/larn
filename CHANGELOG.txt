@@ -1,3 +1,21 @@
+April 5 2016
+
+1. Cleaned up some debug warnings in GNU/Linux
+2. Fixed some incorrectly written function definitions (old style)
+3. Removed the Flail and added Hymie's sword (because he has really contributed)
+4. Fixed some tgoto definitions which were defined twice.
+5. Removed the need for a password for WIZARD mode.  It's in the source
+   and it was a waste of keystrokes to keep typing it.
+6. Removed the wearing of a shield by default in WIZARD mode.  Cheaters shouldn't get
+   extra help ;)
+
+Flail was removed because I'll need to do some curses stuff to add an extra length to the
+objects, otherwise curses goes nuts and it ain't pretty :)
+
+~Gibbon
+
+=============================================================================
+
 March 30 2016
 
 1. Removed previous changes for termcap and fred fish files due to Linux somewhere

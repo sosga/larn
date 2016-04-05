@@ -417,6 +417,9 @@ recalc (void)
 	case O2SWORD:
 	  cdesc[WCLASS] = 26 + i;
 	  break;
+	case OHSWORD:
+	  cdesc[WCLASS] = 35 + i;
+	  break;
 	case OSWORD:
 	  cdesc[WCLASS] = 32 + i;
 	  break;
@@ -784,52 +787,6 @@ adjustcvalues (int itm, int arg)
     }
 }
 
-
-
-/*
-* function to ask user for a password (no echo)
-* returns 1 if entered correctly, 0 if not
-*/
-static char gpwbuf[33];
-
-int
-getpassword (void)
-{
-  int i, j;
-  char *gpwp;
-
-  scbr ();			/*  system("stty -echo cbreak"); */
-
-  gpwp = gpwbuf;
-  lprcat ("\nEnter Password: ");
-  lflush ();
-
-  i = strlen (password);
-
-  for (j = 0; j < i; j++)
-    {
-
-      *gpwp++ = ttgetch ();
-    }
-
-  gpwbuf[i] = 0;
-
-  sncbr ();			/* system("stty echo -cbreak"); */
-
-  if (strcmp (gpwbuf, password) != 0)
-    {
-
-      lprcat ("\nSorry\n");
-      lflush ();
-
-      return 0;
-    }
-
-  return 1;
-}
-
-
-
 /*
 * subroutine to get a yes or no response from the user
 * returns y or n
@@ -881,6 +838,7 @@ packweight (void)
       case OCHAIN:
       case OBATTLEAXE:
       case O2SWORD:
+      case OHSWORD:
 	k += 23;
 	break;
       case OLONGSWORD:

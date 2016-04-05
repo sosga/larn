@@ -6,7 +6,7 @@
 #include "moreobj.h"
 
 #define VER    13
-#define SUBVER  0
+#define SUBVER  1
 /*
 classname[cdesc[LEVEL]-1] gives the correct name of the players experience level
 */
@@ -167,7 +167,7 @@ char *objectname[] =
   "device of theft prevention", "a brilliant diamond", "a ruby",
   "an enchanting emerald", "a sparkling sapphire", "the dungeon entrance",
   "a volcanic shaft leaning downward", "the base of a volcanic shaft",
-  "a battle axe", "a longsword", "a flail", "ring mail",
+  "a battle axe", "a longsword", "The longsword of Hymie", "ring mail",
   "studded leather armor",
   "splint mail", "plate armor", "stainless plate armor",
   "Great Sword of Death",

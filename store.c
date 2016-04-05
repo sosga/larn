@@ -55,7 +55,7 @@ static int dndcount = 0, dnditm = 0;
 /* new function for displaying gold in inventory inside trading posts.
  * part of feature request by hymie0. ~Gibbon */
 static int
-amtgoldtrad ()
+amtgoldtrad(void)
 {
   lprintf ("You have %-6d gold pieces.", (int) cdesc[GOLD]);
   return 0;

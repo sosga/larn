@@ -30,5 +30,3 @@ char playerids[PATHLEN];
 #ifdef EXTRA
 char diagfile[PATHLEN];		/* the diagnostic filename  */
 #endif
-
-char *password = "pvnert(x)";	/* the wizards password <=32 */
