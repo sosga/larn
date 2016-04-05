@@ -1,5 +1,5 @@
 #define _POSIX_C_SOURCE 200809L
-#ifdef WIN32
+#ifdef WINDOWS
 #include <windows.h>
 #elif _POSIX_C_SOURCE
 #include <time.h>
@@ -9,7 +9,7 @@
 
 void nap(int milliseconds)
 {
-#ifdef WIN32
+#ifdef WINDOWS
     Sleep(milliseconds);
 #elif _POSIX_C_SOURCE
     struct timespec tmsc;
