@@ -110,6 +110,7 @@ static char *whydead[] = {
   "killed by a stupid act of frustration", "attacked by a revolting demon",
   "hit by his own magic", "demolished by an unseen attacker",
   "fell into the dreadful sleep", "killed by an exploding chest",
+  "teleported into solid rock",
   /*26 */ "killed by a missing maze data file", "annihilated in a sphere",
   "died a post mortem death", "wasted by a malloc() failure"
 };
