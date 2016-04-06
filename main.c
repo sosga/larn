@@ -1006,10 +1006,16 @@ wear (void)
 		    lprcat ("\nYou are already wearing a shield");
 		    return;
 		  }
-		if (iven[cdesc[WIELD]] == O2SWORD || OHSWORD)
+		if (iven[cdesc[WIELD]] == O2SWORD)
 		  {
 		    lprcat
 		      ("\nYour hands are busy with the two handed sword!");
+		    return;
+		  }
+		  if (iven[cdesc[WIELD]] == OHSWORD)
+		  {
+		    lprcat
+		      ("\nYou cannot wield a sword of Hymie while holding a shield!");
 		    return;
 		  }
 		cdesc[SHIELD] = i - 'a';
