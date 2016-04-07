@@ -12,6 +12,7 @@ I will do a full release for every MAJOR version.  A full release includes binar
 
 1. GNU/Linux (64bit only)
 2. OS X
+3. Dragonfly BSD
 4. Windows (32bit only)
 
 These will come with documentation and required files.  These releases will contain major functionality changes and improvements.<br \>
