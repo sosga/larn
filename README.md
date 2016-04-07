@@ -1,6 +1,9 @@
 # RL_M
 I am the official maintainer of Larn (12.5 +) and official maintainer of my XRogue fork (8.0.5 +).
 
+<b>Updates:</b><br\>
+My BSD computer has gone up in flames (not literally) but it had a hard drive failure.  This was my only BSD machine and was used to compile Larn for BSD systems.  In future builds, Larn will be built using a virualbox instance of Dragonfly BSD, I doubt it will cause problems but if any bugs do arise from not testing on 'bare metal' I won't be able to reproduce or fix.  From Larn 13.2 (future release) all BSD builds will be on 'best efforts'.
+
 <b>Code:</b><br \>
 Latest SNAPSHOT source code for Larn is in a separate branch (Larn-SNAPSHOT).  There is the full complete code to build releases from, right from my local trunk.  XRogue will have a branch named XRogue-SNAPSHOT (release is when it is ready).
 
@@ -9,7 +12,6 @@ I will do a full release for every MAJOR version.  A full release includes binar
 
 1. GNU/Linux (64bit only)
 2. OS X
-3. Dragonfly BSD
 4. Windows (32bit only)
 
 These will come with documentation and required files.  These releases will contain major functionality changes and improvements.<br \>
