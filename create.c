@@ -572,7 +572,6 @@ makeobject (int j)
   froom (5, OSHIELD, rund (3));	/* a shield             */
   froom (2, OBATTLEAXE, rund (3));	/* a battle axe         */
   froom (5, OLONGSWORD, rund (3));	/* a long sword         */
-  froom (5, OFLAIL, rund (3));	/* a flail              */
   froom (4, OREGENRING, rund (3));	/* ring of regeneration */
   froom (1, OPROTRING, rund (3));	/* ring of protection   */
   froom (2, OSTRRING, 1 + rnd (3));	/* ring of strength     */
@@ -594,7 +593,7 @@ makeobject (int j)
 	{
 	  froom (3, OSWORD, 3);	/* sunsword + 3         */
 	  froom (5, O2SWORD, rnd (4));	/* a two handed sword */
-          froom (5, OHSWORD, rnd (4));
+	  froom (5, OHSWORD, rnd (4));	/* a longsword of Hymie     */
 	  froom (3, OBELT, 4);	/* belt of striking     */
 	  froom (3, OENERGYRING, 3);	/* energy ring          */
 	  froom (4, OPLATE, 5);	/* platemail + 5        */

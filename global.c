@@ -402,9 +402,6 @@ recalc (void)
 	case OSPEAR:
 	  cdesc[WCLASS] = 10 + i;
 	  break;
-	case OFLAIL:
-	  cdesc[WCLASS] = 14 + i;
-	  break;
 	case OBATTLEAXE:
 	  cdesc[WCLASS] = 17 + i;
 	  break;
@@ -415,10 +412,8 @@ recalc (void)
 	  cdesc[WCLASS] = 22 + i;
 	  break;
 	case O2SWORD:
-	  cdesc[WCLASS] = 26 + i;
-	  break;
 	case OHSWORD:
-	  cdesc[WCLASS] = 35 + i;
+	  cdesc[WCLASS] = 26 + i;
 	  break;
 	case OSWORD:
 	  cdesc[WCLASS] = 32 + i;
@@ -844,7 +839,6 @@ packweight (void)
       case OLONGSWORD:
       case OSWORD:
       case ORING:
-      case OFLAIL:
 	k += 20;
 	break;
       case OGREATSWORD:
