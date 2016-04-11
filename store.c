@@ -86,7 +86,6 @@ struct _itm dnd_item[90] = {
   {20, OSPEAR, 0, 3},
   {150, OBATTLEAXE, 0, 2},
   {450, OLONGSWORD, 0, 2},
-  {200, OHSWORD, 0, 1},
   {1000, O2SWORD, 0, 2},
   {5000, OSWORD, 0, 1},
 
