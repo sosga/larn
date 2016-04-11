@@ -497,9 +497,11 @@ oteleport (int err)
   int tmp;
 
   if (err)
-    if (rnd (151) < 3)
-    lprcat("You died by teleporting into solid rock.");
-      died (264);		/* stuck in a rock */
+  	if (rnd (151) < 3)
+  	{
+  		lprcat ("\nYou died by teleporting into solid rock.");
+  		died (264);	/* stuck in a rock */
+    }
   cdesc[TELEFLAG] = 1;		/* show ?? on bottomline if been teleported    */
   if (level == 0)
     tmp = 0;
@@ -522,13 +524,13 @@ oteleport (int err)
   playerx = rnd (MAXX - 2);
   playery = rnd (MAXY - 2);
   if (level != tmp)
-    newcavelevel (tmp);
-  positionplayer ();
-  draws (0, MAXX, 0, MAXY);
-  bot_linex ();
+  {
+  	newcavelevel (tmp);
+  	positionplayer ();
+  	draws (0, MAXX, 0, MAXY);
+  	bot_linex ();
+  }
 }
-
-
 
 /*
 * function to process a potion 

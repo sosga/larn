@@ -311,6 +311,7 @@ lprc (char ch)
 
       lflush ();
     }
+    lflush();
 }
 
 
@@ -669,6 +670,7 @@ lprcat (char *str)
     ;
 
   lpnt = str2 - 1;
+  lflush();
 }
 
 
