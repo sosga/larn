@@ -106,8 +106,6 @@ static void tputs (const char *);
 
 static void flush_buf (void);
 
-static void warn (char *);
-
 
 /*
 *  Subroutine to set up terminal in correct mode for game
@@ -374,7 +372,12 @@ lgetc (void)
     return (inbuffer[ipoint++]);
   if (iepoint != MAXIBUF)
     return (0);
-  if ((i = _read (fd, inbuffer, MAXIBUF)) <= 0)
+#if defined WINDOWS
+	if ((i = _read(fd, inbuffer, MAXIBUF)) <= 0)
+#endif
+#if defined LINUX || DARWIN || BSD
+	if ((i = read(fd, inbuffer, MAXIBUF)) <= 0)
+#endif
     {
       if (i != 0)
 	fprintf (stderr, "error reading from input file\n");
@@ -433,13 +436,18 @@ lrfill (char *adr, int num)
 	{
 	  if (num > 5)		/* fast way */
 	    {
-	      if (_read (fd, adr, num) != num)
+#if defined WINDOWS
+	if (_read(fd, adr, num) != num)
+#endif
+#if defined LINUX || DARWIN || BSD
+	if (read(fd, adr, num) != num)
+#endif
 		fprintf (stderr, "error reading from input file\n");
 	      num = 0;
 	    }
 	  else
 	    {
-	      *adr++ = lgetc ();
+	      *adr++ = lgetc();
 	      --num;
 	    }
 	}
@@ -531,6 +539,8 @@ lgetl (void)
 *
 *  lcreat((char*)0); means to the terminal
 *  Returns -1 if error, otherwise the file descriptor opened.
+*  
+*  Modernised this function and made it cleaner. ~Gibbon
 */
 int
 lcreat (char *str)
@@ -539,13 +549,18 @@ lcreat (char *str)
   lpend = lpbuf + BUFBIG;
   if (str == NULL)
     return (lfd = 1);
-  if ((lfd = _creat (str, _S_IWRITE)) < 0)
-    {
-      lfd = 1;
-      lprintf ("error creating file <%s>\n", str);
-      lflush ();
-      return (-1);
-    }
+#if defined WINDOWS
+	if ((lfd = _open(str, _O_RDWR | _O_CREAT)) < 0)
+#endif
+#if defined LINUX || DARWIN || BSD
+	if ((lfd = open(str, O_RDWR | O_CREAT, 0666)) < 0)
+#endif
+	{
+		lfd = 1;
+		lprintf("error creating file <%s>\n", str);
+		lflush();
+		return(-1);
+	}
 #if defined WINDOWS
   _setmode (lfd, O_BINARY);
 #endif
@@ -568,8 +583,12 @@ lopen (char *str)
 
   if (str == NULL)
     return (fd = 0);
-
-  if ((fd = _open (str, 0)) < 0)
+#if defined WINDOWS
+	if ((fd = _open(str, 0)) < 0)
+#endif
+#if defined LINUX || DARWIN || BSD
+	if ((fd = open(str, 0)) < 0)
+#endif
     {
       lwclose ();
       lfd = 1;
@@ -598,19 +617,25 @@ lappend (char *str)
   lpend = lpbuf + BUFBIG;
   if (str == NULL)
     return (lfd = 1);
-  if ((lfd = _open (str, 2)) < 0)
+#if defined WINDOWS
+	if ((lfd = _open(str, 2)) < 0)
+#endif
+#if defined LINUX || DARWIN || BSD
+	if ((lfd = open(str, 2)) < 0)
+#endif
     {
       lfd = 1;
       return (-1);
     }
 #if defined WINDOWS
   _setmode (lfd, O_BINARY);
-#endif
   _lseek (lfd, 0L, 2);		/* seek to end of file */
+#endif
+#if defined LINUX || DARWIN || BSD
+	lseek (lfd, 0L, 2);		/* seek to end of file */
+#endif
   return lfd;
 }
-
-
 
 /*
 *  lrclose()                       close the input file
@@ -620,11 +645,14 @@ lappend (char *str)
 void
 lrclose (void)
 {
-
   if (fd > 0)
     {
-
-      _close (fd);
+#if defined WINDOWS
+		_close(fd);
+#endif
+#if defined LINUX || DARWIN || BSD
+		close(fd);
+#endif
     }
 }
 
@@ -638,16 +666,17 @@ lrclose (void)
 void
 lwclose (void)
 {
-  lflush ();
-
+  lflush();
   if (lfd > 2)
     {
-
-      _close (lfd);
+#if defined WINDOWS
+		_close(lfd);
+#endif
+#if defined LINUX || DARWIN || BSD
+		close(lfd);
+#endif
     }
 }
-
-
 
 /*
 *  lprcat(string)                  append a string to the output buffer
@@ -657,23 +686,18 @@ void
 lprcat (char *str)
 {
   char *str2;
-
+  
   if (lpnt >= lpend)
     {
-
-      lflush ();
+      lflush();
     }
-
   str2 = lpnt;
 
   while ((*str2++ = *str++) != '\0')
     ;
-
   lpnt = str2 - 1;
   lflush();
 }
-
-
 
 /*
 * cursor(x,y)    Put cursor at specified coordinates staring at [1,1] (termcap)
@@ -681,19 +705,14 @@ lprcat (char *str)
 void
 cursor (int x, int y)
 {
-
   if (lpnt >= lpend)
     {
-
-      lflush ();
+      lflush();
     }
-
   *lpnt++ = CURSOR;
   *lpnt++ = (char) x;
   *lpnt++ = (char) y;
 }
-
-
 
 /*
 *  Routine to position cursor at beginning of 24th line
@@ -701,11 +720,8 @@ cursor (int x, int y)
 void
 cursors (void)
 {
-
-  cursor (1, 24);
+  cursor(1, 24);
 }
-
-
 
 /*
 * Warning: ringing the bell is control code 7. Don't use in defines.
@@ -716,7 +732,6 @@ cursors (void)
 
 /* translated output buffer */
 static char *outbuf = NULL;
-
 
 /*
 * ANSI control sequences
@@ -766,22 +781,16 @@ static const char TE[] = { 27, '[', 'm', 0 };
 void
 init_term (void)
 {
-
   /* get memory for decoded output buffer */
   outbuf = malloc (BUFBIG + 16);
-
   if (outbuf == NULL)
     {
-
       fprintf (stderr, "Error malloc'ing memory for decoded output buffer\n");
-
       /* malloc() failure */
       died (-285);
     }
-
   ansiterm_init ();
 }
-
 
 /*
 * cl_line(x,y)  Clear the whole line indicated by 'y' and leave cursor at [x,y]
@@ -789,15 +798,10 @@ init_term (void)
 void
 cl_line (int x, int y)
 {
-
   cursor (1, y);
-
   *lpnt++ = CL_LINE;
-
   cursor (x, y);
 }
-
-
 
 /*
 * cl_up(x,y) Clear screen from [x,1] to current position. Leave cursor at [x,y]
@@ -806,21 +810,14 @@ void
 cl_up (int x, int y)
 {
   int i;
-
   cursor (1, 1);
-
   for (i = 1; i <= y; i++)
     {
-
       *lpnt++ = CL_LINE;
       *lpnt++ = '\n';
     }
-
   cursor (x, y);
 }
-
-
-
 
 /*
 * cl_dn(x,y)   Clear screen from [1,y] to end of display. Leave cursor at [x,y]
@@ -829,36 +826,27 @@ void
 cl_dn (int x, int y)
 {
   int i;
-
   cursor (1, y);
-
   if (CD == NULL)
     {
-
       *lpnt++ = CL_LINE;
 
       for (i = y; i <= 24; i++)
 	{
-
 	  *lpnt++ = CL_LINE;
 
 	  if (i != 24)
 	    *lpnt++ = '\n';
 	}
-
       cursor (x, y);
 
     }
   else
     {
-
       *lpnt++ = CL_DOWN;
     }
-
   cursor (x, y);
 }
-
-
 
 /*
 * lstandout(str)    Print the argument string in inverse video (standout mode).
@@ -866,20 +854,13 @@ cl_dn (int x, int y)
 void
 lstandout (char *str)
 {
-
   *lpnt++ = ST_START;
-
   while (*str)
     {
-
       *lpnt++ = *str++;
     }
-
   *lpnt++ = ST_END;
 }
-
-
-
 
 /*
 * set_score_output()   Called when output should be literally printed.
@@ -887,11 +868,8 @@ lstandout (char *str)
 void
 set_score_output (void)
 {
-
-  enable_scroll = -1;
+	enable_scroll = -1;
 }
-
-
 
 /*
 *  lflush()                        Flush the output buffer
@@ -918,16 +896,19 @@ lflush (void)
 #endif
       if (enable_scroll <= -1)
 	{
-	  flush_buf ();
+	  flush_buf();
 
 	  /* Catch write errors on save files
 	   */
-	  if (_write (lfd, lpbuf, lpoint) != lpoint)
+#if defined WINDOWS
+ 	if (_write(lfd, lpbuf, lpoint) != lpoint)
+#endif
+#if defined LINUX || DARWIN || BSD
+ 	if (write(lfd, lpbuf, lpoint) != lpoint)
+#endif
 	    {
-	      warn ("Error writing output file\n");
+	      fprintf(stderr,"Error writing output file\n");
 	    }
-
-
 	  lpnt = lpbuf;		/* point back to beginning of buffer */
 	  return;
 	}
@@ -1011,8 +992,6 @@ lflush (void)
   flush_buf ();			/* flush real output buffer now */
 }
 
-
-
 static int index = 0;
 
 /*
@@ -1058,23 +1037,17 @@ flush_buf (void)
 {
   if (index)
     {
-
       if (lfd == 1)
 	{
-
 	  ansiterm_out (outbuf, index);
-
 	}
       else
 	{
-
-	  _write (lfd, outbuf, index);
+	  write(lfd, outbuf, index);
 	}
     }
-
-  index = 0;
+    index = 0;
 }
-
 
 /*
 *  flushall()  Function to flush all type-ahead in the input buffer
@@ -1098,7 +1071,7 @@ lflushall (void)
 {
   while (kbhit())
     {
-      getch();
+      _getch();
     }
 }
 #endif
@@ -1163,17 +1136,6 @@ tmcapcnv (char *sd, char *ss)
   *sd = 0;			/* NULL terminator */
   return (sd);
 }
-
-
-
-static void
-warn (char *msg)
-{
-
-  fprintf (stderr, "%s", msg);
-}
-
-
 
 void
 enter_name (void)

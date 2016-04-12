@@ -3,6 +3,13 @@
 * to Curses API calls
 */
 
+#if defined WINDOWS
+#include "win/curses.h"
+#endif
+
+#if defined LINUX || DARWIN || BSD
+#include <curses.h>
+#endif
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -13,14 +20,11 @@
 
 #define ANSITERM_ESC	27
 
-
-
 static void ansiterm_command (int, const char *, const char *);
 
 static void ansiterm_putchar (int);
 
 static void llrefresh (void);
-
 
 /*
 * writes to the terminal
@@ -124,38 +128,25 @@ ansiterm_out (const char *output_buffer, int n_chars)
 *              CURSES BACK-END             *
 ********************************************/
 
-#if defined WINDOWS
-#include "win/curses.h"
-#endif
-
-#if defined LINUX || DARWIN || BSD
-#include <curses.h>
-#endif
 static int llgetch (void);
 
 void
 ansiterm_init (void)
 {
+	initscr();
+	cbreak();
+	noecho();
+	nonl();
+	intrflush(stdscr, FALSE);
 
-  initscr ();
-  notimeout (stdscr, 1);
-/* colors start here.  But this is not implemented yet. ~Gibbon */
-  start_color ();
+	start_color();
 
+	keypad(stdscr, TRUE);
+  
 /* this is so the terminal does not display in nasty grey'ish color ~Gibbon */
-  use_default_colors ();
-
-  init_pair (1, COLOR_RED, COLOR_BLACK);
-  init_pair (2, COLOR_BLUE, COLOR_BLACK);
-  init_pair (3, COLOR_GREEN, COLOR_BLACK);
-  init_pair (4, COLOR_BLACK, COLOR_WHITE);
-  init_pair (5, COLOR_YELLOW, COLOR_BLACK);
-  init_pair (6, COLOR_WHITE, COLOR_RED);
-
-  noecho ();
-  cbreak ();
-  nonl ();
-  keypad (stdscr, 1);
+	use_default_colors ();
+	refresh();
+	
 #ifdef WINDOWS
   PDC_save_key_modifiers (1);
 #endif
@@ -164,14 +155,11 @@ ansiterm_init (void)
 void
 ansiterm_clean_up (void)
 {
-
   nocbreak ();
   nl ();
   echo ();
   endwin ();
 }
-
-
 
 /*
 * get char
@@ -179,11 +167,8 @@ ansiterm_clean_up (void)
 int
 ansiterm_getch (void)
 {
-
   return llgetch ();
 }
-
-
 
 /*
 * get char (with echo)
@@ -192,21 +177,17 @@ int
 ansiterm_getche (void)
 {
   int key;
-
   echo ();
-  key = llgetch ();
+  key = llgetch();
   noecho ();
-
   return key;
 }
-
 
 static int
 llgetch (void)
 {
   int key;
-
-  key = getch ();
+  key = getch();
 
 #ifdef WINDOWS
   if (PDC_get_key_modifiers () & PDC_KEY_MODIFIER_SHIFT)
@@ -281,14 +262,9 @@ ansiterm_delch (void)
   delch ();
 }
 
-
-
 static void
 ansiterm_command (int ansi_cmd, const char *param1, const char *param2)
 {
-
-
-
   if (ansi_cmd == 'H')
     {
       int y, x;

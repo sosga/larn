@@ -1,7 +1,7 @@
 /* main.c */
+#include <stdio.h>
 #include "larn.h"
 #include "tok.h"
-#include <stdio.h>
 #include "create.h"
 #include "diag.h"
 #include "display.h"
@@ -22,14 +22,13 @@
 		/* needed for hack fix to handle endwin()
 				   not being called after process commandline */
 
-#define SCORENAME	"data/scorefile.txt"
+#define SCORENAME	"data/scorefile.dat"
 #define LOGFNAME	"data/logfile.log"
-#define HELPNAME	"data/help.txt"
 #define LEVELSNAME	"data/mazefile.txt"
 #define FORTSNAME	"data/forts.txt"
 #define PLAYERIDS	"data/playerid.txt"
 #define DIAGFILE	"data/diagfile.txt"
-#define SAVEFILE	"data/savefile.txt"
+#define SAVEFILE	"data/savefile.dat"
 
 static void parse (void);
 
@@ -51,7 +50,6 @@ static int floor_consume (int, char *);
 static void consume (int, char *, int (*)(void));
 
 static int whatitem (char *);
-
 
 int dropflag = 0;		/* if 1 then don't lookforobject() next round */
 int rmst = 80;			/*  random monster creation counter     */
@@ -108,7 +106,6 @@ main (int argc, char *argv[])
   strcpy (savefilename, SAVEFILE);
   strcpy (scorefile, SCORENAME);	/* the larn scoreboard filename */
   strcpy (logfile, LOGFNAME);	/* larn activity logging filename */
-  strcpy (helpfile, HELPNAME);	/* the larn on-line help file */
   strcpy (larnlevels, LEVELSNAME);	/* the pre-made cave level data file */
   strcpy (fortfile, FORTSNAME);	/* the fortune data file name */
   strcpy (playerids, PLAYERIDS);	/* the playerid data file name */
@@ -555,15 +552,15 @@ parse (void)
 	case 'S':
 	  /* And do the save.
 	   */
-	  cursors ();
-	  lprintf ("\nSaving to `%s' . . . ", savefilename);
-	  lflush ();
+	  cursors();
+	  lprintf("\nSaving to `%s' . . . ", savefilename);
+	  lflush();
 	  save_mode = 1;
-	  savegame (savefilename);
-	  clear ();
-	  lflush ();
+	  savegame(savefilename);
+	  clear();
+	  lflush();
 	  wizard = 1;
-	  died (-257);		/* doesn't return */
+	  died(-257);		/* doesn't return */
 	  break;
 
 
@@ -636,12 +633,6 @@ parse (void)
 	case '>':		/* Go down stairs or vol shaft */
 	  yrepcount = 0;
 	  down_stairs ();
-	  return;
-
-	case '?':		/* give the help screen */
-	  yrepcount = 0;
-	  help ();
-	  nomove = 1;
 	  return;
 
 	case ',':		/* pick up an item */

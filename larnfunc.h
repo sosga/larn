@@ -80,13 +80,5 @@
 */
 
 #ifndef WINDOWS
-#define _creat creat
-#define _read read
-#define _open open
-#define _lseek lseek
-#define _close close
-#define _write write
-#define _chmod chmod
 #define _getch ansiterm_getch
-#define _S_IWRITE 0666
 #endif

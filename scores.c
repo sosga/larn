@@ -81,9 +81,6 @@ struct log_fmt			/* 102 bytes struct for the log file                */
 };
 
 
-
-static int readboard (void);
-static int writeboard (void);
 static int winshou (void);
 static int shou (int);
 static int sortboard (void);
@@ -91,11 +88,11 @@ static void newscore (int, char *, int, int);
 static void new1sub (int, int, char *, int);
 static void new2sub (int, int, char *, int);
 static void diedsub (int);
-
-
-
+static int readboard (void);
+static int writeboard (void);
 static struct scofmt sco[SCORESIZE];	/* the structure for the scoreboard  */
 static struct wscofmt winr[SCORESIZE];	/* struct for the winning scoreboard */
+
 static struct log_fmt logg;	/* structure for the log file        */
 static char *whydead[] = {
   "quit", "suspended", "self - annihilated", "shot by an arrow",
@@ -116,7 +113,8 @@ static char *whydead[] = {
 };
 
 
-
+/*	Rewriting the scoring (read, write and make board functions) into plain 'ol C because the 		previous implementations were shockingly awful, messy, non-standard garbage. ~Gibbon
+*/
 
 
 /*
@@ -127,24 +125,33 @@ static char *whydead[] = {
 static int
 readboard (void)
 {
-
-  if (lopen (scorefile) < 0)
-    {
-
-      lprcat ("Can't read scoreboard\n");
-      lflush ();
-
-      return -1;
+	FILE *pFile;
+	int b;
+	
+	pFile = fopen(scorefile, "rb");
+	if (pFile == NULL)
+	{
+		printf("ERROR: scorefile is not readable \n");
+      	lflush();
+      	return(-1);
     }
-
-  lrfill ((char *) sco, sizeof (sco));
-  lrfill ((char *) winr, sizeof (winr));
-  lrclose ();
-  lcreat ((char *) 0);
-  return 0;
+    b = fread(sco,sizeof(struct scofmt)*SCORESIZE,1,pFile);
+    if (b != 1)
+    {
+    	printf("ERROR: Loosers scoreboard is not readable\n");
+    	fclose(pFile);
+    	return(-1);
+    }
+    b = fread(winr,sizeof(struct wscofmt)*SCORESIZE,1,pFile);
+    if (b != 1)
+    {
+    	printf("ERROR: Winners scoreboard is not readable\n");
+    	fclose(pFile);
+    	return(-1);
+    }
+    fclose(pFile);
+    return 0;
 }
-
-
 
 /*
 *  writeboard()    Function to write the scoreboard from readboard()'s buffer
@@ -154,21 +161,34 @@ readboard (void)
 static int
 writeboard (void)
 {
-  set_score_output ();
-  if (lcreat (scorefile) < 0)
-    {
-      lprcat ("Can't write scoreboard\n");
-      lflush ();
-      return (-1);
+	FILE *pFile;
+	int b;
+	set_score_output();
+	
+	pFile = fopen(scorefile, "wb");
+	if (pFile == NULL)
+	{
+		printf("ERROR: scorefile is not writable \n");
+      	lflush();
+      	return(-1);
     }
-  lwrite ((char *) sco, sizeof (sco));
-  lwrite ((char *) winr, sizeof (winr));
-  lwclose ();
-  lcreat ((char *) 0);
-  return (0);
+    b = fwrite(sco,sizeof(struct scofmt)*SCORESIZE,1,pFile);
+    if (b != 1)
+    {
+    	printf("ERROR: Loosers scoreboard is not writable\n");
+    	fclose(pFile);
+    	return(-1);
+    }
+    b = fwrite(winr,sizeof(struct wscofmt)*SCORESIZE,1,pFile);
+    if (b != 1)
+    {
+    	printf("ERROR: Winners scoreboard is not writable\n");
+    	fclose(pFile);
+    	return(-1);
+    }
+    fclose(pFile);
+    return 0;
 }
-
-
 
 /*
 *  makeboard()         Function to create a new scoreboard (wipe out old one)
@@ -179,20 +199,25 @@ int
 makeboard (void)
 {
   int i;
-
   for (i = 0; i < SCORESIZE; i++)
     {
-      winr[i].taxes = winr[i].score = sco[i].score = 0;
-      winr[i].order = sco[i].order = i;
+    	winr[i].taxes = winr[i].score = sco[i].score = 0;
+    	winr[i].order = sco[i].order = (short) i;
     }
-
-  if (writeboard ())
-    return (-1);
-  _chmod (scorefile, 0666);
-  return (0);
+    if (writeboard())
+    {
+    	printf("ERROR: unable to write a new scoreboard\n");
+    	return(-1);
+  	}
+/* Why bother redefining a function?  Just use standard *NIX functions and be done with it.
+	Windows won't even need to set permissions anyway so no need for 'cross platform' here.
+	Sheesh.. ~Gibbon
+*/
+#if defined LINUX || DARWIN || BSD
+  chmod(scorefile, 0666);
+#endif
+  return(0);
 }
-
-
 
 /*
 *  hashewon()   Function to return 1 if player has won a game before, else 0
@@ -739,12 +764,13 @@ died (int x)
 	  goto invalid;		/* can't be saved */
 	};
       --cdesc[LIFEPROT];
-      cdesc[HP] = 1;
+      cdesc[HP] = cdesc[HPMAX];
       --cdesc[CONSTITUTION];
       cursors ();
       lprcat ("\nYou feel wiiieeeeerrrrrd all over! ");
       lflush ();
-      nap (NAPTIME);
+      nap (3000);
+      
       return;			/* only case where died() returns */
     }
 
@@ -787,46 +813,6 @@ invalid:
   set_score_output ();
   if ((wizard == 0) && (cdesc[GOLD] > 0))	/*  wizards can't score     */
     {
-      /*if (lappend(logfile)<0)
-         {
-         if (lcreat(logfile)<0) {
-         lcreat((char*)0);
-         lprcat("\nCan't open record file:  I can't post your score.\n");
-         sncbr();
-         resetscroll();
-         lflush();
-         clearvt100();
-         exit(EXIT_SUCCESS);
-         }
-         _chmod(logfile,0666);
-         }
-         strcpy(logg.who,logname);
-         logg.score = cdesc[GOLD];  
-         logg.diff = cdesc[HARDGAME];
-         if (x < 256) {
-         ch = *monster[x].name;
-         if (ch=='a' || ch=='e' || ch=='i' || ch=='o' || ch=='u')
-         mod="an";
-         else
-         mod="a";
-         sprintf(logg.what,"killed by %s %s",mod,monster[x].name);
-         }
-         else sprintf(logg.what,"%s",whydead[x - 256]);
-         logg.cavelev=level;
-         time(&zzz);
-         logg.diedtime=zzz;
-         #ifdef EXTRA
-         logg.lev=cdesc[LEVEL];          logg.ac=cdesc[AC];
-         logg.hpmax=cdesc[HPMAX];        logg.hp=cdesc[HP];
-         logg.elapsedtime=(zzz-initialtime+59)/60;
-         logg.usage=(10000*i)/(zzz-initialtime);
-         logg.bytin=cdesc[BYTESIN];      logg.bytout=cdesc[BYTESOUT];
-         logg.moves=cdesc[MOVESMADE];    logg.spused=cdesc[SPELLSCAST];
-         logg.killed=cdesc[MONSTKILLED];
-         #endif
-         lwrite((char*)&logg,sizeof(struct log_fmt));
-         lwclose(); */
-
       /*  now for the scoreboard maintenance -- not for a suspended game  */
       if (x != 257)
 	{
@@ -989,9 +975,16 @@ getplid (char *nam)
   sprintf (name, "%s\n", nam);	/* append a \n to name */
   if (lopen (playerids) < 0)	/* no file, make it */
     {
-      if ((fd7 = _creat (playerids, _S_IWRITE)) < 0)
-	return (-1);		/* can't make it */
-      _close (fd7);
+#if defined WINDOWS
+	if ((fd7 = _open(playerids, _S_IWUSR)) < 0)
+		return (-1);		/* can't make it */
+		 _close (fd7);
+#endif
+#if defined LINUX || DARWIN || BSD
+	if ((fd7 = open(playerids, S_IWUSR)) < 0)
+		return (-1);		/* can't make it */
+		close (fd7);
+#endif
       goto addone;		/* now append new playerid record to file */
     }
   for (;;)			/* now search for the name in the player id file */

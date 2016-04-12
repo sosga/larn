@@ -1,0 +1,62 @@
+
+                		Help File for Larn
+
+b  move southwest          B  run southwest            A  desecrate an altar
+c  cast a spell            C  close a door             Z  teleport yourself
+d  drop an item            D  drink at a fountain      <  go up stairs or
+e  eat something           E  enter a store, dungeon      volcanic shaft
+g  get present pack weight                             >  go down stairs or
+h  move left               H  run left                    volcanic shaft
+i  inventory your pockets  I  list all known items     
+j  move down               J  run down                 ^  identify a trap
+k  move up                 K  run up                   ,  pick up item
+l  move right              L  run right                :  look at object you
+n  move southeast          N  run southeast               are standing on
+                           O  open a door or chest     .  stay here
+p  pray at an altar        P  give tax status          m  move without picking
+q  quaff a potion          Q  quit the game (suicide)     up an object
+r  read a scroll           R  remove gems from throne  /  identify objects in
+s  sit on a throne         S  save the game               the game
+t  tidy up at a fountain   T  take off armor           
+u  move northeast          U  run northeast
+v  print program version
+w  wield a weapon          W  wear armor                
+y  move northwest          Y  run northwest            ^L redraw the screen
+                			
+                			Special Notes
+
+When dropping gold, if you type '*' as your amount, all your gold gets dropped.
+In general, typing in '*' means all of what your interested in.  This is true
+when visiting the bank, or when contributing at altars.
+
+When in the store, trading post, school, or home, an <escape> will get you out.
+
+When casting a spell, if you need a list of spells you can cast, type 'I' as
+the first letter of your spell.  The available list of spells will be shown,
+after which you may enter the spell code.  This only works on the 1st letter
+of the spell you are casting.
+
+When an inventory list is on the screen from a drop, quaff, read, or similar
+command, you can type the letter of the object that you wish to act apon,
+without having to type a space to get back to the prompt.
+
+If NumLock is off, the Keypad functions in the obvious way for movement. Hold
+Shift when pressing any direction on the Keypad to run in that direction. The
+5 key on the Keypad is the same as "stay here", which really means skip your
+turn.
+
+           		Explanation of the Larn scoreboard facility
+
+    Larn supports TWO scoreboards, one for winners, and one for deceased
+characters.  Each player (by the name entered when you start the game)
+is allowed one slot on each scoreboard, if the score is in the top ten for
+that scoreboard.  This design helps insure that frequent players of Larn
+do not hog the scoreboard, and gives more players a chance for glory.  Level
+of difficulty is also noted on the scoreboards, and this takes precedence
+over score for determining what entry is on the scoreboard.  For example:
+if "Yar, the Bug Slayer" has a score of 128003 on the scoreboard at diff 0,
+then a game at diff 1 and a score of 4112 would replace the previous
+entry on the scoreboard.  Note that when a player dies, the inventory is
+stored in the scoreboard so that everyone can see what items the player had
+at the time of death.
+

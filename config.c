@@ -22,7 +22,6 @@
 char savefilename[PATHLEN];
 char scorefile[PATHLEN];
 char logfile[PATHLEN];
-char helpfile[PATHLEN];
 char larnlevels[PATHLEN];
 char fortfile[PATHLEN];
 char playerids[PATHLEN];
