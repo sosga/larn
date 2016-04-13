@@ -550,7 +550,7 @@ lcreat (char *str)
   if (str == NULL)
     return (lfd = 1);
 #if defined WINDOWS
-	if ((lfd = _open(str, _O_RDWR | _O_CREAT)) < 0)
+	if ((lfd = _creat(str, _S_IWRITE)) < 0)
 #endif
 #if defined LINUX || DARWIN || BSD
 	if ((lfd = open(str, O_RDWR | O_CREAT, 0666)) < 0)
