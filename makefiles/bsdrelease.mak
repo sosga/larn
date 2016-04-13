@@ -3,4 +3,4 @@ LIBS= -Os -pipe -Wall -fomit-frame-pointer -ansi -std=gnu99 -DBSD -DMULTIPLE_SCO
 DEPS=../src/includes/*.h
 STRIP_BINARY=yes
 larn: $(DEPS) ../src/*.c
-	$(CC) ../src/*.c -o larn13_bsd $(LIBS)
+	$(CC) ../src/*.c -o ../larn13_bsd $(LIBS)
