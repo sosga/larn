@@ -1,19 +1,19 @@
 # RL_M
-I am the official maintainer of Larn (12.5 +) and official maintainer of my XRogue fork (8.0.5 +).
+I am the official maintainer of Larn and official maintainer of my XRogue fork (8.0.5 +).
 
 <b>Updates:</b><br\>
-My BSD computer has gone up in flames (not literally) but it had a hard drive failure (eMMC).  This was my only BSD machine and was used to compile Larn for BSD systems.  In future builds, Larn will be built using a virualbox instance of Dragonfly BSD, I doubt it will cause problems but if any bugs do arise from not testing on 'bare metal' I won't be able to reproduce or fix.  From Larn 13.2 (future release) all BSD builds will be on 'best efforts'.
+I've been reconfiguring my build setup, for practical reasons and to create a more stable build process for the releases.  BSD (FreeBSD) is my main operating system, I switched from Dragonfly because it makes sense, more people use FreeBSD and so it is more widely available.  I've also switched compilers, I now use clang on BSD, OS X and Windows.  I will leave GCC on GNU/Linux so as to catch warnings that are not visible using clang.
 
 <b>Code:</b><br \>
 Latest SNAPSHOT source code for Larn is in a separate branch (Larn-SNAPSHOT).  There is the full complete code to build releases from, right from my local trunk.  XRogue will have a branch named XRogue-SNAPSHOT (release is when it is ready).
 
 <b>Releases:</b><br \>
-I will do a full release for every MAJOR version.  A full release includes binaries for all my officially supported platforms:
+I will do a full release for every MAJOR version.  They will be 64bit only except the Windows build, which is a 32bit version.  A full release includes binaries for all my officially supported platforms:
 
-1. GNU/Linux (64bit only)
-2. OS X
-3. Dragonfly BSD
-4. Windows (32bit only)
+1. GNU/Linux (Ubuntu 16.04)
+2. OS X (10.10 +) compatible
+3. FreeBSD (10.3)
+4. Windows (32bit Windows 8.1)
 
 These will come with documentation and required files.  These releases will contain major functionality changes and improvements.<br \>
 
@@ -29,7 +29,7 @@ On GNU/Linux install the ncurses devel package and gcc, make etc.  Then do a 'ma
 
 On OSX this is a bit more complicated.  Open a terminal and type gcc.  This will prompt to install the cmdline tools.  Then grab the latest version of ncurses6 and compile it.  Do a make install and then you are ready to make Larn with 'make -f darwinrelease.mak'.
 
-On Dragonfly BSD all required dependencies are already installed in the base system.  Simply doing 'make -f bsdrelease.mak' will build the binary.
+On FreeBSD all required dependencies are already installed in the base system.  Simply doing 'make -f bsdrelease.mak' will build the binary.
 
 <b>License:</b><br \>
 I have found Noah Morgan's original License from 1986 in a usenet archive pertaining to Larn.
@@ -51,9 +51,6 @@ I am the only one who does all the releases, code changes and support.  I must l
 
 <b>Why 64bit only for *nix systems?</b><br \>
 OS X and DragonflyBSD are 64bit only, 32bit support was dropped for these long ago.  It won't make sense for me to support 32bit and 64bit just for GNU/Linux, so all will be 64bit only.  Windows is still 32bit only to 'keep everyone happy' as it will be by far the most popular binary.
-
-<b>Why Dragonfly BSD and not (BSD NAME)?</b><br \>
-Because out of all the BSD's, Dragonfly BSD is very modern.  It has modern compilers, packages and design.  If you're using a different BSD, you'll need to build from source.
 
 <b>No SYSVR4 compatible Support?</b><br \>
 No, because the userbase would be so tiny, nobody would be using my binaries so the effort doesn't make sense.  Plus these are not free to use.  OpenIndiana (Illumos kernel) would be closest but they don't include a compiler and my network hardware is not supported.
