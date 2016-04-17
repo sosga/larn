@@ -10,7 +10,7 @@ Latest SNAPSHOT source code for Larn is in a separate branch (Larn-SNAPSHOT).  T
 <b>Releases:</b><br \>
 I will do a full release for every MAJOR version.  They will be 64bit only except the Windows build, which is a 32bit version.  A full release includes binaries for all my officially supported platforms:
 
-1. GNU/Linux (Ubuntu 16.04)
+1. GNU/Linux (CRUX 3.2)
 2. OS X (10.10 +) compatible
 3. FreeBSD (10.3)
 4. Windows (32bit Windows 8.1)
