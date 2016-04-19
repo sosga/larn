@@ -25,11 +25,11 @@ Raise bugs in the issue tab.  Please tell me your platform, what you were doing 
 <b>Building:</b><br \>
 On Windows, download TDM-GCC 64bit.  Install it completely into your path and then navigate to the directory where you unpacked the Larn-SNAPSHOT code and do 'mingw32-make -f mingwinrelease.mak'.  PDCurses is included but is compiled only for 64bit.
 
-On GNU/Linux install the ncurses devel package and gcc, make etc.  Then do a 'make -f gnulinuxrelease.mak'.
+On GNU/Linux install the ncurses devel package and gcc, make etc.  Then do a 'make -f makefile.nix.debug (or .release)'.
 
-On OSX this is a bit more complicated.  Open a terminal and type gcc.  This will prompt to install the cmdline tools.  Then grab the latest version of ncurses6 and compile it.  Do a make install and then you are ready to make Larn with 'make -f darwinrelease.mak'.
+On OSX this is a bit more complicated.  Open a terminal and type gcc.  This will prompt to install the cmdline tools.  Then grab the latest version of ncurses6 and compile it.  Do a make install and then you are ready to make Larn with 'make -f makefile.nix.debug (or .release)'.
 
-On FreeBSD all required dependencies are already installed in the base system.  Simply doing 'make -f bsdrelease.mak' will build the binary.
+On FreeBSD all required dependencies are already installed in the base system.  Simply doing 'make -f makefile.nix.debug (or .release)' will build the binary.
 
 <b>License:</b><br \>
 I have found Noah Morgan's original License from 1986 in a usenet archive pertaining to Larn.
