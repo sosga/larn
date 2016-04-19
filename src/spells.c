@@ -1153,6 +1153,9 @@ dirsub (int *x, int *y)
 	  i++;
 	case 'j':
 	  i++;
+/* Added an ESC. -Gibbon */
+	case '\33':
+		drawscreen();
 	  goto out;
 	};
     }

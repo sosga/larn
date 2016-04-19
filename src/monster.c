@@ -443,7 +443,7 @@ hitplayer (int x, int y)
 lflushall();
 #endif
 
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 fflush(NULL);
 #endif 
 	    return;
@@ -467,7 +467,7 @@ fflush(NULL);
 lflushall();
 #endif
 
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 fflush(NULL);
 #endif 
 	}

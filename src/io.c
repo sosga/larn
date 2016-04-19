@@ -73,7 +73,7 @@
 #include "includes/larnfunc.h"
 #include "includes/ansiterm.h"
 
-#if defined DARWIN || BSD || SOLARIS
+#if defined NIX
 #include <sys/filio.h>
 #endif
 
@@ -375,7 +375,7 @@ lgetc (void)
 #if defined WINDOWS
 	if ((i = _read(fd, inbuffer, MAXIBUF)) <= 0)
 #endif
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 	if ((i = read(fd, inbuffer, MAXIBUF)) <= 0)
 #endif
     {
@@ -439,7 +439,7 @@ lrfill (char *adr, int num)
 #if defined WINDOWS
 	if (_read(fd, adr, num) != num)
 #endif
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 	if (read(fd, adr, num) != num)
 #endif
 		fprintf (stderr, "error reading from input file\n");
@@ -552,7 +552,7 @@ lcreat (char *str)
 #if defined WINDOWS
 	if ((lfd = _creat(str, _S_IWRITE)) < 0)
 #endif
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 	if ((lfd = open(str, O_RDWR | O_CREAT, 0666)) < 0)
 #endif
 	{
@@ -586,7 +586,7 @@ lopen (char *str)
 #if defined WINDOWS
 	if ((fd = _open(str, 0)) < 0)
 #endif
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 	if ((fd = open(str, 0)) < 0)
 #endif
     {
@@ -620,7 +620,7 @@ lappend (char *str)
 #if defined WINDOWS
 	if ((lfd = _open(str, 2)) < 0)
 #endif
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 	if ((lfd = open(str, 2)) < 0)
 #endif
     {
@@ -631,7 +631,7 @@ lappend (char *str)
   _setmode (lfd, O_BINARY);
   _lseek (lfd, 0L, 2);		/* seek to end of file */
 #endif
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 	lseek (lfd, 0L, 2);		/* seek to end of file */
 #endif
   return lfd;
@@ -650,7 +650,7 @@ lrclose (void)
 #if defined WINDOWS
 		_close(fd);
 #endif
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 		close(fd);
 #endif
     }
@@ -672,7 +672,7 @@ lwclose (void)
 #if defined WINDOWS
 		_close(lfd);
 #endif
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 		close(lfd);
 #endif
     }
@@ -903,7 +903,7 @@ lflush (void)
 #if defined WINDOWS
  	if (_write(lfd, lpbuf, lpoint) != lpoint)
 #endif
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
  	if (write(lfd, lpbuf, lpoint) != lpoint)
 #endif
 	    {

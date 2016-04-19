@@ -595,9 +595,10 @@ open_something (void)
     case OCLOSEDDOOR:
       act_open_door (x, y);
       break;
-
+		
+/* This message is rephrased to handle other scenarios. -Gibbon */
     default:
-      lprcat ("You can't open that!");
+      lprcat ("\nNothing happens..");
       break;
     }
 }

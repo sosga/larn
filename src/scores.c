@@ -213,7 +213,7 @@ makeboard (void)
 	Windows won't even need to set permissions anyway so no need for 'cross platform' here.
 	Sheesh.. ~Gibbon
 */
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
   chmod(scorefile, 0666);
 #endif
   return(0);
@@ -980,7 +980,7 @@ getplid (char *nam)
 		return (-1);		/* can't make it */
 		 _close (fd7);
 #endif
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 	if ((fd7 = open(playerids, S_IWUSR)) < 0)
 		return (-1);		/* can't make it */
 		close (fd7);

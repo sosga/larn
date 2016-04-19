@@ -7,7 +7,7 @@
 #include "libs/win/curses.h"
 #endif
 
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 #include <curses.h>
 #endif
 
@@ -182,12 +182,12 @@ ansiterm_getche (void)
   noecho ();
   return key;
 }
-
+/* wgetch() is the modern way. -Gibbon */
 static int
 llgetch (void)
 {
   int key;
-  key = getch();
+  key = wgetch(stdscr);
 
 #ifdef WINDOWS
   if (PDC_get_key_modifiers () & PDC_KEY_MODIFIER_SHIFT)

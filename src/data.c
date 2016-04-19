@@ -6,7 +6,7 @@
 #include "includes/moreobj.h"
 
 #define VER    13
-#define SUBVER  2
+#define SUBVER  3
 /*
 classname[cdesc[LEVEL]-1] gives the correct name of the players experience level
 */

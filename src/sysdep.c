@@ -6,7 +6,7 @@
 #include <windows.h>
 #endif
 
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 #include <time.h>
 #endif
 
@@ -16,7 +16,7 @@ void nap(int milliseconds)
     Sleep(milliseconds);
 #endif
 
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
     struct timespec tc;
     tc.tv_sec = milliseconds / 1000;
     tc.tv_nsec = (milliseconds % 1000) * 1000000;

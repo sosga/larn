@@ -1,3 +1,16 @@
+April 18 2016
+
+1. Hardcoded help text into help.c
+2. Allowed players to escape from the 'O' command
+3. Added a function for displaying 'back to game' (like retcont)
+4. Changed some text around to make it suitable for other scenarios
+5. Radically changed the directory structure (bringing it into the 21st century)
+6. Made a new set of *nix compatible makefiles
+
+~Gibbon
+
+=============================================================================
+
 April 12 2016
 
 1. Rewrote the readboard, writeboard and makeboard functions to be standard C.

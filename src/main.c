@@ -283,7 +283,7 @@ main (int argc, char *argv[])
 lflushall();
 #endif
 
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 fflush(NULL);
 #endif 
       hitflag = hit3flag = 0;
@@ -299,7 +299,7 @@ fflush(NULL);
 lflushall();
 #endif
 
-#if defined LINUX || DARWIN || BSD
+#if defined NIX
 fflush(NULL);
 #endif 
 	  nomove = 0;
@@ -510,6 +510,12 @@ parse (void)
 	  yrepcount = 0;
 	  drink_fountain ();
 	  return;
+	  
+	case '?':
+		yrepcount=0;	
+		display_help_text();
+		nomove = 1;
+		return;	/*give the help screen*/
 
 	case 'E':		/* Enter a building */
 	  yrepcount = 0;
