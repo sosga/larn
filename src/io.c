@@ -74,10 +74,6 @@
 #include "includes/ansiterm.h"
 
 #if defined NIX
-#include <sys/filio.h>
-#endif
-
-#if defined LINUX
 #include <sys/ioctl.h>
 #ifndef FIONREAD
 #include <sys/socket.h>

@@ -52,7 +52,7 @@ ifeq ($(OS),Darwin || FreeBSD)
 	COMPILE_OPTIONS = -Os -pipe -Wall -fomit-frame-pointer -DNIX -DMULTIPLE_SCORE_ENTRY
 else
 	CC = gcc
-	COMPILE_OPTIONS = -Os -pipe -Wall -fomit-frame-pointer -ansi -std=gnu99 -DNIX -DMULTIPLE_SCORE_ENTRY -Wl,-O1
+	COMPILE_OPTIONS = -Os -pipe -Wall -fomit-frame-pointer -ansi -std=gnu99 -DNIX -DMULTIPLE_SCORE_ENTRY
 endif
 
 HEADERS = -Isrc/includes
