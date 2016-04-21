@@ -49,10 +49,10 @@ endif
 # Below is the Main makefile stuff
 ifeq ($(OS),Darwin || FreeBSD)
 	CC = clang
-	COMPILE_OPTIONS = -Os -pipe -Wall -fomit-frame-pointer -DNIX -DMULTIPLE_SCORE_ENTRY
+	COMPILE_OPTIONS = -pipe -Wall -fomit-frame-pointer -DNIX -DMULTIPLE_SCORE_ENTRY
 else
 	CC = gcc
-	COMPILE_OPTIONS = -Os -pipe -Wall -fomit-frame-pointer -ansi -std=gnu99 -DNIX -DMULTIPLE_SCORE_ENTRY
+	COMPILE_OPTIONS = -pipe -Wall -fomit-frame-pointer -ansi -std=gnu99 -DNIX -DMULTIPLE_SCORE_ENTRY
 endif
 
 HEADERS = -Isrc/includes

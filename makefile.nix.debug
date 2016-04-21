@@ -49,10 +49,10 @@ endif
 # Below is the Main makefile stuff
 ifeq ($(OS),Darwin || FreeBSD)
 	CC = clang
-	COMPILE_OPTIONS = -O -pipe -Wall -Wextra -ansi -pedantic -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wdeclaration-after-statement -Wshadow -Wmissing-declarations -Wold-style-definition -Wredundant-decls -g -D_FORTIFY_SOURCE=2 -DDEBUG -DNIX -DMULTIPLE_SCORE_ENTRY
+	COMPILE_OPTIONS = -pipe -Wall -Wextra -ansi -pedantic -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wdeclaration-after-statement -Wshadow -Wmissing-declarations -Wold-style-definition -Wredundant-decls -g -D_FORTIFY_SOURCE=2 -DDEBUG -DNIX -DMULTIPLE_SCORE_ENTRY
 else
 	CC = gcc
-	COMPILE_OPTIONS = -O -g -pipe -Wall -Wextra -ansi -std=gnu99 -pedantic -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wdeclaration-after-statement -Wshadow -Wmissing-declarations -Wold-style-definition -Wredundant-decls -g -D_FORTIFY_SOURCE=2 -DDEBUG -DNIX -DMULTIPLE_SCORE_ENTRY
+	COMPILE_OPTIONS = -g -pipe -Wall -Wextra -ansi -std=gnu99 -pedantic -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wdeclaration-after-statement -Wshadow -Wmissing-declarations -Wold-style-definition -Wredundant-decls -g -D_FORTIFY_SOURCE=2 -DDEBUG -DNIX -DMULTIPLE_SCORE_ENTRY
 endif
 
 HEADERS = -Isrc/includes
