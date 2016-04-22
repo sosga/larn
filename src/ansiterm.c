@@ -3,14 +3,7 @@
 * to Curses API calls
 */
 
-#if defined WINDOWS
-#include "libs/win/curses.h"
-#endif
-
-#if defined NIX
 #include <curses.h>
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>

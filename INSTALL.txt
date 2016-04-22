@@ -9,11 +9,14 @@ On a *NIX system (BSD, OS X etc..)
 5. 'mv' or 'cp' the 'larn' binary to ../ so it is in the same directory as the 'data' folder.
 6. './larn' to execute it and play :)
 
-Obviously, without all the quotes.
-
 On Windows
 
-It's not yet possible as I have not configured this yet for Windows builds.
-It won't take long, but for now use the old instructions for the makefiles below:
+You can use the CMAKE GUI on Windows or follow the *NIX instructions, replacing the commands with their Windows counterparts.
 
-Download TDM-GCC 64bit. Install it completely into your path and then navigate to the directory where you unpacked the Larn-SNAPSHOT code and do 'mingw32-make -f mingwinrelease.mak'. PDCurses is included but is compiled only for 64bit.
+1.  in the 'win' directory under src/libs copy the 2 .h files to your TDM installation directory and put them in 'include'
+2. Copy the .a library and place it in the TDM installation 'lib' directory.
+3. Configure the build (source directory is 'build' and where you want it will be the same directory that the folder 'data' is in.  Configure for whatever makefiles or build system you are using.
+4. Click on 'Generate' and then type 'mingw32-make'
+5. Double-click 'larn.exe' to play (it will be in the same directory as data anyway on Windows).
+
+Enjoy playing Larn!
