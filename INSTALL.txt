@@ -1,0 +1,19 @@
+Below are instructions on how to configure, build and install Larn.  I am assuming whoever decides to compile it themselves is capable of doing it without help.
+
+On a *NIX system (BSD, OS X etc..)
+
+1. Ensure cmake is installed on your platform of choice
+2. 'cd' into the 'build' folder and type 'cmake <whatever makefile you want> -DCMAKE_BUILD_TYPE=Debug '.' (or Release)
+3. Then type 'make'
+4. Larn will be built in the 'build' folder, cleanly.
+5. 'mv' or 'cp' the 'larn' binary to ../ so it is in the same directory as the 'data' folder.
+6. './larn' to execute it and play :)
+
+Obviously, without all the quotes.
+
+On Windows
+
+It's not yet possible as I have not configured this yet for Windows builds.
+It won't take long, but for now use the old instructions for the makefiles below:
+
+Download TDM-GCC 64bit. Install it completely into your path and then navigate to the directory where you unpacked the Larn-SNAPSHOT code and do 'mingw32-make -f mingwinrelease.mak'. PDCurses is included but is compiled only for 64bit.
