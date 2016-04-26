@@ -977,14 +977,14 @@ otradepost (void)
 
   for (;;)
     {
-      cl_dn (1, 21);
+      cursor (1, 23);
       lprcat ("\nWhat item do you want to sell to us [");
       lstandout ("escape");
       lprcat ("] ? ");
 
       /* display gold in inventory ~Gibbon */
-      cursor(1,18);
-      amtgoldtrad ();
+      cursor(1,22);
+      amtgoldtrad();
 
       i = 0;
       while ((i > 'z' || i < 'a') && i != 12 && i != '\33')
