@@ -32,7 +32,7 @@
 
 #include "includes/bill.h"
 #include "includes/larn.h"
-#include "includes/iventory.h"
+#include "includes/inventory.h"
 #include "includes/io.h"
 #include "includes/scores.h"
 #include "includes/sysdep.h"

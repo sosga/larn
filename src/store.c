@@ -28,7 +28,7 @@ olrs          larn revenue service function
 #include "includes/larnfunc.h"
 #include "includes/display.h"
 #include "includes/global.h"
-#include "includes/iventory.h"
+#include "includes/inventory.h"
 #include "includes/io.h"
 #include "includes/main.h"
 #include "includes/object.h"
@@ -895,7 +895,7 @@ otradiven (void)
 {
   int i, j;
 
-  /* Print user's iventory like bank */
+  /* Print user's inventory like bank */
   for (j = i = 0; i < 26; i++)
     if (iven[i])
       {
