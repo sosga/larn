@@ -8,7 +8,7 @@
 #include "includes/display.h"
 #include "includes/fortune.h"
 #include "includes/global.h"
-#include "includes/iventory.h"
+#include "includes/inventory.h"
 #include "includes/io.h"
 #include "includes/main.h"
 #include "includes/monster.h"

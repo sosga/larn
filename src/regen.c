@@ -4,7 +4,7 @@
 #include "includes/larnfunc.h"
 #include "includes/display.h"
 #include "includes/global.h"
-#include "includes/iventory.h"
+#include "includes/inventory.h"
 #include "includes/io.h"
 #include "includes/regen.h"
 
