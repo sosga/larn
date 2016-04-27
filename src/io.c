@@ -102,7 +102,6 @@ static void tputs (const char *);
 
 static void flush_buf (void);
 
-
 /*
 *  Subroutine to set up terminal in correct mode for game
 *
@@ -988,7 +987,7 @@ lflush (void)
   flush_buf ();			/* flush real output buffer now */
 }
 
-static int index = 0;
+static int io_index = 0;
 
 /*
 * ttputch(ch)      Print one character in decoded output buffer.
@@ -997,9 +996,9 @@ static void
 ttputch (int c)
 {
 
-  outbuf[index++] = (char) c;
+  outbuf[io_index++] = (char) c;
 
-  if (index >= BUFBIG)
+  if (io_index >= BUFBIG)
     {
 
       flush_buf ();
@@ -1031,18 +1030,18 @@ tputs (const char *cp)
 static void
 flush_buf (void)
 {
-  if (index)
+  if (io_index)
     {
       if (lfd == 1)
 	{
-	  ansiterm_out (outbuf, index);
+	  ansiterm_out (outbuf, io_index);
 	}
       else
 	{
-	  write(lfd, outbuf, index);
+	  write(lfd, outbuf, io_index);
 	}
     }
-    index = 0;
+    io_index = 0;
 }
 
 /*

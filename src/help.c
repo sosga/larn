@@ -16,7 +16,8 @@
  
  */
 
-int display_help_text()
+int
+display_help_text(void)
 {
 
 	clear();
