@@ -2,7 +2,7 @@
 I am the official maintainer of Larn and official maintainer of my XRogue fork (8.0.5 +).
 
 <b>Updates:</b><br\>
-Soon some changes will be happening.  I am donating all of my existing computers (with exception to my only Windows machine) to charitable causes.  I will only have a Raspberry Pi 3 as my main computer.  Only ARMv8 GNU/Linux and eventually FreeBSD releases will be done (x86 users will need to compile from source).  Windows and Darwin (OS X) are unaffected as these are not my computers.
+Soon some changes will be happening.  I am donating all of my existing computers (with exception to my only Windows machine) to charitable causes.  I will only have a Raspberry Pi 3 as my main computer.  Only ARMv8 GNU/Linux and eventually FreeBSD releases will be done (x86 users will need to compile from source).  Darwin (OS X) is unaffected as this is not my computer.
 
 <b>Code:</b><br \>
 Latest SNAPSHOT source code for Larn is in a separate branch (Larn-SNAPSHOT).  There is the full complete code to build releases from, right from my local trunk.  XRogue will have a branch named XRogue-SNAPSHOT (release is when it is ready).
