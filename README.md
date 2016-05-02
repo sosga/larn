@@ -2,7 +2,7 @@
 I am the official maintainer of Larn and official maintainer of my XRogue fork (8.0.5 +).
 
 <b>Updates:</b><br\>
-I've been reconfiguring my build setup, for practical reasons and to create a more stable build process for the releases.  BSD (FreeBSD) is my main operating system, I switched from Dragonfly because it makes sense, more people use FreeBSD and so it is more widely available.  I've also switched compilers, I now use clang on BSD, OS X and Windows.  I will leave GCC on GNU/Linux so as to catch warnings that are not visible using clang.
+Soon some changes will be happening.  I am donating all of my existing computers (with exception to my only Windows machine) to charitable causes.  I will only have a Raspberry Pi 3 as my main computer.  Only ARMv8 GNU/Linux and eventually FreeBSD releases will be done (x86 users will need to compile from source).  Windows and Darwin (OS X) are unaffected as these are not my computers.
 
 <b>Code:</b><br \>
 Latest SNAPSHOT source code for Larn is in a separate branch (Larn-SNAPSHOT).  There is the full complete code to build releases from, right from my local trunk.  XRogue will have a branch named XRogue-SNAPSHOT (release is when it is ready).
@@ -43,20 +43,3 @@ Feel free to fork, fix a bug or implement a new feature and submit a pull reques
 2. Not to radically change gameplay and / or make the game different from it's historic roots.
 3. All code submitted and accepted will be under 'Noah's License' as listed in LICENSE.txt in Larn-SNAPSHOT.  By contributing to Larn, you agree to this licensing of your code.  I would love to use a BSD style license, but it is not compatible with Noah's 'not for profit' clause.
 4. If fixing or rewriting system-dependent functions, contributors should have a good understanding of Unix-like and Windows specific features and functions.  This is required to keep Larn portable.
-
-<b>FAQ:</b><br \>
-
-<b>Why is (OS NAME) not officially supported by you?</b><br \>
-I am the only one who does all the releases, code changes and support.  I must limit myself to those systems which I have installed.
-
-<b>Why 64bit only for *nix systems?</b><br \>
-OS X and DragonflyBSD are 64bit only, 32bit support was dropped for these long ago.  It won't make sense for me to support 32bit and 64bit just for GNU/Linux, so all will be 64bit only.  Windows is still 32bit only to 'keep everyone happy' as it will be by far the most popular binary.
-
-<b>No SYSVR4 compatible Support?</b><br \>
-No, because the userbase would be so tiny, nobody would be using my binaries so the effort doesn't make sense.  Plus these are not free to use.  OpenIndiana (Illumos kernel) would be closest but they don't include a compiler and my network hardware is not supported.
-
-<b>When is the next release?</b><br \>
-When it's ready.
-
-<b>Why do you use the GNU/Linux naming convention?</b><br \>
-Because RMS is correct.  Linux is just a kernel and without GNU userland and utils it would be pretty much useless.
