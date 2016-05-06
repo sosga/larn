@@ -57,10 +57,18 @@ static int dndcount = 0, dnditm = 0;
 static int
 amtgoldtrad(void)
 {
-  lprintf ("You have %-6d gold pieces.", (int) cdesc[GOLD]);
-  return 0;
+	lprintf ("You have %-6d gold pieces.", (int) cdesc[GOLD]);
+	return(0);
 }
-
+/*Fix for bug #23 ~Gibbon*/
+static int
+lrs_welcome_text(void)
+{
+	clear();
+	resetscroll();
+	lprintf("Welcome to the Larn Revenue Service\n");
+	return(0);
+}
 /* number of items in the dnd inventory table   */
 #define MAXITM 83
 
@@ -745,7 +753,7 @@ obanksub (void)
 /* Cleaning up the awful UI here for the text. -Gibbon */
 
 	cursor(1,12);
-  	lprintf("Account Summary");
+  	lprintf("Account Summary:");
 	cursor(1,14);
   	lprintf("Gold in Bank Account");
 	cursor (1, 15);
@@ -1119,6 +1127,10 @@ cnsitm (void)
 
 /*
 *  for the Larn Revenue Service
+*
+*  I have cleaned this up and extended it with reusable functions
+*  with exception of lrs_welcome_text() which simply clears the 
+*  screen and redraws. ~Gibbon.
 */
 void
 olrs (void)
@@ -1126,29 +1138,19 @@ olrs (void)
   int i, first;
   int amt;
 
+  lrs_welcome_text();
   /* disable signals */
   first = 1;
-
-  clear ();
-  resetscroll ();
-  cursor (1, 4);
-
-  lprcat ("Welcome to the Larn Revenue Service district office.  "
-	  "How can we help you?");
-
   for (;;)
     {
-
       if (first)
 	{
-
 	  first = 0;
-
+	  /* this is gonna go at somepoint. ~Gibbon*/
 	  goto nxt;
 	}
-
-      setscroll ();
-      cursors ();
+      setscroll();
+      cursor(1,21);
       lprcat ("\n\nYour wish? [(");
       lstandout ("p");
       lprcat (") pay taxes, or ");
@@ -1156,64 +1158,55 @@ olrs (void)
       lprcat ("]  ");
       yrepcount = 0;
       i = 0;
-
+      
       while (i != 'p' && i != '\33')
-	{
-
-	  i = ttgetch ();
-	}
-
+      {
+      	i = ttgetch ();
+      }
       switch (i)
-	{
-
-	case 'p':
-	  lprcat ("pay taxes\nHow much? ");
-	  amt = readnum ((int) cdesc[GOLD]);
-
+      {
+      case 'p':
+	  	lprcat ("pay taxes\nHow much? ");
+	  	amt = readnum ((int) cdesc[GOLD]);
+	  	
 	  if (amt > cdesc[GOLD])
 	    {
 	      lprcat ("  You don't have that much.\n");
 	    }
 	  else
 	    {
+	    	/*Fix for bug #23 ~Gibbon*/
 	      cdesc[GOLD] -= paytaxes ((int) amt);
+		  lrs_welcome_text();
 	    }
 	  break;
-
+	  
 	case '\33':
-	  setscroll ();
-	  drawscreen ();
-	  return;
-	};
+		setscroll();
+	  	drawscreen();
+	  	return;
+	  };
 
     nxt:
       cursor (1, 6);
-
       if (outstanding_taxes > 0)
-	{
-
-	  lprintf ("You presently owe %d gp in taxes.  ",
+      {
+      	lprintf ("You presently owe %d gp in taxes.  ",
 		   (int) outstanding_taxes);
-
-	}
-      else
-	{
-
+	  }
+	  else
+	  {
 	  lprcat ("You do not owe us any taxes.           ");
-	}
-
+	  }
+	  
       cursor (1, 8);
-
       if (cdesc[GOLD] > 0)
-	{
-
-	  lprintf ("You have %6d gp.    ", (int) cdesc[GOLD]);
-
-	}
+      {
+      	amtgoldtrad();
+      }
       else
-	{
-
-	  lprcat ("You have no gold pieces.  ");
+      {
+	  	lprcat ("You have no gold pieces.  ");
+	  }
 	}
-    }
 }

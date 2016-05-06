@@ -495,13 +495,15 @@ void
 oteleport (int err)
 {
   int tmp;
-
   if (err)
-  	if (rnd (151) < 3)
-  	{
-  		lprcat ("\nYou died by teleporting into solid rock.");
-  		died (264);	/* stuck in a rock */
-    }
+	if (rnd (151) < 3)
+	{
+		/* Fix for bug #10 ~Gibbon*/
+		cursor(1,19);
+		lprcat("\nYou died by teleporting into solid rock.");
+		nap(4000);
+  		died(264);	/* stuck in a rock */
+	}
   cdesc[TELEFLAG] = 1;		/* show ?? on bottomline if been teleported    */
   if (level == 0)
     tmp = 0;

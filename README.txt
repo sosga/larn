@@ -1,6 +1,6 @@
 
 
-                 LARN version 13.3.0
+                 LARN version 13.4.0
                  -------------------------------------------
 
 
@@ -100,7 +100,7 @@
 	 roguebasin. Edwin Denicholas took 12.4 alpha 2 and caressed it into
 	 12.4.3 for Win32.
 
-	Gibbon has implemented many fixes and taken it to 13.3.0.  Which is
+	Gibbon has implemented many fixes and taken it to 13.4.0.  Which is
 	multi-platform and fixes many errors and bugs.
 
      Other editions of Larn have been distributed by others, namely
