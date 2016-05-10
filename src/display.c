@@ -268,33 +268,36 @@ static struct bot_side_def bot_data[] = {
 static void
 botside (void)
 {
-  int i, idx;
-
-  for (i = 0; i < 17; i++)
-    {
-      idx = bot_data[i].typ;
-      if ((always) || (cdesc[idx] != cbak[idx]))
+	int i, idx;
+	for (i = 0; i < 17; i++)
 	{
-	  if ((always) || (cbak[idx] == 0))
-	    {
-	      if (cdesc[idx])
+		idx = bot_data[i].typ;
+		if ((always) || (cdesc[idx] != cbak[idx]))
 		{
-		  cursor (70, i + 1);
-		  lprcat (bot_data[i].string);
+			if ((always) || (cbak[idx] == 0))
+			{
+				if (cdesc[idx])
+				{
+					cursor (70, i + 1);
+					lprcat (bot_data[i].string);
+				
+					/*Reset cursor position. ~Gibbon */
+					cursors();
+				}
+			}
+			else if (cdesc[idx] == 0)
+			{
+				cursor (70, i + 1);
+				lprcat ("          ");
+				
+				/*Reset cursor position. ~Gibbon */
+				cursors();
+			}
+			cbak[idx] = cdesc[idx];
 		}
-	    }
-	  else if (cdesc[idx] == 0)
-	    {
-	      cursor (70, i + 1);
-	      lprcat ("          ");
-	    }
-	  cbak[idx] = cdesc[idx];
 	}
-    }
-  always = 0;
+	always = 0;
 }
-
-
 
 /*
 *  subroutine to draw only a section of the screen
