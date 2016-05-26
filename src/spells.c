@@ -191,7 +191,8 @@ speldamage (int x)
 
     case 3:
       i = rnd (3) + 1;
-      msg = "  While the %s slept, you smashed it %d times";
+      /*Fix for bug #24 added newlines to the 'msg' for web and sleep spells. ~Gibbon*/
+      msg = "\nWhile the %s slept, you smashed it %d times";
     ws:
       direct (x, fullhit (i), msg, i);	/*    sleep   */
       return;
@@ -209,7 +210,7 @@ speldamage (int x)
 
     case 6:
       i = rnd (3) + 2;
-      msg = "  While the %s is entangled, you hit %d times";
+      msg = "\nWhile the %s is entangled, you hit %d times";
       goto ws;			/* web */
 
     case 7:

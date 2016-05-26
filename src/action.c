@@ -8,7 +8,7 @@ I will exercise my copyright.
 
 Other than this case, enjoy it!
 
-For more information, see LICENSE.txt in this same folder location.
+For more information, see LICENSE.txt in the 'doc' folder.
 */
 
 /*
@@ -441,7 +441,7 @@ act_donation_pray (void)
 	  if (k < temp || k < rnd (50))
 	    {
 	      /* added by ~Gibbon */
-	      lprcat ("You have offended your God.");
+	      lprcat ("You have offended the Gods.");
 	      createmonster (makemonst (level + 1));
 	      cdesc[AGGRAVATE] += 200;
 	      return;

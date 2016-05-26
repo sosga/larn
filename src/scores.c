@@ -113,7 +113,9 @@ static char *whydead[] = {
 };
 
 
-/*	Rewriting the scoring (read, write and make board functions) into plain 'ol C because the 		previous implementations were shockingly awful, messy, non-standard garbage. ~Gibbon
+/*	Rewriting the scoring (read, write and make board functions) into plain 'ol C
+	because the previous implementations were shockingly awful, messy,
+	non-standard garbage. ~Gibbon
 */
 
 
@@ -209,9 +211,9 @@ makeboard (void)
     	printf("ERROR: unable to write a new scoreboard\n");
     	return(-1);
   	}
-/* Why bother redefining a function?  Just use standard *NIX functions and be done with it.
-	Windows won't even need to set permissions anyway so no need for 'cross platform' here.
-	Sheesh.. ~Gibbon
+/* Why bother redefining a function?  Just use standard *NIX functions
+	and be done with it. Windows won't even need to set permissions anyway
+	so no need for 'cross platform' here. Sheesh.. ~Gibbon
 */
 #if defined NIX
   chmod(scorefile, 0666);

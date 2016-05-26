@@ -1,3 +1,11 @@
+May 26 2016
+
+1. Fixed a bug for web and sleep spells not appearing cleanly on a newline.
+
+~Gibbon
+
+=============================================================================
+
 April 27 2016
 
 1. Fixed some warnings from debug builds
