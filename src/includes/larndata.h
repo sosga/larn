@@ -45,17 +45,13 @@ struct monst
   unsigned long experience;
 };
 
-
 /*  this is the structure definition for the items in the dnd store */
 struct _itm
 {
-
   int price;
-
   int obj;
   int arg;
   int qty;
-
 };
 
 
@@ -76,11 +72,8 @@ extern int course[];
 extern int item[MAXX][MAXY], iven[], know[MAXX][MAXY];
 
 extern char aborted[];
-
 extern char *classname[];
-
 extern char lastmonst[];
-
 extern char *lpnt, *lpbuf, *lpend, *inbuffer;
 
 extern int level;
@@ -89,17 +82,9 @@ extern int nch[], ndgg[], nlpts[], nomove;
 extern int nplt[], nsw[];
 extern int potprob[];
 
-
-
 extern char monstnamelist[];
-
-
-
-
 extern char *levelname[];
-
 extern char objnamelist[];
-
 extern char logname[];
 
 extern char larnlevels[];
@@ -108,9 +93,6 @@ extern char fortfile[];
 extern char helpfile[];
 extern char logfile[];
 extern char playerids[];
-
-
-
 
 extern int predostuff, restorflag;
 extern char savefilename[];

@@ -1296,7 +1296,7 @@ ohome (void)
 	  iven[i] = 0;		/* remove the potion of cure
 				 * dianthroritis from
 				 * inventory */
-	  clear ();
+	  screen_clear();
 	  lprcat
 	    ("Congratulations.  You found a potion of cure dianthroritis.\n");
 	  lprcat
@@ -1328,7 +1328,7 @@ ohome (void)
 	}
   for (;;)
     {
-      clear ();
+      screen_clear();
       lprintf ("Welcome home %s.  Latest word from the doctor is not good.\n",
 	       logname);
 

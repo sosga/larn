@@ -23,7 +23,7 @@ static int
 letter1 (int gold)
 {
   resetscroll ();
-  clear ();
+  screen_clear();
 
   lstandout ("From:");
   lprcat ("  the LRS (Larn Revenue Service)\n");
@@ -58,7 +58,7 @@ static int
 letter2 (void)
 {
   resetscroll ();
-  clear ();
+  screen_clear();
 
   lstandout ("From:");
   lprcat ("  His Majesty King Wilfred of Larndom\n");
@@ -85,7 +85,7 @@ static int
 letter3 (void)
 {
   resetscroll ();
-  clear ();
+  screen_clear();
 
   lstandout ("From:");
   lprcat ("  Count Endelford\n");
@@ -108,7 +108,7 @@ static int
 letter4 (void)
 {
   resetscroll ();
-  clear ();
+  screen_clear();
 
   lstandout ("From:");
   lprcat ("  Mainair, Duke of Larnty\n");
@@ -134,7 +134,7 @@ static int
 letter5 (void)
 {
   resetscroll ();
-  clear ();
+  screen_clear();
 
   lstandout ("From:");
   lprcat ("  St. Mary's Children's Home\n");
@@ -161,7 +161,7 @@ static int
 letter6 (void)
 {
   resetscroll ();
-  clear ();
+  screen_clear();
 
   lstandout ("From:");
   lprcat ("  The National Cancer Society of Larn\n");

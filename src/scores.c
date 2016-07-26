@@ -830,7 +830,7 @@ invalid:
   if (scorerror == 0)
     {
       lflush ();
-      clear ();
+      screen_clear();
       resetscroll ();
       showscores ();		/* if we updated the scoreboard */
       cursors ();

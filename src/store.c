@@ -64,7 +64,7 @@ amtgoldtrad(void)
 static int
 lrs_welcome_text(void)
 {
-	clear();
+	screen_clear();
 	resetscroll();
 	lprintf("Welcome to the Larn Revenue Service\n");
 	return(0);
@@ -236,7 +236,7 @@ dndstore (void)
   int i;
 
   dnditm = 0;
-  clear ();
+  screen_clear();
   dnd_2hed ();
 
   if (outstanding_taxes > 0)
@@ -289,7 +289,7 @@ dndstore (void)
 
       if (i == 12)
 	{
-	  clear ();
+	  screen_clear();
 	  dnd_2hed ();
 	  dnd_hed ();
 	}
@@ -454,7 +454,7 @@ static void
 sch_hed (void)
 {
 
-  clear ();
+  screen_clear();
   lprcat
     ("The College of Larn offers the exciting opportunity of higher education to\n");
   lprcat
@@ -654,7 +654,7 @@ obank2 (void)
 static void
 banktitle (char *str)
 {
-  clear ();
+  screen_clear();
   lprcat (str);
   if (outstanding_taxes > 0)
     {
@@ -881,7 +881,7 @@ function for the trading post
 static void
 otradhead (void)
 {
-  clear ();
+  screen_clear();
   lprcat
     ("Welcome to the Larn Trading Post.  We buy items that explorers no longer find\n");
   lprcat
@@ -1008,7 +1008,7 @@ otradepost (void)
 	{
 	  if (i == 12)
 	    {
-	      clear ();
+	      screen_clear();
 	      otradhead ();
 	      otradiven ();
 	      break;		/* leave inner while */
@@ -1096,7 +1096,7 @@ otradepost (void)
 
 	      /* clear and display functions again so gold is re-calculated 
 	       * part of feature request from hymie0. ~Gibbon */
-	      clear ();
+	      screen_clear();
 	      otradhead ();
 	      otradiven ();
 	    }
@@ -1104,7 +1104,7 @@ otradepost (void)
 	    {
 
 	      /* refresh screen when saying no ~Gibbon */
-	      clear ();
+	      screen_clear();
 	      otradhead ();
 	      otradiven ();
 	    }

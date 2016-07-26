@@ -1,3 +1,4 @@
+#include <curses.h>
 #include <stdlib.h>
 #include <string.h>
 #include "includes/action.h"
@@ -101,28 +102,79 @@ bot_linex (void)
     {
       regen_bottom = FALSE;
       cursor (1, 18);
-      if (cdesc[SPELLMAX] > 99)
-	lprintf ("Spells:%3d(%3d)", (int) cdesc[SPELLS],
+      if (cdesc[SPELLMAX] > 99) {
+	attron(COLOR_PAIR(3));
+	lprintf ("Spells:");
+	attroff(COLOR_PAIR(3));
+	lprintf("%3d(%3d)", (int) cdesc[SPELLS],
 		 (int) cdesc[SPELLMAX]);
-      else
-	lprintf ("Spells:%3d(%2d) ", (int) cdesc[SPELLS],
+      } else {
+	attron(COLOR_PAIR(1));
+	lprintf ("Spells:");
+	attroff(COLOR_PAIR(1));
+	lprintf("%3d(%2d) ", (int) cdesc[SPELLS],
 		 (int) cdesc[SPELLMAX]);
-      lprintf (" AC: %-3d  WC: %-3d  Level", (int) cdesc[AC],
-	       (int) cdesc[WCLASS]);
-      if (cdesc[LEVEL] > 99)
+	}
+	attron(COLOR_PAIR(1));
+      	lprintf(" AC:");
+	attroff(COLOR_PAIR(1));
+	lprintf(" %-3d ",(int) cdesc[AC]);
+	attron(COLOR_PAIR(1));
+	lprintf(" WC:");
+	attroff(COLOR_PAIR(1));
+	lprintf(" %-3d ",(int) cdesc[WCLASS]);
+	attron(COLOR_PAIR(1));
+	lprintf("Level:");
+	attroff(COLOR_PAIR(1));
+      if (cdesc[LEVEL] > 99) {
 	lprintf ("%3d", (int) cdesc[LEVEL]);
-      else
+      } else {
 	lprintf (" %-2d", (int) cdesc[LEVEL]);
+	}
       /*debugtmp = cdesc[LEVEL]; */
-      lprintf (" Exp: %-9d %s\n", (int) cdesc[EXPERIENCE],
+	attron(COLOR_PAIR(1));
+      lprintf (" Exp:");
+	attroff(COLOR_PAIR(1));
+	 lprintf(" %-9d %s\n", (int) cdesc[EXPERIENCE],
 	       classname[cdesc[LEVEL] - 1]);
-
-      lprintf ("HP: %3d(%3d) STR=%-2d INT=%-2d ", (int) cdesc[HP],
-	       (int) cdesc[HPMAX], (int) (cdesc[STRENGTH] + cdesc[STREXTRA]),
-	       (int) cdesc[INTELLIGENCE]);
-      lprintf ("WIS=%-2d CON=%-2d DEX=%-2d CHA=%-2d LV:", (int) cdesc[WISDOM],
-	       (int) cdesc[CONSTITUTION], (int) cdesc[DEXTERITY],
-	       (int) cdesc[CHARISMA]);
+	if (cdesc[HP] < 30) {
+	attron(COLOR_PAIR(3));
+	lprintf("HP:");
+	attroff(COLOR_PAIR(3));
+	lprintf(" %3d(%3d)",(int) cdesc[HP],(int) cdesc[HPMAX]);
+	} else {
+	attron(COLOR_PAIR(1));
+	lprintf("HP:");
+	attroff(COLOR_PAIR(1));
+	lprintf(" %3d(%3d)",(int) cdesc[HP],(int) cdesc[HPMAX]);
+	}
+	attron(COLOR_PAIR(1));
+	lprintf(" STR:");
+	attroff(COLOR_PAIR(1));
+	lprintf("%-2d ",(int) (cdesc[STRENGTH] + cdesc[STREXTRA])); 
+	attron(COLOR_PAIR(1));
+	lprintf("INT:");
+	attroff(COLOR_PAIR(1));
+	lprintf("%-2d ",(int) cdesc[INTELLIGENCE]);
+	attron(COLOR_PAIR(1));
+      	lprintf ("WIS:");
+	attroff(COLOR_PAIR(1));
+	lprintf("%-2d ",(int) cdesc[WISDOM]);
+	attron(COLOR_PAIR(1));
+	lprintf("CON:");
+	attroff(COLOR_PAIR(1));
+	lprintf("%-2d ",(int) cdesc[CONSTITUTION]);
+	attron(COLOR_PAIR(1));
+	lprintf("DEX:");
+	attroff(COLOR_PAIR(1));
+	lprintf("%-2d ",(int) cdesc[DEXTERITY]);
+	attron(COLOR_PAIR(1));
+	lprintf("CHA:");
+	attroff(COLOR_PAIR(1));
+	lprintf("%-2d ",(int) cdesc[CHARISMA]);
+	attron(COLOR_PAIR(1));
+	lprintf("LV:");
+	attroff(COLOR_PAIR(1));
 
       if ((level == 0) || (wizard))
 	cdesc[TELEFLAG] = 0;
@@ -130,7 +182,10 @@ bot_linex (void)
 	lprcat (" ?");
       else
 	lprcat (levelname[level]);
-      lprintf ("  Gold: %-6d", (int) cdesc[GOLD]);
+	attron(COLOR_PAIR(1));
+      lprintf ("  Gold:  ");
+	attroff(COLOR_PAIR(1));
+	lprintf("%-6d", (int) cdesc[GOLD]);
       always = 1;
       botside ();
       cdesc[TMP] = cdesc[STRENGTH] + cdesc[STREXTRA];
@@ -359,7 +414,7 @@ drawscreen (void)
 
       /* clear the screen */
       d_flag = 1;
-      clear ();
+      screen_clear();
 
     }
   else
@@ -462,7 +517,9 @@ drawscreen (void)
 
 	      if (i == playerx && j == playery)
 		{
+		attron(COLOR_PAIR(3));
 		  nlprc ('@');
+		attroff(COLOR_PAIR(3));
 
 		  continue;
 		}
@@ -658,13 +715,15 @@ cursor values start from 1 up
 void
 showplayer (void)
 {
-
   show1cell (oldx, oldy);
   cursor (playerx + 1, playery + 1);
+  attron(COLOR_PAIR(3));
   lprc ('@');
+  attroff(COLOR_PAIR(3));
   cursor (playerx + 1, playery + 1);
   oldx = playerx;
   oldy = playery;
+  refresh();
 }
 
 
@@ -799,7 +858,7 @@ seemagic (int arg)
   else
     {
       resetscroll ();
-      clear ();
+      screen_clear();
     }
 
   lprcat ("The magic spells you have discovered thus far:\n\n");
@@ -904,7 +963,7 @@ seepage (void)
 	{
 	  lincount = 0;
 	  more (FALSE);
-	  clear ();
+	  screen_clear();
 	}
     }
 }

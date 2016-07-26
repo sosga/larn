@@ -154,7 +154,7 @@ t_setup (int count)
     {
 
       resetscroll ();
-      clear ();
+      screen_clear();
     }
 }
 
@@ -612,7 +612,7 @@ show2 (int index)
     {
       srcount = 0;
       itemselect = more (TRUE);
-      clear ();
+      screen_clear();
     }
   return (itemselect);
 }

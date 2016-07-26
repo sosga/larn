@@ -127,6 +127,7 @@ void
 ansiterm_init (void)
 {
 	initscr();
+
 	cbreak();
 	noecho();
 	nonl();
@@ -138,6 +139,15 @@ ansiterm_init (void)
   
 /* this is so the terminal does not display in nasty grey'ish color ~Gibbon */
 	use_default_colors ();
+	
+/*Initial 'test' color pairs. ~Gibbon*/
+	init_pair(1, COLOR_CYAN, -1);
+	init_pair(2, COLOR_YELLOW, -1);
+	init_pair(3, COLOR_RED, -1);
+	
+/*Gets rid of the annoying cursor on modern terminals. ~Gibbon*/
+	curs_set(0);	
+	
 	refresh();
 	
 #ifdef WINDOWS
@@ -292,7 +302,7 @@ ansiterm_command (int ansi_cmd, const char *param1, const char *param2)
   else if (ansi_cmd == 'J')
     {
 
-      clear ();
+      clear();
 
     }
   else if (ansi_cmd == 'M')

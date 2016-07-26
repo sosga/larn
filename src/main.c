@@ -193,7 +193,7 @@ main (int argc, char *argv[])
   if (pFile != 0)		/* restore game if need to */
     {
       fclose (pFile);
-      clear ();
+      screen_clear();
       restorflag = 1;
       hitflag = 1;
       restoregame (savefilename);	/* restore last game    */
@@ -563,7 +563,7 @@ parse (void)
 	  lflush();
 	  save_mode = 1;
 	  savegame(savefilename);
-	  clear();
+	  screen_clear();
 	  lflush();
 	  wizard = 1;
 	  died(-257);		/* doesn't return */

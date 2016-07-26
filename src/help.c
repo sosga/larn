@@ -20,7 +20,7 @@ int
 display_help_text(void)
 {
 
-	clear();
+	screen_clear();
 	lstandout("Help File for Larn\n");
 	lprcat("b  move southwest          B  run southwest            A  desecrate an altar\n");
 	lprcat("c  cast a spell            C  close a door             Z  teleport yourself	\n");
@@ -44,7 +44,7 @@ display_help_text(void)
 	lprcat("w  wield a weapon          W  wear armor 									\n");
 	lprcat("y  move northwest          Y  run northwest            ^L redraw the screen	\n");
 	retcont();
-	clear();
+	screen_clear();
 	lstandout("Special Notes\n");
 	lprcat("When dropping gold, if you type '*' as your amount, all your gold gets dropped.\n");
 	lprcat("In general, typing in '*' means all of what your interested in.  This is true\n");
@@ -62,7 +62,7 @@ display_help_text(void)
 	lprcat("5 key on the Keypad is the same as \"stay here\", which really means to\n");
 	lprcat("skip your turn.");
 	retcont();
-	clear();
+	screen_clear();
 	lstandout("Explanation of the Larn scoreboard facility\n");
 	lprcat("Larn supports TWO scoreboards, one for winners, and one for deceased\n");
 	lprcat("characters.  Each player (by the name entered when you start the game)\n");

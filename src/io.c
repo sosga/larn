@@ -111,7 +111,7 @@ void
 setupvt100 (void)
 {
 
-  clear ();
+  screen_clear();
 
   setscroll ();
 
@@ -253,8 +253,6 @@ lprintf (const char *fmt, ...)
       ++p;
     }
 }
-
-
 
 /*
 *  lprint(int-integer)                send binary integer to output buffer

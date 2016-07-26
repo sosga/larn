@@ -32,7 +32,7 @@ makeplayer (void)
   int i;
 
   scbr ();
-  clear ();
+  screen_clear();
 
   /*  start player off with 15 hit points */
   cdesc[HPMAX] = cdesc[HP] = 10;
@@ -82,9 +82,9 @@ makeplayer (void)
 
   recalc ();
 
-  clear ();
+  screen_clear();
 
-  enter_name ();
+  enter_name();
 }
 
 
