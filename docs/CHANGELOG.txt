@@ -1,3 +1,14 @@
+July 26th 2016
+
+1. Finally changed the 'clear()' function which was conflicting with curses 'clear()'.
+	This is now called 'screen_clear()' to differentiate it.
+2. Cleaned up some files.
+3. Implemented initial color stuff (menu stats and player '@').
+
+~Gibbon
+
+=============================================================================
+
 May 26 2016
 
 1. Fixed a bug for web and sleep spells not appearing cleanly on a newline.
