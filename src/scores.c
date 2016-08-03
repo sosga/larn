@@ -19,13 +19,16 @@
 *  getplid(name)       Function to get players id # from id file
 */
 
-#ifdef WINDOWS
+#ifdef WINDOWS || WINDOWS_VS
 #include <io.h>
-#else
-#include <unistd.h>
-#include <fcntl.h>
 #endif
 
+#ifdef NIX
+#include <unistd.h>
+#endif
+
+#include <string.h>
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -981,6 +984,11 @@ getplid (char *nam)
 	if ((fd7 = _open(playerids, _S_IWUSR)) < 0)
 		return (-1);		/* can't make it */
 		 _close (fd7);
+#endif
+#if defined WINDOWS_VS
+		 if ((fd7 = _open(playerids, _S_IREAD)) < 0)
+			 return (-1);		/* can't make it */
+		 _close(fd7);
 #endif
 #if defined NIX
 	if ((fd7 = open(playerids, S_IWUSR)) < 0)

@@ -150,7 +150,7 @@ ansiterm_init (void)
 	
 	refresh();
 	
-#ifdef WINDOWS
+#ifdef WINDOWS || WINDOWS_VS
   PDC_save_key_modifiers (1);
 #endif
 }

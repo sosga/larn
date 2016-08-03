@@ -137,17 +137,11 @@ bot_linex (void)
 	attroff(COLOR_PAIR(1));
 	 lprintf(" %-9d %s\n", (int) cdesc[EXPERIENCE],
 	       classname[cdesc[LEVEL] - 1]);
-	if (cdesc[HP] < 30) {
-	attron(COLOR_PAIR(3));
-	lprintf("HP:");
-	attroff(COLOR_PAIR(3));
-	lprintf(" %3d(%3d)",(int) cdesc[HP],(int) cdesc[HPMAX]);
-	} else {
-	attron(COLOR_PAIR(1));
-	lprintf("HP:");
-	attroff(COLOR_PAIR(1));
-	lprintf(" %3d(%3d)",(int) cdesc[HP],(int) cdesc[HPMAX]);
-	}
+	 /*This is sill here to initially show the health stats. ~Gibbon*/
+		 attron(COLOR_PAIR(1));
+		 lprintf("HP:");
+		 lprintf(" %3d(%3d)", (int)cdesc[HP], (int)cdesc[HPMAX]);
+		 attroff(COLOR_PAIR(1));
 	attron(COLOR_PAIR(1));
 	lprintf(" STR:");
 	attroff(COLOR_PAIR(1));
@@ -262,6 +256,27 @@ called in monster.c hitplayer() and spattack()
 static void
 bot_hpx (void)
 {
+	/*This is added to update the color when hit.
+	 *It's redrawing over the top (1,19) ~Gibbon
+	 */
+	if (cdesc[HP] < 10) {
+		cursor(1, 19);
+		attron(COLOR_PAIR(1));
+		lprintf("HP:");
+		attroff(COLOR_PAIR(1));
+		attron(COLOR_PAIR(3));
+		lprintf(" %3d", (int)cdesc[HP]);
+		attroff(COLOR_PAIR(3));
+	}
+	else {
+		cursor(1, 19);
+		attron(COLOR_PAIR(1));
+		lprintf("HP:");
+		attroff(COLOR_PAIR(1));
+		attron(COLOR_PAIR(1));
+		lprintf(" %3d", (int)cdesc[HP]);
+		attroff(COLOR_PAIR(1));
+	}
   if (cdesc[EXPERIENCE] != cbak[EXPERIENCE])
     {
       recalc ();

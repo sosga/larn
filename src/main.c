@@ -1,5 +1,6 @@
 /* main.c */
 #include <stdio.h>
+
 #include "includes/larn.h"
 #include "includes/tok.h"
 #include "includes/create.h"
@@ -67,10 +68,7 @@ Cmd line format: larn [-sih] [-##]\n\
 -h   print this help text\n\
 ";
 
-
 signed int save_mode = 0;	/* 1 if doing a save game */
-
-
 
 /*
 ************
@@ -84,7 +82,8 @@ main (int argc, char *argv[])
   int hard = -1;
 
   FILE *pFile;
-
+	
+  
   /*
    *  first task is to identify the player
    */
@@ -279,7 +278,7 @@ main (int argc, char *argv[])
 	viewflag = 0;
 
       if (hit3flag)
-#if defined WINDOWS
+#if defined WINDOWS || WINDOWS_VS
 lflushall();
 #endif
 
@@ -295,7 +294,7 @@ fflush(NULL);
       while (nomove)
 	{
 	  if (hit3flag)
-#if defined WINDOWS
+#if defined WINDOWS || WINDOWS_VS
 lflushall();
 #endif
 
@@ -314,9 +313,6 @@ fflush(NULL);
 	  }
     }
 }
-
-
-
 
 /*
 * subroutine to randomly create monsters if needed
@@ -546,7 +542,7 @@ parse (void)
 
 	case 'Q':		/*  quit        */
 	  yrepcount = 0;
-	  quit ();
+	  quit();
 	  nomove = 1;
 	  return;
 

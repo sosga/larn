@@ -2,7 +2,7 @@
 #include "includes/io.h"
 #include "includes/sysdep.h"
 
-#if defined WINDOWS
+#if defined WINDOWS || WINDOWS_VS
 #include <windows.h>
 #endif
 
@@ -12,7 +12,7 @@
 
 void nap(int milliseconds)
 {
-#ifdef WINDOWS
+#ifdef WINDOWS || WINDOWS_VS
     Sleep(milliseconds);
 #endif
 

@@ -19,4 +19,6 @@ You can use the CMAKE GUI on Windows or follow the *NIX instructions, replacing 
 4. Click on 'Generate' and then type 'mingw32-make'
 5. Double-click 'larn.exe' to play (it will be in the same directory as data anyway on Windows).
 
+You can also use the 'Larn' Visual Studio project (for those who use VS).  If you do, you'll need the .libs in the src/libs/winvc directory and the includes (in the same directory).
+
 Enjoy playing Larn!

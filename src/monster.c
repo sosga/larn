@@ -439,7 +439,7 @@ hitplayer (int x, int y)
       {
 	if (spattack (monster[mster].attack, x, y))
 	  {
-#if defined WINDOWS
+#if defined WINDOWS || WINDOWS_VS
 lflushall();
 #endif
 
@@ -463,7 +463,7 @@ fflush(NULL);
 	{
 	  losehp (dam);
 	  bottomhp ();
-#if defined WINDOWS
+#if defined WINDOWS || WINDOWS_VS
 lflushall();
 #endif
 
