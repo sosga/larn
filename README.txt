@@ -1,6 +1,6 @@
 
 
-LARN version 13.5.0
+LARN version 13.7.8
 -------------------
 
 Table of contents
@@ -90,7 +90,7 @@ Someone made 12.4 through 12.4.2, possibly copx according to
 roguebasin. Edwin Denicholas took 12.4 alpha 2 and caressed it into
 12.4.3 for Win32.
 
-Gibbon has implemented many fixes and taken it to 13.5.0.  Which is
+Gibbon has implemented many fixes and taken it to 13.7.8.  Which is
 multi-platform and fixes many errors and bugs.
 
 Other editions of Larn have been distributed by others, namely
