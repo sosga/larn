@@ -35,12 +35,12 @@ On FreeBSD all required dependencies are already installed in the base system.  
 <b>License:</b><br \>
 I have found Noah Morgan's original License from 1986 in a usenet archive pertaining to Larn.
 
-See LICENSE.txt in Larn-SNAPSHOT
+See [docs/LICENSE.txt in Larn-SNAPSHOT](https://github.com/atsb/RL_M/blob/Larn-SNAPSHOT/docs/LICENSE.txt).
 
 <b>Contributing:</b><br \>
 Feel free to fork, fix a bug or implement a new feature and submit a pull request.  However there are a few things that I respectfully ask of contributors:
 
 1. A good grounding in the C language, code should be clean, correct, portable for all officially supported platforms and not throw warnings on all officially supported platforms (yes your code will be tested before it is merged).
 2. Not to radically change gameplay and / or make the game different from it's historic roots.
-3. All code submitted and accepted will be under 'Noah's License' as listed in LICENSE.txt in Larn-SNAPSHOT.  By contributing to Larn, you agree to this licensing of your code.  I would love to use a BSD style license, but it is not compatible with Noah's 'not for profit' clause.
+3. All code submitted and accepted will be under 'Noah's License' as listed in [docs/LICENSE.txt](https://github.com/atsb/RL_M/blob/Larn-SNAPSHOT/docs/LICENSE.txt) in Larn-SNAPSHOT.  By contributing to Larn, you agree to this licensing of your code.  I would love to use a BSD style license, but it is not compatible with Noah's 'not for profit' clause.
 4. If fixing or rewriting system-dependent functions, contributors should have a good understanding of Unix-like and Windows specific features and functions.  This is required to keep Larn portable.
