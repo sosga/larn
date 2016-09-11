@@ -7,7 +7,6 @@ endif()
 project(Larn)
 
 find_package(Curses REQUIRED)
-find_package(Lua REQUIRED)
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -pipe -Wall -Wextra -pedantic -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wdeclaration-after-statement -Wshadow -Wmissing-declarations -Wold-style-definition -Wredundant-decls -g -std=gnu11")
 
@@ -15,8 +14,7 @@ set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -pipe -Wall -fomit-frame-poi
 
 include_directories(../src/includes)
 include_directories( ${CURSES_INCLUDE_DIRS})
-include_directories( ${LUA_INCLUDE_DIRS})
 file(GLOB SOURCES "../src/*.c")
 add_executable(larn ${SOURCES})
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lm")
-target_link_libraries(larn ${CURSES_LIBRARIES} ${LUA_LIBRARIES} ${CMAKE_DL_LIBS})
+target_link_libraries(larn ${CURSES_LIBRARIES} ${CMAKE_DL_LIBS})

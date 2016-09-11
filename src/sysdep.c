@@ -12,7 +12,7 @@
 
 void nap(int milliseconds)
 {
-#ifdef WINDOWS || WINDOWS_VS
+#if defined WINDOWS || WINDOWS_VS
     Sleep(milliseconds);
 #endif
 

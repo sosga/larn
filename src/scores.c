@@ -19,7 +19,7 @@
 *  getplid(name)       Function to get players id # from id file
 */
 
-#ifdef WINDOWS || WINDOWS_VS
+#if defined WINDOWS || WINDOWS_VS
 #include <io.h>
 #endif
 

@@ -57,7 +57,7 @@
 #include <time.h>
 #include <ctype.h>
 
-#ifdef WINDOWS || WINDOWS_VS
+#if defined WINDOWS || WINDOWS_VS
 #include <io.h>
 #include <conio.h>
 #endif
