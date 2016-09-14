@@ -8,7 +8,6 @@
 #include "includes/scores.h"
 
 static void makemaze (int);
-static int cannedlevel (int);
 static void treasureroom (int);
 static void troom (int, int, int, int, int, int);
 static void makeobject (int);
@@ -157,12 +156,6 @@ makemaze (int k)
 	  || k == MAXLEVEL + MAXVLEVEL - 1))
     {
 
-      /* read maze from data file */
-      if (cannedlevel (k))
-	{
-
-	  return;
-	}
     }
 
   if (k == 0)
@@ -306,99 +299,6 @@ eat (int xx, int yy)
 	}
     }
 }
-
-
-
-
-/*
-*  function to read in a maze from a data file
-*
-*  Format of maze data file:  1st character = # of mazes in file (ascii digit)
-*              For each maze: 18 lines (1st 17 used) 67 characters per line
-*
-*  Special characters in maze data file:
-*
-*      #   wall            D   door            .   random monster
-*      ~   eye of larn     !   cure dianthroritis
-*      -   random object
-*/
-static int
-cannedlevel (int k)
-{
-  char *row;
-  int i, j;
-  int it, arg, mit, marg;
-
-  if (lopen (larnlevels) < 0)
-    {
-      fprintf (stderr, "Can't open the maze data file\n");
-      died (-282);
-      return (0);
-    }
-  i = lgetc ();
-  if (i <= '0')
-    {
-      died (-282);
-      return (0);
-    }
-  for (i = 18 * rund (i - '0'); i > 0; i--)
-    lgetl ();			/* advance to desired maze */
-  for (i = 0; i < MAXY; i++)
-    {
-      row = lgetl ();
-      for (j = 0; j < MAXX; j++)
-	{
-	  it = mit = arg = marg = 0;
-	  switch (*row++)
-	    {
-	    case '#':
-	      it = OWALL;
-	      break;
-	    case 'D':
-	      it = OCLOSEDDOOR;
-	      arg = rnd (30);
-	      break;
-	    case '~':
-	      if (k != MAXLEVEL - 1)
-		break;
-	      it = OLARNEYE;
-	      mit = rund (8) + DEMONLORD;
-	      marg = monster[mit].hitpoints;
-	      break;
-	    case '!':
-	      if (k != MAXLEVEL + MAXVLEVEL - 1)
-		break;
-	      it = OPOTION;
-	      arg = 21;
-	      mit = DEMONLORD + 7;
-	      marg = monster[mit].hitpoints;
-	      break;
-	    case '.':
-	      if (k < MAXLEVEL)
-		break;
-	      mit = makemonst (k + 1);
-	      marg = monster[mit].hitpoints;
-	      break;
-	    case '-':
-	      it = newobject (k + 1, &arg);
-	      break;
-	    };
-	  item[j][i] = it;
-	  iarg[j][i] = arg;
-	  mitem[j][i] = mit;
-	  hitp[j][i] = marg;
-
-#if WIZID
-	  know[j][i] = (wizard) ? KNOWALL : 0;
-#else
-	  know[j][i] = 0;
-#endif
-	}
-    }
-  lrclose ();
-  return (1);
-}
-
 
 
 /*

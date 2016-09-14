@@ -47,3 +47,5 @@ int getpassword (void);
 char getyn (void);
 
 int packweight (void);
+
+void rnd_name (void);

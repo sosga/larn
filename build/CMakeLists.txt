@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.6)
 if(WIN32)
-	add_definitions(-DWINDOWS -DMULTIPLE_SCORE_ENTRY)
+	add_definitions(-DWINDOWS -DMULTIPLE_SCORE_ENTRY -DTERM_DARK_BACKGROUND)
 	else()
-	add_definitions(-DNIX -DMULTIPLE_SCORE_ENTRY)
+	add_definitions(-DNIX -DMULTIPLE_SCORE_ENTRY -DTERM_DARK_BACKGROUND)
 endif()
 project(Larn)
 

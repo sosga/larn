@@ -25,7 +25,6 @@
 
 #define SCORENAME	"data/scorefile.dat"
 #define LOGFNAME	"data/logfile.log"
-#define LEVELSNAME	"data/mazefile.txt"
 #define FORTSNAME	"data/forts.txt"
 #define PLAYERIDS	"data/playerid.txt"
 #define DIAGFILE	"data/diagfile.txt"
@@ -105,7 +104,6 @@ main (int argc, char *argv[])
   strcpy (savefilename, SAVEFILE);
   strcpy (scorefile, SCORENAME);	/* the larn scoreboard filename */
   strcpy (logfile, LOGFNAME);	/* larn activity logging filename */
-  strcpy (larnlevels, LEVELSNAME);	/* the pre-made cave level data file */
   strcpy (fortfile, FORTSNAME);	/* the fortune data file name */
   strcpy (playerids, PLAYERIDS);	/* the playerid data file name */
 

@@ -264,9 +264,9 @@ bot_hpx (void)
 		attron(COLOR_PAIR(1));
 		lprintf("HP:");
 		attroff(COLOR_PAIR(1));
-		attron(COLOR_PAIR(3));
+		attron(COLOR_PAIR(2));
 		lprintf(" %3d", (int)cdesc[HP]);
-		attroff(COLOR_PAIR(3));
+		attroff(COLOR_PAIR(2));
 	}
 	else {
 		cursor(1, 19);
