@@ -87,7 +87,7 @@ extern char *levelname[];
 extern char objnamelist[];
 extern char logname[];
 
-extern char larnlevels[];
+extern char mazefile[];
 extern char diagfile[];
 extern char fortfile[];
 extern char helpfile[];

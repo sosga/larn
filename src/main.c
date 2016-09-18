@@ -29,6 +29,7 @@
 #define PLAYERIDS	"data/playerid.txt"
 #define DIAGFILE	"data/diagfile.txt"
 #define SAVEFILE	"data/savefile.dat"
+#define LEVELSNAME	"data/mazefile.txt"
 
 static void parse (void);
 
@@ -106,6 +107,7 @@ main (int argc, char *argv[])
   strcpy (logfile, LOGFNAME);	/* larn activity logging filename */
   strcpy (fortfile, FORTSNAME);	/* the fortune data file name */
   strcpy (playerids, PLAYERIDS);	/* the playerid data file name */
+  strcpy (mazefile, LEVELSNAME);
 
 #ifdef EXTRA
   strcpy (diagfile, DIAGFILE);

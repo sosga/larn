@@ -22,7 +22,7 @@
 char savefilename[PATHLEN];
 char scorefile[PATHLEN];
 char logfile[PATHLEN];
-char larnlevels[PATHLEN];
+char mazefile[PATHLEN];
 char fortfile[PATHLEN];
 char playerids[PATHLEN];
 

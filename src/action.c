@@ -36,6 +36,7 @@ act_open_door           open a door
 */
 
 #include <stdlib.h>
+#include <curses.h>
 #include "includes/action.h"
 #include "includes/larncons.h"
 #include "includes/larndata.h"
@@ -160,6 +161,7 @@ act_up_stairs (void)
       newcavelevel (level - 1);
       draws (0, MAXX, 0, MAXY);
       bot_linex ();
+      refresh();
 
     }
   else
@@ -185,6 +187,7 @@ act_down_stairs (void)
       newcavelevel (level + 1);
       draws (0, MAXX, 0, MAXY);
       bot_linex ();
+      refresh();
 
     }
   else

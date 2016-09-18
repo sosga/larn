@@ -1,5 +1,6 @@
 /* object.c */
 #include <stdlib.h>
+#include <curses.h>
 #include "includes/action.h"
 #include "includes/larncons.h"
 #include "includes/larndata.h"
@@ -170,7 +171,8 @@ lookforobject (char do_ident, char do_pickup, char do_action)
       if (do_ident)
 	lprcat ("\nThere is a circular staircase here");
       if (do_action)
-	ostairs (1);
+	ostairs(1);
+	refresh();
       break;
 
     case OFOUNTAIN:
@@ -257,7 +259,8 @@ lookforobject (char do_ident, char do_pickup, char do_action)
       if (do_ident)
 	lprcat ("\nThere is a circular staircase here");
       if (do_action)
-	ostairs (-1);
+	ostairs(-1);
+	refresh();
       break;
 
     case OOPENDOOR:
@@ -309,6 +312,7 @@ lookforobject (char do_ident, char do_pickup, char do_action)
       lprcat ("\nZaaaappp!  You've been teleported!\n");
       nap (NAPTIME);
       oteleport (0);
+      refresh();
       break;
 
     case OTRAPARROWIV:		/* for an arrow trap */
@@ -359,11 +363,11 @@ lookforobject (char do_ident, char do_pickup, char do_action)
       i = rnd (5 + level);
       lprintf ("\nYou fall through a trap door!  You lose %d hit points.",
 	       (long) i);
-      losehp (i);
-      nap (NAPTIME);
-      newcavelevel (level + 1);
-      draws (0, MAXX, 0, MAXY);
-      bot_linex ();
+      losehp(i);
+      nap(NAPTIME);
+      newcavelevel(level + 1);
+      draws(0, MAXX, 0, MAXY);
+      bot_linex();
       return;
 
     case OTRADEPOST:
@@ -531,6 +535,7 @@ oteleport (int err)
   	positionplayer ();
   	draws (0, MAXX, 0, MAXY);
   	bot_linex ();
+  	refresh();
   }
 }
 
@@ -940,6 +945,7 @@ read_scroll (int typ)
 	for (j = xl; j < xh; j++)
 	  know[j][i] = KNOWALL;
       draws (xl, xh, yl, yh);
+      refresh();
       return;
 
     case 3:
@@ -973,6 +979,7 @@ read_scroll (int typ)
     case 8:
       lprcat ("\nYour surroundings change");
       oteleport (0);
+      refresh();
       return;			/* teleportation */
 
     case 9:
@@ -1013,6 +1020,7 @@ read_scroll (int typ)
 	for (j = 0; j < MAXX; j++)
 	  know[j][i] = KNOWALL;
       draws (0, MAXX, 0, MAXY);
+      refresh();
       return;
 
     case 16:
@@ -1136,16 +1144,12 @@ ostatue (void)
 
 }
 
-
-
+/* I will add something here, for now it's a placeholder -Gibbon*/
 static void
 omirror (void)
 {
-
-
+  lprcat ("\nMirror mirror on the wall..");
 }
-
-
 
 static void
 obook (void)
