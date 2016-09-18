@@ -43,7 +43,8 @@
 */
 #include <stdlib.h>
 #include <ctype.h>
-
+#include <curses.h>
+#include "includes/ansiterm.h"
 #include "includes/larncons.h"
 #include "includes/larndata.h"
 #include "includes/larnfunc.h"
@@ -125,7 +126,7 @@ static int
 cgood (int x, int y, int itm, int monst)
 {
 
-  /* 
+  /*
    * cannot create either monster or item if:
    * - out of bounds
    * - wall
@@ -146,7 +147,7 @@ cgood (int x, int y, int itm, int monst)
       return FALSE;
     }
 
-  /* 
+  /*
    * if checking for a monster, return False if one there already _or_
    * there is a pit/trap there.
    */
@@ -156,9 +157,9 @@ cgood (int x, int y, int itm, int monst)
 	{
 	  return FALSE;
 	}
-      /* 
-       * note: not invisible traps, since monsters are 
-       * not affected by them. 
+      /*
+       * note: not invisible traps, since monsters are
+       * not affected by them.
        */
       switch (item[x][y])
 	{
@@ -288,7 +289,9 @@ hitmonster (int x, int y)
       flag = 0;
     }
   lprcat (" the ");
+  attron(COLOR_PAIR(2));
   lprcat (lastmonst);
+  attroff(COLOR_PAIR(2));
   if (flag)			/* if the monster was hit */
     if ((monst == RUSTMONSTER) || (monst == DISENCHANTRESS)
 	|| (monst == CUBE))
@@ -369,7 +372,11 @@ hitm (int x, int y, int amt)
 #ifdef EXTRA
       cdesc[MONSTKILLED]++;
 #endif
-      lprintf ("\nThe %s died!", lastmonst);
+      lprintf ("\nThe ");
+      attron(COLOR_PAIR(2));
+      lprintf("%s",lastmonst);
+      attroff(COLOR_PAIR(2));
+      lprintf(" died!");
       raiseexperience (monster[monst].experience);
       amt = monster[monst].gold;
       if (amt > 0)
@@ -416,7 +423,11 @@ hitplayer (int x, int y)
   if (cdesc[INVISIBILITY])
     if (rnd (33) < 20)
       {
-	lprintf ("\nThe %s misses wildly", lastmonst);
+	lprintf ("\nThe ");
+	attron(COLOR_PAIR(2));
+	lprintf("%s",lastmonst);
+	attroff(COLOR_PAIR(2));
+	lprintf(" misses wildly");
 	return;
       }
   if (cdesc[CHARMCOUNT])
@@ -445,7 +456,7 @@ lflushall();
 
 #if defined NIX
 fflush(NULL);
-#endif 
+#endif
 	    return;
 	  }
 	tmp = 1;
@@ -469,7 +480,7 @@ lflushall();
 
 #if defined NIX
 fflush(NULL);
-#endif 
+#endif
 	}
     }
   if (tmp == 0)
@@ -709,7 +720,7 @@ newobject (int lev, int *i)
 *
 *  char rustarm[ARMORTYPES][2];
 *  special array for maximum rust damage to armor from rustmonster
-*  format is: { armor type , minimum attribute 
+*  format is: { armor type , minimum attribute
 */
 #define ARMORTYPES 6
 static int rustarm[ARMORTYPES][2] = {

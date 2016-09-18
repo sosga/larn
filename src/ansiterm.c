@@ -107,8 +107,8 @@ ansiterm_out (const char *output_buffer, int n_chars)
     }
 
 
-  /* 
-     ESC[;H 
+  /*
+     ESC[;H
      ESC[y;xH   ESC[24;01H
      ESC[2J
      ESC[1m standout on
@@ -136,7 +136,7 @@ ansiterm_init (void)
 	start_color();
 
 	keypad(stdscr, TRUE);
-  
+
 /* this is so the terminal does not display in nasty grey'ish color ~Gibbon */
 	use_default_colors ();
 
@@ -145,18 +145,20 @@ ansiterm_init (void)
 	init_pair(1, COLOR_MAGENTA, -1);
 	init_pair(2, COLOR_RED, -1);
 	init_pair(3, COLOR_YELLOW, -1);
+	init_pair(4, COLOR_BLUE, -1);
 #else
 /*Colors for a white/light terminal background*/
 	init_pair(1, COLOR_BLUE, -1);
 	init_pair(2, COLOR_RED, -1);
 	init_pair(3, COLOR_MAGENTA, -1);
+	init_pair(4, COLOR_GREEN, -1);
 #endif
 
 /*Gets rid of the annoying cursor on modern terminals. ~Gibbon*/
-	curs_set(0);	
-	
+	curs_set(0);
+
 	refresh();
-	
+
 #if defined WINDOWS || WINDOWS_VS
   PDC_save_key_modifiers (1);
 #endif

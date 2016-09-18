@@ -1,3 +1,14 @@
+August - September 17th 2016
+
+1. Increased color usage
+2. Fixed some bugs
+3. Improved some functions (math) for treasure room generation
+4. Improved Windows support via Win32a pdcurses use and VC project files
+
+~Gibbon
+
+=============================================================================
+
 July 26th 2016
 
 1. Finally changed the 'clear()' function which was conflicting with curses 'clear()'.
@@ -238,7 +249,7 @@ Larn 12.4
 
 
 ANSIfication, ported to Curses, arrow key support,
-message system fix, game over confirmation prompt, 
+message system fix, game over confirmation prompt,
 removal of platform-specific cruft, removal of most options,
 name/sex prompt, ...
 

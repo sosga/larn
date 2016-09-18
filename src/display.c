@@ -145,7 +145,7 @@ bot_linex (void)
 	attron(COLOR_PAIR(1));
 	lprintf(" STR:");
 	attroff(COLOR_PAIR(1));
-	lprintf("%-2d ",(int) (cdesc[STRENGTH] + cdesc[STREXTRA])); 
+	lprintf("%-2d ",(int) (cdesc[STRENGTH] + cdesc[STREXTRA]));
 	attron(COLOR_PAIR(1));
 	lprintf("INT:");
 	attroff(COLOR_PAIR(1));
@@ -350,7 +350,7 @@ botside (void)
 				{
 					cursor (70, i + 1);
 					lprcat (bot_data[i].string);
-				
+
 					/*Reset cursor position. ~Gibbon */
 					cursors();
 				}
@@ -359,7 +359,7 @@ botside (void)
 			{
 				cursor (70, i + 1);
 				lprcat ("          ");
-				
+
 				/*Reset cursor position. ~Gibbon */
 				cursors();
 			}
@@ -501,7 +501,7 @@ drawscreen (void)
 	    }
 	}
 
-      /* 
+      /*
        * now print the line, after positioning the cursor.
        * print the line with bold objects in a different
        * loop for effeciency
@@ -524,7 +524,7 @@ drawscreen (void)
 	  else if (know[i][j] & HAVESEEN)
 	    {
 
-	      /* 
+	      /*
 	       * if monster there and the user still knows the place,
 	       * then show the monster.  Otherwise, show what was
 	       * there before.
@@ -532,9 +532,9 @@ drawscreen (void)
 
 	      if (i == playerx && j == playery)
 		{
-		attron(COLOR_PAIR(3));
+		attron(COLOR_PAIR(4));
 		  nlprc ('@');
-		attroff(COLOR_PAIR(3));
+		attroff(COLOR_PAIR(4));
 
 		  continue;
 		}
@@ -557,7 +557,7 @@ drawscreen (void)
 	  else
 	    {
 
-	      /* 
+	      /*
 	       * error condition.  recover by resetting location
 	       * to an 'unknown' state.
 	       */
@@ -732,9 +732,9 @@ showplayer (void)
 {
   show1cell (oldx, oldy);
   cursor (playerx + 1, playery + 1);
-  attron(COLOR_PAIR(3));
+  attron(COLOR_PAIR(4));
   lprc ('@');
-  attroff(COLOR_PAIR(3));
+  attroff(COLOR_PAIR(4));
   cursor (playerx + 1, playery + 1);
   oldx = playerx;
   oldy = playery;
@@ -780,7 +780,7 @@ if direction=0, don't move--just show where he is */
   i = item[k][m];
   j = mitem[k][m];
 
-  /* prevent the player from moving onto a wall, or a closed door, 
+  /* prevent the player from moving onto a wall, or a closed door,
      unless the character has Walk-Through-Walls.
    */
   if ((i == OCLOSEDDOOR || i == OWALL) && cdesc[WTW] == 0)
