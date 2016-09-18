@@ -410,7 +410,8 @@ treasureroom (int lv)
 
   for (tx = 1 + rnd (10); tx < MAXX - 10; tx += 10)
     if ((lv == MAXLEVEL - 1) || (lv == MAXLEVEL + MAXVLEVEL - 1)
-	|| rnd (13) == 2)
+    /*Increased this math to a 50 percent chance. -Gibbon */
+	|| rnd (10) == 5)
       {
 	xsize = rnd (6) + 3;
 	ysize = rnd (3) + 3;
