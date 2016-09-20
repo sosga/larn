@@ -372,11 +372,11 @@ hitm (int x, int y, int amt)
 #ifdef EXTRA
       cdesc[MONSTKILLED]++;
 #endif
-      lprintf ("\nThe ");
+      lprintf ("\nThe");
       attron(COLOR_PAIR(2));
-      lprintf("%s",lastmonst);
+      lprintf(" %s ",lastmonst);
       attroff(COLOR_PAIR(2));
-      lprintf(" died!");
+      lprintf("died!\n");
       raiseexperience (monster[monst].experience);
       amt = monster[monst].gold;
       if (amt > 0)
@@ -423,17 +423,21 @@ hitplayer (int x, int y)
   if (cdesc[INVISIBILITY])
     if (rnd (33) < 20)
       {
-	lprintf ("\nThe ");
+	lprintf ("\nThe");
 	attron(COLOR_PAIR(2));
-	lprintf("%s",lastmonst);
+	lprintf(" %s ",lastmonst);
 	attroff(COLOR_PAIR(2));
-	lprintf(" misses wildly");
+	lprintf("misses wildly\n");
 	return;
       }
   if (cdesc[CHARMCOUNT])
     if (rnd (30) + 5 * monster[mster].level - cdesc[CHARISMA] < 30)
       {
-	lprintf ("\nThe %s is awestruck at your magnificence!", lastmonst);
+	lprintf ("\nThe");
+	attron(COLOR_PAIR(2));
+	lprintf(" %s ",lastmonst);
+	attroff(COLOR_PAIR(2));
+	lprintf("is awestruck at your magnificence!\n");
 	return;
       }
   if (mster == BAT)
@@ -466,7 +470,11 @@ fflush(NULL);
   if (((dam + bias) > cdesc[AC])
       || (rnd ((int) ((cdesc[AC] > 0) ? cdesc[AC] : 1)) == 1))
     {
-      lprintf ("\n  The %s hit you ", lastmonst);
+      lprintf ("\nThe");
+      attron(COLOR_PAIR(2));
+      lprintf(" %s ",lastmonst);
+      attroff(COLOR_PAIR(2));
+      lprintf("hit you");
       tmp = 1;
       if ((dam -= cdesc[AC]) < 0)
 	dam = 0;
@@ -484,7 +492,11 @@ fflush(NULL);
 	}
     }
   if (tmp == 0)
-    lprintf ("\n  The %s missed ", lastmonst);
+    lprintf("\nThe");
+    attron(COLOR_PAIR(2));
+    lprintf(" %s ",lastmonst);
+    attroff(COLOR_PAIR(2));
+    lprintf("missed");
 }
 
 
@@ -830,7 +842,11 @@ spattack (int x, int xx, int yy)
       goto spout2;
 
     case 6:
-      lprintf ("\nThe %s drains you of your life energy!", lastmonst);
+      lprintf ("\nThe ");
+      attron(COLOR_PAIR(2));
+      lprintf("%s",lastmonst);
+      attroff(COLOR_PAIR(2));
+      lprintf(" drains you of your life energy!");
       loselevel ();
       return (0);
 
@@ -868,8 +884,11 @@ spattack (int x, int xx, int yy)
 	    {
 	      if ((ivenarg[i] -= 3) < 0)
 		ivenarg[i] = 0;
-	      lprintf ("\nThe %s hits you -- you feel a sense of loss",
-		       lastmonst);
+	      lprintf ("\nThe ");
+      	  attron(COLOR_PAIR(2));
+	      lprintf("%s ",lastmonst);
+	      attroff(COLOR_PAIR(2));
+	      lprintf("hits you -- you feel a sense of loss");
 	      show3 (i);
 	      bottomline ();
 	      return (0);
@@ -909,9 +928,13 @@ spattack (int x, int xx, int yy)
 	  p = "\nThe %s couldn't find anything to steal";
 	  break;
 	}
-      lprintf ("\nThe %s picks your pocket and takes:", lastmonst);
+      lprintf ("\nThe");
+      attron(COLOR_PAIR(2));
+      lprintf(" %s ",lastmonst);
+      attroff(COLOR_PAIR(2));
+      lprintf("picks your pocket and takes:");
       if (stealsomething () == 0)
-	lprcat ("  nothing");
+	lprcat (" nothing");
       disappear (xx, yy);
       bottomline ();
       return (1);

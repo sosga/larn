@@ -3,10 +3,10 @@
 * to Curses API calls
 */
 
-#include <curses.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <curses.h>
 
 #include "includes/ansiterm.h"
 
@@ -150,8 +150,8 @@ ansiterm_init (void)
 /*Colors for a white/light terminal background*/
 	init_pair(1, COLOR_BLUE, -1);
 	init_pair(2, COLOR_RED, -1);
-	init_pair(3, COLOR_MAGENTA, -1);
-	init_pair(4, COLOR_GREEN, -1);
+	init_pair(3, COLOR_GREEN, -1);
+	init_pair(4, COLOR_MAGENTA, -1);
 #endif
 
 /*Gets rid of the annoying cursor on modern terminals. ~Gibbon*/

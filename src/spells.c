@@ -18,6 +18,7 @@ genmonst()         Function to ask for monster and genocide from game
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <curses.h>
 
 #include "includes/create.h"
 #include "includes/larncons.h"
@@ -191,8 +192,17 @@ speldamage (int x)
 
     case 3:
       i = rnd (3) + 1;
-      /*Fix for bug #24 added newlines to the 'msg' for web and sleep spells. ~Gibbon*/
-      msg = "\nWhile the %s slept, you smashed it %d times";
+      /*Fix for bug #24 added newlines to the 'msg' for web and sleep spells.
+      Removed the msg and used lprcat instead plus color. ~Gibbon*/
+      lprcat("\nWhile the ");
+      attron(COLOR_PAIR(2));
+      msg = "%s";
+      attroff(COLOR_PAIR(2));
+      lprcat("slept, you smashed it ");
+      attron(COLOR_PAIR(2));
+      msg = "%d";
+      attroff(COLOR_PAIR(2));
+      lprcat(" times");
     ws:
       direct (x, fullhit (i), msg, i);	/*    sleep   */
       return;
@@ -210,7 +220,15 @@ speldamage (int x)
 
     case 6:
       i = rnd (3) + 2;
-      msg = "\nWhile the %s is entangled, you hit %d times";
+      lprcat("\nWhile the ");
+      attron(COLOR_PAIR(2));
+      msg = "%s";
+      attroff(COLOR_PAIR(2));
+      lprcat("is entangled, you hit ");
+      attron(COLOR_PAIR(2));
+      msg = "%d";
+      attroff(COLOR_PAIR(2));
+      lprcat(" times");
       goto ws;			/* web */
 
     case 7:
@@ -429,7 +447,11 @@ speldamage (int x)
 	  lprcat (" Nothing seems to have happened");
 	  return;
 	}
-      lprcat (" The demon turned on you and vanished!");
+      lprcat (" The");
+      attron(COLOR_PAIR(2));
+      lprcat(" demon ");
+      attroff(COLOR_PAIR(2));
+      lprcat("turned on you and vanished!");
       i = rnd (40) + 30;
       lastnum = 277;
       losehp (i);		/* must say killed by a demon */
