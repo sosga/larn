@@ -246,9 +246,9 @@ speldamage (int x)
 
     case 12:
       if (rnd (11) + 7 <= cdesc[WISDOM])
-	direct (x, rnd (20) + 20 + clev, "  The %s believed!", 0);
+	direct (x, rnd (20) + 20 + clev, "\nThe %s believed!", 0);
       else
-	lprcat ("  It didn't believe the illusions!");
+	lprcat ("\n It didn't believe the illusions!");
       return;
 
     case 13:			/* if he has the amulet of invisibility then add more time */
@@ -261,12 +261,12 @@ speldamage (int x)
       /* ----- LEVEL 3 SPELLS ----- */
 
     case 14:
-      godirect (x, rnd (25 + clev) + 25 + clev, "  The fireball hits the %s",
+      godirect (x, rnd (25 + clev) + 25 + clev, "\nThe fireball hits the %s",
 		40, '*');
       return;			/*    fireball */
 
     case 15:
-      godirect (x, rnd (25) + 20 + clev, "  Your cone of cold strikes the %s", 60, 'O');	/*  cold */
+      godirect (x, rnd (25) + 20 + clev, "\nYour cone of cold strikes the %s", 60, 'O');	/*  cold */
       return;
 
     case 16:
@@ -282,7 +282,7 @@ speldamage (int x)
       return;			/* haste self  */
 
     case 19:
-      omnidirect (x, 30 + rnd (10), "  The %s gasps for air");	/* cloud kill */
+      omnidirect (x, 30 + rnd (10), "\nThe %s gasps for air");	/* cloud kill */
       return;
 
     case 20:
@@ -335,11 +335,11 @@ speldamage (int x)
       /* ----- LEVEL 4 SPELLS ----- */
 
     case 21:
-      direct (x, 100 + clev, "  The %s shrivels up", 0);	/* dehydration */
+      direct (x, 100 + clev, "\nThe %s shrivels up", 0);	/* dehydration */
       return;
 
     case 22:
-      godirect (x, rnd (25) + 20 + (clev << 1), "  A lightning bolt hits the %s", 1, '~');	/*  lightning */
+      godirect (x, rnd (25) + 20 + (clev << 1), "\nA lightning bolt hits the %s", 1, '~');	/*  lightning */
       return;
 
     case 23:
@@ -356,7 +356,7 @@ speldamage (int x)
       return;
 
     case 25:
-      omnidirect (x, 32 + clev, "  The %s struggles for air in your flood!");	/* flood */
+      omnidirect (x, 32 + clev, "\nThe %s struggles for air in your flood!");	/* flood */
       return;
 
     case 26:
@@ -368,9 +368,9 @@ speldamage (int x)
 	  return;
 	}
       if (cdesc[WISDOM] > rnd (10) + 10)
-	direct (x, 2000, "  The %s's heart stopped", 0);	/* finger of death */
+	direct (x, 2000, " \nThe %s's heart stopped", 0);	/* finger of death */
       else
-	lprcat ("  It didn't work");
+	lprcat (" It didn't work");
       return;
 
       /* ----- LEVEL 5 SPELLS ----- */
@@ -392,7 +392,7 @@ speldamage (int x)
       return;			/* teleport away */
 
     case 31:
-      omnidirect (x, 35 + rnd (10) + clev, "  The %s cringes from the flame");	/* magic fire */
+      omnidirect (x, 35 + rnd (10) + clev, "\nThe %s cringes from the flame");	/* magic fire */
       return;
 
       /* ----- LEVEL 6 SPELLS ----- */
@@ -400,7 +400,7 @@ speldamage (int x)
     case 32:
       if ((rnd (23) == 5) && (wizard == 0))	/* sphere of annihilation */
 	{
-	  lprcat ("\nYou have been enveloped by the zone of nothingness!\n");
+	  lprcat ("\n You have been enveloped by the zone of nothingness!\n");
 	  nap (NAPTIME);
 	  died (258);
 	  return;
@@ -421,15 +421,15 @@ speldamage (int x)
     case 34:			/* summon demon */
       if (rnd (100) > 30)
 	{
-	  direct (x, 150, "  The demon strikes at the %s", 0);
+	  direct (x, 150, "\n The demon strikes at the %s", 0);
 	  return;
 	}
       if (rnd (100) > 15)
 	{
-	  lprcat ("  Nothing seems to have happened");
+	  lprcat (" Nothing seems to have happened");
 	  return;
 	}
-      lprcat ("  The demon turned on you and vanished!");
+      lprcat (" The demon turned on you and vanished!");
       i = rnd (40) + 30;
       lastnum = 277;
       losehp (i);		/* must say killed by a demon */
@@ -448,7 +448,7 @@ speldamage (int x)
 	  (struct isave *) malloc (sizeof (struct isave) * MAXX * MAXY * 2);
 	if (save == NULL)
 	  {
-	    lprcat ("\nPolinneaus won't let you mess with his dungeon!");
+	    lprcat ("\n Polinneaus won't let you mess with his dungeon!");
 	    return;
 	  }
 	for (j = 0; j < MAXY; j++)
@@ -522,7 +522,7 @@ speldamage (int x)
       return;
 
     default:
-      lprintf ("  spell %d not available!", (int) x);
+      lprintf ("spell %d not available!", (int) x);
       return;
     };
 }
@@ -787,7 +787,7 @@ godirect (int spnum, int dam, char *str, int delay, char cshow)
 	{
 
 	  cursors ();
-	  lprcat ("\nYou are hit my your own magic!");
+	  lprcat ("\nYou are hit by your own magic!");
 	  lastnum = 278;
 	  losehp (dam);
 
