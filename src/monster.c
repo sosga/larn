@@ -492,14 +492,14 @@ fflush(NULL);
 	}
     }
   if (tmp == 0)
-    lprintf("\nThe");
+  {
+  	lprintf("\nThe");
     attron(COLOR_PAIR(2));
     lprintf(" %s ",lastmonst);
     attroff(COLOR_PAIR(2));
     lprintf("missed");
+  }
 }
-
-
 
 /*
 *  dropsomething(monst)    Function to create an object when a monster dies

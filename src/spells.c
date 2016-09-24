@@ -190,21 +190,13 @@ speldamage (int x)
       cdesc[DEXCOUNT] += 400;
       return;
 
+	/*Further fixes below for issue #36.  Removed crusty old 'C' and replaced with
+		direct function calls. -Gibbon*/
     case 3:
       i = rnd (3) + 1;
       /*Fix for bug #24 added newlines to the 'msg' for web and sleep spells.
       Removed the msg and used lprcat instead plus color. ~Gibbon*/
-      lprcat("\nWhile the ");
-      attron(COLOR_PAIR(2));
-      msg = "%s";
-      attroff(COLOR_PAIR(2));
-      lprcat("slept, you smashed it ");
-      attron(COLOR_PAIR(2));
-      msg = "%d";
-      attroff(COLOR_PAIR(2));
-      lprcat(" times");
-    ws:
-      direct (x, fullhit (i), msg, i);	/*    sleep   */
+      direct (x, fullhit (i), "\nwhile the %s slept, you hit %d times ", i);	/*    sleep   */
       return;
 
     case 4:			/*  charm monster   */
@@ -220,17 +212,9 @@ speldamage (int x)
 
     case 6:
       i = rnd (3) + 2;
-      lprcat("\nWhile the ");
-      attron(COLOR_PAIR(2));
-      msg = "%s";
-      attroff(COLOR_PAIR(2));
-      lprcat("is entangled, you hit ");
-      attron(COLOR_PAIR(2));
-      msg = "%d";
-      attroff(COLOR_PAIR(2));
-      lprcat(" times");
-      goto ws;			/* web */
-
+      direct (x, fullhit (i),"\nYou damage the %s and hit %d times ", i);			/* web */
+	  return;
+	  
     case 7:
       if (cdesc[STRCOUNT] == 0)
 	cdesc[STREXTRA] += 3;	/*  strength    */
