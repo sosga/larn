@@ -5,6 +5,7 @@
 #include "includes/global.h"
 #include "includes/inventory.h"
 #include "includes/io.h"
+#include <curses.h>
 
 static int qshowstr (char);
 
@@ -546,7 +547,10 @@ show1 (int idx)
    */
   if (iven[idx] != 0)
     {
-      lprintf ("%c)   %s", idx + 'a', objectname[iven[idx]]);
+    	attron(COLOR_PAIR(4));
+      lprintf ("%c) ",idx + 'a');
+      attroff(COLOR_PAIR(4));
+      lprintf("%s", objectname[iven[idx]]);
     }
 
   /*we can remove the index to object name and concatenate the above with the below for scrolls and potions.
@@ -597,7 +601,10 @@ show2 (int index)
     default:
       lprc ('\n');
       cltoeoln ();
-      lprintf ("%c)   %s", index + 'a', objectname[iven[index]]);
+      attron(COLOR_PAIR(4));
+      lprintf ("%c) ",index + 'a');
+      attroff(COLOR_PAIR(4));
+      lprintf("%s",objectname[iven[index]]);
       if (ivenarg[index] > 0)
 	lprintf (" + %d", (long) ivenarg[index]);
       else if (ivenarg[index] < 0)
