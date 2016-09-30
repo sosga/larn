@@ -35,6 +35,7 @@ olrs          larn revenue service function
 #include "includes/scores.h"
 #include "includes/store.h"
 #include "includes/sysdep.h"
+#include <curses.h>
 
 static void dnd_2hed (void);
 static void dnd_hed (void);
@@ -57,7 +58,11 @@ static int dndcount = 0, dnditm = 0;
 static int
 amtgoldtrad(void)
 {
-	lprintf ("You have %-6d gold pieces.", (int) cdesc[GOLD]);
+	lprintf ("You have");
+	attron(COLOR_PAIR(3));
+	lprintf(" %-6d ",(int) cdesc[GOLD]);
+	attroff(COLOR_PAIR(3));
+	lprintf("gold pieces.");
 	return(0);
 }
 /*Fix for bug #23 ~Gibbon*/
@@ -204,7 +209,6 @@ function for the dnd store
 static void
 dnd_2hed (void)
 {
-
   lprcat
     ("Welcome to the Larn Thrift Shoppe.  We stock many items explorers find useful\n");
   lprcat
@@ -220,13 +224,8 @@ dnd_hed (void)
 
   for (i = dnditm; i < 26 + dnditm; i++)
     {
-
       dnditem (i);
     }
-
-  cursor (50, 18);
-
-  lprcat ("You have ");
 }
 
 
@@ -269,9 +268,13 @@ dndstore (void)
   for (;;)
     {
 
-      cursor (59, 18);
-      lprintf ("%ld gold pieces", cdesc[GOLD]);
-
+      cursor (1, 19);
+      lprcat ("You have ");
+      attron(COLOR_PAIR(3));
+      lprintf ("%ld ",cdesc[GOLD]);
+      attroff(COLOR_PAIR(3));
+      lprintf("gold pieces");
+	
       cltoeoln ();
       cl_dn (1, 20);
 
@@ -314,10 +317,8 @@ dndstore (void)
 	}
       else
 	{			/* buy something */
-
 	  lprc ((char) i);	/* echo the byte */
 	  i += dnditm - 'a';
-
 	  if (i >= MAXITM)
 	    outofstock ();
 	  else if (dnd_item[i].qty <= 0)
@@ -331,16 +332,12 @@ dndstore (void)
 
 	      if (dnd_item[i].obj == OPOTION)
 		{
-
 		  potionname[dnd_item[i].arg][0] = ' ';
-
 		}
 	      else if (dnd_item[i].obj == OSCROLL)
 		{
-
 		  scrollname[dnd_item[i].arg][0] = ' ';
 		}
-
 	      cdesc[GOLD] -= dnd_item[i].price * 10;
 	      dnd_item[i].qty--;
 	      take (dnd_item[i].obj, dnd_item[i].arg);
@@ -410,39 +407,37 @@ dnditem (int i)
 
   if (dnd_item[i].qty == 0)
     {
-
+    	attron(COLOR_PAIR(2));
       lprintf ("%39s", "");
+      attroff(COLOR_PAIR(2));
 
       return;
     }
-
+attron(COLOR_PAIR(4));
   lprintf ("%c) ", (i % 26) + 'a');
-
+attroff(COLOR_PAIR(4));
   if (dnd_item[i].obj == OPOTION)
     {
-
       lprcat ("potion of ");
       lprintf ("%s", &potionname[dnd_item[i].arg][1]);
-
     }
   else if (dnd_item[i].obj == OSCROLL)
     {
-
       lprcat ("scroll of ");
       lprintf ("%s", &scrollname[dnd_item[i].arg][1]);
-
     }
   else
     {
-
       lprintf ("%s", objectname[dnd_item[i].obj]);
     }
+    
 
   cursor (j + 31, k);
 
   price = ((int) dnd_item[i].price) * 10L;
-
+attron(COLOR_PAIR(3));
   lprintf ("%6ld", price);
+attroff(COLOR_PAIR(3));
 }
 
 
@@ -486,7 +481,7 @@ sch_hed (void)
     lprcat ("\t\th)  History of Larn              5 mobuls");
 
   lprcat ("\n\n\t\tAll courses cost 250 gold pieces.");
-  cursor (30, 18);
+  cursor (1, 19);
   lprcat ("You are presently carrying ");
 }
 
@@ -501,8 +496,11 @@ oschool (void)
   sch_hed ();
   for (;;)
     {
-      cursor (57, 18);
-      lprintf ("%d gold pieces.   ", (int) cdesc[GOLD]);
+      cursor (1, 19);
+      attron(COLOR_PAIR(3));
+      lprintf ("%d ",(int) cdesc[GOLD]);
+      attroff(COLOR_PAIR(3));
+      lprintf("gold pieces.");
       cursors ();
       lprcat ("\nWhat is your choice [");
       lstandout ("escape");
@@ -752,16 +750,20 @@ obanksub (void)
 
 /* Cleaning up the awful UI here for the text. -Gibbon */
 
-	cursor(1,12);
+	cursor(1,13);
   	lprintf("Account Summary:");
-	cursor(1,14);
+	cursor(1,15);
   	lprintf("Gold in Bank Account");
-	cursor (1, 15);
+	cursor (1, 16);
+	attron(COLOR_PAIR(3));
 	lprintf("%8d",(long)cdesc[BANKACCOUNT]);
-	cursor(1,17);
+	attroff(COLOR_PAIR(3));
+	cursor(1,18);
   	lprintf("Gold in inventory");
-	cursor (1, 18);
+	cursor (1, 19);
+	attron(COLOR_PAIR(3));
 	lprintf("%8d",(long)cdesc[GOLD]);
+	attroff(COLOR_PAIR(3));
   if (cdesc[BANKACCOUNT] + cdesc[GOLD] >= 500000)
     lprcat
       ("\nNote:  Larndom law states that only deposits under 500,000gp  can earn interest.");
@@ -861,7 +863,9 @@ obanksub (void)
 	      gemvalue[i] = 0;
 	      k = gemorder[i];
 	      cursor ((k % 2) * 40 + 1, (k >> 1) + 4);
+	      attron(COLOR_PAIR(2));
 	      lprintf ("%39s", "");
+	      attroff(COLOR_PAIR(2));
 	    }
 	  break;
 
@@ -939,15 +943,24 @@ otradiven (void)
 	  case OCOOKIE:
 	  case ONOTHEFT:
 	    tradorder[i] = j++;	/* put on screen */
-	    lprintf ("%c) %s", i + 'a', objectname[iven[i]]);
+	    attron(COLOR_PAIR(4));
+	    lprintf ("%c) ",i + 'a');
+	    attroff(COLOR_PAIR(4));
+	    lprintf("%s",objectname[iven[i]]);
 	    break;
 	  default:
 	    tradorder[i] = j++;	/* put on screen */
-	    lprintf ("%c) %s", i + 'a', objectname[iven[i]]);
+	    attron(COLOR_PAIR(4));
+	    lprintf ("%c) ",i + 'a'); 
+	    attroff(COLOR_PAIR(4));
+	    lprintf("%s",objectname[iven[i]]);
 	    if (ivenarg[i] > 0)
+	    {
 	      lprintf (" +%d", (int) ivenarg[i]);
-	    else if (ivenarg[i] < 0)
+	      }
+	    else if (ivenarg[i] < 0) {
 	      lprintf (" %d", (int) ivenarg[i]);
+	      }
 	    break;
 	  }
       }
@@ -965,8 +978,9 @@ cleartradiven (int i)
   j = tradorder[i];
 
   cursor ((j % 2) * 40 + 1, (j >> 1) + 8);
-
+attron(COLOR_PAIR(2));
   lprintf ("%39s", "");
+  attroff(COLOR_PAIR(2));
 
   tradorder[i] = 0;
 }
@@ -1199,7 +1213,7 @@ olrs (void)
 	  lprcat ("You do not owe us any taxes.           ");
 	  }
 	  
-      cursor (1, 8);
+      cursor (1, 19);
       if (cdesc[GOLD] > 0)
       {
       	amtgoldtrad();
