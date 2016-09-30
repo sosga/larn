@@ -864,29 +864,4 @@ packweight (void)
 	break;
       };
   return (k);
-}
-
-/*This is a new function to choose a random name rather than have the name entry screen. ~Gibbon */
-void rnd_name(void)
-{
-	/*Our array to store the names. ~Gibbon*/
-	const char *larn_names[] = {
-		"Draknor the Elder",
-		"Fiercly the Arrogant",
-		"Laitneth Gandor",
-		"Pondominius the Great",
-		"Maneth Nuknar",
-		"Shani Enek",
-		"Obondonum the Slayer",
-		"Sethron Sethronomus",
-		"Weun the Careful"
-	};
-	const size_t larn_name_rand = sizeof(larn_names) / sizeof(larn_names[0]);
-	//char larn_name_input[64];
-	//lprintf("%s\n",larn_names[rand() % larn_name_rand]);
-	while (larn_name_rand < LOGNAMESIZE - 1);
-	logname[larn_name_rand] = '\0';
-	
-	scbr();
-}
-	
+}	
