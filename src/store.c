@@ -872,10 +872,15 @@ obanksub (void)
 	case '\33':
 	  return;
 	};
-		cursor(1,15);
+	/*Fix for #38 -Gibbon*/
+		cursor(1,16);
+		attron(COLOR_PAIR(3));
 		lprintf("%8d",(long)cdesc[BANKACCOUNT]);
-		cursor(1,18);
+		attroff(COLOR_PAIR(3));
+		cursor(1,19);
+		attron(COLOR_PAIR(3));
 		lprintf("%8d",(long)cdesc[GOLD]);
+		attroff(COLOR_PAIR(3));
     }
 }
 
