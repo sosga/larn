@@ -49,4 +49,4 @@ Feel free to fork, fix a bug or implement a new feature and submit a pull reques
 2. Not to radically change gameplay and / or make the game different from it's historic roots.
 3. All code submitted and accepted will be under 'Noah's License' as listed in [docs/LICENSE.txt](https://github.com/atsb/RL_M/blob/Larn-SNAPSHOT/docs/LICENSE.txt) in Larn-SNAPSHOT.  By contributing to Larn, you agree to this licensing of your code.  I would love to use a BSD style license, but it is not compatible with Noah's 'not for profit' clause.
 4. If fixing or rewriting system-dependent functions, contributors should have a good understanding of Unix-like and Windows specific features and functions.  This is required to keep Larn portable.
->>>>>>> af61ecd94f6bcb7f04f85a7edc6e67ee65032f49
+>>>>>>>
