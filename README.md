@@ -1,7 +1,7 @@
 I am the official maintainer of Larn and official maintainer of my XRogue fork (8.0.5 +).
 
 <b>Updates:</b><br\>
-Yes I am still working on Larn, Yes I am still maintaining it and Yes I'm not dead.  I've  just finished moving to a new home and it's taken a while to get my things setup again and coming back from holiday after some time with family (wife and young son).  Larn 14.0 will appear in a few weeks.  Since now it is in a pretty stable state, enhancements will be coming.  Including limited colour support (I dislike full colour as I find it distracts from the  gameplay). 
+Stay tuned.
 -Gibbon
 
 <b>Code:</b><br \>
