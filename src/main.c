@@ -1007,9 +1007,8 @@ wear (void)
 		  }
 		  if (iven[cdesc[WIELD]] == OHSWORD)
 		  {
-		    lprcat
-		      ("\nYou are holding a longsword of Hymie!");
-		    return;
+		    lprcat("\nYou are holding a longsword of Hymie!");
+			return;
 		  }
 		cdesc[SHIELD] = i - 'a';
 		bottomline ();
