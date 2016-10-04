@@ -412,6 +412,8 @@ recalc (void)
 	  cdesc[WCLASS] = 22 + i;
 	  break;
 	case O2SWORD:
+	  cdesc[WCLASS] = 26 + i;
+	  break;
 	case OHSWORD:
 	  cdesc[WCLASS] = 26 + i;
 	  cdesc[AWARENESS] += 150;
