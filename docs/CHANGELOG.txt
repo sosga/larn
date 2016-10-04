@@ -1,3 +1,16 @@
+September 18th - October 4th 2016
+
+1. Cleaned up the Windows build a little
+2. Increased color usage (inventory) and picking up items
+3. Nerfed OHSWORD and added AWARENESS trait to it
+4. Bug fixes
+5. Some functions cleaned up
+6. Mazefile has 30th anniversary map added
+
+~Gibbon
+
+=============================================================================
+
 August - September 17th 2016
 
 1. Increased color usage

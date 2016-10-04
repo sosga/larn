@@ -38,6 +38,7 @@
 #include "includes/inventory.h"
 #include "includes/scores.h"
 #include "includes/sysdep.h"
+#include "includes/io.h"
 
 struct scofmt			/*  This is the structure for the scoreboard        */
 {
