@@ -63,7 +63,6 @@
 #endif
 
 #include <sys/stat.h>
-
 #include <setjmp.h>
 #include <fcntl.h>		/* For O_BINARY */
 

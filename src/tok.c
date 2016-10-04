@@ -3,13 +3,14 @@
 yylex()
 sethard()
 */
+#if defined NIX
+#include <fcntl.h>
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
 #include <sys/types.h>
-#include <fcntl.h>
-
 
 #include "includes/larncons.h"
 #include "includes/larndata.h"

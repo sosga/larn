@@ -25,10 +25,10 @@
 
 #ifdef NIX
 #include <unistd.h>
+#include <fcntl.h>
 #endif
 
 #include <string.h>
-#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -36,7 +36,6 @@
 #include "includes/bill.h"
 #include "includes/larn.h"
 #include "includes/inventory.h"
-#include "includes/io.h"
 #include "includes/scores.h"
 #include "includes/sysdep.h"
 

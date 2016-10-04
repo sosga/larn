@@ -4,8 +4,9 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#
+#if defined NIX
 #include <fcntl.h>
+#endif
 
 #include "includes/larncons.h"
 #include "includes/larndata.h"
@@ -15,13 +16,7 @@
 #include "includes/io.h"
 
 static void msdosfortune (void);
-
-
-
 static int fortsize = 0;
-
-
-
 
 void
 outfortune (void)
