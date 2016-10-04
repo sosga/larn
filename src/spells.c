@@ -147,7 +147,6 @@ speldamage (int x)
   int i, j, clev;
   int xl, xh, yl, yh;
   int *kn, *pm, *p;
-  char *msg;
 
   if (x >= SPNUM)
     return;			/* no such spell */
@@ -214,7 +213,7 @@ speldamage (int x)
       i = rnd (3) + 2;
       direct (x, fullhit (i),"\nYou damage the %s and hit %d times ", i);			/* web */
 	  return;
-	  
+
     case 7:
       if (cdesc[STRCOUNT] == 0)
 	cdesc[STREXTRA] += 3;	/*  strength    */
@@ -738,7 +737,7 @@ direct (int spnum, int dam, char *str, int arg)
 *  Function to hit in a direction from a missile weapon and have it keep
 *  on going in that direction until its power is exhausted
 *  Enter with the spell number in spnum, the power of the weapon in hp,
-*    lprintf format string in str, the # of milliseconds to delay between 
+*    lprintf format string in str, the # of milliseconds to delay between
 *    locations in delay, and the character to represent the weapon in cshow.
 *  Returns no value.
 */

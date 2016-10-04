@@ -132,7 +132,7 @@ readboard (void)
 {
 	FILE *pFile;
 	int b;
-	
+
 	pFile = fopen(scorefile, "rb");
 	if (pFile == NULL)
 	{
@@ -169,7 +169,7 @@ writeboard (void)
 	FILE *pFile;
 	int b;
 	set_score_output();
-	
+
 	pFile = fopen(scorefile, "wb");
 	if (pFile == NULL)
 	{
@@ -317,7 +317,7 @@ paytaxes (int x)
 /*
 *  winshou()       Subroutine to print out the winning scoreboard
 *
-*  Returns the number of players on scoreboard that were shown 
+*  Returns the number of players on scoreboard that were shown
 */
 static int
 winshou (void)
@@ -361,7 +361,7 @@ winshou (void)
 *  Subroutine to print out the non-winners scoreboard
 *
 *  Enter with 0 to list the scores, enter with 1 to list inventories too
-*  Returns the number of players on scoreboard that were shown 
+*  Returns the number of players on scoreboard that were shown
 */
 static int
 shou (int x)
@@ -635,7 +635,7 @@ newscore (int score, char *whoo, int whyded, int winner)
 #endif
 
 /*
-*  new1sub(score,i,whoo,taxes)       Subroutine to put player into a 
+*  new1sub(score,i,whoo,taxes)       Subroutine to put player into a
 *      int score,i,whyded,taxes;         winning scoreboard entry if his score
 *      char *whoo;                       is high enough
 *
@@ -665,7 +665,7 @@ new1sub (int score, int i, char *whoo, int taxes)
 
 
 /*
-*  new2sub(score,i,whoo,whyded)          Subroutine to put player into a 
+*  new2sub(score,i,whoo,whyded)          Subroutine to put player into a
 *      int score,i,whyded,taxes;         non-winning scoreboard entry if his
 *      char *whoo;                       score is high enough
 *
@@ -775,7 +775,7 @@ died (int x)
       lprcat ("\nYou feel wiiieeeeerrrrrd all over! ");
       lflush ();
       nap (3000);
-      
+
       return;			/* only case where died() returns */
     }
 
@@ -963,7 +963,7 @@ diedlog (void)
 *  it will try to make a new entry in the file.  Only returns -1 if can't
 *  find him in the file, and can't make a new entry in the file.
 *  Format of playerids file:
-*          Id # in ascii     \n     character name     \n   
+*          Id # in ascii     \n     character name     \n
 */
 static int havepid = -1;	/* playerid # if previously done */
 
@@ -981,19 +981,25 @@ getplid (char *nam)
   if (lopen (playerids) < 0)	/* no file, make it */
     {
 #if defined WINDOWS
-	if ((fd7 = _open(playerids, _S_IWUSR)) < 0)
-		return (-1);		/* can't make it */
-		 _close (fd7);
+      if ((fd7 = _open(playerids, _S_IWUSR)) < 0)
+      {
+        return (-1);		/* can't make it */
+      }
+      _close (fd7);
 #endif
 #if defined WINDOWS_VS
-		 if ((fd7 = _open(playerids, _S_IREAD)) < 0)
-			 return (-1);		/* can't make it */
-		 _close(fd7);
+      if ((fd7 = _open(playerids, _S_IREAD)) < 0)
+      {
+        return (-1);		/* can't make it */
+      }
+      _close(fd7);
 #endif
 #if defined NIX
-	if ((fd7 = open(playerids, S_IWUSR)) < 0)
-		return (-1);		/* can't make it */
-		close (fd7);
+      if ((fd7 = open(playerids, S_IWUSR)) < 0)
+      {
+        return (-1);		/* can't make it */
+      }
+      close (fd7);
 #endif
       goto addone;		/* now append new playerid record to file */
     }
