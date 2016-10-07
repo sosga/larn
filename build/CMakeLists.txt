@@ -8,13 +8,13 @@ project(Larn)
 
 find_package(Curses REQUIRED)
 
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -pipe -Wall -Wextra -pedantic -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wdeclaration-after-statement -Wshadow -Wmissing-declarations -Wold-style-definition -Wredundant-decls -g -std=gnu11")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -pipe -Wall -Wextra -pedantic -Wpointer-arith -Wshadow -Wmissing-declarations -Wredundant-decls -g")
 
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -pipe -Wall -fomit-frame-pointer -std=gnu11")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -pipe -Wall -Werror -fomit-frame-pointer")
 
 include_directories(../src/includes)
 include_directories( ${CURSES_INCLUDE_DIRS})
-file(GLOB SOURCES "../src/*.c")
+file(GLOB SOURCES "../src/*.cpp")
 add_executable(larn ${SOURCES})
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lm")
 target_link_libraries(larn ${CURSES_LIBRARIES} ${CMAKE_DL_LIBS})

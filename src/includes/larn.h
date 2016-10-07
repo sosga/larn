@@ -6,9 +6,10 @@
 */
 
 /* global includes by all systems */
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <errno.h>
 #include <setjmp.h>
 

@@ -9,45 +9,49 @@
 */
 
 /*  this is the structure that holds the entire dungeon specifications  */
-struct cel {
-	int hitp;			/*  monster's hit points    */
-	int mitem;			/*  the monster ID          */
-	int item;			/*  the object's ID         */
-	int iarg;			/*  the object's argument   */
-	int know;			/*  have we been here before */
+struct cel
+{
+  int hitp;			/*  monster's hit points    */
+  int mitem;			/*  the monster ID          */
+  int item;			/*  the object's ID         */
+  int iarg;			/*  the object's argument   */
+  int know;			/*  have we been here before */
 };
 
 /* this is the structure for maintaining & moving the spheres of annihilation */
-struct sphere {
-	struct sphere *p;		/* pointer to next structure */
-	int x, y, lev;		/* location of the sphere */
-	int dir;			/* direction sphere is going in */
-	int lifetime;			/* duration of the sphere */
+struct sphere
+{
+  struct sphere *p;		/* pointer to next structure */
+  int x, y, lev;		/* location of the sphere */
+  int dir;			/* direction sphere is going in */
+  int lifetime;			/* duration of the sphere */
 };
 
 
 /*  this is the structure definition of the monster data
 */
-struct monst {
-	const char *name;
-	int level;
-	int armorclass;
-	int damage;
-	int attack;
-	int defense;
-	int genocided;
-	int intelligence;		/* monsters intelligence -- used to choose movement */
-	int gold;
-	int hitpoints;
-	unsigned long experience;
+struct monst
+{
+  char *name;
+  int level;
+  int armorclass;
+  int damage;
+  int attack;
+  int defense;
+  int genocided;
+  int intelligence;		/* monsters intelligence -- used to choose movement */
+  int gold;
+  int hitpoints;
+  unsigned long experience;
 };
 
 /*  this is the structure definition for the items in the dnd store */
-struct _itm {
-	int price;
-	int obj;
-	int arg;
-	int qty;
+struct _itm
+{
+  int price;
+  int obj;
+  int arg;
+  int qty;
 };
 
 
@@ -68,7 +72,7 @@ extern int course[];
 extern int item[MAXX][MAXY], iven[], know[MAXX][MAXY];
 
 extern char aborted[];
-extern const char *classname[];
+extern char *classname[];
 extern char lastmonst[];
 extern char *lpnt, *lpbuf, *lpend, *inbuffer;
 
@@ -79,8 +83,8 @@ extern int nplt[], nsw[];
 extern int potprob[];
 
 extern char monstnamelist[];
-extern const char *levelname[];
-extern const char objnamelist[];
+extern char *levelname[];
+extern char objnamelist[];
 extern char logname[];
 
 extern char mazefile[];
@@ -97,20 +101,20 @@ extern int scprob[];
 extern int screen[MAXX][MAXY], sex;
 extern int spelknow[];
 
-extern const char *spelmes[];
-extern const char *speldescript[];
-extern const char *spelcode[];
+extern char *spelmes[];
+extern char *speldescript[];
+extern char *spelcode[];
 
 
 
-extern const char *spelname[];
+extern char *spelname[];
 
 
 extern int splev[], stealth[MAXX][MAXY], wizard;
 extern int diroffx[], diroffy[], hitflag, hit2flag, hit3flag,
-       hitp[MAXX][MAXY];
+  hitp[MAXX][MAXY];
 extern int iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
-       lastpy;
+  lastpy;
 extern int oldx, oldy, playerx, playery;
 extern int enable_scroll, yrepcount, wisid, lfd, fd;
 extern long outstanding_taxes, skill[], gtime;
@@ -122,7 +126,6 @@ extern struct sphere *spheres;
 
 
 extern struct monst monster[];
-
 
 extern struct _itm dnd_item[];
 
@@ -143,7 +146,7 @@ extern int prayed;
 extern char scrollname[MAXSCROLL + 1][MAXSCROLLNAME];
 extern char potionname[MAXPOTION + 1][MAXPOTIONNAME];
 
-extern const char *objectname[];
+extern char *objectname[];
 
 
 extern int spelweird[MAXMONST + 8][SPNUM];

@@ -36,7 +36,7 @@ void lrclose (void);
 
 void lwclose (void);
 
-void lprcat (char *);
+void lprcat (char*);
 
 void cursor (int, int);
 
