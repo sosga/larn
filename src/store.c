@@ -1095,6 +1095,9 @@ otradepost (void)
 	  /* we have now found the value of the item, and dealt with any error
 	     cases.  Print the object's value, let the user sell it.
 	   */
+	   /*Fix for bug #40, overwriting some text at the same position to cancel out
+	   the previous text. -Gibbon*/
+	   cursor(1,23);
 	  lprintf
 	    ("\nItem (%c) is worth %d gold pieces to us.  Do you want to sell it? ",
 	     i, (int) value);
