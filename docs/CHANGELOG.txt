@@ -1,13 +1,3 @@
-October - November 2016
-
-1. Compiles now with C++ (conversion to real C++ is ongoing)
-2. Removed mazes being saved into memory, now each time the player
-	goes up or down a level, a fresh maze is generated.  Similar to Angband.
-	
-~Gibbon
-
-=============================================================================
-
 September 18th - October 4th 2016
 
 1. Cleaned up the Windows build a little
