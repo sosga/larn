@@ -153,7 +153,6 @@ ansiterm_init (void)
 	init_pair(3, COLOR_GREEN, -1);
 	init_pair(4, COLOR_MAGENTA, -1);
 #endif
-
 /*Gets rid of the annoying cursor on modern terminals. ~Gibbon*/
 	curs_set(0);
 

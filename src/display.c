@@ -532,9 +532,9 @@ drawscreen (void)
 
 	      if (i == playerx && j == playery)
 		{
-		attron(COLOR_PAIR(4));
+		attron(COLOR_PAIR(3));
 		  nlprc ('@');
-		attroff(COLOR_PAIR(4));
+		attroff(COLOR_PAIR(3));
 
 		  continue;
 		}
@@ -732,9 +732,9 @@ showplayer (void)
 {
   show1cell (oldx, oldy);
   cursor (playerx + 1, playery + 1);
-  attron(COLOR_PAIR(4));
+  attron(COLOR_PAIR(3));
   lprc ('@');
-  attroff(COLOR_PAIR(4));
+  attroff(COLOR_PAIR(3));
   cursor (playerx + 1, playery + 1);
   oldx = playerx;
   oldy = playery;
