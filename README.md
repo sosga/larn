@@ -1,8 +1,6 @@
 <b>Updates:</b><br\>
 Don't raise bugs for this branch.  It's right now purely alpha experimentation and won't be stable for a long long time.
 
-Right now it won't compile.  I'm uploading new file structure changes later today so depending on your time-zone it may or may not be done 'quickly' :)
-
 ~Gibbon
 
 <b>Future Planned Changes</b><br\>
