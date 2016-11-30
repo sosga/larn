@@ -77,11 +77,11 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "includes/tgoto.h"
+#include "../includes/tgoto.h"
 
 #define MAXARGS 2
 
-static void process (void);
+static void process ( void );
 
 
 static const char
@@ -119,25 +119,36 @@ static char output[64];		/* Converted string */
  */
 
 const char *
-atgoto (const char *cm, int destcol, int destline)
+atgoto ( const char *cm, int destcol, int destline )
 {
-	if (cm == NULL) {
-		return ("OOPS");
-	} else {
+	if ( cm == NULL )
+	{
+		return ( "OOPS" );
+	}
+
+	else
+	{
 		in = cm;
 		out = output;
 		args[0] = destline;
 		args[1] = destcol;
 		pcount = 0;
-		while (*in != '\0') {
-			if (*in != '%') {
+
+		while ( *in != '\0' )
+		{
+			if ( *in != '%' )
+			{
 				*out++ = *in++;
-			} else {
+			}
+
+			else
+			{
 				process ();
 			}
 		}
+
 		*out = '\0';		/* rde 18-DEC-86: don't assume out was all zeros */
-		return (output);
+		return ( output );
 	}
 }
 
@@ -205,50 +216,65 @@ atgoto (const char *cm, int destcol, int destline)
  */
 
 static void
-process (void)
+process ( void )
 {
 	int temp;
 	in++;
-	switch (*in++) {
-	case 'd':
-		sprintf (out, "%d", args[pcount++]);
-		out = &output[strlen (output)];
-		break;
-	case '2':
-		sprintf (out, "%02d", args[pcount++]);
-		out += 2;
-		/*
-		    out = &output[strlen(output)];
-		*/
-		break;
-	case '3':
-		sprintf (out, "%03d", args[pcount++]);
-		out = &output[strlen (output)];
-		break;
-	case '.':
-		*out++ = (char) args[pcount++];
-		break;
-	case '+':
-		*out++ = (char) args[pcount++] + *in++;
-		break;
-	case '>':
-		if (args[pcount] > *in++) {
-			args[pcount] += *in++;
-		} else {
-			in++;
-		}
-		break;
-	case 'r':
-		temp = args[pcount];
-		args[pcount] = args[pcount + 1];
-		args[pcount + 1] = temp;
-		break;
-	case 'i':
-		args[pcount]++;
-		args[pcount + 1]++;
-		break;
-	case '%':
-		*out++ = '%';
-		break;
+
+	switch ( *in++ )
+	{
+		case 'd':
+			sprintf ( out, "%d", args[pcount++] );
+			out = &output[strlen ( output )];
+			break;
+
+		case '2':
+			sprintf ( out, "%02d", args[pcount++] );
+			out += 2;
+			/*
+			    out = &output[strlen(output)];
+			*/
+			break;
+
+		case '3':
+			sprintf ( out, "%03d", args[pcount++] );
+			out = &output[strlen ( output )];
+			break;
+
+		case '.':
+			*out++ = ( char ) args[pcount++];
+			break;
+
+		case '+':
+			*out++ = ( char ) args[pcount++] + *in++;
+			break;
+
+		case '>':
+			if ( args[pcount] > *in++ )
+			{
+				args[pcount] += *in++;
+			}
+
+			else
+			{
+				in++;
+			}
+
+			break;
+
+		case 'r':
+			temp = args[pcount];
+			args[pcount] = args[pcount + 1];
+			args[pcount + 1] = temp;
+			break;
+
+		case 'i':
+			args[pcount]++;
+			args[pcount + 1]++;
+			break;
+
+		case '%':
+			*out++ = '%';
+			break;
 	}
 }

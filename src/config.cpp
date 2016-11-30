@@ -4,12 +4,12 @@
  *                  allow compile time string concatenation, we must
  *                  do runtime concatenation, in main.
  */
-#include "includes/larncons.h"
-#include "includes/larndata.h"
-#include "includes/larnfunc.h"
+#include "../includes/larncons.h"
+#include "../includes/larndata.h"
+#include "../includes/larnfunc.h"
 
 #ifndef WIZID
-#define WIZID   0
+	#define WIZID   0
 #endif
 
 /*
@@ -24,7 +24,4 @@ char logfile[PATHLEN];
 char mazefile[PATHLEN];
 char fortfile[PATHLEN];
 char playerids[PATHLEN];
-
-#ifdef EXTRA
 char diagfile[PATHLEN];		/* the diagnostic filename  */
-#endif
