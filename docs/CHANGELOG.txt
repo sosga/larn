@@ -1,3 +1,17 @@
+November - December 2016
+
+1. Warning-less C++ compilation on Windows, macOS and BSD (GCC 5.1+, Clang 3.8+)
+	only are supported.
+2. Removed mazes being saved into memory, now each time the player
+	goes up or down a level, a fresh maze is generated.  Similar to Angband.
+3. Fixed some bugs with memory allocation (using operator instead of malloc helps).
+4. Saving and Loading is temporarily stripped out.  Rewriting these functions 
+	into valid C++ is needed.
+	
+~Gibbon
+
+=============================================================================
+
 October - November 2016
 
 1. Compiles now with C++ (conversion to real C++ is ongoing)
