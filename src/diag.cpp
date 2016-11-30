@@ -40,7 +40,6 @@ diag ( void )
 		return ( -1 );
 	}
 
-	write ( 1, "\nDiagnosing . . .\n", 18 );
 	lprcat ( "\n\nBeginning of DIAG diagnostics ----------\n" );
 	/*  for the character attributes    */
 	lprintf ( "\n\nPlayer attributes:\n\nHit points: %2d(%2d)",
