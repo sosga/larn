@@ -5,6 +5,10 @@ November - December 2016
 2. Fixed some bugs with memory allocation (using operator instead of malloc helps).
 3. Saving and Loading is temporarily stripped out.  Rewriting these functions 
 	into valid C++ is needed.
+4. Final warnings for macOS and BSD are fixed.
+5. Unused AL[] and DL[] in io.cpp are removed.
+6. Filenames for files (scorefile etc) have been enlarged so it doesn't chop off
+	the .dat, .txt etc..
 	
 ~Gibbon
 

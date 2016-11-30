@@ -24,12 +24,12 @@ using std::cout;
 /* needed for hack fix to handle endwin()
 		   not being called after process commandline */
 
-#define SCORENAME	  "data/scorefile.dat"
-#define LOGFNAME	  "data/logfile.log"
-#define FORTSNAME	  "data/forts.txt"
-#define PLAYERIDS	  "data/playerid.txt"
-#define DIAGFILE	  "data/diagfile.txt"
-#define LEVELSNAME  "data/mazefile.txt"
+#define SCORENAME	"data/scorefile.dat"
+#define LOGFNAME	"data/logfile.log"
+#define FORTSNAME	"data/forts.txt"
+#define PLAYERIDS	"data/playerid.txt"
+#define DIAGFILE	"data/diagfile.txt"
+#define LEVELSNAME	"data/mazefile.txt"
 
 static void parse ( void );
 static void randmonst ( void );
@@ -96,13 +96,13 @@ main ( int argc, char *argv[] )
 	}
 
 	std::strncpy ( scorefile,
-	               SCORENAME, 15 );	/* the larn scoreboard filename */
+	               SCORENAME, 50 );	/* the larn scoreboard filename */
 	std::strncpy ( logfile,
-	               LOGFNAME, 15 );	/* larn activity logging filename */
+	               LOGFNAME, 50 );	/* larn activity logging filename */
 	std::strncpy ( fortfile,
-	               FORTSNAME, 12 );	/* the fortune data file name */
+	               FORTSNAME, 50 );	/* the fortune data file name */
 	std::strncpy ( playerids,
-	               PLAYERIDS, 15 );	/* the playerid data file name */
+	               PLAYERIDS, 50 );	/* the playerid data file name */
 	std::strncpy ( mazefile, LEVELSNAME, 50 );
 #ifdef EXTRA
 	std::strncpy ( diagfile, DIAGFILE, 50 );
