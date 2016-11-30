@@ -26,7 +26,7 @@
 #include <time.h>
 
 #if defined WINDOWS || WINDOWS_VS
-	#include "C:\opt\my_tmp\tdm\x86_64-w64-mingw32\include\io.h"
+	#include <io.h>
 #endif
 
 #ifdef NIX

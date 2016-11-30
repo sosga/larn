@@ -61,14 +61,9 @@
 #include <fcntl.h>		/* For O_BINARY */
 
 #if defined WINDOWS || WINDOWS_VS
-	#include "C:\opt\my_tmp\tdm\x86_64-w64-mingw32\include\io.h"
+	#include <io.h>
 	#include <conio.h>
 #endif
-
-#include "../includes/larncons.h"
-#include "../includes/larndata.h"
-#include "../includes/larnfunc.h"
-#include "../includes/ansiterm.h"
 
 #if defined NIX
 	#include <unistd.h>
@@ -77,12 +72,17 @@
 		#include <sys/socket.h>
 	#endif
 #endif
+
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/io.h"
 #include "../includes/monster.h"
 #include "../includes/scores.h"
 #include "../includes/tgoto.h"
+#include "../includes/larncons.h"
+#include "../includes/larndata.h"
+#include "../includes/larnfunc.h"
+#include "../includes/ansiterm.h"
 
 #define LINBUFSIZE 128		/* size of the lgetw() and lgetl() buffer       */
 int lfd;			/*  output file numbers     */
@@ -803,18 +803,6 @@ static const char CL[] = { 27, '[', ';', 'H', 27, '[', '2', 'J', 0 };
 /* cursor motion */
 static const char CM[] =
 { 27, '[', '%', 'i', '%', '2', ';', '%', '2', 'H', 0 };
-
-/* Removed the 'static' from the AL[] and DL[] as these are unused and static
-   isn't really needed as the variable itself is never used which
-   negates the need for a local version which is why you would ever use
-   static anyway. /rant -Gibbon
-*/
-
-/* insert line */
-const char AL[] = { 27, '[', 'L', 0 };
-
-/* delete line */
-const char DL[] = { 27, '[', 'M', 0 };
 
 /* begin standout mode */
 static const char SO[] = { 27, '[', '1', 'm', 0 };
