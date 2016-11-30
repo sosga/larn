@@ -1,4 +1,2 @@
-#ifdef EXTRA
-int diag (void);
-void diagdrawscreen (void);
-#endif
+int diag ( void );
+void diagdrawscreen ( void );

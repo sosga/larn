@@ -1,5 +1,5 @@
-int newsphere (int, int, int, int);
+int newsphere ( int, int, int, int );
 
-int rmsphere (int, int);
+int rmsphere ( int, int );
 
-void movsphere (void);
+void movsphere ( void );

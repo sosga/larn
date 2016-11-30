@@ -1,1 +1,1 @@
-const char *atgoto (const char *, int, int);
+const char *atgoto ( const char *, int, int );

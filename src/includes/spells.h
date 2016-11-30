@@ -1,11 +1,11 @@
-void cast (void);
+void cast ( void );
 
-int fullhit (int);
+int fullhit ( int );
 
-void godirect (int, int, const char *, int, char);
+void godirect ( int, int, const char *, int, const char );
 
-void ifblind (int, int);
+void ifblind ( int, int );
 
-int dirsub (int *, int *);
+int dirsub ( int *, int * );
 
-void annihilate (void);
+void annihilate ( void );

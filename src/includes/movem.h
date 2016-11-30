@@ -1,1 +1,1 @@
-void movemonst (void);
+void movemonst ( void );

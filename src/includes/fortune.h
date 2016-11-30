@@ -1,1 +1,1 @@
-void outfortune (void);
+void outfortune ( void );

@@ -1,1 +1,1 @@
-void readmail (int);
+void readmail ( int );

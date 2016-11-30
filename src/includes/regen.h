@@ -1,1 +1,1 @@
-void regen (void);
+void regen ( void );

@@ -1,17 +1,17 @@
-int makeboard (void);
+int makeboard ( void );
 
-int hashewon (void);
+int hashewon ( void );
 
-void checkmail (void);
+void checkmail ( void );
 
-int paytaxes (int);
+int paytaxes ( int );
 
-void showscores (void);
+void showscores ( void );
 
-void showallscores (void);
+void showallscores ( void );
 
-void died (int);
+void died ( int );
 
-void diedlog (void);
+void diedlog ( void );
 
-int getplid (char *);
+int getplid ( char * );

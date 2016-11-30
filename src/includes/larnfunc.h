@@ -65,10 +65,10 @@
 
 /* min/max */
 #ifndef min
-#define min(x,y) (((x)>(y))?(y):(x))
+	#define min(x,y) (((x)>(y))?(y):(x))
 #endif
 #ifndef max
-#define max(x,y) (((x)>(y))?(x):(y))
+	#define max(x,y) (((x)>(y))?(x):(y))
 #endif
 
 
@@ -80,5 +80,5 @@
 */
 
 #ifndef WINDOWS
-#define _getch ansiterm_getch
+	#define _getch ansiterm_getch
 #endif

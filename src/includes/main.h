@@ -1,3 +1,3 @@
-void parse2 (void);
+void parse2 ( void );
 
-int readnum (int);
+int readnum ( int );

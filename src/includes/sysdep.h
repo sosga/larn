@@ -1,1 +1,1 @@
-void nap(int milliseconds);
+void nap ( int milliseconds );

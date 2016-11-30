@@ -1,63 +1,63 @@
-void setupvt100 (void);
-void clearvt100 (void);
+void setupvt100 ( void );
+void clearvt100 ( void );
 
-char ttgetch (void);
+char ttgetch ( void );
 
-void scbr (void);
-void sncbr (void);
+void scbr ( void );
+void sncbr ( void );
 
-void newgame (void);
+void newgame ( void );
 
-void lprintf (const char *, ...);
+void lprintf ( const char *, ... );
 
-void lprint (int);
+void lprint ( int );
 
-void lprc (char);
+void lprc ( char );
 
-void lwrite (char *, int);
+void lwrite ( char *, int );
 
-char lgetc (void);
+char lgetc ( void );
 
-int larint (void);
+int larint ( void );
 
-void lrfill (char *, int);
+void lrfill ( char *, int );
 
-char *lgetw (void);
+char *lgetw ( void );
 
-char *lgetl (void);
+char *lgetl ( void );
 
-int lcreat (char *);
+int lcreat ( char * );
 
-int lopen (char *);
+int lopen ( char * );
 
-int lappend (char *);
+int lappend ( char * );
 
-void lrclose (void);
+void lrclose ( void );
 
-void lwclose (void);
+void lwclose ( void );
 
-void lprcat (char*);
+void lprcat ( const char* );
 
-void cursor (int, int);
+void cursor ( int, int );
 
-void cursors (void);
+void cursors ( void );
 
-void init_term (void);
+void init_term ( void );
 
-void cl_line (int, int);
+void cl_line ( int, int );
 
-void cl_up (int, int);
+void cl_up ( int, int );
 
-void cl_dn (int, int);
+void cl_dn ( int, int );
 
-void lstandout (char *);
+void lstandout ( const char* );
 
-void set_score_output (void);
+void set_score_output ( void );
 
-void lflush (void);
+void lflush ( void );
 
-void lflushall (void);
+void lflushall ( void );
 
-char *tmcapcnv (char *, char *);
+char *tmcapcnv ( char *, char * );
 
-void enter_name (void);
+void enter_name ( void );

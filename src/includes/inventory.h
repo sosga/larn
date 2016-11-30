@@ -1,23 +1,23 @@
-void init_inventory (void);
+void init_inventory ( void );
 
-int showstr (char);
+int showstr ( char );
 
-int showwear (void);
+int showwear ( void );
 
-int showwield (void);
+int showwield ( void );
 
-int showread (void);
+int showread ( void );
 
-int showeat (void);
+int showeat ( void );
 
-int showquaff (void);
+int showquaff ( void );
 
-void show1 (int);
+void show1 ( int );
 
-int show3 (int);
+int show3 ( int );
 
-int take (int, int);
+int take ( int, int );
 
-int drop_object (int);
+int drop_object ( int );
 
-int pocketfull (void);
+int pocketfull ( void );

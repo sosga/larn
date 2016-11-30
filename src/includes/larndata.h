@@ -9,7 +9,8 @@
 */
 
 /*  this is the structure that holds the entire dungeon specifications  */
-struct cel {
+struct cel
+{
 	int hitp;			/*  monster's hit points    */
 	int mitem;			/*  the monster ID          */
 	int item;			/*  the object's ID         */
@@ -18,7 +19,8 @@ struct cel {
 };
 
 /* this is the structure for maintaining & moving the spheres of annihilation */
-struct sphere {
+struct sphere
+{
 	struct sphere *p;		/* pointer to next structure */
 	int x, y, lev;		/* location of the sphere */
 	int dir;			/* direction sphere is going in */
@@ -28,7 +30,8 @@ struct sphere {
 
 /*  this is the structure definition of the monster data
 */
-struct monst {
+struct monst
+{
 	const char *name;
 	int level;
 	int armorclass;
@@ -43,7 +46,8 @@ struct monst {
 };
 
 /*  this is the structure definition for the items in the dnd store */
-struct _itm {
+struct _itm
+{
 	int price;
 	int obj;
 	int arg;
@@ -117,7 +121,7 @@ extern long outstanding_taxes, skill[], gtime;
 extern long cdesc[], cbak[];
 extern time_t initialtime;
 extern unsigned long lrandx;
-extern struct cel *cell;
+
 extern struct sphere *spheres;
 
 

@@ -1,17 +1,17 @@
-void lookforobject (char, char, char);
+void lookforobject ( char, char, char );
 
-void oteleport (int);
+void oteleport ( int );
 
-void quaffpotion (int, int);
+void quaffpotion ( int, int );
 
-void adjtimel (int);
+void adjtimel ( int );
 
-void read_scroll (int);
+void read_scroll ( int );
 
-void readbook (int);
+void readbook ( int );
 
-void ohome (void);
+void ohome ( void );
 
-void iopts (void);
+void iopts ( void );
 
-void ignore (void);
+void ignore ( void );
