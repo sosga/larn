@@ -1,8 +1,3 @@
-<b>Updates:</b><br\>
-Don't raise bugs for this branch.  It's right now purely alpha experimentation and won't be stable for a long long time.
-
-~Gibbon
-
 <b>Future Planned Changes</b><br\>
 * Make it harder.  I find Larn to be very easy, in comparison to other games in the genre.
   I also dislike cheaters with the save files, so soon, I am removing the save/load code from the game.
@@ -17,8 +12,4 @@ Don't raise bugs for this branch.  It's right now purely alpha experimentation a
   I dislike heavy template use but for these areas it would make sense, they are used throughout the code and it would
   make the code a bit more readable.
 
-* Builds will be done on 3 systems.  Windows(x64), macOS and FreeBSD(aarch64 - rpi3).  It's 2016, I won't support 32bit in this branch.  Compile it yourselves if you have an outdated architecture / OS.  No Linux builds as my only Linux machine broke.  Naturally I cannot compile on OS's which I don't have :) - DONE (it works)
-
 * Hunger & Thirst, you will need food to replenish your hunger and water to keep you hydrated.  This won't be like other games which take this to the extreme and end-up damaging the game.  When you start you will have enough food and water for the majority of the game (what adventurer would not pack for a trip?).  Every 1000 steps a hunger notch will dissappear (total of 10), eating food (any food) will replenish 50% of the bar.  Nice and simple and not gameplay damaging.
-
-* Source code reformatting and cleaning.  This will take priority over any new features (until this is finished).  I want a clean slate and not a mess.  BSD formatting will be used. - DONE
