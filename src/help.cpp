@@ -2,6 +2,8 @@
 #include <curses.h>
 #include <cstdio>
 #include <cstdlib>
+#include <string>
+#include <iostream>
 #include "../includes/larncons.h"
 #include "../includes/larndata.h"
 #include "../includes/larnfunc.h"

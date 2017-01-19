@@ -59,6 +59,8 @@
 #include <sys/stat.h>
 #include <setjmp.h>
 #include <fcntl.h>		/* For O_BINARY */
+#include <string>
+#include <iostream>
 
 #if defined WINDOWS || WINDOWS_VS
 	#include <io.h>

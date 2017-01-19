@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
+#include <string>
 
 #include "../includes/action.h"
 #include "../includes/larncons.h"
@@ -85,7 +86,6 @@ void
 bot_linex ( void )
 {
 	int i;
-
 	/*int debugtmp; */
 	if ( regen_bottom || ( always ) )
 	{
@@ -94,22 +94,26 @@ bot_linex ( void )
 
 		if ( cdesc[SPELLMAX] > 99 )
 		{
+			attron(A_BOLD);
 			attron ( COLOR_PAIR ( 3 ) );
 			lprintf ( "Spells:" );
 			attroff ( COLOR_PAIR ( 3 ) );
+			attroff(A_BOLD);
 			lprintf ( "%3d(%3d)", ( int ) cdesc[SPELLS],
 			          ( int ) cdesc[SPELLMAX] );
 		}
 
 		else
 		{
+			attron(A_BOLD);
 			attron ( COLOR_PAIR ( 1 ) );
 			lprintf ( "Spells:" );
 			attroff ( COLOR_PAIR ( 1 ) );
+			attroff(A_BOLD);
 			lprintf ( "%3d(%2d) ", ( int ) cdesc[SPELLS],
 			          ( int ) cdesc[SPELLMAX] );
 		}
-
+		attron(A_BOLD);
 		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( " AC:" );
 		attroff ( COLOR_PAIR ( 1 ) );
@@ -189,6 +193,7 @@ bot_linex ( void )
 		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "  Gold:  " );
 		attroff ( COLOR_PAIR ( 1 ) );
+		attroff(A_BOLD);
 		lprintf ( "%-6d", ( int ) cdesc[GOLD] );
 		always = 1;
 		botside ();
@@ -563,9 +568,11 @@ drawscreen ( void )
 					 */
 					if ( i == playerx && j == playery )
 					{
-						attron ( COLOR_PAIR ( 4 ) );
+						attron(A_BOLD);
+						attron ( COLOR_PAIR ( 3 ) );
 						nlprc ( '@' );
-						attroff ( COLOR_PAIR ( 4 ) );
+						attroff ( COLOR_PAIR ( 3 ) );
+						attroff(A_BOLD);
 						continue;
 					}
 
@@ -769,9 +776,11 @@ showplayer ( void )
 {
 	show1cell ( oldx, oldy );
 	cursor ( playerx + 1, playery + 1 );
-	attron ( COLOR_PAIR ( 4 ) );
+	attron(A_BOLD);
+	attron ( COLOR_PAIR ( 3 ) );
 	lprc ( '@' );
-	attroff ( COLOR_PAIR ( 4 ) );
+	attroff ( COLOR_PAIR ( 3 ) );
+	attroff(A_BOLD);
 	cursor ( playerx + 1, playery + 1 );
 	oldx = playerx;
 	oldy = playery;
