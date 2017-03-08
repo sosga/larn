@@ -223,10 +223,10 @@
 #define MAXPOTION 35		/* maximum number of potions that are possible */
 #define MAXPOTIONNAME	32
 
-#define MAXOBJ 93		/* the maximum number of objects   n < MAXOBJ */
+#define MAXOBJ 100		/* the maximum number of objects   n < MAXOBJ */
 
 /*  defines for the objects in the game     */
-#define MAXOBJECT  92
+#define MAXOBJECT  100
 
 #define OALTAR 1
 #define OTHRONE 2
@@ -325,10 +325,14 @@
 #define OTHRONE2 81
 #define OLRS 82			/* Larn Revenue Service */
 #define OCOOKIE 83
-#define OURN 84
-#define OBRASSLAMP 85
-#define OHANDofFEAR 86		/* hand of fear */
-#define OSPHTAILSMAN 87		/* tailsman of the sphere */
-#define OWWAND 88		/* wand of wonder */
-#define OPSTAFF 89		/* staff of power */
-/* used up to 93. ~Gibbon */
+#define OPRAYERBOOK 84
+#define OCANDLE 85
+#define OSGHANISTATUE 86
+//#define OURN 84
+//#define OBRASSLAMP 85
+//#define OHANDofFEAR 86		/* hand of fear */
+//#define OSPHTAILSMAN 87		/* tailsman of the sphere */
+//#define OWWAND 88		/* wand of wonder */
+//#define OPSTAFF 89		/* staff of power */
+
+

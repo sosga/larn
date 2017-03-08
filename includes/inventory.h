@@ -1,6 +1,6 @@
 void init_inventory ( void );
 
-int showstr ( char );
+int showstr (char);
 
 int showwear ( void );
 

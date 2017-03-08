@@ -10,6 +10,8 @@ void read_scroll ( int );
 
 void readbook ( int );
 
+void readprayerbook ( int );
+
 void ohome ( void );
 
 void iopts ( void );
