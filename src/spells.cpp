@@ -993,7 +993,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
 						if ( dam > 44 )
 						{
 							lprcat ( "  The statue crumbles" );
-							*p = OBOOK;
+							*p = OPRAYERBOOK;
 							iarg[x][y] = level;
 							know[x][y] = 0;
 							show1cell ( x, y );

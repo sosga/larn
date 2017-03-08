@@ -131,6 +131,7 @@ struct _itm dnd_item[90] =
 
 	{590, OCHEST, 6, 1},
 	{200, OBOOK, 8, 1},
+	{100, OPRAYERBOOK, 7, 1},
 	{10, OCOOKIE, 0, 3},
 
 	/*cost    memory    iven name   iven arg   how
@@ -1080,6 +1081,7 @@ otradiven ( void )
 
 				case OLARNEYE:
 				case OBOOK:
+				case OPRAYERBOOK:
 				case OSPIRITSCARAB:
 				case ODIAMOND:
 				case ORUBY:

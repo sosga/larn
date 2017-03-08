@@ -24,30 +24,20 @@
 using std::cout;
 
 static void ostairs ( int );
-
 static void opotion ( int );
-
 static void oscroll ( int );
-
 static void opit ( void );
 static void obottomless ( void );
 static void ostatue ( void );
 static void omirror ( void );
 static void obook ( void );
-
+static void oprayerbook ( void );
 static void ocookie ( void );
-
 static void ogold ( int );
-
 static void prompt_enter ( void );
-
 static void prompt_volshaft ( int );
-
 static void o_open_door ( void );
 static void o_closed_door ( void );
-
-
-
 
 /* LOOK_FOR_OBJECT
 subroutine to look for an object and give the player his options if an object
@@ -160,7 +150,7 @@ lookforobject ( char do_ident, char do_pickup,
 		case OBOOK:
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found a book." );
+				lprcat ( "\nYou have found a Book." );
 			}
 
 			if ( do_pickup )
@@ -175,6 +165,63 @@ lookforobject ( char do_ident, char do_pickup,
 			}
 
 			break;
+		
+		case OPRAYERBOOK:
+			if ( do_ident )
+			{
+				lprcat ( "\nYou have found a Prayer Book." );
+			}
+
+			if ( do_pickup )
+				if ( take ( OPRAYERBOOK, j ) == 0 )
+				{
+					forget ();
+				}
+
+			if ( do_action )
+			{
+				oprayerbook();
+			}
+
+			break;
+			
+		/*case OCANDLE:
+			if ( do_ident )
+			{
+				lprcat ( "\nYou have found a Candle." );
+			}
+
+			if ( do_pickup )
+				if ( take ( OCANDLE, 0 ) == 0 )
+				{
+					forget ();
+				}
+
+			if ( do_action )
+			{
+				ocandle ();
+			}
+
+			break;
+			
+		case OSGHANISTATUE:
+			if ( do_ident )
+			{
+				lprcat ( "\nYou have found a Silver Ghani Statue." );
+			}
+
+			if ( do_pickup )
+				if ( take ( OSGHANISTATUE, 0 ) == 0 )
+				{
+					forget ();
+				}
+
+			if ( do_action )
+			{
+				oghanistatue ();
+			}
+
+			break;*/
 
 		case OCOOKIE:
 			if ( do_ident )
@@ -1033,6 +1080,7 @@ quaffpotion ( int pot, int set_known )
 						case OSCROLL:
 						case OPOTION:
 						case OBOOK:
+						case OPRAYERBOOK:
 						case OCHEST:
 						case OAMULET:
 						case OORBOFDRAGON:
@@ -1622,7 +1670,51 @@ obook ( void )
 	}
 }
 
+static void
+oprayerbook ( void )
+{
+	lprcat ( "\nDo you " );
 
+	if ( cdesc[BLINDCOUNT] == 0 )
+	{
+		lprcat ( "(r) read it, " );
+	}
+
+	lprcat ( "(t) take it" );
+	iopts ();
+
+	for ( ;; )
+	{
+		switch ( ttgetch () )
+		{
+			case '\33':
+			case 'i':
+				ignore ();
+				return;
+
+			case 'r':
+				if ( cdesc[BLINDCOUNT] )
+				{
+					break;
+				}
+
+				lprcat ( "read" );
+				/* no more book */ readprayerbook ( iarg[playerx][playery] );
+				forget ();
+				return;
+
+			case 't':
+				lprcat ( "take" );
+
+				if ( take ( OPRAYERBOOK, iarg[playerx][playery] ) == 0 )
+				{
+					forget ();  /* no more book */
+				}
+
+				return;
+		};
+	}
+}
 
 /*
 * function to read a book
@@ -1669,7 +1761,50 @@ readbook ( int lev )
 	}
 }
 
+/*
+* function to read a prayer book
+*/
+void
+readprayerbook ( int lev )
+{
+	int i, tmp;
 
+	if ( lev <= 3 )
+	{
+		tmp = splev[lev];
+
+		if ( tmp == 0 )
+		{
+			tmp = 1;
+		}
+
+		i = rund ( tmp );
+	}
+
+	else
+	{
+		tmp = splev[lev] - 9;
+
+		if ( tmp == 0 )
+		{
+			tmp = 1;
+		}
+
+		i = rnd ( tmp + 9 );
+	}
+
+	spelknow[i] = 1;
+	lprintf ( "\nSpell \"%s\":  %s\n%s", spelcode[i],
+	          spelname[i],
+	          speldescript[i] );
+
+	if ( rnd ( 10 ) == 4 )
+	{
+		lprcat ( "\nYour WISDOM has increased by one!" );
+		cdesc[WISDOM]++;
+		bottomline ();
+	}
+}
 
 static void
 ocookie ( void )

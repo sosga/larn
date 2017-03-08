@@ -135,7 +135,7 @@ const char *levelname[] =
 */
 
 const char objnamelist[MAXOBJECT + 38] =
-  ".:\\_^<_{%^6|2>_55}$'+#~[[[))))))========-?!?&~~~~~****899)))[[[[[)^.[1$$$.^^.3./0\\4,____________________________________________";
+  ".:\\_^<_{%^6|2>_55}$'+#~[[[))))))========-?!?&~~~~~****899)))[[[[[)^.[1$$$.^^.3./0\\4,+|0____________________________________________";
 char monstnamelist[] =
   ".BGHJKOScjtAELNQRZabhiCTYdegmvzFWflorXV.pqsyUkMwDDPxnDDuD........,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
 
@@ -157,7 +157,7 @@ const char *objectname[] =
 	"an elevator going down",
 	"the bank of Larn", "the 5th branch of the Bank of Larn",
 	"a dead fountain", "gold", "an open door", "a closed door",
-	"a wall", "The Eye of Larn", "plate mail", "chain mail", "leather armor",
+	"a wall", "the Eye of Larn", "plate mail", "chain mail", "leather armor",
 	"a sword of slashing", "Bessman's flailing hammer", "a sunsword",
 	"a two handed sword", "a spear", "a dagger",
 	"ring of extra regeneration", "a ring of regeneration",
@@ -171,15 +171,15 @@ const char *objectname[] =
 	"an enchanting emerald", "a sparkling sapphire", "the dungeon entrance",
 	"a volcanic shaft leaning downward", "the base of a volcanic shaft",
 	"a battle axe", "a longsword", "a longsword of Hymie", "ring mail",
-	"studded leather armor",
-	"splint mail", "plate armor", "stainless plate armor",
+	"Studded Leather Armor",
+	"Splint Mail", "Plate Armor", "Stainless Plate Armor",
 	"Great Sword of Death",
-	"an arrow trap", "an arrow trap", "a shield", "your home",
-	"gold", "gold", "gold", "a dart trap",
-	"a dart trap", "a trapdoor", "a trapdoor", "the local trading post",
-	"a teleport trap", "a massive throne",
-	"a sphere of annihilation", "a handsome jewel encrusted throne",
-	"the Larn Revenue Service", "a fortune cookie", "", "", "", "", "", "",
+	"an Arrow Trap", "an Arrow Trap", "a Shield", "your Home",
+	"Gold", "Gold", "Gold", "a Dart Trap",
+	"a Dart Trap", "a Trapdoor", "a Trapdoor", "the local Trading Post",
+	"a Teleport Trap", "a Massive Throne",
+	"a Sphere of Annihilation", "a Handsome Jewel Encrusted Throne",
+	"the Larn Revenue Service", "a Fortune Cookie","a Prayer Book","a Candle","a Silver Ghani Statue", "", "", "", "", "", "",
 	"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
 };
 

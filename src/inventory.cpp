@@ -7,14 +7,10 @@
 #include "../includes/io.h"
 #include <curses.h>
 
-static int qshowstr ( char );
-
-static void t_setup ( int );
-static void t_endup ( int );
-
-static int show2 ( int );
-
-
+static void t_setup(int);
+static void t_endup(int);
+static int show2(int);
+static int qshowstr(char);
 
 /* Allow only 26 items (a to z) in the player's inventory */
 #define MAXINVEN 26
@@ -76,79 +72,66 @@ init_inventory ( void )
 	}
 }
 
-
-
 /*
 * show character's inventory
 */
 int
-showstr ( char select_allowed )
+showstr(char select_allowed)
 {
 	int i, number, item_select;
-
-	for ( number = 3, i = 0; i < MAXINVEN; i++ )
-		if ( iven[i] )
+	
+	for (number = 3, i = 0; i < MAXINVEN; i++)
+		if (iven[i])
 		{
 			number++;  /* count items in inventory */
 		}
 
-	t_setup ( number );
-	item_select = qshowstr ( select_allowed );
-	t_endup ( number );
+	t_setup (number);
+	item_select = qshowstr (select_allowed);
+	t_endup (number);
 	return item_select;
 }
 
-
-
 static int
-qshowstr ( char select_allowed )
+qshowstr(char select_allowed)
 {
-	int i, j, k, itemselect = 0;
+	int k, itemselect = 0;
 	srcount = 0;
 
-	if ( cdesc[GOLD] )
+	if (cdesc[GOLD])
 	{
-		lprintf ( ".)   %d gold pieces", ( int ) cdesc[GOLD] );
+		lprintf (".) %d gold pieces",(int)cdesc[GOLD]);
 		srcount++;
 	}
-
-	for ( k = ( MAXINVEN - 1 ); k >= 0; k-- )
-		if ( iven[k] )
+	
+	/*
+	* I don't know who wrote the spaghetti code that was here
+	* but I do know that it was not needed and complicated a rather simple piece of functionality.
+	* Why do we need fancy hard-coded limits for a simple inventory?  Just get the contents as long as it is less than the
+	* MAXINVEN size.  What's the problem?  Passing the variable to show3() which in-turn calls show2() then show1() and displays.
+	* Nice and simple and no s****y code needed. /rant
+	*
+	* ~Gibbon
+	*/
+	for (k = 0; k < MAXINVEN; k++)
+		if (iven[k])
 		{
-			for ( i = 22; i < 84; i++ )
-				for ( j = 0; j <= k; j++ )
-					if ( i == iven[j] )
-					{
-						itemselect = show2 ( j );
-
-						if ( itemselect && select_allowed )
-						{
-							goto quitit;
-						}
-					}
-
-			k = 0;
+			show3(k);
 		}
 
-	/*lprintf("\nElapsed time is %d.  You have %d mobuls left",(int)((gtime+99)/100+1),(int)((TIMELIMIT-gtime)/100)); */
-	lprintf ( "\nElapsed time is %d.  You have %d mobuls left",
-	          gtime / 100,
-	          ( TIMELIMIT - gtime ) / 100 );
-	itemselect = more ( select_allowed );
-quitit:
+	lprintf ( "\nElapsed time is %d. You have %d mobuls left",
+	          gtime / 100,(TIMELIMIT - gtime ) / 100);
+	itemselect = more (select_allowed);
 
-	if ( select_allowed )
+	if (select_allowed)
 	{
-		return ( ( itemselect > 0 ) ? itemselect : 0 );
+		return((itemselect > 0) ? itemselect : 0);
 	}
-
 	else
 	{
-		return ( 0 );
+		return(0);
 	}
 }
-
-
 
 /*
 * subroutine to clear screen depending on # lines to display
@@ -284,6 +267,7 @@ showwield ( void )
 				case OEMERALD:
 				case OSAPPHIRE:
 				case OBOOK:
+				case OPRAYERBOOK:
 				case OCHEST:
 				case OLARNEYE:
 				case ONOTHEFT:
@@ -312,6 +296,7 @@ showwield ( void )
 				case OEMERALD:
 				case OSAPPHIRE:
 				case OBOOK:
+				case OPRAYERBOOK:
 				case OCHEST:
 				case OLARNEYE:
 				case ONOTHEFT:
@@ -364,6 +349,7 @@ showread ( void )
 		switch ( iven[i] )
 		{
 			case OBOOK:
+			case OPRAYERBOOK:
 			case OSCROLL:
 				++count;
 				break;
@@ -377,6 +363,7 @@ showread ( void )
 		switch ( iven[i] )
 		{
 			case OBOOK:
+			case OPRAYERBOOK:
 			case OSCROLL:
 				itemselect = show2 ( i );
 				break;
@@ -520,15 +507,13 @@ show1 ( int idx )
 	lprc ( '\n' );
 	cltoeoln ();
 
-	/*not totally needed but it is cleaner.  Inventory will not be == 0 due to starting items. ~Gibbon
+	/*
+	 * Inventory will not be == 0 due to starting items. ~Gibbon
 	 */
-	if ( iven[idx] != 0 )
-	{
 		attron ( COLOR_PAIR ( 4 ) );
 		lprintf ( "%c) ", idx + 'a' );
 		attroff ( COLOR_PAIR ( 4 ) );
 		lprintf ( "%s", objectname[iven[idx]] );
-	}
 
 	/*we can remove the index to object name and concatenate the above with the below for scrolls and potions.
 	 *since OPOTION and OSCROLL (object names) will be stuffed into the above, we can focus on identified names. ~Gibbon
@@ -565,6 +550,7 @@ show2 ( int index )
 		case OSCROLL:
 		case OLARNEYE:
 		case OBOOK:
+		case OPRAYERBOOK:
 		case OSPIRITSCARAB:
 		case ODIAMOND:
 		case ORUBY:
@@ -601,7 +587,7 @@ show2 ( int index )
 
 	if ( cdesc[WIELD] == index )
 	{
-		lprcat ( " (weapon in hand)" );
+		lprcat ( " (in hand)" );
 	}
 
 	if ( ( cdesc[WEAR] == index ) || ( cdesc[SHIELD] == index ) )

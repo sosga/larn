@@ -452,7 +452,7 @@ parse ( void )
 			case 'i':		/* inventory */
 				yrepcount = 0;
 				nomove = 1;
-				showstr ( FALSE );
+				showstr(FALSE);
 				return;
 
 			case 'p':		/* pray at an altar */
@@ -484,6 +484,7 @@ parse ( void )
 					if ( cdesc[TIMESTOP] == 0 )
 						if ( !floor_consume ( OSCROLL, "read" ) )
 							if ( !floor_consume ( OBOOK, "read" ) )
+								if ( !floor_consume ( OPRAYERBOOK, "read" ) )
 							{
 								consume ( OSCROLL, "read", showread );
 							}
@@ -1105,7 +1106,7 @@ dropobj ( void )
 
 		if ( i == '*' )
 		{
-			i = showstr ( TRUE );
+			i = showstr(TRUE);
 			cursors ();
 		}
 
@@ -1251,6 +1252,11 @@ floor_consume ( int search_item, const char *cons_verb )
 			readbook ( iarg[playerx][playery] );
 			forget ();
 			break;
+		
+		case OPRAYERBOOK:
+			readprayerbook( iarg[playerx][playery] );
+			forget();
+			break;
 
 		case OPOTION:
 			quaffpotion ( iarg[playerx][playery], 1 );
@@ -1315,6 +1321,16 @@ consume ( int search_item, const char *prompt,
 						}
 
 						readbook ( ivenarg[i - 'a'] );
+						break;
+						
+					case OPRAYERBOOK:
+						if ( search_item != OSCROLL )
+						{
+							lprintf ( "\nYou can't %s that.", prompt );
+							return;
+						}
+
+						readprayerbook ( ivenarg[i - 'a'] );
 						break;
 
 					case OCOOKIE:
