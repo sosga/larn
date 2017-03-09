@@ -18,4 +18,4 @@
 
 * Hunger & Thirst, you will need food to replenish your hunger and water to keep you hydrated.  This won't be like other games which take this to the extreme and end-up damaging the game.  When you start you will have enough food and water for the majority of the game (what adventurer would not pack for a trip?).  Every 1000 steps a hunger notch will dissappear (total of 10), eating food (any food) will replenish 50% of the bar.  Nice and simple and not gameplay damaging.
 
-* 64-bit native.  No 32-bit builds will be done for any platform (by me anyway).  For the SBC devices I support, only aarch64 would be supported (ArchArm and FreeBSD currently do aarch64 builds).  It's 2017 now people, time to move on.
+* More portable and more binaries.  I will use QEMU and as many as possible (working) QEMU images for as many architectures as possible to build binaries on.  Failing that, cross-compiling is also possible though a little more work.
