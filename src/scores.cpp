@@ -41,6 +41,8 @@
 #include "../includes/sysdep.h"
 #include "../includes/io.h"
 
+using std::cout;
+
 struct scofmt  		/*  This is the structure for the scoreboard        */
 {
 	int score;			/* the score of the player                          */
@@ -123,6 +125,9 @@ static const char *whydead[] =
 /*	Rewriting the scoring (read, write and make board functions) into plain 'ol C
 	because the previous implementations were shockingly awful, messy,
 	non-standard garbage. ~Gibbon
+	
+	UPDATE: Now it's done in plain 'ol C++ :)
+	~Gibbon
 */
 
 
@@ -140,7 +145,7 @@ readboard ( void )
 
 	if ( pFile == NULL )
 	{
-		printf ( "ERROR: scorefile is not readable \n" );
+		cout << "ERROR: scorefile is not readable \n";
 		lflush();
 		return ( -1 );
 	}
@@ -149,7 +154,7 @@ readboard ( void )
 
 	if ( b != 1 )
 	{
-		printf ( "ERROR: Loosers scoreboard is not readable\n" );
+		cout << "ERROR: Loosers scoreboard is not readable\n";
 		fclose ( pFile );
 		return ( -1 );
 	}
@@ -158,7 +163,7 @@ readboard ( void )
 
 	if ( b != 1 )
 	{
-		printf ( "ERROR: Winners scoreboard is not readable\n" );
+		cout << "ERROR: Winners scoreboard is not readable\n";
 		fclose ( pFile );
 		return ( -1 );
 	}
@@ -182,7 +187,7 @@ writeboard ( void )
 
 	if ( pFile == NULL )
 	{
-		printf ( "ERROR: scorefile is not writable \n" );
+		cout << "ERROR: scorefile is not writable \n";
 		lflush();
 		return ( -1 );
 	}
@@ -191,7 +196,7 @@ writeboard ( void )
 
 	if ( b != 1 )
 	{
-		printf ( "ERROR: Loosers scoreboard is not writable\n" );
+		cout << "ERROR: Loosers scoreboard is not writable\n";
 		fclose ( pFile );
 		return ( -1 );
 	}
@@ -200,7 +205,7 @@ writeboard ( void )
 
 	if ( b != 1 )
 	{
-		printf ( "ERROR: Winners scoreboard is not writable\n" );
+		cout << "ERROR: Winners scoreboard is not writable\n";
 		fclose ( pFile );
 		return ( -1 );
 	}
@@ -227,7 +232,7 @@ makeboard ( void )
 
 	if ( writeboard() )
 	{
-		printf ( "ERROR: unable to write a new scoreboard\n" );
+		cout << "ERROR: unable to write a new scoreboard\n";
 		return ( -1 );
 	}
 

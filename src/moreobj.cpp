@@ -59,7 +59,7 @@ oaltar ( void )
 		switch ( ttgetch () )
 		{
 			case 'p':
-				lprcat ( " pray\nDo you (m) give money or (j) just pray? " );
+				lprcat ( " pray\nDo you (m) give money, (t) give thanks or (j) just pray? " );
 
 				for ( ;; )
 					switch ( ttgetch () )
@@ -67,6 +67,11 @@ oaltar ( void )
 						case 'j':
 							lprcat ( "\n" );
 							act_just_pray ();
+							return;
+						
+						case 't':
+							lprcat ( "\n" );
+							act_give_thanks();
 							return;
 
 						case 'm':

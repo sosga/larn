@@ -137,12 +137,8 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nThere is a Holy Altar here!" );
-			}
-
-			if ( do_action )
-			{
-				oaltar ();
+				lprcat ("\nThere is a Holy Altar here!");
+				oaltar();
 			}
 
 			break;

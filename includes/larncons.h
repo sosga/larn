@@ -327,7 +327,7 @@
 #define OCOOKIE 83
 #define OPRAYERBOOK 84
 #define OCANDLE 85
-#define OSGHANISTATUE 86
+#define OGHANISTATUE 86
 //#define OURN 84
 //#define OBRASSLAMP 85
 //#define OHANDofFEAR 86		/* hand of fear */

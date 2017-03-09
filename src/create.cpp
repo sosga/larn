@@ -589,7 +589,7 @@ makeobject ( int j )
 
 	/*  make the random objects in the maze     */
 	fillmroom ( rund ( 3 ), OBOOK, j );
-	fillmroom ( rund ( 3 ), OPRAYERBOOK, j );
+	fillmroom ( rund ( 3 ), OPRAYERBOOK, 0 );
 	fillmroom ( rund ( 3 ), OALTAR, 0 );
 	fillmroom ( rund ( 3 ), OSTATUE, 0 );
 	fillmroom ( rund ( 3 ), OPIT, 0 );

@@ -12,14 +12,14 @@ static void t_endup(int);
 static int show2(int);
 static int qshowstr(char);
 
-/* Allow only 26 items (a to z) in the player's inventory */
-#define MAXINVEN 26
+/* Allow only 12 items (a to l) in the player's inventory */
+#define MAXINVEN 12
 
 /* The starting limit to the number of items the player can carry.
 The limit should probably be based on player strength and the
 weight of the items.
 */
-#define MIN_LIMIT 15
+#define MIN_LIMIT 10
 
 /* define a sentinel to place at the end of the sorted inventory.
 (speeds up display reads )
@@ -121,8 +121,9 @@ qshowstr(char select_allowed)
 
 	lprintf ( "\nElapsed time is %d. You have %d mobuls left",
 	          gtime / 100,(TIMELIMIT - gtime ) / 100);
-	itemselect = more (select_allowed);
-
+			  
+	itemselect = more(select_allowed);
+	
 	if (select_allowed)
 	{
 		return((itemselect > 0) ? itemselect : 0);

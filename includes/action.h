@@ -20,6 +20,8 @@ void act_donation_pray ( void );
 
 void act_just_pray ( void );
 
+void act_give_thanks ( void );
+
 void act_ignore_altar ( void );
 
 void act_open_chest ( int, int );

@@ -98,9 +98,9 @@ bot_linex ( void )
 			attron ( COLOR_PAIR ( 3 ) );
 			lprintf ( "Spells:" );
 			attroff ( COLOR_PAIR ( 3 ) );
-			attroff(A_BOLD);
 			lprintf ( "%3d(%3d)", ( int ) cdesc[SPELLS],
 			          ( int ) cdesc[SPELLMAX] );
+			attroff(A_BOLD);
 		}
 
 		else
@@ -109,9 +109,9 @@ bot_linex ( void )
 			attron ( COLOR_PAIR ( 1 ) );
 			lprintf ( "Spells:" );
 			attroff ( COLOR_PAIR ( 1 ) );
-			attroff(A_BOLD);
 			lprintf ( "%3d(%2d) ", ( int ) cdesc[SPELLS],
 			          ( int ) cdesc[SPELLMAX] );
+			attroff(A_BOLD);
 		}
 		attron(A_BOLD);
 		attron ( COLOR_PAIR ( 1 ) );
@@ -193,8 +193,8 @@ bot_linex ( void )
 		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "  Gold:  " );
 		attroff ( COLOR_PAIR ( 1 ) );
-		attroff(A_BOLD);
 		lprintf ( "%-6d", ( int ) cdesc[GOLD] );
+		attroff(A_BOLD);
 		always = 1;
 		botside ();
 		cdesc[TMP] = cdesc[STRENGTH] + cdesc[STREXTRA];

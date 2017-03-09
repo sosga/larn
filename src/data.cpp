@@ -135,7 +135,7 @@ const char *levelname[] =
 */
 
 const char objnamelist[MAXOBJECT + 38] =
-  ".:\\_^<_{%^6|2>_55}$'+#~[[[))))))========-?!?&~~~~~****899)))[[[[[)^.[1$$$.^^.3./0\\4,+|0____________________________________________";
+  ".:\\_^<_{%^6|2>_55}$.D#~[[[))))))========-?!?&~~~~~****899)))[[[[[)^^[1$$$^^^^3@/0\\4,?|;____________________________________________";
 char monstnamelist[] =
   ".BGHJKOScjtAELNQRZabhiCTYdegmvzFWflorXV.pqsyUkMwDDPxnDDuD........,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
 
@@ -164,7 +164,7 @@ const char *objectname[] =
 	"a ring of protection",
 	"an energy ring", "a ring of dexterity", "a ring of strength",
 	"a ring of cleverness", "a ring of increase damage", "a belt of striking",
-	"a magic scroll", "a magic potion", "a book", "a chest",
+	"a magic scroll", "a magic potion", "a Book", "a chest",
 	"an amulet of invisibility", "an orb of dragon slaying",
 	"a scarab of negate spirit", "a cube of undead control",
 	"device of theft prevention", "a brilliant diamond", "a ruby",
@@ -179,7 +179,8 @@ const char *objectname[] =
 	"a Dart Trap", "a Trapdoor", "a Trapdoor", "the local Trading Post",
 	"a Teleport Trap", "a Massive Throne",
 	"a Sphere of Annihilation", "a Handsome Jewel Encrusted Throne",
-	"the Larn Revenue Service", "a Fortune Cookie","a Prayer Book","a Candle","a Silver Ghani Statue", "", "", "", "", "", "",
+	"the Larn Revenue Service", "a Fortune Cookie","a Prayer Book",
+	"a Candle","a Silver Ghani Statue", "", "", "", "", "", "",
 	"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
 };
 

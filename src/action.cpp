@@ -462,7 +462,7 @@ act_donation_pray ( void )
 			if ( k < temp || k < rnd ( 50 ) )
 			{
 				/* added by ~Gibbon */
-				lprcat ( "You have offended the Gods." );
+				lprcat("You have offended the Gods.");
 				createmonster ( makemonst ( level + 1 ) );
 				cdesc[AGGRAVATE] += 200;
 				return;
@@ -496,7 +496,7 @@ act_donation_pray ( void )
 				return;
 			}
 
-			lprcat ( "Thank You." );
+			lprcat("The Gods thank you for your prayers.");
 			return;
 		}
 
@@ -556,7 +556,40 @@ act_just_pray ( void )
 	return;
 }
 
+/*
+Performs the actions associated with 'give thanks' at the altar.  Called
+when the user responds 'give thanks (t)' when in prompt mode.
 
+Assumes cursors(), and that any leading \n have been printed
+
+~Gibbon
+*/
+void
+act_give_thanks(void)
+{
+	int i;
+	
+	//The below math is to identify if the player has the ghani statue in their inventory or not. ~Gibbon
+	for ( i = 0; i < 86; i++ )
+	
+	/*
+	 * If the player is holding the Ghani statue, when praying at an altar,
+	 * they will get some goodies.
+	 *
+	 * ~Gibbon
+	*/ 
+		
+	if (iven[i] == OGHANISTATUE)
+		{
+				lprcat("You place the statue on the altar and close your eyes reverently..");
+				lprcat("\nWe hear your prayers adventurer.\nBehold your new-found strength and experience!");
+				cdesc[STRENGTH] += 4;
+				raiseexperience(600);
+				//Then we remove the statue from the inventory. ~Gibbon
+				iven[i] = 0;
+		}
+	return;
+}
 
 /*
 * function to cast a +3 protection on the player
@@ -575,8 +608,6 @@ act_prayer_heard ( void )
 	cdesc[ALTPRO] += 500;
 	bottomline ();
 }
-
-
 
 /*
 Performs the act of ignoring an altar.
