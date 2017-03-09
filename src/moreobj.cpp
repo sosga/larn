@@ -72,6 +72,8 @@ oaltar ( void )
 						case 't':
 							lprcat ( "\n" );
 							act_give_thanks();
+							lprcat("\nThe Altar descends into the floor and vanishes before your eyes!");
+							forget();
 							return;
 
 						case 'm':

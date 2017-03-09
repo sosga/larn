@@ -581,11 +581,11 @@ act_give_thanks(void)
 		
 	if (iven[i] == OGHANISTATUE)
 		{
-				lprcat("You place the statue on the altar and close your eyes reverently..");
-				lprcat("\nWe hear your prayers adventurer.\nBehold your new-found strength and experience!");
+				lprcat("You place the statues on the altar and close your eyes reverently..");
+				lprcat("\nWe hear your prayers.\nBehold your increased strength and experience!");
 				cdesc[STRENGTH] += 4;
 				raiseexperience(600);
-				//Then we remove the statue from the inventory. ~Gibbon
+				//Then we remove the statue from the inventory.  If the user has more than 1 all will be removed. ~Gibbon
 				iven[i] = 0;
 		}
 	return;
