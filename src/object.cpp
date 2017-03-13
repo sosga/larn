@@ -180,44 +180,6 @@ lookforobject ( char do_ident, char do_pickup,
 			}
 
 			break;
-			
-		/*case OCANDLE:
-			if ( do_ident )
-			{
-				lprcat ( "\nYou have found a Candle." );
-			}
-
-			if ( do_pickup )
-				if ( take ( OCANDLE, 0 ) == 0 )
-				{
-					forget ();
-				}
-
-			if ( do_action )
-			{
-				ocandle ();
-			}
-
-			break;
-			
-		case OSGHANISTATUE:
-			if ( do_ident )
-			{
-				lprcat ( "\nYou have found a Silver Ghani Statue." );
-			}
-
-			if ( do_pickup )
-				if ( take ( OSGHANISTATUE, 0 ) == 0 )
-				{
-					forget ();
-				}
-
-			if ( do_action )
-			{
-				oghanistatue ();
-			}
-
-			break;*/
 
 		case OCOOKIE:
 			if ( do_ident )
@@ -247,10 +209,6 @@ lookforobject ( char do_ident, char do_pickup,
 			if ( do_ident )
 			{
 				lprintf ( "\nThere is %s here!", objectname[i] );
-			}
-
-			if ( do_action )
-			{
 				othrone ( 0 );
 			}
 
@@ -265,10 +223,6 @@ lookforobject ( char do_ident, char do_pickup,
 			if ( do_ident )
 			{
 				lprintf ( "\nThere is %s here!", objectname[i] );
-			}
-
-			if ( do_action )
-			{
 				othrone ( 1 );
 			}
 
@@ -278,10 +232,6 @@ lookforobject ( char do_ident, char do_pickup,
 			if ( do_ident )
 			{
 				lprintf ( "\nThere is %s here!", objectname[i] );
-			}
-
-			if ( do_action )
-			{
 				odeadthrone ();
 			}
 
@@ -316,10 +266,6 @@ lookforobject ( char do_ident, char do_pickup,
 			if ( do_ident )
 			{
 				lprcat ( "\nThere is a fountain here" );
-			}
-
-			if ( do_action )
-			{
 				ofountain ();
 			}
 
@@ -334,10 +280,6 @@ lookforobject ( char do_ident, char do_pickup,
 			if ( do_ident )
 			{
 				lprcat ( "\nYou are standing in front of a statue" );
-			}
-
-			if ( do_action )
-			{
 				ostatue ();
 			}
 
@@ -389,10 +331,6 @@ lookforobject ( char do_ident, char do_pickup,
 			if ( do_ident )
 			{
 				lprcat ( "\nThere is a mirror here" );
-			}
-
-			if ( do_action )
-			{
 				omirror ();
 			}
 
@@ -561,7 +499,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 		/* fall through to OTELEPORTER case below!!! */
 		case OTELEPORTER:
-			lprcat ( "\nZaaaappp!  You've been teleported!\n" );
+			lprcat ( "\nYou have been teleported!\n" );
 			nap ( NAPTIME );
 			oteleport ( 0 );
 			refresh();
