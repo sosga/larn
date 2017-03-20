@@ -51,8 +51,8 @@
 *
 * Note: ** entries are available only in termcap mode.
 */
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <stdarg.h>
 #include <time.h>
 #include <ctype.h>
@@ -86,6 +86,8 @@
 #include "../includes/larndata.h"
 #include "../includes/larnfunc.h"
 #include "../includes/ansiterm.h"
+
+using namespace std;
 
 #define LINBUFSIZE 128		/* size of the lgetw() and lgetl() buffer       */
 int lfd;			/*  output file numbers     */
@@ -353,11 +355,16 @@ lwrite ( char *buf, int len )
 *
 *  Returns 0 if EOF, otherwise the character
 */
+
 char
 lgetc ( void )
 {
-	int i;
-
+	/*
+	 * Static ints please!
+	 *
+	 * ~Gibbon
+	 */
+	static int i;
 	if ( ipoint != iepoint )
 	{
 		return ( inbuffer[ipoint++] );
@@ -1089,10 +1096,18 @@ tputs ( const char *cp )
 
 /*
 * flush_buf()          Flush buffer with decoded output.
+*
+* Added some C++ stuff here so it writes the output buffer
+* To a standard file, it's much more portable than 'write'
+* Which (IMO) is a little unpredictable sometimes.
+*
+* ~Gibbon
 */
 static void
 flush_buf ( void )
 {
+	ofstream bufout;
+
 	if ( io_index )
 	{
 		if ( lfd == 1 )
@@ -1102,10 +1117,20 @@ flush_buf ( void )
 
 		else
 		{
-			write ( lfd, outbuf, io_index );
+			bufout.open("data/buffer.txt", ios::out | ios::app);
+			if (bufout.is_open())
+			{
+				bufout << lfd;
+				bufout << outbuf;
+				bufout << io_index;
+				bufout.close();
+			}
+			else
+			{
+				cout << "ERROR: Buffer file cannot be opened";
+			}
 		}
 	}
-
 	io_index = 0;
 }
 

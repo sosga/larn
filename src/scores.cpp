@@ -125,7 +125,7 @@ static const char *whydead[] =
 /*	Rewriting the scoring (read, write and make board functions) into plain 'ol C
 	because the previous implementations were shockingly awful, messy,
 	non-standard garbage. ~Gibbon
-	
+
 	UPDATE: Now it's done in plain 'ol C++ :)
 	~Gibbon
 */
@@ -1103,7 +1103,7 @@ static int havepid = -1;	/* playerid # if previously done */
 int
 getplid ( char *nam )
 {
-	int fd7, high = 999, no;
+	int high = 999, no;
 	char *p, *p2;
 	char name[80];
 
