@@ -1,15 +1,27 @@
+March 2016
+
+1. Changed the door symbol to 'D' and the open door to '.'
+	Looks better I think.
+2. C++'ified some functions and buffer output.
+3. Fixed all warnings on multiple architectures.
+4. Whole bunch of bug fixes and optimizations (check the github repo).
+
+~Gibbon
+
+=============================================================================
+
 November - December 2016
 
 1. Warning-less C++ compilation on Windows, macOS and BSD (GCC 5.1+, Clang 3.8+)
 	only are supported.
 2. Fixed some bugs with memory allocation (using operator instead of malloc helps).
-3. Saving and Loading is temporarily stripped out.  Rewriting these functions 
+3. Saving and Loading is temporarily stripped out.  Rewriting these functions
 	into valid C++ is needed.
 4. Final warnings for macOS and BSD are fixed.
 5. Unused AL[] and DL[] in io.cpp are removed.
 6. Filenames for files (scorefile etc) have been enlarged so it doesn't chop off
 	the .dat, .txt etc..
-	
+
 ~Gibbon
 
 =============================================================================
@@ -19,7 +31,7 @@ October - November 2016
 1. Compiles now with C++ (conversion to real C++ is ongoing)
 2. Removed mazes being saved into memory, now each time the player
 	goes up or down a level, a fresh maze is generated.  Similar to Angband.
-	
+
 ~Gibbon
 
 =============================================================================
