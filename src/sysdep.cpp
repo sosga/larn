@@ -10,7 +10,7 @@
 	#include <time.h>
 #endif
 
-void nap (int)
+void nap (int milliseconds)
 {
 #if defined WINDOWS || WINDOWS_VS
 	Sleep ( milliseconds );

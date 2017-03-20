@@ -1106,8 +1106,6 @@ tputs ( const char *cp )
 static void
 flush_buf ( void )
 {
-	ofstream bufout;
-
 	if ( io_index )
 	{
 		if ( lfd == 1 )
@@ -1117,18 +1115,7 @@ flush_buf ( void )
 
 		else
 		{
-			bufout.open("data/buffer.txt", ios::out | ios::app);
-			if (bufout.is_open())
-			{
-				bufout << lfd;
-				bufout << outbuf;
-				bufout << io_index;
-				bufout.close();
-			}
-			else
-			{
-				cout << "ERROR: Buffer file cannot be opened";
-			}
+			write(lfd, outbuf, io_index);
 		}
 	}
 	io_index = 0;
