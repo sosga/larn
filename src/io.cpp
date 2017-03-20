@@ -61,6 +61,7 @@
 #include <fcntl.h>		/* For O_BINARY */
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #if defined WINDOWS || WINDOWS_VS
 	#include <io.h>
