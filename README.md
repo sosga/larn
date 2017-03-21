@@ -1,4 +1,16 @@
-<b>Future Planned Changes</b><br\>
+<b>Larn-NEXT</b></br>
+Larn-NEXT is a conversion of the C code of vanilla Larn to C++ (basically a rewrite) in order to de-spaghettifi the code and make it a good, clean game with a great codebase.
+
+<b>Binaries</b></br>
+Binaries are supported in 3 'classes'
+
+* Class 1 binaries: x86, x64 and all MIPS types<i>(thanks to Imagination for the amazing support they give to their CPU's).</i>
+* Class 2 binaries: ppc,armel,armhf.
+* Class 3 binaries: sparc64 (when it's available).
+
+Different classes have different priority.  So in all builds, class 1 will always be built, class 2 will be built later and class 3 will only be built if time allows (I'm quite a busy person).</br>
+
+<b>Future Planned Changes</b>
 * Make it harder.  I find Larn to be very easy, in comparison to other games in the genre.
   I also dislike cheaters with the save files, so soon, I am removing the save/load code from the game.
   If you want to complete the game, you can do it in a single sitting (it's only 1 - 2 hours long at best).
@@ -18,4 +30,4 @@
 
 * Hunger & Thirst, you will need food to replenish your hunger and water to keep you hydrated.  This won't be like other games which take this to the extreme and end-up damaging the game.  When you start you will have enough food and water for the majority of the game (what adventurer would not pack for a trip?).  Every 1000 steps a hunger notch will dissappear (total of 10), eating food (any food) will replenish 50% of the bar.  Nice and simple and not gameplay damaging.
 
-* More portable and more binaries.  I will use QEMU and as many as possible (working) QEMU images for as many architectures as possible to build binaries on.  Failing that, cross-compiling is also possible though a little more work.
+* More portable and more binaries.
