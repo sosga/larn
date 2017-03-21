@@ -379,21 +379,17 @@ hitmonster ( int x, int y )
 		}
 }
 
-
-
 /*
-*  hitm(x,y,amt)       Function to just hit a monster at a given coordinates
+*  hitm::hitm(x,y,amt)  Class to just hit a monster at a given coordinates
 *      int x,y,amt;
 *
 *  Returns the number of hitpoints the monster absorbed
 *  This routine is used to specifically damage a monster at a location (x,y)
 *  Called by hitmonster(x,y)
 */
-int
-hitm ( int x, int y, int amt )
+hitm::hitm(int x, int y, int amt)
 {
 	int monst;
-	int hpoints, amt2;
 	vxy ( &x, &y );			/* verify coordinates are within range */
 	amt2 = amt;			/* save initial damage so we can return it */
 	monst = mitem[x][y];
@@ -455,11 +451,11 @@ hitm ( int x, int y, int amt )
 		dropsomething ( monst );
 		disappear ( x, y );
 		bottomline ();
-		return ( hpoints );
+		return;
 	}
 
 	hitp[x][y] = hpoints - amt;
-	return ( amt2 );
+	return;
 }
 
 
