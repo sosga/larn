@@ -6,7 +6,14 @@ void createmonster ( int );
 
 void dropgold ( int );
 
-int hitm ( int, int, int );
+class hitm {
+	int lastx;
+	int lasty;
+public:
+	hitm(int,int,int);
+	int hpoints;
+	int amt2;
+};
 
 void hitmonster ( int, int );
 
