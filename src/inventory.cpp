@@ -33,15 +33,10 @@ ivenarg  - attribute of each item ( + values, etc )
 ivensort - sorted inventory (so we don't sort each time)
 */
 int iven[MAXINVEN];
-
 int ivenarg[MAXINVEN];
-
 int ivensort[MAXINVEN + 1];	/* extra is for sentinel */
 
-
 static char srcount = 0;	/* line counter for showstr() */
-
-
 
 /*
 * Initialize the player's inventory

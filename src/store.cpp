@@ -1043,7 +1043,7 @@ otradhead ( void )
 
 
 static int
-tradorder[26];	/* screen locations for trading post inventory */
+tradorder[12];	/* screen locations for trading post inventory */
 
 static void
 otradiven ( void )
@@ -1051,7 +1051,7 @@ otradiven ( void )
 	int i, j;
 
 	/* Print user's inventory like bank */
-	for ( j = i = 0; i < 26; i++ )
+	for ( j = i = 0; i < 12; i++ )
 		if ( iven[i] )
 		{
 			cursor ( ( j % 2 ) * 40 + 1, ( j >> 1 ) + 8 );
