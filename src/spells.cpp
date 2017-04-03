@@ -939,9 +939,8 @@ godirect ( int spnum, int dam, const char *str, int delay,
 			lprintf ( str, lastmonst );
 			hitm(x,y,dam);
 			show1cell ( x, y );
-			nap ( NAPTIME );
-			x -= dx;
-			y -= dy;
+			//x -= dx;
+			//y -= dy;
 		}
 
 		else
