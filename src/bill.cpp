@@ -14,6 +14,10 @@ static int letter4 ( void );
 static int letter5 ( void );
 static int letter6 ( void );
 
+/*I will start to change these mail messages.  Some of them can be changed,
+	to make them more funny and interesting.  Right now, they are kinda boring and uninteresting.
+-Gibbon
+*/
 
 
 
