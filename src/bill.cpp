@@ -50,30 +50,25 @@ letter1 ( int gold )
 	return ( 1 );
 }
 
-
-
 static int
-letter2 ( void )
+letter2(void)
 {
-	resetscroll ();
+	resetscroll();
 	screen_clear();
-	lstandout ( "From:" );
-	lprcat ( "  His Majesty King Wilfred of Larndom\n" );
-	lstandout ( "\nSubject:" );
-	lprcat ( "  a noble deed\n" );
-	lprcat ( "\n   I have heard of your magnificent feat, and I, King Wilfred," );
-	lprcat
-	( "\nforthwith declare today to be a national holiday.  Furthermore," );
-	lprcat ( "\nhence three days, Ye be invited to the castle to receive the" );
-	lprcat
-	( "\nhonour of Knight of the realm.  Upon thy name shall it be written. . ." );
-	lprcat ( "\nBravery and courage be yours." );
-	lprcat ( "\nMay you live in happiness forevermore . . .\n" );
-	retcont ();
-	return ( 1 );
+	lstandout("From:");
+	lprcat("Monk Chilfred\n");
+	lstandout("\nSubject:");
+	lprcat("I have heard of your astounding adventure\n");
+	lprcat("Would you like to take up my offer of another?\n");
+	lprcat("I have news of a faraway land which has dangers and riches.\n");
+	lprcat("We have news that our friend Bazar the Ronin has met his fate.\n");
+	lprcat("We would be grateful if you could locate his bones,\n");
+	lprcat("he went to the caves of n'hak where he was\n");
+	lprcat("killed by a giant bat while sleeping..\n\n");
+	lprcat("If you take us up on this offer, you will be rewarded.\n");
+	retcont();
+	return(1);
 }
-
-
 
 static int
 letter3 ( void )
