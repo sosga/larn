@@ -73,18 +73,18 @@ letter2(void)
 static int
 letter3 ( void )
 {
-	resetscroll ();
+	resetscroll();
 	screen_clear();
-	lstandout ( "From:" );
-	lprcat ( "  Count Endelford\n" );
-	lstandout ( "\nSubject:" );
-	lprcat ( "  You Bastard!\n" );
-	lprcat ( "\n   I heard (from sources) of your journey.  Congratulations!" );
-	lprcat ( "\nYou Bastard!  With several attempts I have yet to endure the" );
-	lprcat ( " caves,\nand you, a nobody, makes the journey!  From this time" );
-	lprcat ( " onward, bewarned\nupon our meeting you shall pay the price!\n" );
-	retcont ();
-	return ( 1 );
+	lstandout("From:");
+	lprcat("Count Englewond of Chi\n");
+	lstandout("\nSubject:");
+	lprcat("!!!!\n");
+	lprcat("\nI heard of your journey. Congratulations!");
+	lprcat("\nWith several attempts I have yet to endure the");
+	lprcat("caverns of Larn,\nand you, a nobody, makes the journey! From this time");
+	lprcat("onward, bewarned that.....argh this darn keyboa..\n");
+	retcont();
+	return(1);
 }
 
 
@@ -92,21 +92,20 @@ letter3 ( void )
 static int
 letter4 ( void )
 {
-	resetscroll ();
+	resetscroll();
 	screen_clear();
-	lstandout ( "From:" );
-	lprcat ( "  Mainair, Duke of Larnty\n" );
-	lstandout ( "\nSubject:" );
-	lprcat ( "  High Praise\n" );
-	lprcat
-	( "\n   With a certainty a hero I declare to be amongst us!  A nod of" );
-	lprcat ( "\nfavour I send to thee.  Me thinks Count Endelford this day of" );
-	lprcat ( "\nright breath'eth fire as of dragon of whom ye are slayer.  I" );
-	lprcat ( "\nyearn to behold his anger and jealously.  Should ye choose to" );
-	lprcat ( "\nunleash some of thy wealth upon those who be unfortunate, I," );
-	lprcat ( "\nDuke Mainair, Shall equal thy gift also.\n" );
-	retcont ();
-	return ( 1 );
+	lstandout("From:");
+	lprcat("Mainair, Duke of Larnty\n");
+	lstandout("\nSubject:");
+	lprcat("High Praise\n");
+	lprcat("\nWith a certainty a hero I declare to be amongst us!  A nod of");
+	lprcat("\nfavour I send to thee.  Me thinks Count Endelford this day of");
+	lprcat("\nright breath'eth fire as of dragon of whom ye are slayer.  I");
+	lprcat("\nyearn to behold his anger and jealously.  Should ye choose to");
+	lprcat("\nunleash some of thy wealth upon those who be unfortunate, I,");
+	lprcat("\nDuke Mainair, Shall equal thy gift also.\n");
+	retcont();
+	return(1);
 }
 
 
