@@ -1,5 +1,5 @@
 <b>Larn-NEXT</b></br>
-Larn-NEXT is a conversion of the C code of vanilla Larn to C++ (basically a rewrite) in order to de-spaghettifi the code and make it a good, clean game with a great codebase.
+Larn-NEXT is a conversion of the C code of vanilla Larn to C++ (think C with classes style) in order to de-spaghettifi the code and make it a good, clean game with a great codebase.
 
 <b>Binaries</b></br>
 Binaries are supported in 3 'classes'
@@ -8,7 +8,7 @@ Binaries are supported in 3 'classes'
 * Class 2 binaries: ppc,armel,armhf.
 * Class 3 binaries: sparc64 (when it's available).
 
-Different classes have different priority.  So in all builds, class 1 will always be built, class 2 will be built later and class 3 will only be built if time allows (I'm quite a busy person).</br>
+Different classes have different priority.  So in all builds, class 1 will always be built, class 2 will be built later and class 3 will only be built if time allows (I'm quite a busy person).  So far they are all built on GNU/Linux but I am planning also to build on GNU Hurd and a BSD for x86 compatible architectures.</br>
 
 <b>Future Planned Changes</b>
 * Make it harder.  I find Larn to be very easy, in comparison to other games in the genre.
@@ -22,11 +22,9 @@ Different classes have different priority.  So in all builds, class 1 will alway
   Similar to MMO's.  Right now you're dropped in at the deep-end and if you're not careful even a kobold can kill you.
   Advanced players can still use the difficulty settings (which will be balanced also).
   
-* Templatize common functions.  Reusable print functions and color functions will be Templatized into C++ templates.
-  I dislike heavy template use but for these areas it would make sense, they are used throughout the code and it would
-  make the code a bit more readable.
+* Put common functions into classes.  Reusable print functions and color functions will be put into C++ classes and other well-used functions.
 
-* Increase the use of Religion.  Currently it feels incomplete, I'll be fleshing out the Religon a little more, adding things that     I feel will compliment it's use in the game (like small statues, candles and prayer books).  Perhaps even using a combination of them on a Statue/Altar will give some benefits.
+* Increase the use of Religion.  Currently it feels incomplete, I'll be fleshing out the Religon a little more, adding things that I feel will compliment it's use in the game (like small statues, candles and prayer books).  Perhaps even using a combination of them on a Statue/Altar will give some benefits.
 
 * Hunger & Thirst, you will need food to replenish your hunger and water to keep you hydrated.  This won't be like other games which take this to the extreme and end-up damaging the game.  When you start you will have enough food and water for the majority of the game (what adventurer would not pack for a trip?).  Every 1000 steps a hunger notch will dissappear (total of 10), eating food (any food) will replenish 50% of the bar.  Nice and simple and not gameplay damaging.
 
