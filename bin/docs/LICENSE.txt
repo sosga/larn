@@ -11,9 +11,11 @@ This makes Larn incompatible with 'Open Source' licenses.  This does not affect
 variants rewritten individually, just to the historic, original version
 (and subsequent versions) of the game.
 
-I myself ATSB (Gibbon) will follow the same terms given in Noah's original license.
-All of my code, changes, modifications etc during my maintenance of the game 
-'Larn' are under Noah's license.
+Since I eventually would love Larn to be an Open Source game.  I have
+decided to apply the Apache 2.0 License only to the files which
+I have rewritten fully (so far this is sysdep.c).  So as to make
+the file fully free.  This doesn't apply to files which I have not
+yet rewritten fully and (Noah's) License would still apply.
 
 The below is the original posting pertaining to the future of Larn, by Noah Morgan,
 original author and copyright holder:
