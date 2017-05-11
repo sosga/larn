@@ -1,5 +1,3 @@
-/* Larn is copyrighted 1986 by Noah Morgan. */
-
 #include <time.h>
 
 /*
@@ -27,7 +25,6 @@ struct sphere
 	int lifetime;			/* duration of the sphere */
 };
 
-
 /*  this is the structure definition of the monster data
 */
 struct monst
@@ -54,7 +51,6 @@ struct _itm
 	int qty;
 };
 
-
 /*
 *
 * data declarations
@@ -65,51 +61,38 @@ extern char floorc, wallc;
 
 /* extern char for the water. -Gibbon */
 extern char waterc;
-
 extern int VERSION, SUBVERSION;
 extern int beenhere[], cheat;
 extern int course[];
 extern int item[MAXX][MAXY], iven[], know[MAXX][MAXY];
-
 extern char aborted[];
 extern const char *classname[];
 extern char lastmonst[];
 extern char *lpnt, *lpbuf, *lpend, *inbuffer;
-
 extern int level;
 extern int mitem[MAXX][MAXY], monstlevel[];
 extern int nch[], ndgg[], nlpts[], nomove;
 extern int nplt[], nsw[];
 extern int potprob[];
-
 extern char monstnamelist[];
 extern const char *levelname[];
 extern const char objnamelist[];
 extern char logname[];
-
 extern char mazefile[];
-extern char diagfile[];
 extern char fortfile[];
 extern char helpfile[];
 extern char logfile[];
 extern char playerids[];
-
 extern int predostuff, restorflag;
 extern char savefilename[];
 extern char scorefile[];
 extern int scprob[];
 extern int screen[MAXX][MAXY], sex;
 extern int spelknow[];
-
 extern const char *spelmes[];
 extern const char *speldescript[];
 extern const char *spelcode[];
-
-
-
 extern const char *spelname[];
-
-
 extern int splev[], stealth[MAXX][MAXY], wizard;
 extern int diroffx[], diroffy[], hitflag, hit2flag, hit3flag,
        hitp[MAXX][MAXY];
@@ -121,38 +104,23 @@ extern long outstanding_taxes, skill[], gtime;
 extern long cdesc[], cbak[];
 extern time_t initialtime;
 extern unsigned long lrandx;
-
 extern struct sphere *spheres;
-
-
 extern struct monst monster[];
-
-
 extern struct _itm dnd_item[];
-
-
 
 /*
 * config.c
 */
 extern char *password;
 
-
-
 /*
 * data.c
 */
 extern int prayed;
-
 extern char scrollname[MAXSCROLL + 1][MAXSCROLLNAME];
 extern char potionname[MAXPOTION + 1][MAXPOTIONNAME];
-
 extern const char *objectname[];
-
-
 extern int spelweird[MAXMONST + 8][SPNUM];
-
-
 
 /*
 * main.c
@@ -161,16 +129,13 @@ extern int rmst;
 extern int dropflag;
 extern int save_mode;
 
-
 /*
 * store.c
 */
 extern int lasttime;
-
 
 /*
 * tok.c
 */
 extern int move_no_pickup;
 
-//extern int larn_die(char, char *);

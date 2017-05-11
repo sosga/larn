@@ -1,3 +1,3 @@
-int yylex ( void );
-void sethard ( int );
+int yylex(void);
+void sethard(int);
 
