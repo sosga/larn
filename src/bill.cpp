@@ -1,4 +1,18 @@
-/* bill.c */
+/* Copyright 2016 Gibbon aka 'atsb'
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 #include <curses.h>
 #include "../includes/bill.h"
 #include "../includes/larncons.h"
@@ -7,51 +21,41 @@
 #include "../includes/help.h"
 #include "../includes/io.h"
 
-static int letter1 ( int );
-static int letter2 ( void );
-static int letter3 ( void );
-static int letter4 ( void );
-static int letter5 ( void );
-static int letter6 ( void );
+static int junk_mail1(int);
+static int junk_mail2(void);
+static int junk_mail3(void);
+static int junk_mail4(void);
 
 /*I will start to change these mail messages.  Some of them can be changed,
 	to make them more funny and interesting.  Right now, they are kinda boring and uninteresting.
 -Gibbon
 */
 
-
-
 /*
 *  function to create the tax bill for the user
 */
 static int
-letter1 ( int gold )
+junk_mail1(int gold_count)
 {
-	resetscroll ();
+	resetscroll();
 	screen_clear();
-	lstandout ( "From:" );
-	lprcat ( "the LRS (Larn Revenue Service)" );
-	lstandout ( "\nSubject:" );
-	lprcat ( "undeclared income\n" );
-	lprcat ( "\n   We heard you survived the caverns of Larn.  Let me be the" );
-	lprcat
-	( "\nfirst to congratulate you on your success.  It is quite a feat." );
-	lprcat ( "\nIt must also have been very profitable for you." );
-	lprcat ( "\n\n   The Dungeon Master has informed us that you brought" );
-	lprintf ( "\n%d gold pieces back with you from your journey.  As the", gold );
-	lprcat
-	( "\ncounty of Larn is in dire need of funds, we have spared no time" );
-	lprintf ( "\nin preparing your tax bill.  You owe %d gold pieces as",
-	          gold * TAXRATE );
-	lprcat ( "\nof this notice, and is due within 5 days.  Failure to pay will" );
-	lprcat ( "\nmean penalties.  Once again, congratulations, We look forward" );
-	lprcat ( "\nto your future successful expeditions.\n" );
-	retcont ();
-	return ( 1 );
+	lstandout("From:");
+	lprcat("the LRS");
+	lstandout("\nSubject:");
+	lprcat("Income\n");
+	lprcat("\nNews has come to us that you have indeed survived the caverns!");
+	lprcat("\nCongratulations..");
+	lprcat("\n\nWe received news that you have received");
+	lprintf("\n%d Gold Coins.", gold_count);
+	lprcat("\nAs you know, Larn is in economic trouble, thus we have prepared your tax bill.");
+	lprintf("\nYou owe %d Gold Coins.", gold_count * TAXRATE);
+	lprcat("\nPlease pay within 5 days or there will be consequences.\n");
+	retcont();
+	return(1);
 }
 
 static int
-letter2(void)
+junk_mail2(void)
 {
 	resetscroll();
 	screen_clear();
@@ -71,7 +75,7 @@ letter2(void)
 }
 
 static int
-letter3 ( void )
+junk_mail3(void)
 {
 	resetscroll();
 	screen_clear();
@@ -87,10 +91,8 @@ letter3 ( void )
 	return(1);
 }
 
-
-
 static int
-letter4 ( void )
+junk_mail4(void)
 {
 	resetscroll();
 	screen_clear();
@@ -100,77 +102,16 @@ letter4 ( void )
 	lprcat("High Praise\n");
 	lprcat("\nWith a certainty a hero I declare to be amongst us!  A nod of");
 	lprcat("\nfavour I send to thee.  Me thinks Count Endelford this day of");
-	lprcat("\nright breath'eth fire as of dragon of whom ye are slayer.  I");
-	lprcat("\nyearn to behold his anger and jealously.  Should ye choose to");
-	lprcat("\nunleash some of thy wealth upon those who be unfortunate, I,");
-	lprcat("\nDuke Mainair, Shall equal thy gift also.\n");
 	retcont();
 	return(1);
 }
 
-
-
-static int
-letter5 ( void )
-{
-	resetscroll ();
-	screen_clear();
-	lstandout ( "From:" );
-	lprcat ( "  St. Mary's Children's Home\n" );
-	lstandout ( "\nSubject:" );
-	lprcat ( "  these poor children\n" );
-	lprcat ( "\n   News of your great conquests has spread to all of Larndom." );
-	lprcat ( "\nMight I have a moment of a great man's time.  We here at St." );
-	lprcat ( "\nMary's Children's Home are very poor, and many children are" );
-	lprcat ( "\nstarving.  Disease is widespread and very often fatal without" );
-	lprcat
-	( "\ngood food.  Could you possibly find it in your heart to help us" );
-	lprcat ( "\nin our plight?  Whatever you could give will help much." );
-	lprcat ( "\n(your gift is tax deductible)\n" );
-	retcont ();
-	return ( 1 );
-}
-
-
-
-static int
-letter6 ( void )
-{
-	resetscroll ();
-	screen_clear();
-	lstandout ( "From:" );
-	lprcat ( "  The National Cancer Society of Larn\n" );
-	lstandout ( "\nSubject:" );
-	lprcat ( "  hope\n" );
-	lprcat
-	( "\nCongratulations on your successful expedition.  We are sure much" );
-	lprcat
-	( "\ncourage and determination were needed on your quest.  There are" );
-	lprcat ( "\nmany though, that could never hope to undertake such a journey" );
-	lprcat ( "\ndue to an enfeebling disease -- cancer.  We at the National" );
-	lprcat ( "\nCancer Society of Larn wish to appeal to your philanthropy in" );
-	lprcat ( "\norder to save many good people -- possibly even yourself a few" );
-	lprcat
-	( "\nyears from now.  Much work needs to be done in researching this" );
-	lprcat
-	( "\ndreaded disease, and you can help today.  Could you please see it" );
-	lprcat ( "\nin your heart to give generously?  Your continued good health" );
-	lprcat ( "\ncan be your everlasting reward.\n" );
-	retcont ();
-	return ( 1 );
-}
-
-
-/*
-* Page the mail to the terminal    - dgk
-*/
+/* Entry point for junk mail. ~Gibbon */
 void
-readmail ( int gold )
+larn_read_junk_mail(int gold_count)
 {
-	letter1 ( gold );
-	letter2 ();
-	letter3 ();
-	letter4 ();
-	letter5 ();
-	letter6 ();
+	junk_mail1(gold_count);
+	junk_mail2();
+	junk_mail3();
+	junk_mail4();
 }
