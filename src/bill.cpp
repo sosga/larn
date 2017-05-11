@@ -103,7 +103,7 @@ junk_mail4(void)
 	lprcat("\nA terrible plague is sweeping Larn and people are dying a terrible death!");
 	lprcat("\nI beseech thee to help save souls..");
 	lprcat("\nI was an adventurer like yourself, saving the world from dangers.");
-	lprcat("\nAny help you can spare will be appreciated.");
+	lprcat("\nAny help you can spare will be appreciated.\n");
 	retcont();
 	return(1);
 }
