@@ -1,4 +1,18 @@
-/* tok.c */
+/* Copyright 2016 Gibbon aka 'atsb'
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+/* tok.cpp */
 /*
 yylex()
 sethard()
@@ -21,146 +35,135 @@ sethard()
 #include "../includes/io.h"
 #include "../includes/scores.h"
 
-#define CHKPTINT   400
+#define CHKPTINT 400
 
-static char lastok = 0;
-int yrepcount = 0;
+static char larn_final_k = 0;
+int y_larn_rep = 0;
 int move_no_pickup = FALSE;
 
-
-
 /*
-* lexical analyzer for larn
+* lexical analyzer
 */
 int
-yylex ( void )
+yylex(void)
 {
 	char cc;
-	char firsttime = TRUE;
-
-	if ( hit2flag )
+	char first_time = TRUE;
+	
+	if (hit2flag)
 	{
 		hit2flag = 0;
-		yrepcount = 0;
-		return ( ' ' );
+		y_larn_rep = 0;
+		return(' ');
 	}
-
-	if ( yrepcount > 0 )
+	if (yrepcount > 0)
 	{
-		--yrepcount;
-		return ( lastok );
+		--y_larn_rep;
+		return (larn_final_k);
 	}
-
 	else
 	{
-		yrepcount = 0;
+		y_larn_rep = 0;
 	}
-
-	if ( yrepcount == 0 )
+	if (y_larn_rep == 0)
 	{
-		bottomdo ();
-		showplayer ();		/* show where the player is */
+		bottomdo();
+		showplayer();		/* show where the player is */
 		move_no_pickup = FALSE;	/* clear 'm' flag */
 	}
-
-	lflush ();
-
-	for ( ;; )
+	lflush();
+	for(;;)
 	{
 		cdesc[BYTESIN]++;
-		cc = ttgetch ();
+		cc = ttgetch();
 
 		/* get repeat count, showing to player
 		 */
-		if ( ( cc <= '9' ) && ( cc >= '0' ) )
+		if ((cc <= '9') && (cc >= '0'))
 		{
-			yrepcount = yrepcount * 10 + cc - '0';
+			y_larn_rep = y_larn_rep * 10 + cc - '0';
 
 			/* show count to player for feedback
 			 */
-			if ( yrepcount >= 10 )
+			if (y_larn_rep >= 10)
 			{
-				cursors ();
-
-				if ( firsttime )
+				cursors();
+				if (first_time)
 				{
-					lprcat ( "\n" );
+					lprcat ("\n");
 				}
-
-				lprintf ( "count: %d", ( int ) yrepcount );
-				firsttime = FALSE;
-				lflush ();	/* show count */
+				lprintf("count: %d", (int) y_larn_rep);
+				first_time = FALSE;
+				lflush();	/* show count */
 			}
 		}
-
 		else
 		{
 			/* check for multi-character commands and handle.
 			 */
-			if ( cc == 'm' )
+			if (cc == 'm')
 			{
 				move_no_pickup = TRUE;
 				cc = ttgetch ();
 			}
-
-			if ( yrepcount > 0 )
+			if (y_larn_rep > 0)
 			{
-				--yrepcount;
+				--y_larn_rep;
 			}
-
-			return ( lastok = cc );
+			return (larn_final_k = cc);
 		}
 	}
 }
-
-
-
-
 
 /*
 function to set the desired hardness
 enter with hard= -1 for default hardness, else any desired hardness
 */
 void
-sethard ( int hard )
+sethard(int hard)
 {
-	int j, k;
+	int larn_hard_cdesc_setting;
+	int larn_hard_secondary;
 	int i;
-	struct monst *mp;
-	j = cdesc[HARDGAME];
-	hashewon ();
-
+	struct monst *larn_hard_monster_power;
+	larn_hard_cdesc_setting = cdesc[HARDGAME];
+	hashewon();
+	
 	/* don't set cdesc[HARDGAME] if restoring game */
-	if ( hard >= 0 )
+	if (har+=d >= 0)
 	{
 		cdesc[HARDGAME] = hard;
 	}
-
 	else
 	{
 		/* set cdesc[HARDGAME] to proper value if restoring game */
-		cdesc[HARDGAME] = j;
+		cdesc[HARDGAME] = larn_hard_cdesc_setting;
 	}
-
-	k = cdesc[HARDGAME];
-
-	if ( k == 0 )
+	larn_hard_secondary = cdesc[HARDGAME];
+	if (larn_hard_secondary == 0)
 	{
 		return;
 	}
-
-	for ( j = 0; j <= MAXMONST + 8; j++ )
+	for (larn_hard_cdesc_setting = 0;
+	     larn_hard_cdesc_setting <= MAXMONST + 8;
+	     larn_hard_cdesc_setting++)
 	{
-		mp = &monster[j];
-		i = ( ( 6 + k ) * mp->hitpoints + 1 ) / 6;
-		mp->hitpoints = ( i < 0 ) ? 32767 : i;
-		i = ( ( 6 + k ) * mp->damage + 1 ) / 5;
-		mp->damage = ( i > 127 ) ? 127 : i;
-		i = ( 10 * mp->gold ) / ( 10 + k );
-		mp->gold = ( i > 32767 ) ? 32767 : i;
-		i = mp->armorclass - k;
-		mp->armorclass = ( i < -127 ) ? -127 : i;
-		i = ( 7 * mp->experience ) / ( 7 + k ) + 1;
-		mp->experience = ( i <= 0 ) ? 1 : i;
+		larn_hard_monster_power =
+			&monster[larn_hard_cdesc_setting];
+		i = ((6 + larn_hard_secondary) * larn_hard_monster_power->hitpoints + 1) / 6;
+		larn_hard_monster_power->hitpoints =
+			(i < 0) ?32767 : i;
+		i = ((6 + larn_hard_secondary) * larn_hard_monster_power->damage + 1) / 5;
+		larn_hard_monster_power->damage =
+			(i > 127) ? 127 : i;
+		i = (10 * larn_hard_monster_power->gold) / (10 + larn_hard_secondary);
+		larn_hard_monster_power->gold =
+			(i > 32767) ? 32767 : i;
+		i = larn_hard_monster_power->armorclass - larn_hard_secondary;
+		larn_hard_monster_power->armorclass =
+			(i < -127) ? -127 : i;
+		i = (7 * larn_hard_monster_power->experience) / (7 + larn_hard_secondary) + 1;
+		larn_hard_monster_power->experience =
+			(i <= 0) ? 1 : i;
 	}
 }
