@@ -2,7 +2,7 @@
 Larn-NEXT is a conversion of the C code of vanilla Larn to C++ (think C with classes style) in order to de-spaghettifi the
 code and make it a good, clean game with a great codebase.
 
-See [docs/LICENSE.txt](https://github.com/atsb/RL_M/blob/Larn-SNAPSHOT/docs/LICENSE.txt).
+See [docs/LICENSE.txt](https://github.com/atsb/RL_M/blob/master/docs/LICENSE.txt).
 
 <b>Binaries</b></br>
 Binaries are supported in 3 'classes'
