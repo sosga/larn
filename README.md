@@ -3,6 +3,7 @@ Larn-NEXT is a conversion of the C code of vanilla Larn to C++ (think C with cla
 code and make it a good, clean game with a great codebase.
 
 NOTE: A change in accepting commits.  All pull-requests that deal with code changes
+
 will be placed under the Apache 2.0 License.  See the 'LICENSE.txt' or bug #61 for more info.
 
 <b>Binaries</b></br>
