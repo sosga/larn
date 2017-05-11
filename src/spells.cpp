@@ -123,10 +123,6 @@ cast ( void )
 		return;
 	}				/*  to escape casting a spell   */
 
-#ifdef EXTRA
-	cdesc[SPELLSCAST]++;
-#endif
-
 	for ( lprc ( '\n' ), j = -1, i = 0; i < SPNUM;
 	      i++ )	/*seq search for his spell, hash? */
 		if ( ( spelcode[i][0] == a ) && ( spelcode[i][1] == b )

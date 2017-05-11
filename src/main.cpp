@@ -1,9 +1,9 @@
 /* main.c */
 #include <curses.h>
+
 #include "../includes/larn.h"
 #include "../includes/tok.h"
 #include "../includes/create.h"
-#include "../includes/diag.h"
 #include "../includes/display.h"
 #include "../includes/fortune.h"
 #include "../includes/global.h"
@@ -28,7 +28,6 @@ using std::cout;
 #define LOGFNAME	"data/logfile.log"
 #define FORTSNAME	"data/forts.txt"
 #define PLAYERIDS	"data/playerid.txt"
-#define DIAGFILE	"data/diagfile.txt"
 #define LEVELSNAME	"data/mazefile.txt"
 
 static void parse ( void );
@@ -104,9 +103,6 @@ main ( int argc, char *argv[] )
 	std::strncpy ( playerids,
 	               PLAYERIDS, 50 );	/* the playerid data file name */
 	std::strncpy ( mazefile, LEVELSNAME, 50 );
-#ifdef EXTRA
-	std::strncpy ( diagfile, DIAGFILE, 50 );
-#endif
 	/*
 	 *  now make scoreboard if it is not there (don't clear)
 	 */
@@ -644,22 +640,6 @@ parse ( void )
 				drawscreen ();
 				nomove = 1;
 				return;		/*  look        */
-#if WIZID
-#ifdef EXTRA
-
-			case 'A' - 64:
-				yrepcount = 0;
-				nomove = 1;
-
-				if ( wizard )
-				{
-					diag ();
-					return;
-				}			/*   create diagnostic file */
-
-				return;
-#endif
-#endif
 
 			case '<':		/* Go up stairs or vol shaft */
 				yrepcount = 0;
