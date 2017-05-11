@@ -1,5 +1,20 @@
+/* Copyright 2016 Gibbon aka 'atsb'
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 #include <curses.h>
 #include <cstdlib>
+
 #include "../includes/larncons.h"
 #include "../includes/larndata.h"
 #include "../includes/larnfunc.h"
@@ -15,260 +30,232 @@
 * subroutine to regenerate player hp and spells
 */
 void
-regen ( void )
+regen(void)
 {
 	int i, flag;
-	long *d;
-	d = cdesc;
-	d[MOVESMADE]++;
+	long *larn_cdesc_id;
+	larn_cdesc_id = cdesc;
+	larn_cdesc_id[MOVESMADE]++;
 
-	if ( d[TIMESTOP] )
+	if (larn_cdesc_id[TIMESTOP])
 	{
-		if ( --d[TIMESTOP] <= 0 )
+		if (--larn_cdesc_id[TIMESTOP] <= 0)
 		{
-			bottomline ();
+			bottomline();
 		}
-
 		return;
 	}				/* for stop time spell */
 
 	flag = 0;
 
-	if ( d[STRENGTH] < 3 )
+	if (larn_cdesc_id[STRENGTH] < 3)
 	{
-		d[STRENGTH] = 3;
+		larn_cdesc_id[STRENGTH] = 3;
 		flag = 1;
 	}
 
-	if ( d[HP] != d[HPMAX] )
-		if ( d[REGENCOUNTER]-- <= 0 )  	/*  regenerate hit points   */
+	if (larn_cdesc_id[HP] != larn_cdesc_id[HPMAX])
+		
+	if (larn_cdesc_id[REGENCOUNTER]-- <= 0)		/* regenerate hit points */
+	{
+		larn_cdesc_id[REGENCOUNTER] = 20 +
+			(larn_cdesc_id[HARDGAME] << 1) -
+			larn_cdesc_id[LEVEL];
+		
+	if ((larn_cdesc_id[HP] += larn_cdesc_id[REGEN]) > larn_cdesc_id[HPMAX])
+	{
+		larn_cdesc_id[HP] = larn_cdesc_id[HPMAX];
+		}
+		bottomhp();
+	}
+	/* regenerate spells */
+	if (larn_cdesc_id[SPELLS] < larn_cdesc_id[SPELLMAX])	
+		if (larn_cdesc_id[ECOUNTER]-- <= 0)
 		{
-			d[REGENCOUNTER] = 22 + ( d[HARDGAME] << 1 ) - d[LEVEL];
-
-			if ( ( d[HP] += d[REGEN] ) > d[HPMAX] )
+			larn_cdesc_id[ECOUNTER] = 100 + 4 *
+				(larn_cdesc_id[HARDGAME] -
+				 larn_cdesc_id[LEVEL] -
+				 larn_cdesc_id[ENERGY]
+				);
+			larn_cdesc_id[SPELLS]++;
+			bottomspell();
+		}
+	if (larn_cdesc_id[HERO])
+		if (--larn_cdesc_id[HERO] <= 0 )
+		{
+			for (i = 0; i < 5; i++)
 			{
-				d[HP] = d[HPMAX];
+				larn_cdesc_id[i] -= 10;
 			}
-
-			bottomhp ();
-		}
-
-	if ( d[SPELLS] < d[SPELLMAX] )	/*  regenerate spells   */
-		if ( d[ECOUNTER]-- <= 0 )
-		{
-			d[ECOUNTER] = 100 + 4 * ( d[HARDGAME] - d[LEVEL] -
-			                          d[ENERGY] );
-			d[SPELLS]++;
-			bottomspell ();
-		}
-
-	if ( d[HERO] )
-		if ( --d[HERO] <= 0 )
-		{
-			for ( i = 0; i < 6; i++ )
-			{
-				d[i] -= 10;
-			}
-
 			flag = 1;
 		}
-
-	if ( d[ALTPRO] )
-		if ( --d[ALTPRO] <= 0 )
+	if (larn_cdesc_id[ALTPRO])
+		if (--larn_cdesc_id[ALTPRO] <= 0)
 		{
-			d[MOREDEFENSES] -= 3;
+			larn_cdesc_id[MOREDEFENSES] -= 3;
 			flag = 1;
 		}
-
-	if ( d[PROTECTIONTIME] )
-		if ( --d[PROTECTIONTIME] <= 0 )
+	if (larn_cdesc_id[PROTECTIONTIME])
+		if (--larn_cdesc_id[PROTECTIONTIME] <= 0)
 		{
-			d[MOREDEFENSES] -= 2;
+			larn_cdesc_id[MOREDEFENSES] -= 2;
 			flag = 1;
 		}
-
-	if ( d[DEXCOUNT] )
-		if ( --d[DEXCOUNT] <= 0 )
+	if (larn_cdesc_id[DEXCOUNT])
+		if (--larn_cdesc_id[DEXCOUNT] <= 0)
 		{
-			d[DEXTERITY] -= 3;
+			larn_cdesc_id[DEXTERITY] -= 3;
 			flag = 1;
 		}
-
-	if ( d[STRCOUNT] )
-		if ( --d[STRCOUNT] <= 0 )
+	if (larn_cdesc_id[STRCOUNT])
+		if (--larn_cdesc_id[STRCOUNT] <= 0)
 		{
-			d[STREXTRA] -= 3;
+			larn_cdesc_id[STREXTRA] -= 3;
 			flag = 1;
 		}
-
-	if ( d[BLINDCOUNT] )
-		if ( --d[BLINDCOUNT] <= 0 )
+	if (larn_cdesc_id[BLINDCOUNT])
+		if (--larn_cdesc_id[BLINDCOUNT] <= 0)
 		{
-			cursors ();
-			lprcat ( "\nThe blindness lifts  " );
+			cursors();
+			lprcat("\nThe blindness subsides");
 		}
-
-	if ( d[CONFUSE] )
-		if ( --d[CONFUSE] <= 0 )
+	if (larn_cdesc_id[CONFUSE])
+		if (--larn_cdesc_id[CONFUSE] <= 0)
 		{
-			cursors ();
-			lprcat ( "\nYou regain your senses" );
+			cursors();
+			lprcat("\nYou regain your senses");
 		}
-
-	if ( d[GIANTSTR] )
-		if ( --d[GIANTSTR] <= 0 )
+	if (larn_cdesc_id[GIANTSTR])
+		if (--larn_cdesc_id[GIANTSTR] <= 0)
 		{
-			d[STREXTRA] -= 20;
+			larn_cdesc_id[STREXTRA] -= 20;
 			flag = 1;
 		}
-
-	if ( d[CHARMCOUNT] )
-		if ( ( --d[CHARMCOUNT] ) <= 0 )
+	if (larn_cdesc_id[CHARMCOUNT])
+		if ((--larn_cdesc_id[CHARMCOUNT]) <= 0)
 		{
 			flag = 1;
 		}
-
-	if ( d[INVISIBILITY] )
-		if ( ( --d[INVISIBILITY] ) <= 0 )
+	if (larn_cdesc_id[INVISIBILITY])
+		if ((--larn_cdesc_id[INVISIBILITY]) <= 0)
 		{
 			flag = 1;
 		}
-
-	if ( d[CANCELLATION] )
-		if ( ( --d[CANCELLATION] ) <= 0 )
+	if (larn_cdesc_id[CANCELLATION])
+		if ((--larn_cdesc_id[CANCELLATION]) <= 0)
 		{
 			flag = 1;
 		}
-
-	if ( d[WTW] )
-		if ( ( --d[WTW] ) <= 0 )
+	if (larn_cdesc_id[WTW])
+		if ((--larn_cdesc_id[WTW]) <= 0)
 		{
 			flag = 1;
 		}
-
-	if ( d[HASTESELF] )
-		if ( ( --d[HASTESELF] ) <= 0 )
+	if (larn_cdesc_id[HASTESELF])
+		if ((--larn_cdesc_id[HASTESELF]) <= 0)
 		{
 			flag = 1;
 		}
-
-	if ( d[AGGRAVATE] )
+	if (larn_cdesc_id[AGGRAVATE])
 	{
-		--d[AGGRAVATE];
+		--larn_cdesc_id[AGGRAVATE];
 	}
-
-	if ( d[SCAREMONST] )
-		if ( ( --d[SCAREMONST] ) <= 0 )
+	if (larn_cdesc_id[SCAREMONST])
+		if ((--larn_cdesc_id[SCAREMONST]) <= 0)
 		{
 			flag = 1;
 		}
-
-	if ( d[STEALTH] )
-		if ( ( --d[STEALTH] ) <= 0 )
+	if (larn_cdesc_id[STEALTH])
+		if ((--larn_cdesc_id[STEALTH]) <= 0)
 		{
 			flag = 1;
 		}
-
-	if ( d[AWARENESS] )
+	if (larn_cdesc_id[AWARENESS])
 	{
-		--d[AWARENESS];
+		--larn_cdesc_id[AWARENESS];
 	}
-
-	if ( d[HOLDMONST] )
-		if ( ( --d[HOLDMONST] ) <= 0 )
+	if (larn_cdesc_id[HOLDMONST])
+		if ((--larn_cdesc_id[HOLDMONST]) <= 0)
 		{
 			flag = 1;
 		}
-
-	if ( d[HASTEMONST] )
+	if (larn_cdesc_id[HASTEMONST])
 	{
-		--d[HASTEMONST];
+		--larn_cdesc_id[HASTEMONST];
 	}
-
-	if ( d[FIRERESISTANCE] )
-		if ( ( --d[FIRERESISTANCE] ) <= 0 )
+	if (larn_cdesc_id[FIRERESISTANCE])
+		if ((--larn_cdesc_id[FIRERESISTANCE]) <= 0)
 		{
 			flag = 1;
 		}
-
-	if ( d[GLOBE] )
-		if ( --d[GLOBE] <= 0 )
+	if (larn_cdesc_id[GLOBE])
+		if (--larn_cdesc_id[GLOBE] <= 0)
 		{
-			d[MOREDEFENSES] -= 10;
+			larn_cdesc_id[MOREDEFENSES] -= 10;
 			flag = 1;
 		}
-
-	if ( d[SPIRITPRO] )
-		if ( --d[SPIRITPRO] <= 0 )
-		{
-			flag = 1;
-		}
-
-	if ( d[UNDEADPRO] )
-		if ( --d[UNDEADPRO] <= 0 )
+	if (larn_cdesc_id[SPIRITPRO])
+		if (--larn_cdesc_id[SPIRITPRO] <= 0)
 		{
 			flag = 1;
 		}
-
-	if ( d[HALFDAM] )
-		if ( --d[HALFDAM] <= 0 )
+	if (larn_cdesc_id[UNDEADPRO])
+		if (--larn_cdesc_id[UNDEADPRO] <= 0)
 		{
-			cursors ();
-			lprcat ( "\nYou now feel better " );
+			flag = 1;
 		}
-
-	if ( d[SEEINVISIBLE] )
-		if ( --d[SEEINVISIBLE] <= 0 )
+	if (larn_cdesc_id[HALFDAM])
+		if ( --larn_cdesc_id[HALFDAM] <= 0)
+		{
+			cursors();
+			lprcat("\nYou're feeling better");
+		}
+	if (larn_cdesc_id[SEEINVISIBLE])
+		if (--larn_cdesc_id[SEEINVISIBLE] <= 0)
 		{
 			monstnamelist[INVISIBLESTALKER] = floorc;
 
-			if ( !d[BLINDCOUNT] )
+			if (!larn_cdesc_id[BLINDCOUNT])
 			{
-				cursors ();
-				lprcat ( "\nYou feel your vision return to normal" );
+				cursors();
+				lprcat("\nYour vision returns to normal");
 			}
 		}
-
-	if ( d[ITCHING] )
+	if (larn_cdesc_id[ITCHING])
 	{
-		if ( d[ITCHING] > 1 )
-			if ( ( d[WEAR] != -1 ) || ( d[SHIELD] != -1 ) )
-				if ( rnd ( 100 ) < 50 )
+		if (larn_cdesc_id[ITCHING] > 1)
+			if ((larn_cdesc_id[WEAR] != -1 ) || (larn_cdesc_id[SHIELD] != -1 ))
+				if (rnd(100) < 50)
 				{
-					d[WEAR] = d[SHIELD] = -1;
-					cursors ();
-					lprcat
-					( "\nThe hysteria of itching forces you to remove your armor!" );
-					recalc ();
-					bottomline ();
+					larn_cdesc_id[WEAR] = d[SHIELD] = -1;
+					cursors();
+					lprcat("\nThe unbareable itching forces you to remove your armor!");
+					recalc();
+					bottomline();
 				}
-
-		if ( --d[ITCHING] <= 0 )
+		if (--larn_cdesc_id[ITCHING] <= 0)
 		{
-			cursors ();
-			lprcat ( "\nYou now feel the irritation subside!" );
+			cursors();
+			lprcat("\nThe irritation subsides!");
 		}
 	}
-
-	if ( d[CLUMSINESS] )
+	if (larn_cdesc_id[CLUMSINESS])
 	{
-		if ( d[WIELD] != -1 )
-			if ( d[CLUMSINESS] > 1 )
-				if ( item[playerx][playery] == 0 )	/* only if nothing there */
-					if ( rnd ( 100 ) < 33 )	/* drop your weapon due to clumsiness */
-					{
-						drop_object ( ( int ) d[WIELD] );
-					}
-
-		if ( --d[CLUMSINESS] <= 0 )
+		if (larn_cdesc_id[WIELD] != -1)
+		if (larn_cdesc_id[CLUMSINESS] > 1)
+		if (item[playerx][playery] == 0)	/* only if nothing there */
+		if (rnd(100) < 33)			/* drop your weapon due to clumsiness */
 		{
-			cursors ();
-			lprcat ( "\nYou now feel less awkward!" );
+			drop_object((int)larn_cdesc_id[WIELD]);
 		}
-	}
-
-	if ( flag )
+	if (--larn_cdesc_id[CLUMSINESS] <= 0)
 	{
-		bottomline ();
+		cursors();
+		lprcat("\nYou feel less awkward!");
+	}
+	}
+	if (flag)
+	{
+		bottomline();
 	}
 }
