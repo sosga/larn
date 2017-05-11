@@ -28,6 +28,7 @@
 * regen()
 *
 * subroutine to regenerate player hp and spells
+*
 */
 void
 regen(void)
