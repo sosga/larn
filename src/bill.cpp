@@ -97,11 +97,13 @@ junk_mail4(void)
 	resetscroll();
 	screen_clear();
 	lstandout("From:");
-	lprcat("Mainair, Duke of Larnty\n");
+	lprcat("Hakaz the Elderly\n");
 	lstandout("\nSubject:");
-	lprcat("High Praise\n");
-	lprcat("\nWith a certainty a hero I declare to be amongst us!  A nod of");
-	lprcat("\nfavour I send to thee.  Me thinks Count Endelford this day of");
+	lprcat("Adomonis\n");
+	lprcat("\nA terrible plague is sweeping Larn and people are dying a terrible death!");
+	lprcat("\nI beseech thee to help save souls..");
+	lprcat("\nI was an adventurer like yourself, saving the world from dangers.");
+	lprcat("\nAny help you can spare will be appreciated.");
 	retcont();
 	return(1);
 }
