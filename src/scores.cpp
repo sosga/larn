@@ -308,7 +308,7 @@ checkmail ( void )
 				gold += taxes;
 			}
 
-			readmail ( gold );
+			larn_read_junk_mail(gold);
 		}
 }
 

@@ -69,7 +69,7 @@ lookforobject ( char do_ident, char do_pickup,
 	j = iarg[playerx][playery];
 	showcell ( playerx, playery );
 	cursors ();
-	yrepcount = 0;
+	y_larn_rep = 0;
 
 	switch ( i )
 	{

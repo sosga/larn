@@ -555,7 +555,7 @@ oschool ( void )
 		lprcat ( "\nWhat is your choice [" );
 		lstandout ( "escape" );
 		lprcat ( " to leave] ? " );
-		yrepcount = 0;
+		y_larn_rep = 0;
 		i = 0;
 
 		while ( ( i < 'a' || i > 'h' ) && ( i != '\33' ) && ( i != 12 ) )
@@ -890,7 +890,7 @@ obanksub ( void )
 		lprcat ( ") sell a stone, or " );
 		lstandout ( "escape" );
 		lprcat ( "]  " );
-		yrepcount = 0;
+		y_larn_rep = 0;
 		i = 0;
 
 		while ( i != 'd' && i != 'w' && i != 's' && i != '\33' )
@@ -1272,7 +1272,7 @@ otradepost ( void )
 			lprintf
 			( "\nItem (%c) is worth %d gold pieces to us.  Do you want to sell it? ",
 			  i, ( int ) value );
-			yrepcount = 0;
+			y_larn_rep = 0;
 
 			if ( getyn () == 'y' )
 			{
@@ -1360,7 +1360,7 @@ olrs ( void )
 		lprcat ( ") pay taxes, or " );
 		lstandout ( "escape" );
 		lprcat ( "]  " );
-		yrepcount = 0;
+		y_larn_rep = 0;
 		i = 0;
 
 		while ( i != 'p' && i != '\33' )

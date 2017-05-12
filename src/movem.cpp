@@ -899,7 +899,7 @@ mmove ( int aa, int bb, int cc, int dd )
 		}
 	}
 
-	/*  if (yrepcount>1) { know[aa][bb] &= 2;  know[cc][dd] &= 2; return; } */
+	/*  if (y_larn_rep>1) { know[aa][bb] &= 2;  know[cc][dd] &= 2; return; } */
 	if ( know[aa][bb] & HAVESEEN )
 	{
 		show1cell ( aa, bb );

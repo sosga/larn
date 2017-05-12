@@ -228,7 +228,7 @@ regen(void)
 			if ((larn_cdesc_id[WEAR] != -1 ) || (larn_cdesc_id[SHIELD] != -1 ))
 				if (rnd(100) < 50)
 				{
-					larn_cdesc_id[WEAR] = d[SHIELD] = -1;
+					larn_cdesc_id[WEAR] = larn_cdesc_id[SHIELD] = -1;
 					cursors();
 					lprcat("\nThe unbareable itching forces you to remove your armor!");
 					recalc();

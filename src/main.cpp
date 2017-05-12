@@ -202,7 +202,7 @@ main ( int argc, char *argv[] )
 	drawscreen ();		/*  show the initial dungeon */
 	/* tell the trap functions that they must do a showplayer() from here on */
 	predostuff = 2;
-	yrepcount = hit2flag = 0;
+	y_larn_rep = hit2flag = 0;
 	/*
 	 * init previous player position to be current position, so we don't
 	 * reveal any stuff on the screen prematurely.
@@ -405,7 +405,7 @@ parse ( void )
 				return;		/*  southwest   */
 
 			case '.':		/*  stay here       */
-				if ( yrepcount )
+				if ( y_larn_rep )
 				{
 					viewflag = 1;
 				}
@@ -413,12 +413,12 @@ parse ( void )
 				return;
 
 			case 'c':
-				yrepcount = 0;
+				y_larn_rep = 0;
 				cast ();
 				return;		/*  cast a spell    */
 
 			case 'd':
-				yrepcount = 0;
+				y_larn_rep = 0;
 
 				if ( cdesc[TIMESTOP] == 0 )
 				{
@@ -428,7 +428,7 @@ parse ( void )
 				return;		/*  to drop an object   */
 
 			case 'e':
-				yrepcount = 0;
+				y_larn_rep = 0;
 
 				if ( cdesc[TIMESTOP] == 0 )
 					if ( !floor_consume ( OCOOKIE, "eat" ) )
@@ -439,25 +439,25 @@ parse ( void )
 				return;		/*  to eat a fortune cookie */
 
 			case 'g':
-				yrepcount = 0;
+				y_larn_rep = 0;
 				cursors ();
 				lprintf ( "\nThe stuff you are carrying presently weighs %d pounds",
 				          ( int ) packweight () );
 				break;
 
 			case 'i':		/* inventory */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				nomove = 1;
 				showstr(FALSE);
 				return;
 
 			case 'p':		/* pray at an altar */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				pray_at_altar ();
 				return;
 
 			case 'q':		/* quaff a potion */
-				yrepcount = 0;
+				y_larn_rep = 0;
 
 				if ( cdesc[TIMESTOP] == 0 )
 					if ( !floor_consume ( OPOTION, "quaff" ) )
@@ -468,7 +468,7 @@ parse ( void )
 				return;
 
 			case 'r':
-				yrepcount = 0;
+				y_larn_rep = 0;
 
 				if ( cdesc[BLINDCOUNT] )
 				{
@@ -488,17 +488,17 @@ parse ( void )
 				return;		/*  to read a scroll    */
 
 			case 's':
-				yrepcount = 0;
+				y_larn_rep = 0;
 				sit_on_throne ();
 				return;
 
 			case 't':		/* Tidy up at fountain */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				wash_fountain ();
 				return;
 
 			case 'v':
-				yrepcount = 0;
+				y_larn_rep = 0;
 				nomove = 1;
 				cursors ();
 				lprintf ( "\nLarn-Next, Version %d.%d.%d, Diff=%d", ( int ) VERSION,
@@ -517,50 +517,50 @@ parse ( void )
 				return;
 
 			case 'w':		/*  wield a weapon */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				wield ();
 				return;
 
 			case 'A':
-				yrepcount = 0;
+				y_larn_rep = 0;
 				desecrate_altar ();
 				return;
 
 			case 'C':		/* Close something */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				close_something ();
 				return;
 
 			case 'D':		/* Drink at fountain */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				drink_fountain ();
 				return;
 
 			case '?':
-				yrepcount = 0;
+				y_larn_rep = 0;
 				display_help_text();
 				nomove = 1;
 				return;	/*give the help screen*/
 
 			case 'E':		/* Enter a building */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				enter ();
 				break;
 
 			case 'I':		/*  list spells and scrolls */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				seemagic ( 0 );
 				nomove = 1;
 				return;
 
 			case 'O':		/* Open something */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				open_something ();
 				return;
 
 			case 'P':
 				cursors ();
-				yrepcount = 0;
+				y_larn_rep = 0;
 				nomove = 1;
 
 				if ( outstanding_taxes > 0 )
@@ -575,18 +575,18 @@ parse ( void )
 				return;
 
 			case 'Q':		/*  quit        */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				quit();
 				nomove = 1;
 				return;
 
 			case 'R':		/* remove gems from a throne */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				remove_gems ();
 				return;
 
 			case 'T':
-				yrepcount = 0;
+				y_larn_rep = 0;
 				cursors ();
 
 				if ( cdesc[SHIELD] != -1 )
@@ -612,12 +612,12 @@ parse ( void )
 				return;
 
 			case 'W':
-				yrepcount = 0;
+				y_larn_rep = 0;
 				wear ();
 				return;		/*  wear armor  */
 
 			case 'Z':
-				yrepcount = 0;
+				y_larn_rep = 0;
 
 				if ( cdesc[LEVEL] > 9 )
 				{
@@ -631,34 +631,34 @@ parse ( void )
 				return;		/*  teleport yourself   */
 
 			case ' ':
-				yrepcount = 0;
+				y_larn_rep = 0;
 				nomove = 1;
 				return;
 
 			case 'L' - 64:
-				yrepcount = 0;
+				y_larn_rep = 0;
 				drawscreen ();
 				nomove = 1;
 				return;		/*  look        */
 
 			case '<':		/* Go up stairs or vol shaft */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				up_stairs ();
 				return;
 
 			case '>':		/* Go down stairs or vol shaft */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				down_stairs ();
 				return;
 
 			case ',':		/* pick up an item */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				/* pickup, don't identify or prompt for action */
 				lookforobject ( FALSE, TRUE, FALSE );
 				return;
 
 			case ':':		/* look at object */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				/* identify, don't pick up or prompt for action */
 				lookforobject ( TRUE, FALSE, FALSE );
 				nomove = 1;		/* assumes look takes no time */
@@ -667,11 +667,11 @@ parse ( void )
 			case '/':		/* identify object/monster */
 				specify_object ();
 				nomove = 1;
-				yrepcount = 0;
+				y_larn_rep = 0;
 				return;
 
 			case '^':		/* identify traps */
-				flag = yrepcount = 0;
+				flag = y_larn_rep = 0;
 				cursors ();
 				lprc ( '\n' );
 
@@ -722,7 +722,7 @@ parse ( void )
 #if WIZID
 
 			case '_':		/*  this is the fudge player password for wizard mode */
-				yrepcount = 0;
+				y_larn_rep = 0;
 				cursors ();
 				nomove = 1;
 				wizard = 1;		/* disable to easily test win condition */

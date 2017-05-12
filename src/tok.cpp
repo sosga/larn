@@ -56,7 +56,7 @@ yylex(void)
 		y_larn_rep = 0;
 		return(' ');
 	}
-	if (yrepcount > 0)
+	if (y_larn_rep > 0)
 	{
 		--y_larn_rep;
 		return (larn_final_k);
@@ -130,7 +130,7 @@ sethard(int hard)
 	hashewon();
 	
 	/* don't set cdesc[HARDGAME] if restoring game */
-	if (har+=d >= 0)
+	if (hard+=larn_hard_cdesc_setting >= 0)
 	{
 		cdesc[HARDGAME] = hard;
 	}

@@ -819,7 +819,7 @@ if direction=0, don't move--just show where he is */
 	if ( k < 0 || k >= MAXX || m < 0 || m >= MAXY )
 	{
 		nomove = 1;
-		return ( yrepcount = 0 );
+		return ( y_larn_rep = 0 );
 	}
 
 	i = item[k][m];
@@ -831,7 +831,7 @@ if direction=0, don't move--just show where he is */
 	if ( ( i == OCLOSEDDOOR || i == OWALL ) && cdesc[WTW] == 0 )
 	{
 		nomove = 1;
-		return ( yrepcount = 0 );
+		return ( y_larn_rep = 0 );
 	}
 
 	if ( k == 33 && m == MAXY - 1 && level == 1 )
@@ -855,7 +855,7 @@ if direction=0, don't move--just show where he is */
 	if ( j > 0 )
 	{
 		hitmonster ( k, m );
-		return ( yrepcount = 0 );
+		return ( y_larn_rep = 0 );
 	}
 
 	/* check for the player ignoring an altar
@@ -877,7 +877,7 @@ if direction=0, don't move--just show where he is */
 	     && i != OIVDARTRAP
 	     && i != OIVTRAPDOOR )
 	{
-		return ( yrepcount = 0 );
+		return ( y_larn_rep = 0 );
 	}
 
 	else

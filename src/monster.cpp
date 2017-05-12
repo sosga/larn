@@ -495,7 +495,7 @@ hitplayer ( int x, int y )
 
 	bias = ( cdesc[HARDGAME] ) + 1;
 	hitflag = hit2flag = hit3flag = 1;
-	yrepcount = 0;
+	y_larn_rep = 0;
 	cursors ();
 	ifblind ( x, y );
 
