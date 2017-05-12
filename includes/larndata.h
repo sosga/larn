@@ -99,7 +99,7 @@ extern int diroffx[], diroffy[], hitflag, hit2flag, hit3flag,
 extern int iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
        lastpy;
 extern int oldx, oldy, playerx, playery;
-extern int enable_scroll, yrepcount, wisid, lfd, fd;
+extern int enable_scroll, y_larn_rep, wisid, lfd, fd;
 extern long outstanding_taxes, skill[], gtime;
 extern long cdesc[], cbak[];
 extern time_t initialtime;
