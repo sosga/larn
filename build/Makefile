@@ -1,4 +1,4 @@
-SOURCES = $(wildcard src/*.cpp) $(wildcard src/**/*.cpp)
+SOURCES = $(wildcard ../src/*.cpp) $(wildcard ../src/**/*.cpp)
 EXEC = larn-next
 CXXFLAGS = -pipe -Wall -Wextra -pedantic -Wpointer-arith -Wshadow -Wmissing-declarations -Wredundant-decls -Werror -fomit-frame-pointer -DNIX -DMULTIPLE_SCORE_ENTRY -DTERM_DARK_BACKGROUND
 CXX = g++
