@@ -24,7 +24,7 @@ static int numval;			/* Count of args processed */
 static char ret[24];		/* Converted string */
 
 const char *
-atgoto(const char *cm, int destcol, int destline)
+Termcap::atgoto(const char *cm, int destcol, int destline)
 {
 		in = cm;
 		rp = ret;
