@@ -81,7 +81,7 @@
 #include "../includes/io.h"
 #include "../includes/monster.h"
 #include "../includes/scores.h"
-#include "../includes/tgoto.h"
+#include "termcap/tgoto.hpp"
 #include "../includes/larncons.h"
 #include "../includes/larndata.h"
 #include "../includes/larnfunc.h"
