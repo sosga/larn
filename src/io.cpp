@@ -949,6 +949,7 @@ static int scrline =
 void
 lflush ( void )
 {
+	Termcap termcap;
 	int lpoint;
 	char *str;
 	static int curx = 0;
@@ -1013,7 +1014,7 @@ lflush ( void )
 					case CURSOR:
 						curx = *++str - 1;
 						cury = *++str - 1;
-						tputs ( atgoto ( CM, curx, cury ) );
+						tputs (termcap.atgoto ( CM, curx, cury ) );
 						break;
 
 					case '\n':
@@ -1024,9 +1025,9 @@ lflush ( void )
 								scrline = 19;
 							}
 
-							tputs ( atgoto ( CM, 0, scrline + 1 ) );
+							tputs (termcap.atgoto ( CM, 0, scrline + 1 ) );
 							tputs ( CE );
-							tputs ( atgoto ( CM, 0, scrline ) );
+							tputs (termcap.atgoto ( CM, 0, scrline ) );
 							tputs ( CE );
 						}
 
