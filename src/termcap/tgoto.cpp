@@ -15,7 +15,7 @@
 
 #include <cstdio>
 #include <string.h>
-#include "tgoto.hpp"
+#include "termcap.hpp"
 
 static const char *in;		/* Internal copy of input string pointer */
 static char *rp;			/* Pointer to ret array */
