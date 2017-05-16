@@ -3,6 +3,10 @@ May 2017
 1. Added some extra items and functionality (Prayer Books, usage at Altars..)
 2. Changed License to Apache 2.0 for files which I have fully rewritten.
 3. Changed LICENSE.txt to reflect this change.
+4. De-fished tgoto and re-implemented using public domain documentation.
+5. Re-implemented the save/restore logic so it is more reliable and cleaner.
+6. Created some classes (for termcap stuff).
+7. Re-licensed some more files (save.cpp and tgoto.cpp).
 
 ~Gibbon
 
