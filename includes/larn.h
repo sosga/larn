@@ -17,4 +17,4 @@
 #include "larncons.h"
 #include "larndata.h"
 #include "larnfunc.h"
-#include "ansiterm.h"
+#include "../src/terminal/term.hpp"
