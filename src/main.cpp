@@ -601,10 +601,13 @@ parse(void)
                     return;
 
                 case 'S':
-                    /* And do the save.
+                    /*
+		       Added the save stuff
+		       It's much better now!
+		       ~Gibbon
                      */
                     cursors();
-                    lprintf("\nSaving to `%s' . . . ", savefilename);
+                    lprintf("\nSaving file '%s' . . . ", savefilename);
                     lflush();
                     save_mode = 1;
                     savegame(savefilename);
