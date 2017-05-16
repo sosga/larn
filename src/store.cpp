@@ -59,9 +59,7 @@ static int
 amtgoldtrad ( void )
 {
 	lprintf ( "You have" );
-	attron ( COLOR_PAIR ( 3 ) );
 	lprintf ( " %-6d ", ( int ) cdesc[GOLD] );
-	attroff ( COLOR_PAIR ( 3 ) );
 	lprintf ( "gold pieces." );
 	return ( 0 );
 }
@@ -270,9 +268,7 @@ dndstore ( void )
 	{
 		cursor ( 1, 19 );
 		lprcat ( "You have " );
-		attron ( COLOR_PAIR ( 3 ) );
 		lprintf ( "%ld ", cdesc[GOLD] );
-		attroff ( COLOR_PAIR ( 3 ) );
 		lprintf ( "gold pieces" );
 		cltoeoln ();
 		cl_dn ( 1, 20 );
@@ -426,15 +422,11 @@ dnditem ( int i )
 
 	if ( dnd_item[i].qty == 0 )
 	{
-		attron ( COLOR_PAIR ( 2 ) );
 		lprintf ( "%39s", "" );
-		attroff ( COLOR_PAIR ( 2 ) );
 		return;
 	}
 
-	attron ( COLOR_PAIR ( 4 ) );
 	lprintf ( "%c) ", ( i % 26 ) + 'a' );
-	attroff ( COLOR_PAIR ( 4 ) );
 
 	if ( dnd_item[i].obj == OPOTION )
 	{
@@ -456,9 +448,7 @@ dnditem ( int i )
 
 	cursor ( j + 31, k );
 	price = ( ( int ) dnd_item[i].price ) * 10L;
-	attron ( COLOR_PAIR ( 3 ) );
 	lprintf ( "%6ld", price );
-	attroff ( COLOR_PAIR ( 3 ) );
 }
 
 
@@ -547,9 +537,7 @@ oschool ( void )
 	for ( ;; )
 	{
 		cursor ( 1, 19 );
-		attron ( COLOR_PAIR ( 3 ) );
 		lprintf ( "%d ", ( int ) cdesc[GOLD] );
-		attroff ( COLOR_PAIR ( 3 ) );
 		lprintf ( "gold pieces." );
 		cursors ();
 		lprcat ( "\nWhat is your choice [" );
@@ -856,11 +844,7 @@ obanksub ( void )
 
 	cursor ( 1, 16 );
 
-	attron ( COLOR_PAIR ( 3 ) );
-
 	lprintf ( "%8d", ( long ) cdesc[BANKACCOUNT] );
-
-	attroff ( COLOR_PAIR ( 3 ) );
 
 	cursor ( 1, 18 );
 
@@ -868,11 +852,7 @@ obanksub ( void )
 
 	cursor ( 1, 19 );
 
-	attron ( COLOR_PAIR ( 3 ) );
-
 	lprintf ( "%8d", ( long ) cdesc[GOLD] );
-
-	attroff ( COLOR_PAIR ( 3 ) );
 
 	if ( cdesc[BANKACCOUNT] + cdesc[GOLD] >= 500000 )
 		lprcat
@@ -992,9 +972,7 @@ obanksub ( void )
 						gemvalue[i] = 0;
 						k = gemorder[i];
 						cursor ( ( k % 2 ) * 40 + 1, ( k >> 1 ) + 4 );
-						attron ( COLOR_PAIR ( 2 ) );
 						lprintf ( "%39s", "" );
-						attroff ( COLOR_PAIR ( 2 ) );
 					}
 
 				break;
@@ -1006,19 +984,13 @@ obanksub ( void )
 		/*Fix for #38 -Gibbon*/
 		cursor ( 1, 16 );
 
-		attron ( COLOR_PAIR ( 3 ) );
 
 		lprintf ( "%8d", ( long ) cdesc[BANKACCOUNT] );
 
-		attroff ( COLOR_PAIR ( 3 ) );
-
 		cursor ( 1, 19 );
-
-		attron ( COLOR_PAIR ( 3 ) );
 
 		lprintf ( "%8d", ( long ) cdesc[GOLD] );
 
-		attroff ( COLOR_PAIR ( 3 ) );
 	}
 }
 
@@ -1092,17 +1064,13 @@ otradiven ( void )
 				case OCOOKIE:
 				case ONOTHEFT:
 					tradorder[i] = j++;	/* put on screen */
-					attron ( COLOR_PAIR ( 4 ) );
 					lprintf ( "%c) ", i + 'a' );
-					attroff ( COLOR_PAIR ( 4 ) );
 					lprintf ( "%s", objectname[iven[i]] );
 					break;
 
 				default:
 					tradorder[i] = j++;	/* put on screen */
-					attron ( COLOR_PAIR ( 4 ) );
 					lprintf ( "%c) ", i + 'a' );
-					attroff ( COLOR_PAIR ( 4 ) );
 					lprintf ( "%s", objectname[iven[i]] );
 
 					if ( ivenarg[i] > 0 )
@@ -1134,9 +1102,7 @@ cleartradiven ( int i )
 	int j;
 	j = tradorder[i];
 	cursor ( ( j % 2 ) * 40 + 1, ( j >> 1 ) + 8 );
-	attron ( COLOR_PAIR ( 2 ) );
 	lprintf ( "%39s", "" );
-	attroff ( COLOR_PAIR ( 2 ) );
 	tradorder[i] = 0;
 }
 

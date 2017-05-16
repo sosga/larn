@@ -506,9 +506,7 @@ show1 ( int idx )
 	/*
 	 * Inventory will not be == 0 due to starting items. ~Gibbon
 	 */
-		attron ( COLOR_PAIR ( 4 ) );
 		lprintf ( "%c) ", idx + 'a' );
-		attroff ( COLOR_PAIR ( 4 ) );
 		lprintf ( "%s", objectname[iven[idx]] );
 
 	/*we can remove the index to object name and concatenate the above with the below for scrolls and potions.
@@ -562,9 +560,7 @@ show2 ( int index )
 		default:
 			lprc ( '\n' );
 			cltoeoln ();
-			attron ( COLOR_PAIR ( 4 ) );
 			lprintf ( "%c) ", index + 'a' );
-			attroff ( COLOR_PAIR ( 4 ) );
 			lprintf ( "%s", objectname[iven[index]] );
 
 			if ( ivenarg[index] > 0 )

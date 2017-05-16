@@ -87,10 +87,8 @@ cast ( void )
 
 	if ( cdesc[SPELLS] <= 0 )
 	{
-		attron ( A_STANDOUT );
 		move ( 10, 19 );
 		lprcat ( "\nYou don't have any spells!" );
-		attroff ( A_STANDOUT );
 		refresh();
 		return;
 	}
@@ -498,9 +496,7 @@ speldamage ( int x )
 			}
 
 			lprcat ( " The" );
-			attron ( COLOR_PAIR ( 2 ) );
 			lprcat ( " demon " );
-			attroff ( COLOR_PAIR ( 2 ) );
 			lprcat ( "turned on you and vanished!" );
 			i = rnd ( 40 ) + 30;
 			lastnum = 277;
