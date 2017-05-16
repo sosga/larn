@@ -8,7 +8,7 @@
 #include "../includes/larncons.h"
 #include "../includes/larndata.h"
 #include "../includes/larnfunc.h"
-#include "../includes/ansiterm.h"
+#include "terminal/term.hpp"
 #include "../includes/create.h"
 #include "../includes/display.h"
 #include "../includes/global.h"

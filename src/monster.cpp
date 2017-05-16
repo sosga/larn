@@ -46,7 +46,7 @@
 #include <curses.h>
 #include <string>
 #include <iostream>
-#include "../includes/ansiterm.h"
+#include "terminal/term.hpp"
 #include "../includes/larncons.h"
 #include "../includes/larndata.h"
 #include "../includes/larnfunc.h"

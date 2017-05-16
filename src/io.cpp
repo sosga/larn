@@ -85,7 +85,8 @@
 #include "../includes/larncons.h"
 #include "../includes/larndata.h"
 #include "../includes/larnfunc.h"
-#include "../includes/ansiterm.h"
+#include "terminal/getch.hpp"
+#include "terminal/out.hpp"
 
 using namespace std;
 
