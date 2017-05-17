@@ -14,7 +14,7 @@
 #include <setjmp.h>
 
 /* includes of other header files */
-#include "larncons.h"
-#include "larndata.h"
-#include "larnfunc.h"
+#include "../src/config/larncons.h"
+#include "../src/config/data.h"
+#include "../src/config/larnfunc.h"
 #include "../src/terminal/term.hpp"
