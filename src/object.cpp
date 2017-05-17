@@ -8,7 +8,6 @@
 #include "config/larnfunc.h"
 #include "../includes/create.h"
 #include "../includes/display.h"
-#include "../includes/fortune.h"
 #include "../includes/global.h"
 #include "../includes/inventory.h"
 #include "../includes/io.h"
