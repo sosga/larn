@@ -320,61 +320,24 @@ makemonst ( int lev )
 void
 positionplayer ( void )
 {
-	int z, pp_try = 2;
-	/* set the previous player x,y position to the new one, so that
-	   clearing the player indicator from the previous location will
-	   not do the wrong thing.
+	/* The previous code was conflicting with changes I made
+	 * to maze generation and it caused a crash every time
+	 * LV10 was reached. ~Gibbon
 	 */
-	oldx = playerx;
-	oldy = playery;
+	int pp_try = 2;
 
-	/* short-circuit the testing if current position empty
-	 */
-	if ( !item[playerx][playery] && !mitem[playerx][playery] )
-	{
-		return;
-	}
-
-	/* make at most two complete passes across the dungeon, looking
-	   for a clear space.  In most situations, should find a clear
-	   spot right around the current player position.
-	 */
-	do
-	{
-		/* check all around the player position for a clear space.
-		 */
-		for ( z = 1; z < 9; z++ )
-		{
-			int tmpx = playerx + diroffx[z];
-			int tmpy = playery + diroffy[z];
-
-			if ( !item[tmpx][tmpy] && !mitem[tmpx][tmpy] )
-			{
-				playerx = tmpx;
-				playery = tmpy;
-				return;
-			}
-		}
-
-		/* no clear spots around the player. try another position,
-		   wrapping around the dungeon.
-		 */
-		if ( ++playerx >= MAXX - 1 )
+	while ((item[playerx][playery] || mitem[playerx][playery]) && (pp_try))
+		if (++playerx >= MAXX - 1)
 		{
 			playerx = 1;
-
-			if ( ++playery >= MAXY - 1 )
-			{
-				playery = 1;
-				pp_try--;
+			if (++playery >= MAXY - 1)
+			{	
+				playery = 1;	
+				--pp_try;	
 			}
 		}
-	}
-	while ( pp_try );
-
-	/* no spot found.
-	 */
-	lprcat ( "Failure in positionplayer\n" );
+	if (pp_try == 0)	 
+		lprcat("Failure in positionplayer()\n");
 }
 
 
