@@ -5,9 +5,9 @@
 #include <string>
 
 #include "../includes/action.h"
-#include "../includes/larncons.h"
-#include "../includes/larndata.h"
-#include "../includes/larnfunc.h"
+#include "config/larncons.h"
+#include "config/data.h"
+#include "config/larnfunc.h"
 #include "terminal/term.hpp"
 #include "../includes/create.h"
 #include "../includes/display.h"
@@ -94,37 +94,22 @@ bot_linex ( void )
 
 		if ( cdesc[SPELLMAX] > 99 )
 		{
-			attron(A_BOLD);
-			attron ( COLOR_PAIR ( 3 ) );
 			lprintf ( "Spells:" );
-			attroff ( COLOR_PAIR ( 3 ) );
 			lprintf ( "%3d(%3d)", ( int ) cdesc[SPELLS],
 			          ( int ) cdesc[SPELLMAX] );
-			attroff(A_BOLD);
 		}
 
 		else
 		{
-			attron(A_BOLD);
-			attron ( COLOR_PAIR ( 1 ) );
 			lprintf ( "Spells:" );
-			attroff ( COLOR_PAIR ( 1 ) );
 			lprintf ( "%3d(%2d) ", ( int ) cdesc[SPELLS],
 			          ( int ) cdesc[SPELLMAX] );
-			attroff(A_BOLD);
 		}
-		attron(A_BOLD);
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( " AC:" );
-		attroff ( COLOR_PAIR ( 1 ) );
 		lprintf ( " %-3d ", ( int ) cdesc[AC] );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( " WC:" );
-		attroff ( COLOR_PAIR ( 1 ) );
 		lprintf ( " %-3d ", ( int ) cdesc[WCLASS] );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "Level:" );
-		attroff ( COLOR_PAIR ( 1 ) );
 
 		if ( cdesc[LEVEL] > 99 )
 		{
@@ -136,44 +121,25 @@ bot_linex ( void )
 			lprintf ( " %-2d", ( int ) cdesc[LEVEL] );
 		}
 
-		/*debugtmp = cdesc[LEVEL]; */
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( " Exp:" );
-		attroff ( COLOR_PAIR ( 1 ) );
 		lprintf ( " %-9d %s\n", ( int ) cdesc[EXPERIENCE],
 		          classname[cdesc[LEVEL] - 1] );
 		/*This is sill here to initially show the health stats. ~Gibbon*/
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "HP:" );
 		lprintf ( " %3d(%3d)", ( int ) cdesc[HP], ( int ) cdesc[HPMAX] );
-		attroff ( COLOR_PAIR ( 1 ) );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( " STR:" );
-		attroff ( COLOR_PAIR ( 1 ) );
 		lprintf ( "%-2d ", ( int ) ( cdesc[STRENGTH] + cdesc[STREXTRA] ) );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "INT:" );
-		attroff ( COLOR_PAIR ( 1 ) );
 		lprintf ( "%-2d ", ( int ) cdesc[INTELLIGENCE] );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "WIS:" );
-		attroff ( COLOR_PAIR ( 1 ) );
 		lprintf ( "%-2d ", ( int ) cdesc[WISDOM] );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "CON:" );
-		attroff ( COLOR_PAIR ( 1 ) );
 		lprintf ( "%-2d ", ( int ) cdesc[CONSTITUTION] );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "DEX:" );
-		attroff ( COLOR_PAIR ( 1 ) );
 		lprintf ( "%-2d ", ( int ) cdesc[DEXTERITY] );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "CHA:" );
-		attroff ( COLOR_PAIR ( 1 ) );
 		lprintf ( "%-2d ", ( int ) cdesc[CHARISMA] );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "LV:" );
-		attroff ( COLOR_PAIR ( 1 ) );
 
 		if ( ( level == 0 ) || ( wizard ) )
 		{
@@ -190,11 +156,8 @@ bot_linex ( void )
 			lprcat ( levelname[level] );
 		}
 
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "  Gold:  " );
-		attroff ( COLOR_PAIR ( 1 ) );
 		lprintf ( "%-6d", ( int ) cdesc[GOLD] );
-		attroff(A_BOLD);
 		always = 1;
 		botside ();
 		cdesc[TMP] = cdesc[STRENGTH] + cdesc[STREXTRA];
@@ -299,23 +262,15 @@ bot_hpx ( void )
 	if ( cdesc[HP] < 10 )
 	{
 		cursor ( 1, 19 );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "HP:" );
-		attroff ( COLOR_PAIR ( 1 ) );
-		attron ( COLOR_PAIR ( 2 ) );
 		lprintf ( " %3d", ( int ) cdesc[HP] );
-		attroff ( COLOR_PAIR ( 2 ) );
 	}
 
 	else
 	{
 		cursor ( 1, 19 );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( "HP:" );
-		attroff ( COLOR_PAIR ( 1 ) );
-		attron ( COLOR_PAIR ( 1 ) );
 		lprintf ( " %3d", ( int ) cdesc[HP] );
-		attroff ( COLOR_PAIR ( 1 ) );
 	}
 
 	if ( cdesc[EXPERIENCE] != cbak[EXPERIENCE] )
@@ -568,11 +523,7 @@ drawscreen ( void )
 					 */
 					if ( i == playerx && j == playery )
 					{
-						attron(A_BOLD);
-						attron ( COLOR_PAIR ( 3 ) );
 						nlprc ( '@' );
-						attroff ( COLOR_PAIR ( 3 ) );
-						attroff(A_BOLD);
 						continue;
 					}
 
@@ -776,11 +727,7 @@ showplayer ( void )
 {
 	show1cell ( oldx, oldy );
 	cursor ( playerx + 1, playery + 1 );
-	attron(A_BOLD);
-	attron ( COLOR_PAIR ( 3 ) );
 	lprc ( '@' );
-	attroff ( COLOR_PAIR ( 3 ) );
-	attroff(A_BOLD);
 	cursor ( playerx + 1, playery + 1 );
 	oldx = playerx;
 	oldy = playery;

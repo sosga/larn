@@ -24,9 +24,9 @@ pray_at_altar()
 #include <curses.h>
 #include <cstdlib>
 #include "../includes/action.h"
-#include "../includes/larncons.h"
-#include "../includes/larndata.h"
-#include "../includes/larnfunc.h"
+#include "config/larncons.h"
+#include "config/data.h"
+#include "config/larnfunc.h"
 #include "../includes/create.h"
 #include "../includes/display.h"
 #include "../includes/global.h"

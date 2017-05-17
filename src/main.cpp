@@ -2,10 +2,9 @@
 #include <curses.h>
 
 #include "../includes/larn.h"
-#include "../includes/tok.h"
+#include "lexical/tok.hpp"
 #include "../includes/create.h"
 #include "../includes/display.h"
-#include "../includes/fortune.h"
 #include "../includes/global.h"
 #include "../includes/help.h"
 #include "../includes/inventory.h"
@@ -22,12 +21,8 @@
 
 using std::cout;
 
-/* needed for hack fix to handle endwin()
-		   not being called after process commandline */
-
 #define SCORENAME	"data/scorefile.dat"
 #define LOGFNAME	"data/logfile.log"
-#define FORTSNAME	"data/forts.txt"
 #define PLAYERIDS	"data/playerid.txt"
 #define LEVELSNAME	"data/mazefile.txt"
 #define SAVEFILE	"data/savefile.dat"
@@ -101,8 +96,6 @@ main(int argc, char *argv[])
                  SCORENAME, 50);	/* the larn scoreboard filename */
     std::strncpy(logfile,
                  LOGFNAME, 50);	/* larn activity logging filename */
-    std::strncpy(fortfile,
-                 FORTSNAME, 50);	/* the fortune data file name */
     std::strncpy(playerids,
                  PLAYERIDS, 50);	/* the playerid data file name */
     std::strncpy(mazefile, LEVELSNAME, 50);
@@ -452,7 +445,7 @@ parse(void)
                                 consume(OCOOKIE, "eat", showeat);
                             }
 
-                    return;		/*  to eat a fortune cookie */
+                    return;
 
                 case 'g':
                     y_larn_rep = 0;
@@ -1247,7 +1240,6 @@ floor_consume(int search_item, const char *cons_verb)
     switch(i)
         {
         case OCOOKIE:
-            outfortune();
             forget();
             break;
 
@@ -1342,8 +1334,6 @@ consume(int search_item, const char *prompt,
                                             lprintf("\nYou can't %s that.", prompt);
                                             return;
                                         }
-
-                                    outfortune();
                                     break;
 
                                 case OPOTION:

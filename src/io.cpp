@@ -82,9 +82,9 @@
 #include "../includes/monster.h"
 #include "../includes/scores.h"
 #include "termcap/termcap.hpp"
-#include "../includes/larncons.h"
-#include "../includes/larndata.h"
-#include "../includes/larnfunc.h"
+#include "config/larncons.h"
+#include "config/data.h"
+#include "config/larnfunc.h"
 #include "terminal/getch.hpp"
 #include "terminal/out.hpp"
 

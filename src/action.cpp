@@ -39,9 +39,9 @@ act_open_door           open a door
 #include <cstdlib>
 #include <curses.h>
 #include "../includes/action.h"
-#include "../includes/larncons.h"
-#include "../includes/larndata.h"
-#include "../includes/larnfunc.h"
+#include "config/larncons.h"
+#include "config/data.h"
+#include "config/larnfunc.h"
 #include "../includes/create.h"
 #include "../includes/display.h"
 #include "../includes/global.h"
@@ -307,14 +307,14 @@ act_down_shaft ( void )
 {
 	if ( level != 0 )
 	{
-		lprcat ( "\nThe shaft only extends 5 feet downward!" );
+		lprcat ( "\nThe hobbit hole only extends 5 feet downward!" );
 		return;
 	}
 
 	if ( packweight () > 45 + 3 * ( cdesc[STRENGTH] +
 	                                cdesc[STREXTRA] ) )
 	{
-		lprcat ( "\nYou slip and fall down the shaft" );
+		lprcat ( "\nYou slip down the hobbit hole" );
 		lastnum = 275;
 		losehp ( 30 + rnd ( 20 ) );
 		bottomhp ();
@@ -340,14 +340,14 @@ act_up_shaft ( void )
 	if ( level != 11 )
 	{
 		lprcat
-		( "\nThe shaft only extends 8 feet upwards before you find a blockage!" );
+		( "\nThe hobbit hole only extends 8 feet upwards before you find a blockage!" );
 		return;
 	}
 
 	if ( packweight () > 45 + 5 * ( cdesc[STRENGTH] +
 	                                cdesc[STREXTRA] ) )
 	{
-		lprcat ( "\nYou slip and fall down the shaft" );
+		lprcat ( "\nDown the hobbit hole!" );
 		lastnum = 275;
 		losehp ( 15 + rnd ( 20 ) );
 		bottomhp ();

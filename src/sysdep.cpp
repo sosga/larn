@@ -13,7 +13,7 @@
    limitations under the License.
 */
 
-#include "../includes/larnfunc.h"
+#include "config/larnfunc.h"
 #include "../includes/io.h"
 #include "../includes/sysdep.h"
 

@@ -15,9 +15,9 @@
 
 #include <curses.h>
 #include "../includes/bill.h"
-#include "../includes/larncons.h"
-#include "../includes/larndata.h"
-#include "../includes/larnfunc.h"
+#include "config/larncons.h"
+#include "config/data.h"
+#include "config/larnfunc.h"
 #include "../includes/help.h"
 #include "../includes/io.h"
 

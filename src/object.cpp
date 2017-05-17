@@ -3,9 +3,9 @@
 #include <cstdlib>
 #include <curses.h>
 #include "../includes/action.h"
-#include "../includes/larncons.h"
-#include "../includes/larndata.h"
-#include "../includes/larnfunc.h"
+#include "config/larncons.h"
+#include "config/data.h"
+#include "config/larnfunc.h"
 #include "../includes/create.h"
 #include "../includes/display.h"
 #include "../includes/fortune.h"
@@ -1758,7 +1758,6 @@ ocookie ( void )
 			case 'e':
 				lprcat ( "eat" );
 				forget ();		/* no more cookie */
-				outfortune ();
 				return;
 
 			case 't':

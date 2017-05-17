@@ -15,9 +15,9 @@
 #include <curses.h>
 #include <cstdlib>
 
-#include "../includes/larncons.h"
-#include "../includes/larndata.h"
-#include "../includes/larnfunc.h"
+#include "config/larncons.h"
+#include "config/data.h"
+#include "config/larnfunc.h"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/inventory.h"
