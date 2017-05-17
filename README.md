@@ -21,19 +21,14 @@ and class 3 will only be built if time allows (I'm quite a busy person).  So far
 planning also to build on GNU Hurd and a BSD for x86 compatible architectures.</br>
 
 <b>Future Planned Changes</b>
-* Make it harder.  I find Larn to be very easy, in comparison to other games in the genre.
-  I also dislike cheaters with the save files, so soon, I am removing the save/load code from the game.
-  If you want to complete the game, you can do it in a single sitting (it's only 1 - 2 hours long at best).
-  
-  I may be putting it back in, I'll do some testing and see.  I know some people wouldn't want to sit through a whole setting
-  back-back so maybe it's a little overkill..  still a re-write of the code for C++ would be needed.
+* Make it harder.
  
 * Making the beginning of the game easier (better stats) and making the middle to end-game harder (tougher enemies).
   It's not as balanced as I'd like and I think Char Levels 1 - 7 would make a nice 'tutorial' area for beginners.
   Similar to MMO's.  Right now you're dropped in at the deep-end and if you're not careful even a kobold can kill you.
   Advanced players can still use the difficulty settings (which will be balanced also).
   
-* Put common functions into classes.  Reusable print functions and color functions will be put into C++ classes and other
+* Put common functions into classes.  Reusable print functions will be put into C++ classes and other
 well-used functions.
 
 * Increase the use of Religion.  Currently it feels incomplete, I'll be fleshing out the Religon a little more, adding things
