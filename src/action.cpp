@@ -402,7 +402,10 @@ act_desecrate_altar ( void )
 	if ( rnd ( 100 ) < 60 )
 	{
 		createmonster ( makemonst ( level + 2 ) + 8 );
+		lprcat ( "\nThe altar explodes violently and spawns a monster!" );
+		losehp (5);
 		cdesc[AGGRAVATE] += 2500;
+		forget ();
 	}
 
 	else
@@ -414,7 +417,8 @@ act_desecrate_altar ( void )
 
 		else
 		{
-			lprcat ( "\nnothing happens" );
+			lprcat ( "\nThe altar was desecrated and ruined!" );
+			forget();
 		}
 
 	return;
@@ -505,6 +509,7 @@ act_donation_pray ( void )
 		 */
 		lprcat ( "You don't have that much!" );
 	}
+	forget();
 }
 
 
@@ -521,7 +526,7 @@ act_just_pray ( void )
 {
 	if ( rnd ( 100 ) < 75 )
 	{
-		lprcat ( "nothing happens" );
+		lprcat ( "The altar ascends!" );
 	}
 
 	else
@@ -554,6 +559,7 @@ act_just_pray ( void )
 			}
 
 	return;
+	forget();
 }
 
 /*
@@ -587,6 +593,7 @@ act_give_thanks(void)
 				raiseexperience(600);
 				//Then we remove the statue from the inventory.  If the user has more than 1 all will be removed. ~Gibbon
 				iven[i] = 0;
+				forget();
 		}
 	return;
 }
@@ -607,6 +614,7 @@ act_prayer_heard ( void )
 	/* protection field */
 	cdesc[ALTPRO] += 500;
 	bottomline ();
+	forget();
 }
 
 /*
@@ -620,12 +628,15 @@ act_ignore_altar ( void )
 	if ( rnd ( 100 ) < 30 )
 	{
 		createmonster ( makemonst ( level + 1 ) );
+		lprcat("The altar turns into a monster!");
 		cdesc[AGGRAVATE] += rnd ( 450 );
+		forget();
 	}
 
 	else
 	{
-		lprcat ( "\nNothing happens" );
+		lprcat ( "\nThe altar crumbles into stone!" );
+		forget();
 	}
 
 	return;
