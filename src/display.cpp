@@ -155,7 +155,7 @@ bot_linex(void)
             cursor(57, 6);
             lprintf("%-3d", (int) cdesc[AC]);
             cursor(62, 6);
-            lprintf("WSD:");
+            lprintf("WCL:");
             cursor(67, 6);
             lprintf("%-3d", (int) cdesc[WCLASS]);
             cursor(52, 7);
@@ -196,48 +196,46 @@ bot_linex(void)
 
             return;
         }
-
-    botsub(SPELLS, 8, 18, "%3d");
+    botsub(SPELLS, 59, 1, "%3d");
 
     if(cdesc[SPELLMAX] > 99)
         {
-            botsub(SPELLMAX, 12, 18, "%3d)");
+            botsub(SPELLMAX, 59, 1, "%3d)");
         }
 
     else
         {
-            botsub(SPELLMAX, 12, 18, "%2d) ");
+            botsub(SPELLMAX, 59, 1, "%2d) ");
         }
-
-    botsub(HP, 5, 19, "%3d");
-    botsub(HPMAX, 9, 19, "%3d");
-    botsub(AC, 21, 18, "%-3d");
-    botsub(WCLASS, 30, 18, "%-3d");
-    botsub(EXPERIENCE, 49, 18, "%-9d");
+    botsub(HP, 56, 3, "%3d");
+    botsub(HPMAX, 61, 3, "%3d");
+    botsub(AC, 57, 6, "%-3d");
+    botsub(WCLASS, 67, 6, "%-3d");
+    botsub(EXPERIENCE, 57, 9, "%-9d");
 
     if(cdesc[LEVEL] != cbak[LEVEL])
         {
-            cursor(57, 11);
+            cursor(57, 10);
             lprcat(classname[cdesc[LEVEL] - 1]);
         }
 
     if(cdesc[LEVEL] > 99)
         {
-            botsub(LEVEL, 40, 18, "%3d");
+            botsub(LEVEL, 57, 10, "%3d");
         }
 
     else
         {
-            botsub(LEVEL, 40, 18, " %-2d");
+            botsub(LEVEL, 57, 10, " %-2d");
         }
 
     cdesc[TMP] = cdesc[STRENGTH] + cdesc[STREXTRA];
-    botsub(TMP, 18, 19, "%-2d");
-    botsub(INTELLIGENCE, 25, 19, "%-2d");
-    botsub(WISDOM, 32, 19, "%-2d");
-    botsub(CONSTITUTION, 39, 19, "%-2d");
-    botsub(DEXTERITY, 46, 19, "%-2d");
-    botsub(CHARISMA, 53, 19, "%-2d");
+    botsub(TMP, 57, 4, "%-2d");
+    botsub(INTELLIGENCE, 67, 4, "%-2d");
+    botsub(WISDOM, 77, 4, "%-2d");
+    botsub(CONSTITUTION, 57, 5, "%-2d");
+    botsub(DEXTERITY, 67, 5, "%-2d");
+    botsub(CHARISMA, 77, 5, "%-2d");
 
     if((level != cbak[CAVELEVEL])
             || (cdesc[TELEFLAG] != cbak[TELEFLAG]))
@@ -249,7 +247,7 @@ bot_linex(void)
 
             cbak[TELEFLAG] = cdesc[TELEFLAG];
             cbak[CAVELEVEL] = level;
-            cursor(52, 12);
+            cursor(52, 7);
             if(cdesc[TELEFLAG])
                 {
                     lprcat(" ?");
@@ -261,7 +259,7 @@ bot_linex(void)
                 }
         }
 
-    botsub(GOLD, 69, 19, "%-6d");
+    botsub(GOLD, 58, 8, "%-6d");
     botside();
 }
 
@@ -272,7 +270,7 @@ called from ogold()
 void
 bottomgold(void)
 {
-    botsub(GOLD, 69, 19, "%-6d");
+    botsub(GOLD, 58, 8, "%-6d");
 }
 
 /*
@@ -309,7 +307,7 @@ bot_hpx(void)
 
     else
         {
-            botsub(HP, 5, 19, "%3d");
+            botsub(HP, 56, 3, "%3d");
         }
 }
 
@@ -319,7 +317,7 @@ special routine to update number of spells called from regen()
 static void
 bot_spellx(void)
 {
-    botsub(SPELLS, 9, 18, "%2d");
+    botsub(SPELLS, 59, 1, "%2d");
 }
 
 /*
@@ -369,7 +367,7 @@ botside(void)
                         {
                             if(cdesc[idx])
                                 {
-                                    cursor(52, i + 13);
+                                    cursor(52, i + 11);
                                     lprcat(bot_data[i].string);
                                     /*Reset cursor position. ~Gibbon */
                                     cursors();
@@ -378,7 +376,7 @@ botside(void)
 
                     else if(cdesc[idx] == 0)
                         {
-                            cursor(52, i + 13);
+                            cursor(52, i + 11);
                             lprcat("          ");
                             /*Reset cursor position. ~Gibbon */
                             cursors();
@@ -436,7 +434,7 @@ draws(int xmin, int xmax, int ymin, int ymax)
 
                     if(cdesc[idx])
                         {
-                            cursor(52, i + 13);
+                            cursor(52, i + 11);
                             lprcat(bot_data[i].string);
                         }
 
