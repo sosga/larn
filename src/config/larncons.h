@@ -38,7 +38,7 @@
 
 #define MAXLEVEL 11		/*  max # levels in the dungeon         */
 #define MAXVLEVEL 3		/*  max # of levels in the temple of the luran  */
-#define MAXX 80
+#define MAXX 48
 #define MAXY 17
 
 #define SCORESIZE 10		/* this is the number of people on a scoreboard max */
