@@ -256,19 +256,6 @@ restoregame(char *fname)
     lrfill((char *) &temptime, sizeof(time_t));
     initialtime = zzz - temptime;
 
-    if(wizard)
-        {
-            lrclose();
-            cheat = 1;
-            cursor(1, 23);
-            lprcat("Wizard's are not allowed to load a saved game!\n");
-            lflush();
-            nap(NAPTIME);
-            cdesc[GOLD] = cdesc[BANKACCOUNT] = 0;
-            died(-266);
-            return;
-        }
-
     if(VERSION != larint() || SUBVERSION != larint())
         {
             lrclose();
@@ -301,6 +288,7 @@ restoregame(char *fname)
             cdesc[EXPERIENCE] = skill[24];
             raiseexperience(tmp);
         }
+   
     load();
     gtime -= 1;			/* HACK for time advancing either on save or reload */
     lasttime = gtime - 1;
