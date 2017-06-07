@@ -1,1 +1,0 @@
-g++ -pipe -Wall -Werror -fomit-frame-pointer -DWINDOWS -DMULTIPLE_SCORE_ENTRY -DTERM_DARK_BACKGROUND ../src/*.cpp -lm -lcurses
