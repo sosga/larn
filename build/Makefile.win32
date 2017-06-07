@@ -1,0 +1,11 @@
+SOURCES = $(wildcard ../src/*.cpp) $(wildcard ../src/**/*.cpp)
+EXEC = larn-next
+CXXFLAGS = -pipe -Wall -Wextra -pedantic -Wpointer-arith -Wshadow -Wmissing-declarations -Wredundant-decls -fomit-frame-pointer -DWINDOWS -DMULTIPLE_SCORE_ENTRY
+CXX = g++
+LIBS = -lm -lcurses
+
+all: compile
+
+compile: $(SOURCES)
+	$(CXX) $(CXXFLAGS) -o $(EXEC) $(SOURCES) $(LIBS)
+	move $(EXEC) ../bin/
