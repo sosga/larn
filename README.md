@@ -9,17 +9,6 @@ code and make it a good, clean game with a great codebase.
 NOTE: A change in accepting commits.  All pull-requests that deal with code changes
 will be placed under the Apache 2.0 License.  See [docs/LICENSE.txt](https://github.com/atsb/RL_M/blob/master/docs/LICENSE.txt) or bug #61 for more info.
 
-<b>Binaries</b></br>
-Binaries are supported in 3 'classes'
-
-* Class 1 binaries: x86, x64 and all MIPS types<i>(thanks to Imagination for the amazing support they give to their CPU's).</i>
-* Class 2 binaries: ppc,armel,armhf.
-* Class 3 binaries: sparc64 (when it's available).
-
-Different classes have different priority.  So in all builds, class 1 will always be built, class 2 will be built later
-and class 3 will only be built if time allows (I'm quite a busy person).  So far they are all built on GNU/Linux but I am
-planning also to build on GNU Hurd and a BSD for x86 compatible architectures.</br>
-
 <b>Future Planned Changes</b>
 * Make it harder.
  
@@ -40,4 +29,4 @@ which take this to the extreme and end-up damaging the game.  When you start you
 * More portable and more binaries.
 
 # Compile Warnings #
-Due to the GNU/Linux distro I use as my primary machine, the officially supported compiler is GCC 6 (minimum).  If Larn throws warnings on earlier versions, I won't fix it, simply because I cannot verify it myself, my distro is now on GCC 7 and that is what will be used for future builds.
+Due to the GNU/Linux distro I use as my primary machine, the officially supported compiler is GCC 6 (minimum).  If Larn throws warnings on earlier versions, I won't fix it, simply because I cannot verify it myself, my distro is now on GCC 7 and that is what will be used for future builds, I don't like staying with ancient versions of packages ;)
