@@ -1224,27 +1224,35 @@ dirsub ( int *x, int *y )
 		{
 			case 'b':
 				i++;
+				break;
 
 			case 'n':
 				i++;
+				break;
 
 			case 'y':
 				i++;
+				break;
 
 			case 'u':
 				i++;
+				break;
 
 			case 'h':
 				i++;
+				break;
 
 			case 'k':
 				i++;
+				break;
 
 			case 'l':
 				i++;
+				break;
 
 			case 'j':
 				i++;
+				break;
 
 			/* Added an ESC. -Gibbon */
 			case '\33':

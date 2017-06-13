@@ -93,72 +93,72 @@ bot_linex(void)
 
             if(cdesc[SPELLMAX] > 99)
                 {
-                    cursor(52, 1);
+                    cursor(1, 18);
                     lprintf("Spells:");
-                    cursor(59, 1);
+                    cursor(8, 18);
                     lprintf("%3d(%3d)", (int) cdesc[SPELLS],
                             (int) cdesc[SPELLMAX]);
                 }
 
             else
                 {
-                    cursor(52, 1);
+                    cursor(1, 18);
                     lprintf("Spells:");
-                    cursor(59, 1);
-                    lprintf("%3d(%2d) ", (int) cdesc[SPELLS],
+                    cursor(8, 18);
+                    lprintf("%3d/%2d", (int) cdesc[SPELLS],
                             (int) cdesc[SPELLMAX]);
                 }
-            cursor(52, 2);
+            cursor(15, 18);
             lprintf("Level:");
 
             if(cdesc[LEVEL] > 99)
                 {
-                    cursor(59, 2);
+                    cursor(21, 18);
                     lprintf("%3d", (int) cdesc[LEVEL]);
                 }
 
             else
                 {
-                    cursor(59, 2);
+                    cursor(21, 18);
                     lprintf("%-2d", (int) cdesc[LEVEL]);
                 }
-            cursor(52, 3);
+            cursor(69, 1);
             lprintf("HP:");
-            cursor(56, 3);
-            lprintf("%3d(%3d)", (int) cdesc[HP], (int) cdesc[HPMAX]);
-            cursor(52, 4);
+            cursor(72, 1);
+            lprintf("%3d/%3d", (int) cdesc[HP], (int) cdesc[HPMAX]);
+            cursor(69, 2);
             lprintf("STR:");
-            cursor(57, 4);
+            cursor(73, 2);
             lprintf("%-2d", (int)(cdesc[STRENGTH] + cdesc[STREXTRA]));
-            cursor(62, 4);
+            cursor(69, 3);
             lprintf("INT:");
-            cursor(67, 4);
+            cursor(73, 3);
             lprintf("%-2d", (int) cdesc[INTELLIGENCE]);
-            cursor(72, 4);
+            cursor(69, 4);
             lprintf("WIS:");
-            cursor(77, 4);
+            cursor(73, 4);
             lprintf("%-2d", (int) cdesc[WISDOM]);
-            cursor(52, 5);
+            cursor(69, 5);
             lprintf("CON:");
-            cursor(57, 5);
+            cursor(73, 5);
             lprintf("%-2d", (int) cdesc[CONSTITUTION]);
-            cursor(62, 5);
+            cursor(69, 6);
             lprintf("DEX:");
-            cursor(67, 5);
+            cursor(73, 6);
             lprintf("%-2d", (int) cdesc[DEXTERITY]);
-            cursor(72, 5);
+            cursor(69, 7);
             lprintf("CHA:");
-            cursor(77, 5);
+            cursor(73, 7);
             lprintf("%-2d", (int) cdesc[CHARISMA]);
-            cursor(52, 6);
+            cursor(69, 8);
             lprintf("ACC:");
-            cursor(57, 6);
+            cursor(73, 8);
             lprintf("%-3d", (int) cdesc[AC]);
-            cursor(62, 6);
+            cursor(69, 9);
             lprintf("WCL:");
-            cursor(67, 6);
+            cursor(73, 9);
             lprintf("%-3d", (int) cdesc[WCLASS]);
-            cursor(52, 7);
+            cursor(24, 18);
             lprintf("Cave Level:");
 
             if((level == 0) || (wizard))
@@ -175,15 +175,15 @@ bot_linex(void)
                 {
                     lprcat(levelname[level]);
                 }
-            cursor(52, 8);
+            cursor(39, 18);
             lprintf("Gold:");
-            cursor(58, 8);
+            cursor(44, 18);
             lprintf("%-6d", (int) cdesc[GOLD]);
-            cursor(52, 9);
-            lprintf("Exp:");
-            cursor(57, 9);
+            cursor(69, 10);
+            lprintf("EXP:");
+            cursor(73, 10);
             lprintf("%-9d",(int)cdesc[EXPERIENCE]);
-            cursor(57, 10);
+            cursor(52, 18);
             lprintf("%s",classname[cdesc[LEVEL] - 1]);
             always = 1;
             botside();
@@ -196,46 +196,46 @@ bot_linex(void)
 
             return;
         }
-    botsub(SPELLS, 59, 1, "%3d");
+    botsub(SPELLS, 8, 18, "%3d");
 
     if(cdesc[SPELLMAX] > 99)
         {
-            botsub(SPELLMAX, 59, 1, "%3d)");
+            botsub(SPELLMAX, 8, 18, "%3d)");
         }
 
     else
         {
-            botsub(SPELLMAX, 59, 1, "%2d) ");
+            botsub(SPELLMAX, 8, 18, "%2d) ");
         }
-    botsub(HP, 56, 3, "%3d");
-    botsub(HPMAX, 61, 3, "%3d");
-    botsub(AC, 57, 6, "%-3d");
-    botsub(WCLASS, 67, 6, "%-3d");
-    botsub(EXPERIENCE, 57, 9, "%-9d");
+    botsub(HP, 69, 1, "%3d");
+    botsub(HPMAX, 69, 1, "%3d");
+    botsub(AC, 73, 8, "%-3d");
+    botsub(WCLASS, 73, 9, "%-3d");
+    botsub(EXPERIENCE, 73, 10, "%-9d");
 
     if(cdesc[LEVEL] != cbak[LEVEL])
         {
-            cursor(57, 10);
+            cursor(52, 18);
             lprcat(classname[cdesc[LEVEL] - 1]);
         }
 
     if(cdesc[LEVEL] > 99)
         {
-            botsub(LEVEL, 57, 10, "%3d");
+            botsub(LEVEL, 25, 18, "%3d");
         }
 
     else
         {
-            botsub(LEVEL, 57, 10, " %-2d");
+            botsub(LEVEL, 25, 18, " %-2d");
         }
 
     cdesc[TMP] = cdesc[STRENGTH] + cdesc[STREXTRA];
-    botsub(TMP, 57, 4, "%-2d");
-    botsub(INTELLIGENCE, 67, 4, "%-2d");
-    botsub(WISDOM, 77, 4, "%-2d");
-    botsub(CONSTITUTION, 57, 5, "%-2d");
-    botsub(DEXTERITY, 67, 5, "%-2d");
-    botsub(CHARISMA, 77, 5, "%-2d");
+    botsub(TMP, 73, 2, "%-2d");
+    botsub(INTELLIGENCE, 73, 3, "%-2d");
+    botsub(WISDOM, 73, 4, "%-2d");
+    botsub(CONSTITUTION, 73, 5, "%-2d");
+    botsub(DEXTERITY, 73, 6, "%-2d");
+    botsub(CHARISMA, 73, 7, "%-2d");
 
     if((level != cbak[CAVELEVEL])
             || (cdesc[TELEFLAG] != cbak[TELEFLAG]))
@@ -247,7 +247,7 @@ bot_linex(void)
 
             cbak[TELEFLAG] = cdesc[TELEFLAG];
             cbak[CAVELEVEL] = level;
-            cursor(52, 7);
+            cursor(70, 18);
             if(cdesc[TELEFLAG])
                 {
                     lprcat(" ?");
@@ -259,7 +259,7 @@ bot_linex(void)
                 }
         }
 
-    botsub(GOLD, 58, 8, "%-6d");
+    botsub(GOLD, 44, 18, "%-6d");
     botside();
 }
 
@@ -270,7 +270,7 @@ called from ogold()
 void
 bottomgold(void)
 {
-    botsub(GOLD, 58, 8, "%-6d");
+    botsub(GOLD, 44, 18, "%-6d");
 }
 
 /*
@@ -280,24 +280,11 @@ called in monster.c hitplayer() and spattack()
 static void
 bot_hpx(void)
 {
-    /*This is added to update the color when hit.
-     *It's redrawing over the top (1,19) ~Gibbon
-     */
-    if(cdesc[HP] < 10)
-        {
-            cursor(52, 3);
-            lprintf("HP:");
-            cursor(56, 3);
-            lprintf("%3d", (int) cdesc[HP]);
-        }
 
-    else
-        {
-            cursor(52, 3);
+            cursor(69, 1);
             lprintf("HP:");
-            cursor(56, 3);
+            cursor(73, 1);
             lprintf("%3d", (int) cdesc[HP]);
-        }
 
     if(cdesc[EXPERIENCE] != cbak[EXPERIENCE])
         {
@@ -307,7 +294,7 @@ bot_hpx(void)
 
     else
         {
-            botsub(HP, 56, 3, "%3d");
+            botsub(HP, 73, 1, "%3d");
         }
 }
 
@@ -317,7 +304,7 @@ special routine to update number of spells called from regen()
 static void
 bot_spellx(void)
 {
-    botsub(SPELLS, 59, 1, "%2d");
+    botsub(SPELLS, 8, 18, "%2d");
 }
 
 /*

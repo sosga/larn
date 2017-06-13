@@ -301,7 +301,8 @@ movsphere ( void )
 		{
 			case 1:
 			case 2:		/* change direction to a random one */
-				sp->dir = rnd ( 8 );
+				sp->dir = rnd (8);
+				break;
 
 			default:		/* move in normal direction */
 				dir = sp->dir;

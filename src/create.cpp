@@ -93,30 +93,41 @@ newcavelevel(int x)
 
     level = x;
 
+    if (level == 0)
+    {
+        cdesc[TELEFLAG] = 0;
+    }
+
     /* fill in new level
      */
-    for(i = 0; i < MAXY; i++)
-        for(j = 0; j < MAXX; j++)
+    for (i = 0; i < MAXY ; i++)
+    {
+        for (j = 0 ; j < MAXX ; j++)
+        {
             know[j][i] = mitem[j][i] = 0;
+        }
+    }
+
+#if WIZID
+    if(wizard || x == 0)
+#else
+    if(x == 0)
+#endif
+        for (j = 0; j < MAXY; j++)
+        {
+            for (i = 0; i < MAXX; i++)
+            {
+                know[i][j] = KNOWALL;
+            }
+        }
+
     makemaze(x);
     makeobject(x);
     beenhere[x] = 1;
     sethp(1);
     positionplayer();
     checkgen();  /* wipe out any genocided monsters */
-#if WIZID
-
-    if(wizard || x == 0)
-#else
-    if(x == 0)
-#endif
-        for(j = 0; j < MAXY; j++)
-            for(i = 0; i < MAXX; i++)
-                {
-                    know[i][j] = KNOWALL;
-                }
 }
-
 
 /*
 makemaze(level)
@@ -132,104 +143,89 @@ makemaze(int k)
     int i, j, tmp;
     int z;
 
-    if(k > 1
-            && (rnd(17) <= 4 || k == MAXLEVEL - 1
-                || k == MAXLEVEL + MAXVLEVEL - 1))
+if (k > 1 && (rnd(17)<=4 || k==MAXLEVEL-1 || k==MAXLEVEL+MAXVLEVEL-1))
+  {
+    /* read maze from data file */
+    if (cannedlevel(k) == 1)
+      return;
+  }
+
+  if (k==0)
+  {
+    tmp = 0;
+  }
+  else
+  {
+    tmp = OWALL;
+  }
+
+  /* fill up maze */
+  for (i = 0 ; i < MAXY ; i++)
+  {
+    for (j = 0 ; j < MAXX ; j++)
+    {
+      item[j][i] = (char) tmp;
+    }
+  }
+  if (k == 0)
+    return;
+  eat(1, 1);
+
+  /*  now for open spaces -- not on kel 15 or V5 */
+  if ((k != MAXLEVEL) && (k != MAXVLEVEL))
+  {
+    tmp2 = rnd(3)+3;
+    for (tmp=0; tmp<tmp2; tmp++)
+    {
+      my = rnd(11)+2;
+      myl = my - rnd(2);
+      myh = my + rnd(2);
+      if (k <= MAXLEVEL)
+      {
+        /* in dungeon */
+        mx = rnd(44)+5;
+        mxl = mx - rnd(4);
+        mxh = mx + rnd(12)+3;
+        z=0;
+      }
+      else
+      {
+        /* in volcano */
+        mx = rnd(60)+3;
+        mxl = mx - rnd(2);
+        mxh = mx + rnd(2);
+        z = makemonst(k);
+      }
+
+      for (i = mxl ; i < mxh ; i++)
+      {
+        for (j = myl ; j < myh ; j++)
         {
-            /* read maze from data file */
-            if(cannedlevel(k))
-                {
-                    return;
-                }
+          item[i][j] = 0;
+          if ((mitem[i][j]=z))
+          {
+            hitp[i][j]=monster[z].hitpoints;
+          }
         }
+      }
+    }
+  }
 
-    if(k == 0)
-        {
-            tmp = 0;
-        }
+  if (k!=MAXLEVEL && k!=MAXVLEVEL)
+  {
+    my = rnd(MAXY-2);
+    for (i = 1 ; i < MAXX-1 ; i++)
+    {
+      item[i][my] = 0;
+    }
+  }
 
-    else
-        {
-            tmp = OWALL;
-        }
-
-    for(i = 0; i < MAXY; i++)
-        {
-            for(j = 0; j < MAXX; j++)
-                {
-                    item[j][i] = tmp;
-                }
-        }
-
-    if(k == 0)
-        {
-            return;
-        }
-
-    eat(1, 1);
-
-    if(k == 1)
-        {
-            item[33][MAXY - 1] = OENTRANCE;
-        }
-
-    /*  now for open spaces -- not on level 10  */
-    if(k != MAXLEVEL - 1)
-        {
-            tmp2 = rnd(3) + 3;
-
-            for(tmp = 0; tmp < tmp2; tmp++)
-                {
-                    my = rnd(11) + 2;
-                    myl = my - rnd(2);
-                    myh = my + rnd(2);
-
-                    if(k < MAXLEVEL)
-                        {
-                            mx = rnd(44) + 5;
-                            mxl = mx - rnd(4);
-                            mxh = mx + rnd(12) + 3;
-                            z = 0;
-                        }
-
-                    else
-                        {
-                            mx = rnd(60) + 3;
-                            mxl = mx - rnd(2);
-                            mxh = mx + rnd(2);
-                            z = makemonst(k);
-                        }
-
-                    for(i = mxl; i < mxh; i++)
-                        for(j = myl; j < myh; j++)
-                            {
-                                item[i][j] = 0;
-                                mitem[i][j] = z;
-
-                                if(mitem[i][j] != 0)
-                                    {
-                                        hitp[i][j] = monster[z].hitpoints;
-                                    }
-                            }
-                }
-        }
-
-    if(k != MAXLEVEL - 1)
-        {
-            my = rnd(MAXY - 2);
-
-            for(i = 1; i < MAXX - 1; i++)
-                {
-                    item[i][my] = 0;
-                }
-        }
-
-    if(k > 1)
-        {
-            treasureroom(k);
-        }
+  /* no treasure rooms above lvl 5 */
+  if (k > 4)
+  {
+    treasureroom(k);
+  }
 }
-
 
 
 /*
@@ -330,107 +326,106 @@ eat(int xx, int yy)
 static int
 cannedlevel(int k)
 {
-    char *row;
+    char *row, buf[128];
     int i, j;
     int it, arg, mit, marg;
+    FILE *fp;
 
-    if(lopen(mazefile) < 0)
+    fp = fopen(mazefile, "r");
+
+    if (fp == (FILE *)NULL)
+    {
+      fprintf(stderr, "Can't open the maze data file\n");
+      died(-282);
+      return(-1);
+    }
+
+    i = rund(20);
+    for (j = 0 ; j < i ; j++)
+    {
+    /*
+    ** Skip a level + the blank line
+    */
+    for (k=0; k < (MAXY+1); k++)
+    {
+      row = fgets(buf, 128, fp);
+      if (row == (char *)NULL)
+      {
+        perror("fgets");
+        fclose(fp);
+        return (-1);
+      }
+    }
+  }
+
+    for (i = 0 ; i < MAXY ; i++)
+  {
+    row = fgets(buf, 128, fp);
+    if (row == (char *)NULL)
+    {
+      perror("fgets");
+      fclose(fp);
+      return (-1);
+    }
+
+    for (j = 0 ; j < MAXX ; j++)
+    {
+      it = mit = arg = marg = 0;
+      switch(*row++)
+      {
+        case '#':
+        it = OWALL;
+        break;
+        case 'D':
+        it = OCLOSEDDOOR;
+        arg = rnd(30);
+        break;
+        case '~':
+        if(k != MAXLEVEL - 1)
         {
-            fprintf(stderr, "Can't open the maze data file\n");
-            died(-282);
-            return (0);
+          break;
         }
-
-    i = lgetc();
-
-    if(i <= '0')
+        it = OLARNEYE;
+        mit = rund(8) + DEMONLORD;
+        marg = monster[mit].hitpoints;
+        break;
+        case '!':
+        if(k != MAXLEVEL + MAXVLEVEL - 1)
         {
-            died(-282);
-            return (0);
+          break;
         }
-
-    for(i = 18 * rund(i - '0'); i > 0; i--)
+        it = OPOTION;
+        arg = 21;
+        mit = DEMONLORD + 7;
+        marg = monster[mit].hitpoints;
+        break;
+        case '.':
+        if(k < MAXLEVEL)
         {
-            lgetl();   /* advance to desired maze */
+          break;
         }
+        mit = makemonst(k + 1);
+        marg = monster[mit].hitpoints;
+        break;
+        case '-':
+        it = newobject(k + 1, &arg);
+        break;
+      };
 
-    for(i = 0; i < MAXY; i++)
-        {
-            row = lgetl();
-
-            for(j = 0; j < MAXX; j++)
-                {
-                    it = mit = arg = marg = 0;
-
-                    switch(*row++)
-                        {
-                        case '#':
-                            it = OWALL;
-                            break;
-
-                        case 'D':
-                            it = OCLOSEDDOOR;
-                            arg = rnd(30);
-                            break;
-
-                        case '~':
-                            if(k != MAXLEVEL - 1)
-                                {
-                                    break;
-                                }
-
-                            it = OLARNEYE;
-                            mit = rund(8) + DEMONLORD;
-                            marg = monster[mit].hitpoints;
-                            break;
-
-                        case '!':
-                            if(k != MAXLEVEL + MAXVLEVEL - 1)
-                                {
-                                    break;
-                                }
-
-                            it = OPOTION;
-                            arg = 21;
-                            mit = DEMONLORD + 7;
-                            marg = monster[mit].hitpoints;
-                            break;
-
-                        case '.':
-                            if(k < MAXLEVEL)
-                                {
-                                    break;
-                                }
-
-                            mit = makemonst(k + 1);
-                            marg = monster[mit].hitpoints;
-                            break;
-
-                        case '-':
-                            it = newobject(k + 1, &arg);
-                            break;
-                        };
-
-                    item[j][i] = it;
-
-                    iarg[j][i] = arg;
-
-                    mitem[j][i] = mit;
-
-                    hitp[j][i] = marg;
+      item[j][i] = it;
+      iarg[j][i] = arg;
+      mitem[j][i] = mit;
+      hitp[j][i] = marg;
 
 #if WIZID
-                    know[j][i] = (wizard) ? KNOWALL : 0;
-
+      know[j][i] = (wizard) ? KNOWALL : 0;
 #else
-                    know[j][i] = 0;
-
+      know[j][i] = 0;
 #endif
-                }
-        }
-
-    lrclose();
-    return (1);
+    }
+  }
+  fclose(fp);
+  return(1);
 }
 
 
