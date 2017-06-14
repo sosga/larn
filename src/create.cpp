@@ -171,7 +171,6 @@ if (k > 1 && (rnd(17)<=4 || k==MAXLEVEL-1 || k==MAXLEVEL+MAXVLEVEL-1))
     return;
   eat(1, 1);
 
-  /*  now for open spaces -- not on kel 15 or V5 */
   if ((k != MAXLEVEL) && (k != MAXVLEVEL))
   {
     tmp2 = rnd(3)+3;

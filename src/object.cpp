@@ -495,7 +495,6 @@ lookforobject ( char do_ident, char do_pickup,
 
 			item[playerx][playery] = OTELEPORTER;
 			know[playerx][playery] = KNOWALL;
-			break;
 
 		/* fall through to OTELEPORTER case below!!! */
 		case OTELEPORTER:
@@ -513,7 +512,6 @@ lookforobject ( char do_ident, char do_pickup,
 
 			item[playerx][playery] = OTRAPARROW;
 			know[playerx][playery] = 0;
-			break;
 
 		/* fall through to OTRAPARROW case below!!! */
 		case OTRAPARROW:
@@ -531,7 +529,6 @@ lookforobject ( char do_ident, char do_pickup,
 
 			item[playerx][playery] = ODARTRAP;
 			know[playerx][playery] = 0;
-			break;
 
 		/* fall through to ODARTTRAP case below!!! */
 		case ODARTRAP:
@@ -555,7 +552,6 @@ lookforobject ( char do_ident, char do_pickup,
 
 			item[playerx][playery] = OTRAPDOOR;
 			know[playerx][playery] = KNOWALL;
-			break;
 
 		/* fall through to OTRAPDOOR case below!!! */
 		case OTRAPDOOR:
