@@ -86,10 +86,14 @@ void
 bot_linex(void)
 {
     int i;
+    extern char logname[];
     /*int debugtmp; */
     if(regen_bottom || (always))
         {
             regen_bottom = TRUE;
+            
+            cursor(1,19);
+            lprintf("Name: %s",logname);
 
             if(cdesc[SPELLMAX] > 99)
                 {
