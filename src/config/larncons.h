@@ -36,15 +36,15 @@
 #define TRUE 1
 #define FALSE 0
 
-#define MAXLEVEL 11		/*  max # levels in the dungeon         */
-#define MAXVLEVEL 3		/*  max # of levels in the temple of the luran  */
+#define MAXLEVEL 21		/*  max # levels in the dungeon         */
+#define MAXVLEVEL 3		/*  max # of levels in the temple of the larn  */
 #define MAXX 67
 #define MAXY 17
 
 #define SCORESIZE 10		/* this is the number of people on a scoreboard max */
 #define MAXPLEVEL 100		/* maximum player level allowed        */
 #define SPNUM 38		/* maximum number of spells in existance   */
-#define TIMELIMIT 30000		/* maximum number of moves before the game is called */
+#define TIMELIMIT 80000		/* maximum number of moves before the game is called */
 #define TAXRATE 1/20		/* tax rate for the LRS */
 
 #define BUFBIG  4096		/* size of the output buffer */

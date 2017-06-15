@@ -91,223 +91,190 @@ newcavelevel(int x)
 {
     int i, j;
 
-    level = x;
+    level = x;	/* get the new level and put in working storage*/
+	
+	for (i=0; i<MAXY; i++)
+		for (j=0; j<MAXX; j++)
+			know[j][i]=mitem[j][i]=0;
+	makemaze(x);
+	makeobject(x);
+	beenhere[x]=1;   /* first time here */
+	sethp(1);
 
-    if (level == 0)
-    {
-        cdesc[TELEFLAG] = 0;
-    }
+	if (wizard || x==0)
+		for (j=0; j<MAXY; j++)
+			for (i=0; i<MAXX; i++)
+				know[i][j]=1;
 
-    /* fill in new level
-     */
-    for (i = 0; i < MAXY ; i++)
-    {
-        for (j = 0 ; j < MAXX ; j++)
-        {
-            know[j][i] = mitem[j][i] = 0;
-        }
-    }
-
-#if WIZID
-    if(wizard || x == 0)
-#else
-    if(x == 0)
-#endif
-        for (j = 0; j < MAXY; j++)
-        {
-            for (i = 0; i < MAXX; i++)
-            {
-                know[i][j] = KNOWALL;
-            }
-        }
-
-    makemaze(x);
-    makeobject(x);
-    beenhere[x] = 1;
-    sethp(1);
-    positionplayer();
-    checkgen();  /* wipe out any genocided monsters */
+	checkgen();	/* wipe out any genocided monsters */
 }
 
 /*
 makemaze(level)
 int level;
-
 subroutine to make the caverns for a given level.  only walls are made.
 */
 static int mx, mxl, mxh, my, myl, myh, tmp2;
 
 static void
-makemaze(int k)
+makemaze (int k)
 {
-    int i, j, tmp;
-    int z;
+  int i, j, tmp;
+  int z;
 
-if (k > 1 && (rnd(17)<=4 || k==MAXLEVEL-1 || k==MAXLEVEL+MAXVLEVEL-1))
-  {
-    /* read maze from data file */
-    if (cannedlevel(k) == 1)
-      return;
-  }
-
-  if (k==0)
-  {
-    tmp = 0;
-  }
-  else
-  {
-    tmp = OWALL;
-  }
-
-  /* fill up maze */
-  for (i = 0 ; i < MAXY ; i++)
-  {
-    for (j = 0 ; j < MAXX ; j++)
+  if (k > 1
+      && (rnd (17) <= 4 || k == MAXLEVEL - 1
+	  || k == MAXLEVEL + MAXVLEVEL - 1))
     {
-      item[j][i] = (char) tmp;
+
+      /* read maze from data file */
+      if (cannedlevel (k))
+	{
+
+	  return;
+	}
     }
-  }
+
   if (k == 0)
-    return;
-  eat(1, 1);
-
-  if ((k != MAXLEVEL) && (k != MAXVLEVEL))
-  {
-    tmp2 = rnd(3)+3;
-    for (tmp=0; tmp<tmp2; tmp++)
     {
-      my = rnd(11)+2;
-      myl = my - rnd(2);
-      myh = my + rnd(2);
-      if (k <= MAXLEVEL)
-      {
-        /* in dungeon */
-        mx = rnd(44)+5;
-        mxl = mx - rnd(4);
-        mxh = mx + rnd(12)+3;
-        z=0;
-      }
-      else
-      {
-        /* in volcano */
-        mx = rnd(60)+3;
-        mxl = mx - rnd(2);
-        mxh = mx + rnd(2);
-        z = makemonst(k);
-      }
 
-      for (i = mxl ; i < mxh ; i++)
-      {
-        for (j = myl ; j < myh ; j++)
-        {
-          item[i][j] = 0;
-          if ((mitem[i][j]=z))
-          {
-            hitp[i][j]=monster[z].hitpoints;
-          }
-        }
-      }
+      tmp = 0;
+
     }
-  }
-
-  if (k!=MAXLEVEL && k!=MAXVLEVEL)
-  {
-    my = rnd(MAXY-2);
-    for (i = 1 ; i < MAXX-1 ; i++)
+  else
     {
-      item[i][my] = 0;
-    }
-  }
 
-  /* no treasure rooms above lvl 5 */
-  if (k > 4)
-  {
-    treasureroom(k);
-  }
+      tmp = OWALL;
+    }
+
+  for (i = 0; i < MAXY; i++)
+    {
+      for (j = 0; j < MAXX; j++)
+	{
+
+	  item[j][i] = tmp;
+	}
+    }
+
+  if (k == 0)
+    {
+      return;
+    }
+
+  eat (1, 1);
+
+  if (k == 1)
+    {
+
+      item[33][MAXY - 1] = OENTRANCE;
+    }
+
+  /*  now for open spaces -- not on level 10  */
+  if (k != MAXLEVEL - 1)
+    {
+      tmp2 = rnd (3) + 3;
+      for (tmp = 0; tmp < tmp2; tmp++)
+	{
+	  my = rnd (11) + 2;
+	  myl = my - rnd (2);
+	  myh = my + rnd (2);
+	  if (k < MAXLEVEL)
+	    {
+	      mx = rnd (44) + 5;
+	      mxl = mx - rnd (4);
+	      mxh = mx + rnd (12) + 3;
+	      z = 0;
+	    }
+	  else
+	    {
+	      mx = rnd (60) + 3;
+	      mxl = mx - rnd (2);
+	      mxh = mx + rnd (2);
+	      z = makemonst (k);
+	    }
+	  for (i = mxl; i < mxh; i++)
+	    for (j = myl; j < myh; j++)
+	      {
+		item[i][j] = 0;
+
+		mitem[i][j] = z;
+		if (mitem[i][j] != 0)
+		  {
+		    hitp[i][j] = monster[z].hitpoints;
+		  }
+	      }
+	}
+    }
+  if (k != MAXLEVEL - 1)
+    {
+      my = rnd (MAXY - 2);
+      for (i = 1; i < MAXX - 1; i++)
+	item[i][my] = 0;
+    }
+  if (k > 1)
+    treasureroom (k);
 }
+
 
 
 /*
 * function to eat away a filled in maze
 */
 void
-eat(int xx, int yy)
+eat (int xx, int yy)
 {
-    int dir, eat_try;
-    dir = rnd(4);
-    eat_try = 2;
+  int dir, fl_eat_try;
 
-    while(eat_try)
-        {
-            switch(dir)
-                {
-                case 1:
-                    if(xx <= 2)
-                        {
-                            break;  /*  west    */
-                        }
+  dir = rnd (4);
 
-                    if((item[xx - 1][yy] != OWALL) || (item[xx - 2][yy] != OWALL))
-                        {
-                            break;
-                        }
+  fl_eat_try = 2;
 
-                    item[xx - 1][yy] = item[xx - 2][yy] = 0;
-                    eat(xx - 2, yy);
-                    break;
+  while (fl_eat_try)
+    {
+      switch (dir)
+	{
+	case 1:
+	  if (xx <= 2)
+	    break;		/*  west    */
+	  if ((item[xx - 1][yy] != OWALL) || (item[xx - 2][yy] != OWALL))
+	    break;
+	  item[xx - 1][yy] = item[xx - 2][yy] = 0;
+	  eat (xx - 2, yy);
+	  break;
 
-                case 2:
-                    if(xx >= MAXX - 3)
-                        {
-                            break;  /*  east    */
-                        }
+	case 2:
+	  if (xx >= MAXX - 3)
+	    break;		/*  east    */
+	  if ((item[xx + 1][yy] != OWALL) || (item[xx + 2][yy] != OWALL))
+	    break;
+	  item[xx + 1][yy] = item[xx + 2][yy] = 0;
+	  eat (xx + 2, yy);
+	  break;
 
-                    if((item[xx + 1][yy] != OWALL) || (item[xx + 2][yy] != OWALL))
-                        {
-                            break;
-                        }
+	case 3:
+	  if (yy <= 2)
+	    break;		/*  south   */
+	  if ((item[xx][yy - 1] != OWALL) || (item[xx][yy - 2] != OWALL))
+	    break;
+	  item[xx][yy - 1] = item[xx][yy - 2] = 0;
+	  eat (xx, yy - 2);
+	  break;
 
-                    item[xx + 1][yy] = item[xx + 2][yy] = 0;
-                    eat(xx + 2, yy);
-                    break;
-
-                case 3:
-                    if(yy <= 2)
-                        {
-                            break;  /*  south   */
-                        }
-
-                    if((item[xx][yy - 1] != OWALL) || (item[xx][yy - 2] != OWALL))
-                        {
-                            break;
-                        }
-
-                    item[xx][yy - 1] = item[xx][yy - 2] = 0;
-                    eat(xx, yy - 2);
-                    break;
-
-                case 4:
-                    if(yy >= MAXY - 3)
-                        {
-                            break;  /*  north   */
-                        }
-
-                    if((item[xx][yy + 1] != OWALL) || (item[xx][yy + 2] != OWALL))
-                        {
-                            break;
-                        }
-
-                    item[xx][yy + 1] = item[xx][yy + 2] = 0;
-                    eat(xx, yy + 2);
-                    break;
-                };
-
-            if(++dir > 4)
-                {
-                    dir = 1;
-                    --eat_try;
-                }
-        }
+	case 4:
+	  if (yy >= MAXY - 3)
+	    break;		/*  north   */
+	  if ((item[xx][yy + 1] != OWALL) || (item[xx][yy + 2] != OWALL))
+	    break;
+	  item[xx][yy + 1] = item[xx][yy + 2] = 0;
+	  eat (xx, yy + 2);
+	  break;
+	};
+      if (++dir > 4)
+	{
+	  dir = 1;
+	  --fl_eat_try;
+	}
+    }
 }
 
 /*
@@ -323,108 +290,80 @@ eat(int xx, int yy)
 *      -   random object
 */
 static int
-cannedlevel(int k)
+cannedlevel (int k)
 {
-    char *row, buf[128];
-    int i, j;
-    int it, arg, mit, marg;
-    FILE *fp;
+  char *row;
+  int i, j;
+  int it, arg, mit, marg;
 
-    fp = fopen(mazefile, "r");
-
-    if (fp == (FILE *)NULL)
+  if (lopen (mazefile) < 0)
     {
-      fprintf(stderr, "Can't open the maze data file\n");
-      died(-282);
-      return(-1);
+      fprintf (stderr, "Can't open the maze data file\n");
+      died (-282);
+      return (0);
     }
-
-    i = rund(20);
-    for (j = 0 ; j < i ; j++)
+  i = lgetc ();
+  if (i <= '0')
     {
-    /*
-    ** Skip a level + the blank line
-    */
-    for (k=0; k < (MAXY+1); k++)
-    {
-      row = fgets(buf, 128, fp);
-      if (row == (char *)NULL)
-      {
-        perror("fgets");
-        fclose(fp);
-        return (-1);
-      }
+      died (-282);
+      return (0);
     }
-  }
-
-    for (i = 0 ; i < MAXY ; i++)
-  {
-    row = fgets(buf, 128, fp);
-    if (row == (char *)NULL)
+  for (i = 18 * rund (i - '0'); i > 0; i--)
+    lgetl ();			/* advance to desired maze */
+  for (i = 0; i < MAXY; i++)
     {
-      perror("fgets");
-      fclose(fp);
-      return (-1);
-    }
-
-    for (j = 0 ; j < MAXX ; j++)
-    {
-      it = mit = arg = marg = 0;
-      switch(*row++)
-      {
-        case '#':
-        it = OWALL;
-        break;
-        case 'D':
-        it = OCLOSEDDOOR;
-        arg = rnd(30);
-        break;
-        case '~':
-        if(k != MAXLEVEL - 1)
-        {
-          break;
-        }
-        it = OLARNEYE;
-        mit = rund(8) + DEMONLORD;
-        marg = monster[mit].hitpoints;
-        break;
-        case '!':
-        if(k != MAXLEVEL + MAXVLEVEL - 1)
-        {
-          break;
-        }
-        it = OPOTION;
-        arg = 21;
-        mit = DEMONLORD + 7;
-        marg = monster[mit].hitpoints;
-        break;
-        case '.':
-        if(k < MAXLEVEL)
-        {
-          break;
-        }
-        mit = makemonst(k + 1);
-        marg = monster[mit].hitpoints;
-        break;
-        case '-':
-        it = newobject(k + 1, &arg);
-        break;
-      };
-
-      item[j][i] = it;
-      iarg[j][i] = arg;
-      mitem[j][i] = mit;
-      hitp[j][i] = marg;
+      row = lgetl ();
+      for (j = 0; j < MAXX; j++)
+	{
+	  it = mit = arg = marg = 0;
+	  switch (*row++)
+	    {
+	    case '#':
+	      it = OWALL;
+	      break;
+	    case 'D':
+	      it = OCLOSEDDOOR;
+	      arg = rnd (30);
+	      break;
+	    case '~':
+	      if (k != MAXLEVEL - 1)
+		break;
+	      it = OLARNEYE;
+	      mit = rund (8) + DEMONLORD;
+	      marg = monster[mit].hitpoints;
+	      break;
+	    case '!':
+	      if (k != MAXLEVEL + MAXVLEVEL - 1)
+		break;
+	      it = OPOTION;
+	      arg = 21;
+	      mit = DEMONLORD + 7;
+	      marg = monster[mit].hitpoints;
+	      break;
+	    case '.':
+	      if (k < MAXLEVEL)
+		break;
+	      mit = makemonst (k + 1);
+	      marg = monster[mit].hitpoints;
+	      break;
+	    case '-':
+	      it = newobject (k + 1, &arg);
+	      break;
+	    };
+	  item[j][i] = it;
+	  iarg[j][i] = arg;
+	  mitem[j][i] = mit;
+	  hitp[j][i] = marg;
 
 #if WIZID
-      know[j][i] = (wizard) ? KNOWALL : 0;
+	  know[j][i] = (wizard) ? KNOWALL : 0;
 #else
-      know[j][i] = 0;
+	  know[j][i] = 0;
 #endif
+	}
     }
-  }
-  fclose(fp);
-  return(1);
+  lrclose ();
+  return (1);
 }
 
 
@@ -435,111 +374,94 @@ cannedlevel(int k)
 *  level V3 has potion of cure dianthroritis and demon prince
 */
 static void
-treasureroom(int lv)
+treasureroom (int lv)
 {
-    int tx, ty, xsize, ysize;
+  int tx, ty, xsize, ysize;
 
-    for(tx = 1 + rnd(10); tx < MAXX - 10; tx += 10)
-        if((lv == MAXLEVEL - 1) || (lv == MAXLEVEL + MAXVLEVEL - 1)
-                /*Increased this math to a 50 percent chance. -Gibbon */
-                || rnd(10) == 5)
-            {
-                xsize = rnd(6) + 3;
-                ysize = rnd(3) + 3;
-                ty = rnd(MAXY - 9) + 1;	/* upper left corner of room */
-
-                if(lv == MAXLEVEL - 1 || lv == MAXLEVEL + MAXVLEVEL - 1)
-                    troom(lv, xsize, ysize, tx =
-                              tx + rnd(MAXX - 24), ty, rnd(3) + 6);
-
-                else
-                    {
-                        troom(lv, xsize, ysize, tx, ty, rnd(9));
-                    }
-            }
+  for (tx = 1 + rnd (10); tx < MAXX - 10; tx += 10)
+    if ((lv == MAXLEVEL - 1) || (lv == MAXLEVEL + MAXVLEVEL - 1)
+    /*Increased this math to a 50 percent chance. -Gibbon */
+	|| rnd (10) == 5)
+      {
+	xsize = rnd (6) + 3;
+	ysize = rnd (3) + 3;
+	ty = rnd (MAXY - 9) + 1;	/* upper left corner of room */
+	if (lv == MAXLEVEL - 1 || lv == MAXLEVEL + MAXVLEVEL - 1)
+	  troom (lv, xsize, ysize, tx =
+		 tx + rnd (MAXX - 24), ty, rnd (3) + 6);
+	else
+	  troom (lv, xsize, ysize, tx, ty, rnd (9));
+      }
 }
 
 
 
 /*
-*  subroutine to create a treasure room of any size at a given location
-*  room is filled with objects and monsters
+*  subroutine to create a treasure room of any size at a given location 
+*  room is filled with objects and monsters 
 *  the coordinate given is that of the upper left corner of the room
 */
 static void
-troom(int lv, int xsize, int ysize, int tx, int ty, int glyph)
+troom (int lv, int xsize, int ysize, int tx, int ty, int glyph)
 {
-    int i, j;
-    int tp1, tp2;
+  int i, j;
+  int tp1, tp2;
 
-    for(j = ty - 1; j <= ty + ysize; j++)
-        for(i = tx - 1; i <= tx + xsize; i++)	/* clear out space for room */
-            {
-                item[i][j] = 0;
-            }
+  for (j = ty - 1; j <= ty + ysize; j++)
+    for (i = tx - 1; i <= tx + xsize; i++)	/* clear out space for room */
+      item[i][j] = 0;
+  for (j = ty; j < ty + ysize; j++)
+    for (i = tx; i < tx + xsize; i++)	/* now put in the walls */
+      {
+	item[i][j] = OWALL;
+	mitem[i][j] = 0;
+      }
+  for (j = ty + 1; j < ty + ysize - 1; j++)
+    for (i = tx + 1; i < tx + xsize - 1; i++)	/* now clear out interior */
+      item[i][j] = 0;
 
-    for(j = ty; j < ty + ysize; j++)
-        for(i = tx; i < tx + xsize; i++)	/* now put in the walls */
-            {
-                item[i][j] = OWALL;
-                mitem[i][j] = 0;
-            }
+  switch (rnd (2))		/* locate the door on the treasure room */
+    {
+    case 1:
+      item[i = tx + rund (xsize)][j = ty + (ysize - 1) * rund (2)] =
+	OCLOSEDDOOR;
+      iarg[i][j] = glyph;	/* on horizontal walls */
+      break;
+    case 2:
+      item[i = tx + (xsize - 1) * rund (2)][j = ty + rund (ysize)] =
+	OCLOSEDDOOR;
+      iarg[i][j] = glyph;	/* on vertical walls */
+      break;
+    };
 
-    for(j = ty + 1; j < ty + ysize - 1; j++)
-        for(i = tx + 1; i < tx + xsize - 1; i++)	/* now clear out interior */
-            {
-                item[i][j] = 0;
-            }
-
-    switch(rnd(2))		/* locate the door on the treasure room */
-        {
-        case 1:
-            item[i = tx + rund(xsize)][j = ty + (ysize - 1) * rund(2)] =
-                OCLOSEDDOOR;
-            iarg[i][j] = glyph;	/* on horizontal walls */
-            break;
-
-        case 2:
-            item[i = tx + (xsize - 1) * rund(2)][j = ty + rund(ysize)] =
-                OCLOSEDDOOR;
-            iarg[i][j] = glyph;	/* on vertical walls */
-            break;
-        };
-
-    tp1 = playerx;
-
-    tp2 = playery;
-
-    playery = ty + (ysize >> 1);
-
-    if(cdesc[HARDGAME] < 2)
-        {
-            for(playerx = tx + 1; playerx <= tx + xsize - 2; playerx += 2)
-                {
-                    for(i = 0, j = rnd(6); i <= j; i++)
-                        {
-                            something(lv + 2);
-                            createmonster(makemonst(lv + 1));
-                        }
-                }
-        }
-
-    else
-        {
-            for(playerx = tx + 1; playerx <= tx + xsize - 2; playerx += 2)
-                {
-                    for(i = 0, j = rnd(4); i <= j; i++)
-                        {
-                            something(lv + 2);
-                            createmonster(makemonst(lv + 3));
-                        }
-
-                    playerx = tp1;
-                    playery = tp2;
-                }
-        }
+  tp1 = playerx;
+  tp2 = playery;
+  playery = ty + (ysize >> 1);
+  if (cdesc[HARDGAME] < 2)
+    {
+      for (playerx = tx + 1; playerx <= tx + xsize - 2; playerx += 2)
+	{
+	  for (i = 0, j = rnd (6); i <= j; i++)
+	    {
+	      something (lv + 2);
+	      createmonster (makemonst (lv + 1));
+	    }
+	}
+    }
+  else
+    {
+      for (playerx = tx + 1; playerx <= tx + xsize - 2; playerx += 2)
+	{
+	  for (i = 0, j = rnd (4); i <= j; i++)
+	    {
+	      something (lv + 2);
+	      createmonster (makemonst (lv + 3));
+	    }
+	  playerx = tp1;
+	  playery = tp2;
+	}
+    }
 }
-
 
 /*
 * subroutine to create the objects in the maze for the given level
@@ -832,17 +754,10 @@ sethp(int flg)
 static void
 checkgen(void)
 {
-    int x, y;
+	int x,y;
 
-    for(y = 0; y < MAXY; y++)
-        {
-            for(x = 0; x < MAXX; x++)
-                {
-                    if(monster[mitem[x][y]].genocided)
-                        {
-                            /* no more monster */
-                            mitem[x][y] = 0;
-                        }
-                }
-        }
+	for (y=0; y<MAXY; y++)
+		for (x=0; x<MAXX; x++)
+			if(monster[mitem[x][y]].genocided)
+				mitem[x][y]=0; /* no more monster */
 }
