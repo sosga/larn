@@ -19,7 +19,7 @@ genmonst()         Function to ask for monster and genocide from game
 #include <cstdlib>
 #include <ctype.h>
 #include <cstring>
-#include <ncurses.h>
+#include <curses.h>
 
 #include "../includes/create.h"
 #include "config/larncons.h"
