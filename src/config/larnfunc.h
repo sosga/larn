@@ -12,7 +12,7 @@ T rnd(T x)
 	return static_cast<T>(rand() % (x)) + 1;
 }
 
-template<class T>
+template<typename T>
 T rund(T x)
 {
 	return static_cast<T>(rand() % (x));
