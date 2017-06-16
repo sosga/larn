@@ -546,7 +546,7 @@ makeobject(int j)
 
     for(i = 0; i < rnd(5) + 3; i++)
         {
-            fillroom(OSCROLL, newscroll());      /*  make a SCROLL   */
+            fillroom(OSCROLL, NewScroll());      /*  make a SCROLL   */
         }
 
     for(i = 0; i < rnd(12) + 11; i++)

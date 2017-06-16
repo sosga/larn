@@ -297,7 +297,7 @@ movsphere ( void )
 		}
 
 		switch ( rnd ( ( int ) max ( 7,
-		                             cdesc[INTELLIGENCE] >> 1 ) ) )  	/* time to move the sphere */
+		                             cdesc[INTELLIGENCE]  ) ) )  	/* time to move the sphere */
 		{
 			case 1:
 			case 2:		/* change direction to a random one */

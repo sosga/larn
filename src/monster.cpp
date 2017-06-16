@@ -721,7 +721,7 @@ newobject ( int lev, int *i )
 		case 2:
 		case 3:
 		case 4:			/* scroll */
-			*i = newscroll ();
+			*i = NewScroll();
 			break;
 
 		case 5:
