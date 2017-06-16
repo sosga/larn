@@ -36,8 +36,8 @@
 #define TRUE 1
 #define FALSE 0
 
-#define MAXLEVEL 21		/*  max # levels in the dungeon         */
-#define MAXVLEVEL 3		/*  max # of levels in the temple of the larn  */
+#define MAXLEVEL 12		/*  max # levels in the dungeon         */
+#define MAXVLEVEL 5		/*  max # of levels in the temple of the larn  */
 #define MAXX 67
 #define MAXY 17
 

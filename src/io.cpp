@@ -753,12 +753,8 @@ lprcat ( const char *str )
 	{
 		lflush();
 	}
-
 	str2 = lpnt;
-
-	while ( ( *str2++ = *str++ ) != '\0' )
-		;
-
+	while ( ( *str2++ = *str++ ) != '\0' );
 	lpnt = str2 - 1;
 	lflush();
 }
