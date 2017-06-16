@@ -226,7 +226,7 @@ regen(void)
 	{
 		if (larn_cdesc_id[ITCHING] > 1)
 			if ((larn_cdesc_id[WEAR] != -1 ) || (larn_cdesc_id[SHIELD] != -1 ))
-				if (rnd(100) < 50)
+				if (TRnd(100) < 50)
 				{
 					larn_cdesc_id[WEAR] = larn_cdesc_id[SHIELD] = -1;
 					cursors();
@@ -245,7 +245,7 @@ regen(void)
 		if (larn_cdesc_id[WIELD] != -1)
 		if (larn_cdesc_id[CLUMSINESS] > 1)
 		if (item[playerx][playery] == 0)	/* only if nothing there */
-		if (rnd(100) < 33)			/* drop your weapon due to clumsiness */
+		if (TRnd(100) < 33)			/* drop your weapon due to clumsiness */
 		{
 			drop_object((int)larn_cdesc_id[WIELD]);
 		}

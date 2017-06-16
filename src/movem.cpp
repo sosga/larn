@@ -487,7 +487,7 @@ move_scared ( int i, int j )
 			}
 	};
 
-	if ( ( xl = i + rnd ( 3 ) - 2 ) < 0 )
+	if ( ( xl = i + TRnd ( 3 ) - 2 ) < 0 )
 	{
 		xl = 0;
 	}
@@ -497,7 +497,7 @@ move_scared ( int i, int j )
 		xl = MAXX - 1;
 	}
 
-	if ( ( yl = j + rnd ( 3 ) - 2 ) < 0 )
+	if ( ( yl = j + TRnd ( 3 ) - 2 ) < 0 )
 	{
 		yl = 0;
 	}
@@ -828,7 +828,7 @@ mmove ( int aa, int bb, int cc, int dd )
 	{
 		who = "An arrow";
 
-		if ( ( hitp[cc][dd] -= rnd ( 10 ) + level ) <= 0 )
+		if ( ( hitp[cc][dd] -= TRnd ( 10 ) + level ) <= 0 )
 		{
 			mitem[cc][dd] = 0;
 			flag = 2;
@@ -844,7 +844,7 @@ mmove ( int aa, int bb, int cc, int dd )
 	{
 		who = "A dart";
 
-		if ( ( hitp[cc][dd] -= rnd ( 6 ) ) <= 0 )
+		if ( ( hitp[cc][dd] -= TRnd ( 6 ) ) <= 0 )
 		{
 			mitem[cc][dd] = 0;
 			flag = 2;

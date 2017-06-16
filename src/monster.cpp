@@ -90,9 +90,9 @@ createmonster ( int mon )
 		mon++;  /* skip genocided */
 	}
 
-	for ( k = rnd ( 8 ), i = -8; i < 0; i++, k++ )
+	for ( k = TRnd ( 8 ), i = -8; i < 0; i++, k++ )
 	{
-		/* choose rnd direction, then try all */
+		/* choose TRnd direction, then try all */
 		if ( k > 8 )
 		{
 			k = 1;  /* wraparound the diroff arrays */
@@ -211,9 +211,9 @@ createitem ( int it, int arg )
 		return;  /* no such object */
 	}
 
-	for ( k = rnd ( 8 ), i = -8; i < 0; i++, k++ )
+	for ( k = TRnd ( 8 ), i = -8; i < 0; i++, k++ )
 	{
-		/* choose rnd direction, then try all */
+		/* choose TRnd direction, then try all */
 		if ( k > 8 )
 		{
 			k = 1;  /* wraparound the diroff arrays */
@@ -310,8 +310,8 @@ hitmonster ( int x, int y )
 	      cdesc[DEXTERITY] + cdesc[WCLASS] / 4 - 12;
 	cursors ();
 
-	if ( ( rnd ( 20 ) < tmp - cdesc[HARDGAME] )
-	     || ( rnd ( 71 ) <
+	if ( ( TRnd ( 20 ) < tmp - cdesc[HARDGAME] )
+	     || ( TRnd ( 71 ) <
 	          5 ) )  	/* need at least random chance to hit */
 	{
 		lprcat ( "\nYou hit" );
@@ -320,7 +320,7 @@ hitmonster ( int x, int y )
 
 		if ( damag < 9999 )
 		{
-			damag = rnd ( damag ) + 1;
+			damag = TRnd ( damag ) + 1;
 		}
 	}
 
@@ -437,7 +437,7 @@ hitm::hitm(int x, int y, int amt)
 
 		if ( amt > 0 )
 		{
-			dropgold ( rnd ( amt ) + amt );
+			dropgold ( TRnd ( amt ) + amt );
 		}
 
 		dropsomething ( monst );
@@ -492,7 +492,7 @@ hitplayer ( int x, int y )
 	ifblind ( x, y );
 
 	if ( cdesc[INVISIBILITY] )
-		if ( rnd ( 33 ) < 20 )
+		if ( TRnd ( 33 ) < 20 )
 		{
 			lprintf ( "\nThe" );
 			lprintf ( " %s ", lastmonst );
@@ -501,7 +501,7 @@ hitplayer ( int x, int y )
 		}
 
 	if ( cdesc[CHARMCOUNT] )
-		if ( rnd ( 30 ) + 5 * monster[mster].level - cdesc[CHARISMA] <
+		if ( TRnd ( 30 ) + 5 * monster[mster].level - cdesc[CHARISMA] <
 		     30 )
 		{
 			lprintf ( "\nThe" );
@@ -518,7 +518,7 @@ hitplayer ( int x, int y )
 	else
 	{
 		dam = monster[mster].damage;
-		dam += rnd ( ( int ) ( ( dam < 1 ) ? 1 : dam ) ) +
+		dam += TRnd ( ( int ) ( ( dam < 1 ) ? 1 : dam ) ) +
 		       monster[mster].level;
 	}
 
@@ -526,7 +526,7 @@ hitplayer ( int x, int y )
 
 	if ( monster[mster].attack > 0 )
 		if ( ( ( dam + bias + 8 ) > cdesc[AC] )
-		     || ( rnd ( ( int ) ( ( cdesc[AC] > 0 ) ? cdesc[AC] : 1 ) ) == 1 ) )
+		     || ( TRnd ( ( int ) ( ( cdesc[AC] > 0 ) ? cdesc[AC] : 1 ) ) == 1 ) )
 		{
 			if ( spattack ( monster[mster].attack, x, y ) )
 			{
@@ -545,7 +545,7 @@ hitplayer ( int x, int y )
 		}
 
 	if ( ( ( dam + bias ) > cdesc[AC] )
-	     || ( rnd ( ( int ) ( ( cdesc[AC] > 0 ) ? cdesc[AC] : 1 ) ) == 1 ) )
+	     || ( TRnd ( ( int ) ( ( cdesc[AC] > 0 ) ? cdesc[AC] : 1 ) ) == 1 ) )
 	{
 		lprintf ( "\nThe" );
 		lprintf ( " %s ", lastmonst );
@@ -605,12 +605,12 @@ dropsomething ( int monst )
 			return;
 
 		case LEPRECHAUN:
-			if ( rnd ( 101 ) >= 75 )
+			if ( TRnd ( 101 ) >= 75 )
 			{
 				creategem ();
 			}
 
-			if ( rnd ( 5 ) == 1 )
+			if ( TRnd ( 5 ) == 1 )
 			{
 				dropsomething ( LEPRECHAUN );
 			}
@@ -663,7 +663,7 @@ something ( int lv )
 		return;  /* correct level? */
 	}
 
-	if ( rnd ( 101 ) < 8 )
+	if ( TRnd ( 101 ) < 8 )
 	{
 		something ( lv );  /* possibly more than one item */
 	}
@@ -713,7 +713,7 @@ newobject ( int lev, int *i )
 			tmp = 39;
 		}
 
-	j = nobjtab[tmp = rnd ( tmp )];	/* the object type */
+	j = nobjtab[tmp = TRnd ( tmp )];	/* the object type */
 
 	switch ( tmp )
 	{
@@ -735,7 +735,7 @@ newobject ( int lev, int *i )
 		case 10:
 		case 11:
 		case 12:			/* gold */
-			*i = rnd ( ( lev + 1 ) * 10 ) + lev * 10 + 10;
+			*i = TRnd ( ( lev + 1 ) * 10 ) + lev * 10 + 10;
 			break;
 
 		case 13:
@@ -772,31 +772,31 @@ newobject ( int lev, int *i )
 		case 23:
 		case 32:
 		case 38:			/* regen ring, shield, 2-hand sword */
-			*i = rund ( lev / 3 + 1 );
+			*i = TRund ( lev / 3 + 1 );
 			break;
 
 		case 24:
 		case 26:			/* prot ring, dexterity ring */
-			*i = rnd ( lev / 4 + 1 );
+			*i = TRnd ( lev / 4 + 1 );
 			break;
 
 		case 25:			/* energy ring */
-			*i = rund ( lev / 4 + 1 );
+			*i = TRund ( lev / 4 + 1 );
 			break;
 
 		case 27:
 		case 39:			/* strength ring, cleverness ring */
-			*i = rnd ( lev / 2 + 1 );
+			*i = TRnd ( lev / 2 + 1 );
 			break;
 
 		case 30:
 		case 34:			/* ring mail, flail */
-			*i = rund ( lev / 2 + 1 );
+			*i = TRund ( lev / 2 + 1 );
 			break;
 
 		case 28:
 		case 36:			/* spear, battleaxe */
-			*i = rund ( lev / 3 + 1 );
+			*i = TRund ( lev / 3 + 1 );
 
 			if ( *i == 0 )
 			{
@@ -808,7 +808,7 @@ newobject ( int lev, int *i )
 		case 29:
 		case 31:
 		case 37:			/* belt, studded leather, splint */
-			*i = rund ( lev / 2 + 1 );
+			*i = TRund ( lev / 2 + 1 );
 
 			if ( *i == 0 )
 			{
@@ -962,7 +962,7 @@ spattack ( int x, int xx, int yy )
 			break;
 
 		case 2:
-			i = rnd ( 15 ) + 8 - cdesc[AC];
+			i = TRnd ( 15 ) + 8 - cdesc[AC];
 		spout:
 			p = "\nThe %s breathes fire at you!";
 
@@ -982,7 +982,7 @@ spattack ( int x, int xx, int yy )
 			return ( 0 );
 
 		case 3:
-			i = rnd ( 20 ) + 25 - cdesc[AC];
+			i = TRnd ( 20 ) + 25 - cdesc[AC];
 			goto spout;
 
 		case 4:
@@ -1001,7 +1001,7 @@ spattack ( int x, int xx, int yy )
 
 		case 5:
 			p = "\nThe %s blasts you with his cold breath";
-			i = rnd ( 15 ) + 18 - cdesc[AC];
+			i = TRnd ( 15 ) + 18 - cdesc[AC];
 			goto spout2;
 
 		case 6:
@@ -1013,7 +1013,7 @@ spattack ( int x, int xx, int yy )
 
 		case 7:
 			p = "\nThe %s got you with a gusher!";
-			i = rnd ( 15 ) + 25 - cdesc[AC];
+			i = TRnd ( 15 ) + 25 - cdesc[AC];
 			goto spout2;
 
 		case 8:
@@ -1033,7 +1033,7 @@ spattack ( int x, int xx, int yy )
 
 				else
 				{
-					cdesc[GOLD] -= rnd ( ( int ) ( 1 + ( cdesc[GOLD] >> 1 ) ) );
+					cdesc[GOLD] -= TRnd ( ( int ) ( 1 + ( cdesc[GOLD] >> 1 ) ) );
 				}
 
 				if ( cdesc[GOLD] < 0 )
@@ -1055,7 +1055,7 @@ spattack ( int x, int xx, int yy )
 		case 9:
 			for ( j = 50;; )  	/* disenchant */
 			{
-				i = rund ( 26 );
+				i = TRund ( 26 );
 				m = iven[i];		/* randomly select item */
 
 				if ( m > 0 && ivenarg[i] > 0 && m != OSCROLL
@@ -1087,20 +1087,20 @@ spattack ( int x, int xx, int yy )
 
 		case 10:
 			p = "\nThe %s hit you with his barbed tail";
-			i = rnd ( 25 ) - cdesc[AC];
+			i = TRnd ( 25 ) - cdesc[AC];
 			goto spout2;
 
 		case 11:
 			p = "\nThe %s has confused you";
-			cdesc[CONFUSE] += 10 + rnd ( 10 );
+			cdesc[CONFUSE] += 10 + TRnd ( 10 );
 			break;
 
 		case 12:			/*  performs any number of other special attacks    */
-			return ( spattack ( spsel[rund ( 10 )], xx, yy ) );
+			return ( spattack ( spsel[TRund ( 10 )], xx, yy ) );
 
 		case 13:
 			p = "\nThe %s flattens you with his psionics!";
-			i = rnd ( 15 ) + 30 - cdesc[AC];
+			i = TRnd ( 15 ) + 30 - cdesc[AC];
 			goto spout2;
 
 		case 14:
@@ -1129,13 +1129,13 @@ spattack ( int x, int xx, int yy )
 			return ( 1 );
 
 		case 15:
-			i = rnd ( 10 ) + 5 - cdesc[AC];
+			i = TRnd ( 10 ) + 5 - cdesc[AC];
 		spout3:
 			p = "\nThe %s bit you!";
 			goto spout2;
 
 		case 16:
-			i = rnd ( 15 ) + 10 - cdesc[AC];
+			i = TRnd ( 15 ) + 10 - cdesc[AC];
 			goto spout3;
 	};
 

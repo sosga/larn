@@ -244,7 +244,7 @@ fntchange ( int how )
 	int j;
 	lprc ( '\n' );
 
-	switch ( rnd ( 9 ) )
+	switch ( TRnd ( 9 ) )
 	{
 		case 1:
 			lprcat ( "Your strength" );
@@ -277,7 +277,7 @@ fntchange ( int how )
 			break;
 
 		case 7:
-			j = rnd ( level + 1 );
+			j = TRnd ( level + 1 );
 
 			if ( how < 0 )
 			{
@@ -317,7 +317,7 @@ fntchange ( int how )
 			break;
 
 		case 8:
-			j = rnd ( level + 1 );
+			j = TRnd ( level + 1 );
 
 			if ( how > 0 )
 			{
@@ -355,7 +355,7 @@ fntchange ( int how )
 			break;
 
 		case 9:
-			j = 5 * rnd ( ( level + 1 ) * ( level + 1 ) );
+			j = 5 * TRnd ( ( level + 1 ) * ( level + 1 ) );
 
 			if ( how < 0 )
 			{

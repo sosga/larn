@@ -35,6 +35,7 @@ static int minx, maxx, miny, maxy;
 static int bot1f = 0, bot2f = 0, bot3f = 0;
 static int always = 0;
 int regen_bottom = 0;
+extern char logname[];
 
 /*
 bottomline()
@@ -86,8 +87,7 @@ void
 bot_linex(void)
 {
     int i;
-    extern char logname[];
-    /*int debugtmp; */
+	
     if(regen_bottom || (always))
         {
             regen_bottom = TRUE;
@@ -770,9 +770,9 @@ if direction=0, don't move--just show where he is */
     int k, m, i, j;
 
     if(cdesc[CONFUSE])
-        if(cdesc[LEVEL] < rnd(30))
+        if(cdesc[LEVEL] < TRnd(30))
             {
-                dir = rund(9);     /*if confused any dir */
+                dir = TRund(9);     /*if confused any dir */
             }
 
     k = playerx + diroffx[dir];

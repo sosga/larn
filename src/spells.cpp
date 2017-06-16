@@ -169,7 +169,7 @@ speldamage ( int x )
 
 	clev = cdesc[LEVEL];
 
-	if ( ( rnd ( 23 ) == 7 ) || ( rnd ( 18 ) > cdesc[INTELLIGENCE] ) )
+	if ( ( TRnd ( 23 ) == 7 ) || ( TRnd ( 18 ) > cdesc[INTELLIGENCE] ) )
 	{
 		lprcat ( "  It didn't work!" );
 		return;
@@ -194,7 +194,7 @@ speldamage ( int x )
 			return;
 
 		case 1:
-			i = rnd ( ( ( clev + 1 ) << 1 ) ) + clev + 3;
+			i = TRnd ( ( ( clev + 1 ) << 1 ) ) + clev + 3;
 			godirect ( x, i, ( clev >= 2 ) ? "  Your missiles hit the %s" :
 			           "  Your missile hit the %s", 100,
 			           '+' );	/* magic missile */
@@ -212,7 +212,7 @@ speldamage ( int x )
 		/*Further fixes below for issue #36.  Removed crusty old 'C' and replaced with
 			direct function calls. -Gibbon*/
 		case 3:
-			i = rnd ( 3 ) + 1;
+			i = TRnd ( 3 ) + 1;
 			/*Fix for bug #24 added newlines to the 'msg' for web and sleep spells.
 			Removed the msg and used lprcat instead plus color. ~Gibbon*/
 			direct ( x, fullhit ( i ),
@@ -225,14 +225,14 @@ speldamage ( int x )
 			return;
 
 		case 5:
-			godirect ( x, rnd ( 10 ) + 15 + clev,
+			godirect ( x, TRnd ( 10 ) + 15 + clev,
 			           "  The sound damages the %s", 70,
 			           '@' );	/* sonic spear */
 			return;
 
 		/* ----- LEVEL 2 SPELLS ----- */
 		case 6:
-			i = rnd ( 3 ) + 2;
+			i = TRnd ( 3 ) + 2;
 			direct ( x, fullhit ( i ),
 			         "\nYou damage the %s and hit %d times ",
 			         i );			/* web */
@@ -244,7 +244,7 @@ speldamage ( int x )
 				cdesc[STREXTRA] += 3;  /*  strength    */
 			}
 
-			cdesc[STRCOUNT] += 150 + rnd ( 100 );
+			cdesc[STRCOUNT] += 150 + TRnd ( 100 );
 			return;
 
 		case 8:
@@ -277,9 +277,9 @@ speldamage ( int x )
 			return;
 
 		case 12:
-			if ( rnd ( 11 ) + 7 <= cdesc[WISDOM] )
+			if ( TRnd ( 11 ) + 7 <= cdesc[WISDOM] )
 			{
-				direct ( x, rnd ( 20 ) + 20 + clev, "\nThe %s believed!", 0 );
+				direct ( x, TRnd ( 20 ) + 20 + clev, "\nThe %s believed!", 0 );
 			}
 
 			else
@@ -301,13 +301,13 @@ speldamage ( int x )
 
 		/* ----- LEVEL 3 SPELLS ----- */
 		case 14:
-			godirect ( x, rnd ( 25 + clev ) + 25 + clev,
+			godirect ( x, TRnd ( 25 + clev ) + 25 + clev,
 			           "\nThe fireball hits the %s",
 			           40, '*' );
 			return;			/*    fireball */
 
 		case 15:
-			godirect ( x, rnd ( 25 ) + 20 + clev,
+			godirect ( x, TRnd ( 25 ) + 20 + clev,
 			           "\nYour cone of cold strikes the %s", 60, 'O' );	/*  cold */
 			return;
 
@@ -324,17 +324,17 @@ speldamage ( int x )
 			return;			/* haste self  */
 
 		case 19:
-			omnidirect ( x, 30 + rnd ( 10 ),
+			omnidirect ( x, 30 + TRnd ( 10 ),
 			             "\nThe %s gasps for air" );	/* cloud kill */
 			return;
 
 		case 20:
-			xh = min ( playerx + 1, MAXX - 2 );
-			yh = min ( playery + 1, MAXY - 2 );
+			xh = TMathMin ( playerx + 1, MAXX - 2 );
+			yh = TMathMin ( playery + 1, MAXY - 2 );
 
-			for ( i = max ( playerx - 1, 1 ); i <= xh;
+			for ( i = TMathMax ( playerx - 1, 1 ); i <= xh;
 			      i++ )	/* vaporize rock */
-				for ( j = max ( playery - 1, 1 ); j <= yh; j++ )
+				for ( j = TMathMax ( playery - 1, 1 ); j <= yh; j++ )
 				{
 					kn = &know[i][j];
 					pm = &mitem[i][j];
@@ -391,13 +391,13 @@ speldamage ( int x )
 			return;
 
 		case 22:
-			godirect ( x, rnd ( 25 ) + 20 + ( clev << 1 ),
+			godirect ( x, TRnd ( 25 ) + 20 + ( clev << 1 ),
 			           "\nA lightning bolt hits the %s", 1,
 			           '~' );	/*  lightning */
 			return;
 
 		case 23:
-			i = min ( cdesc[HP] - 1, cdesc[HPMAX] / 2 );	/* drain life */
+			i = TMathMin ( cdesc[HP] - 1, cdesc[HPMAX] / 2 );	/* drain life */
 			direct ( x, i + i, "", 0 );
 			cdesc[HP] -= i;
 			return;
@@ -418,7 +418,7 @@ speldamage ( int x )
 			return;
 
 		case 26:
-			if ( rnd ( 151 ) == 63 )
+			if ( TRnd ( 151 ) == 63 )
 			{
 				lprcat ( "\nYour heart stopped!\n" );
 				nap ( NAPTIME );
@@ -426,7 +426,7 @@ speldamage ( int x )
 				return;
 			}
 
-			if ( cdesc[WISDOM] > rnd ( 10 ) + 10 )
+			if ( cdesc[WISDOM] > TRnd ( 10 ) + 10 )
 				direct ( x, 2000, " \nThe %s's heart stopped",
 				         0 );	/* finger of death */
 			else
@@ -438,15 +438,15 @@ speldamage ( int x )
 
 		/* ----- LEVEL 5 SPELLS ----- */
 		case 27:
-			cdesc[SCAREMONST] += rnd ( 10 ) + clev;
+			cdesc[SCAREMONST] += TRnd ( 10 ) + clev;
 			return;			/* scare monster */
 
 		case 28:
-			cdesc[HOLDMONST] += rnd ( 10 ) + clev;
+			cdesc[HOLDMONST] += TRnd ( 10 ) + clev;
 			return;			/* hold monster */
 
 		case 29:
-			cdesc[TIMESTOP] += rnd ( 20 ) + ( clev << 1 );
+			cdesc[TIMESTOP] += TRnd ( 20 ) + ( clev << 1 );
 			return;			/* time stop */
 
 		case 30:
@@ -454,13 +454,13 @@ speldamage ( int x )
 			return;			/* teleport away */
 
 		case 31:
-			omnidirect ( x, 35 + rnd ( 10 ) + clev,
+			omnidirect ( x, 35 + TRnd ( 10 ) + clev,
 			             "\nThe %s cringes from the flame" );	/* magic fire */
 			return;
 
 		/* ----- LEVEL 6 SPELLS ----- */
 		case 32:
-			if ( ( rnd ( 23 ) == 5 )
+			if ( ( TRnd ( 23 ) == 5 )
 			     && ( wizard == 0 ) )  	/* sphere of annihilation */
 			{
 				lprcat ( "\n You have been enveloped by the zone of nothingness!\n" );
@@ -473,7 +473,7 @@ speldamage ( int x )
 			yl = playery;
 			loseint ();
 			i = dirsub ( &xl, &yl );	/* get direction of sphere */
-			newsphere ( xl, yl, i, rnd ( 20 ) + 11 );	/* make a sphere */
+			newsphere ( xl, yl, i, TRnd ( 20 ) + 11 );	/* make a sphere */
 			return;
 
 		case 33:
@@ -483,13 +483,13 @@ speldamage ( int x )
 			return;
 
 		case 34:			/* summon demon */
-			if ( rnd ( 100 ) > 30 )
+			if ( TRnd ( 100 ) > 30 )
 			{
 				direct ( x, 150, "\n The demon strikes at the %s", 0 );
 				return;
 			}
 
-			if ( rnd ( 100 ) > 15 )
+			if ( TRnd ( 100 ) > 15 )
 			{
 				lprcat ( " Nothing seems to have happened" );
 				return;
@@ -498,13 +498,13 @@ speldamage ( int x )
 			lprcat ( " The" );
 			lprcat ( " demon " );
 			lprcat ( "turned on you and vanished!" );
-			i = rnd ( 40 ) + 30;
+			i = TRnd ( 40 ) + 30;
 			lastnum = 277;
 			losehp ( i );		/* must say killed by a demon */
 			return;
 
 		case 35:			/* walk through walls */
-			cdesc[WTW] += rnd ( 10 ) + 5;
+			cdesc[WTW] += TRnd ( 10 ) + 5;
 			return;
 
 		case 36:  		/* alter reality */
@@ -563,7 +563,7 @@ speldamage ( int x )
 					item[33][MAXY - 1] = OENTRANCE;
 				}
 
-				for ( j = rnd ( MAXY - 2 ), i = 1; i < MAXX - 1; i++ )
+				for ( j = TRnd ( MAXY - 2 ), i = 1; i < MAXX - 1; i++ )
 				{
 					item[i][j] = 0;
 				}
@@ -577,7 +577,7 @@ speldamage ( int x )
 						int trys;
 
 						for ( trys = 100, i = j = 1; --trys > 0 && item[i][j];
-						      i = rnd ( MAXX - 1 ), j = rnd ( MAXY - 1 ) );
+						      i = TRnd ( MAXX - 1 ), j = TRnd ( MAXY - 1 ) );
 
 						if ( trys )
 						{
@@ -593,7 +593,7 @@ speldamage ( int x )
 
 						for ( trys = 100, i = j = 1;
 						      --trys > 0 && ( item[i][j] == OWALL || mitem[i][j] );
-						      i = rnd ( MAXX - 1 ), j = rnd ( MAXY - 1 ) );
+						      i = TRnd ( MAXX - 1 ), j = TRnd ( MAXY - 1 ) );
 
 						if ( trys )
 						{
@@ -646,7 +646,7 @@ create_guardian ( int monst, int x, int y )
 	/* prevent the guardian from being created on top of the player */
 	if ( x == playerx && y == playery )
 	{
-		k = rnd ( 8 );
+		k = TRnd ( 8 );
 		x += diroffx[k];
 		y += diroffy[k];
 	}
@@ -1041,13 +1041,13 @@ godirect ( int spnum, int dam, const char *str, int delay,
 						int bounce = FALSE, odx = dx, ody = dy;
 
 						/* spells may bounce directly back or off at an angle */
-						if ( rnd ( 100 ) < 50 )
+						if ( TRnd ( 100 ) < 50 )
 						{
 							bounce = TRUE;
 							dx *= -1;
 						}
 
-						if ( rnd ( 100 ) < 50 )
+						if ( TRnd ( 100 ) < 50 )
 						{
 							bounce = TRUE;
 							dy *= -1;
@@ -1306,7 +1306,7 @@ dirpoly ( int spnum )
 
 	do
 	{
-		m = rnd ( MAXMONST + 7 );
+		m = TRnd ( MAXMONST + 7 );
 		mitem[x][y] = m;
 	}
 	while ( monster[m].genocided );

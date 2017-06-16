@@ -161,8 +161,8 @@ savegame(char *fname)
     temptime = zzz - initialtime;
     lwrite((char *) &temptime, sizeof(time_t));
 
-    lprint(VERSION);
-    lprint(SUBVERSION);
+    lprintf("%d",VERSION);
+    lprintf("%d",SUBVERSION);
 
     lwclose();
 
@@ -255,19 +255,6 @@ restoregame(char *fname)
     time(&zzz);
     lrfill((char *) &temptime, sizeof(time_t));
     initialtime = zzz - temptime;
-
-    if(VERSION != larint() || SUBVERSION != larint())
-        {
-            lrclose();
-            cheat = 1;
-            cursor(1, 23);
-            lprcat("Sorry, But your save file is for an older version of larn\n");
-            lflush();
-            nap(NAPTIME);
-            cdesc[GOLD] = cdesc[BANKACCOUNT] = 0;
-            died(-266);
-            return;
-        }
 
     lrclose();
 

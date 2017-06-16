@@ -76,11 +76,11 @@ void
 act_remove_gems ( int arg )
 {
 	int i, k;
-	k = rnd ( 101 );
+	k = TRnd ( 101 );
 
 	if ( k < 25 )
 	{
-		for ( i = 0; i < rnd ( 4 ); i++ )
+		for ( i = 0; i < TRnd ( 4 ); i++ )
 		{
 			/* gems pop ohf the throne */
 			creategem ();
@@ -119,7 +119,7 @@ void
 act_sit_throne ( int arg )
 {
 	int k;
-	k = rnd ( 101 );
+	k = TRnd ( 101 );
 
 	if ( k < 30 && arg == 0 )
 	{
@@ -199,7 +199,7 @@ act_drink_fountain ( void )
 {
 	int x;
 
-	if ( rnd ( 1501 ) < 2 )
+	if ( TRnd ( 1501 ) < 2 )
 	{
 		lprcat ( "\nOops!  You seem to have caught the dreadful sleep!" );
 		lflush ();
@@ -208,11 +208,11 @@ act_drink_fountain ( void )
 		return;
 	}
 
-	x = rnd ( 100 );
+	x = TRnd ( 100 );
 
 	if ( x < 7 )
 	{
-		cdesc[HALFDAM] += 200 + rnd ( 200 );
+		cdesc[HALFDAM] += 200 + TRnd ( 200 );
 		lprcat ( "\nYou feel a sickness coming on" );
 	}
 
@@ -227,7 +227,7 @@ act_drink_fountain ( void )
 			}
 
 			else
-				if ( rnd ( 3 ) != 2 )
+				if ( TRnd ( 3 ) != 2 )
 				{
 					fntchange ( 1 );  /*  change char levels upward   */
 				}
@@ -237,7 +237,7 @@ act_drink_fountain ( void )
 					fntchange ( -1 );  /*  change char levels downward */
 				}
 
-	if ( rnd ( 12 ) < 3 )
+	if ( TRnd ( 12 ) < 3 )
 	{
 		lprcat ( "\nThe fountains bubbling slowly quiets" );
 		item[playerx][playery] = ODEADFOUNTAIN;	/* dead fountain */
@@ -259,9 +259,9 @@ act_wash_fountain ( void )
 {
 	int x;
 
-	if ( rnd ( 100 ) < 11 )
+	if ( TRnd ( 100 ) < 11 )
 	{
-		x = rnd ( ( level << 2 ) + 2 );
+		x = TRnd ( ( level << 2 ) + 2 );
 		lprintf ( "\nOh no!  The water was foul!  You suffer %d hit points!",
 		          ( int ) x );
 		lastnum = 273;
@@ -271,18 +271,18 @@ act_wash_fountain ( void )
 	}
 
 	else
-		if ( rnd ( 100 ) < 29 )
+		if ( TRnd ( 100 ) < 29 )
 		{
 			lprcat ( "\nYou got the dirt off!" );
 		}
 
 		else
-			if ( rnd ( 100 ) < 31 )
+			if ( TRnd ( 100 ) < 31 )
 				lprcat
 				( "\nThis water seems to be hard water!  The dirt didn't come off!" );
 
 			else
-				if ( rnd ( 100 ) < 34 )
+				if ( TRnd ( 100 ) < 34 )
 				{
 					createmonster ( WATERLORD );  /*    make water lord     */
 				}
@@ -316,7 +316,7 @@ act_down_shaft ( void )
 	{
 		lprcat ( "\nYou slip down the hobbit hole" );
 		lastnum = 275;
-		losehp ( 30 + rnd ( 20 ) );
+		losehp ( 30 + TRnd ( 20 ) );
 		bottomhp ();
 	}
 
@@ -349,7 +349,7 @@ act_up_shaft ( void )
 	{
 		lprcat ( "\nDown the hobbit hole!" );
 		lastnum = 275;
-		losehp ( 15 + rnd ( 20 ) );
+		losehp ( 15 + TRnd ( 20 ) );
 		bottomhp ();
 		return;
 	}
@@ -399,7 +399,7 @@ Perform the actions associated with Altar desecration.
 void
 act_desecrate_altar ( void )
 {
-	if ( rnd ( 100 ) < 60 )
+	if ( TRnd ( 100 ) < 60 )
 	{
 		createmonster ( makemonst ( level + 2 ) + 8 );
 		lprcat ( "\nThe altar explodes violently and spawns a monster!" );
@@ -409,7 +409,7 @@ act_desecrate_altar ( void )
 	}
 
 	else
-		if ( rnd ( 101 ) < 30 )
+		if ( TRnd ( 101 ) < 30 )
 		{
 			lprcat ( "\nThe altar crumbles into a pile of dust before your eyes" );
 			forget ();		/*  remember to destroy the altar   */
@@ -463,7 +463,7 @@ act_donation_pray ( void )
 
 			/* if player gave less than 10% of _original_ gold, make a monster
 			 */
-			if ( k < temp || k < rnd ( 50 ) )
+			if ( k < temp || k < TRnd ( 50 ) )
 			{
 				/* added by ~Gibbon */
 				lprcat("You have offended the Gods.");
@@ -472,13 +472,13 @@ act_donation_pray ( void )
 				return;
 			}
 
-			if ( rnd ( 101 ) > 50 )
+			if ( TRnd ( 101 ) > 50 )
 			{
 				act_prayer_heard ();
 				return;
 			}
 
-			if ( rnd ( 43 ) == 5 )
+			if ( TRnd ( 43 ) == 5 )
 			{
 				if ( cdesc[WEAR] )
 				{
@@ -489,7 +489,7 @@ act_donation_pray ( void )
 				return;
 			}
 
-			if ( rnd ( 43 ) == 8 )
+			if ( TRnd ( 43 ) == 8 )
 			{
 				if ( cdesc[WIELD] )
 				{
@@ -524,13 +524,13 @@ Assumes cursors(), and that any leading \n have been printed
 void
 act_just_pray ( void )
 {
-	if ( rnd ( 100 ) < 75 )
+	if ( TRnd ( 100 ) < 75 )
 	{
 		lprcat ( "The altar ascends!" );
 	}
 
 	else
-		if ( rnd ( 43 ) == 10 )
+		if ( TRnd ( 43 ) == 10 )
 		{
 			if ( cdesc[WEAR] )
 			{
@@ -542,7 +542,7 @@ act_just_pray ( void )
 		}
 
 		else
-			if ( rnd ( 43 ) == 10 )
+			if ( TRnd ( 43 ) == 10 )
 			{
 				if ( cdesc[WIELD] )
 				{
@@ -625,11 +625,11 @@ Assumptions:  cursors() has been called.
 void
 act_ignore_altar ( void )
 {
-	if ( rnd ( 100 ) < 30 )
+	if ( TRnd ( 100 ) < 30 )
 	{
 		createmonster ( makemonst ( level + 1 ) );
 		lprcat("The altar turns into a monster!");
-		cdesc[AGGRAVATE] += rnd ( 450 );
+		cdesc[AGGRAVATE] += TRnd ( 450 );
 		forget();
 	}
 
@@ -654,44 +654,44 @@ void
 act_open_chest ( int x, int y )
 {
 	int i, k;
-	k = rnd ( 101 );
+	k = TRnd ( 101 );
 
 	if ( k < 40 )
 	{
 		lprcat ( "\nThe chest explodes as you open it" );
-		i = rnd ( 10 );
+		i = TRnd ( 10 );
 		lastnum = 281;		/* in case he dies */
 		lprintf ( "\nYou suffer %d hit points damage!", ( int ) i );
 		checkloss ( i );
 
-		switch ( rnd ( 10 ) )  	/* see if he gets a curse */
+		switch ( TRnd ( 10 ) )  	/* see if he gets a curse */
 		{
 			case 1:
-				cdesc[ITCHING] += rnd ( 1000 ) + 100;
+				cdesc[ITCHING] += TRnd ( 1000 ) + 100;
 				lprcat ( "\nYou feel an irritation spread over your skin!" );
 				break;
 
 			case 2:
-				cdesc[CLUMSINESS] += rnd ( 1600 ) + 200;
+				cdesc[CLUMSINESS] += TRnd ( 1600 ) + 200;
 				lprcat ( "\nYou begin to lose hand to eye coordination!" );
 				break;
 
 			case 3:
-				cdesc[HALFDAM] += rnd ( 1600 ) + 200;
+				cdesc[HALFDAM] += TRnd ( 1600 ) + 200;
 				lprcat ( "\nA sickness engulfs you!" );
 				break;
 		};
 
 		item[x][y] = know[x][y] = 0;	/* destroy the chest */
 
-		if ( rnd ( 100 ) < 69 )
+		if ( TRnd ( 100 ) < 69 )
 		{
 			creategem ();  /* gems from the chest */
 		}
 
-		dropgold ( rnd ( 110 * iarg[playerx][playery] + 200 ) );
+		dropgold ( TRnd ( 110 * iarg[playerx][playery] + 200 ) );
 
-		for ( i = 0; i < rnd ( 4 ); i++ )
+		for ( i = 0; i < TRnd ( 4 ); i++ )
 		{
 			something ( iarg[playerx][playery] + 2 );
 		}
@@ -717,19 +717,19 @@ Return value:   TRUE if successful in opening the door, false if not.
 int
 act_open_door ( int x, int y )
 {
-	if ( rnd ( 11 ) < 7 )
+	if ( TRnd ( 11 ) < 7 )
 	{
 		switch ( iarg[x][y] )
 		{
 			case 6:
 				lprcat ( "\nThe door makes an awful groan, but remains stuck" );
-				cdesc[AGGRAVATE] += rnd ( 400 );
+				cdesc[AGGRAVATE] += TRnd ( 400 );
 				break;
 
 			case 7:
 				lprcat ( "\nYou are jolted by an electric shock" );
 				lastnum = 274;
-				losehp ( rnd ( 20 ) );
+				losehp ( TRnd ( 20 ) );
 				bottomline ();
 				break;
 

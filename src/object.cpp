@@ -488,7 +488,7 @@ lookforobject ( char do_ident, char do_pickup,
 			break;
 
 		case OIVTELETRAP:
-			if ( rnd ( 11 ) < 6 )
+			if ( TRnd ( 11 ) < 6 )
 			{
 				return;
 			}
@@ -505,7 +505,7 @@ lookforobject ( char do_ident, char do_pickup,
 			break;
 
 		case OTRAPARROWIV:		/* for an arrow trap */
-			if ( rnd ( 17 ) < 13 )
+			if ( TRnd ( 17 ) < 13 )
 			{
 				return;
 			}
@@ -517,12 +517,12 @@ lookforobject ( char do_ident, char do_pickup,
 		case OTRAPARROW:
 			lprcat ( "\nYou are hit by an arrow" );
 			lastnum = 259;
-			losehp ( rnd ( 10 ) + level );
+			losehp ( TRnd ( 10 ) + level );
 			bottomhp ();
 			return;
 
 		case OIVDARTRAP:		/* for a dart trap */
-			if ( rnd ( 17 ) < 13 )
+			if ( TRnd ( 17 ) < 13 )
 			{
 				return;
 			}
@@ -534,7 +534,7 @@ lookforobject ( char do_ident, char do_pickup,
 		case ODARTRAP:
 			lprcat ( "\nYou are hit by a dart" );
 			lastnum = 260;
-			losehp ( rnd ( 5 ) );
+			losehp ( TRnd ( 5 ) );
 
 			if ( ( --cdesc[STRENGTH] ) < 3 )
 			{
@@ -545,7 +545,7 @@ lookforobject ( char do_ident, char do_pickup,
 			return;
 
 		case OIVTRAPDOOR:		/* for a trap door */
-			if ( rnd ( 17 ) < 13 )
+			if ( TRnd ( 17 ) < 13 )
 			{
 				return;
 			}
@@ -565,7 +565,7 @@ lookforobject ( char do_ident, char do_pickup,
 				died ( 271 );
 			}
 
-			i = rnd ( 5 + level );
+			i = TRnd ( 5 + level );
 			lprintf ( "\nYou fall through a trap door!  You lose %d hit points.",
 			          ( long ) i );
 			losehp ( i );
@@ -759,7 +759,7 @@ oteleport ( int err )
 	int tmp;
 
 	if ( err )
-		if ( rnd ( 151 ) < 3 )
+		if ( TRnd ( 151 ) < 3 )
 		{
 			/* Fix for bug #10 ~Gibbon*/
 			cursor ( 1, 19 );
@@ -779,7 +779,7 @@ oteleport ( int err )
 	else
 		if ( level < MAXLEVEL )
 		{
-			tmp = rnd ( 5 ) + level - 3;
+			tmp = TRnd ( 5 ) + level - 3;
 
 			if ( tmp >= MAXLEVEL )
 			{
@@ -794,7 +794,7 @@ oteleport ( int err )
 
 		else
 		{
-			tmp = rnd ( 3 ) + level - 2;
+			tmp = TRnd ( 3 ) + level - 2;
 
 			if ( tmp >= MAXLEVEL + MAXVLEVEL )
 			{
@@ -807,8 +807,8 @@ oteleport ( int err )
 			}
 		}
 
-	playerx = rnd ( MAXX - 2 );
-	playery = rnd ( MAXY - 2 );
+	playerx = TRnd ( MAXX - 2 );
+	playery = TRnd ( MAXY - 2 );
 
 	if ( level != tmp )
 	{
@@ -889,7 +889,7 @@ quaffpotion ( int pot, int set_known )
 	{
 		case 0:
 			lprcat ( "\nYou fall asleep. . ." );
-			i = rnd ( 11 ) - ( cdesc[CONSTITUTION] >> 2 ) + 2;
+			i = TRnd ( 11 ) - ( cdesc[CONSTITUTION] >> 2 ) + 2;
 
 			while ( --i > 0 )
 			{
@@ -910,7 +910,7 @@ quaffpotion ( int pot, int set_known )
 			}
 
 			else
-				if ( ( cdesc[HP] += rnd ( 20 ) + 20 + cdesc[LEVEL] ) >
+				if ( ( cdesc[HP] += TRnd ( 20 ) + 20 + cdesc[LEVEL] ) >
 				     cdesc[HPMAX] )
 				{
 					cdesc[HP] = cdesc[HPMAX];
@@ -926,12 +926,12 @@ quaffpotion ( int pot, int set_known )
 
 		case 3:
 			lprcat ( "\nYou feel strange for a moment" );
-			cdesc[rund ( 6 )]++;
+			cdesc[TRund ( 6 )]++;
 			break;
 
 		case 4:
 			lprcat ( "\nYou feel more self confident!" );
-			cdesc[WISDOM] += rnd ( 2 );
+			cdesc[WISDOM] += TRnd ( 2 );
 			break;
 
 		case 5:
@@ -1072,7 +1072,7 @@ quaffpotion ( int pot, int set_known )
 
 		case 14:
 			lprcat ( "\nYou feel confused" );
-			cdesc[CONFUSE] += 20 + rnd ( 9 );
+			cdesc[CONFUSE] += 20 + TRnd ( 9 );
 			return;
 
 		case 15:
@@ -1147,12 +1147,12 @@ quaffpotion ( int pot, int set_known )
 
 		case 22:
 			lprcat ( "\nYou feel a sickness engulf you" );	/* poison */
-			cdesc[HALFDAM] += 200 + rnd ( 200 );
+			cdesc[HALFDAM] += 200 + TRnd ( 200 );
 			return;
 
 		case 23:
 			lprcat ( "\nYou feel your vision sharpen" );	/* see invisible */
-			cdesc[SEEINVISIBLE] += rnd ( 1000 ) + 400;
+			cdesc[SEEINVISIBLE] += TRnd ( 1000 ) + 400;
 			monstnamelist[INVISIBLESTALKER] = 'I';
 			return;
 	};
@@ -1296,10 +1296,10 @@ read_scroll ( int typ )
 
 		case 2:
 			lprcat ( "\nYou have been granted enlightenment!" );
-			yh = min ( playery + 7, MAXY );
-			xh = min ( playerx + 25, MAXX );
-			yl = max ( playery - 7, 0 );
-			xl = max ( playerx - 25, 0 );
+			yh = TMathMin(playery + 7, MAXY);
+			xh = TMathMin(playerx + 25, MAXX);
+			yl = TMathMax(playery - 7, 0);
+			xl = TMathMax(playerx - 25, 0);
 
 			for ( i = yl; i < yh; i++ )
 				for ( j = xl; j < xh; j++ )
@@ -1329,7 +1329,7 @@ read_scroll ( int typ )
 			return;			/* aggravate monsters */
 
 		case 7:
-			gtime += ( i = rnd ( 1000 ) - 850 );	/* time warp */
+			gtime += ( i = TRnd ( 1000 ) - 850 );	/* time warp */
 
 			if ( i >= 0 )
 				lprintf ( "\nYou went forward in time by %d mobuls",
@@ -1355,7 +1355,7 @@ read_scroll ( int typ )
 
 		case 10:
 			lprcat ( "\nSomething isn't right..." );
-			cdesc[HASTEMONST] += rnd ( 55 ) + 12;
+			cdesc[HASTEMONST] += TRnd ( 55 ) + 12;
 			return;			/* haste monster */
 
 		case 11:
@@ -1371,17 +1371,17 @@ read_scroll ( int typ )
 			return;			/* monster healing */
 
 		case 12:
-			cdesc[SPIRITPRO] += 300 + rnd ( 200 );
+			cdesc[SPIRITPRO] += 300 + TRnd ( 200 );
 			bottomline ();
 			return;			/* spirit protection */
 
 		case 13:
-			cdesc[UNDEADPRO] += 300 + rnd ( 200 );
+			cdesc[UNDEADPRO] += 300 + TRnd ( 200 );
 			bottomline ();
 			return;			/* undead protection */
 
 		case 14:
-			cdesc[STEALTH] += 250 + rnd ( 250 );
+			cdesc[STEALTH] += 250 + TRnd ( 250 );
 			bottomline ();
 			return;			/* stealth */
 
@@ -1489,10 +1489,10 @@ opit ( void )
 {
 	int i;
 
-	if ( rnd ( 101 ) < 81 )
+	if ( TRnd ( 101 ) < 81 )
 	{
-		if ( rnd ( 70 ) > 9 * cdesc[DEXTERITY] - packweight ()
-		     || rnd ( 101 ) < 5 )
+		if ( TRnd ( 70 ) > 9 * cdesc[DEXTERITY] - packweight ()
+		     || TRnd ( 101 ) < 5 )
 		{
 			if ( level == MAXLEVEL - 1 )
 			{
@@ -1507,7 +1507,7 @@ opit ( void )
 
 				else
 				{
-					if ( rnd ( 101 ) < 20 )
+					if ( TRnd ( 101 ) < 20 )
 					{
 						i = 0;
 						lprcat
@@ -1516,7 +1516,7 @@ opit ( void )
 
 					else
 					{
-						i = rnd ( level * 3 + 3 );
+						i = TRnd ( level * 3 + 3 );
 						lprintf
 						( "\nYou fell into a pit!  You suffer %ld hit points damage",
 						  ( long ) i );
@@ -1662,7 +1662,7 @@ readbook ( int lev )
 			tmp = 1;
 		}
 
-		i = rund ( tmp );
+		i = TRund ( tmp );
 	}
 
 	else
@@ -1674,7 +1674,7 @@ readbook ( int lev )
 			tmp = 1;
 		}
 
-		i = rnd ( tmp + 9 );
+		i = TRnd ( tmp + 9 );
 	}
 
 	spelknow[i] = 1;
@@ -1682,7 +1682,7 @@ readbook ( int lev )
 	          spelname[i],
 	          speldescript[i] );
 
-	if ( rnd ( 10 ) == 4 )
+	if ( TRnd ( 10 ) == 4 )
 	{
 		lprcat ( "\nYour int went up by one!" );
 		cdesc[INTELLIGENCE]++;
@@ -1707,7 +1707,7 @@ readprayerbook ( int lev )
 			tmp = 1;
 		}
 
-		i = rund ( tmp );
+		i = TRund ( tmp );
 	}
 
 	else
@@ -1719,7 +1719,7 @@ readprayerbook ( int lev )
 			tmp = 1;
 		}
 
-		i = rnd ( tmp + 9 );
+		i = TRnd ( tmp + 9 );
 	}
 
 	spelknow[i] = 1;
@@ -1727,7 +1727,7 @@ readprayerbook ( int lev )
 	          spelname[i],
 	          speldescript[i] );
 
-	if ( rnd ( 10 ) == 4 )
+	if ( TRnd ( 10 ) == 4 )
 	{
 		lprcat ( "\nYour WISDOM has increased by one!" );
 		cdesc[WISDOM]++;
@@ -1824,7 +1824,7 @@ ohome ( void )
 				lprcat
 				( "\nFrankly, No one thought you could do it.  Boy!  Did you surprise them!\n" );
 
-				if ( gtime > TIMELIMIT )
+				if ( gtime > TIMELIMIT() )
 				{
 					lprcat
 					( "\nThe doctor has the sad duty to inform you that your daughter died" );
@@ -1857,7 +1857,7 @@ ohome ( void )
 		lprintf ( "Welcome home %s.  Latest word from the doctor is not good.\n",
 		          logname );
 
-		if ( gtime > TIMELIMIT )
+		if ( gtime > TIMELIMIT() )
 		{
 			lprcat
 			( "\nThe doctor has the sad duty to inform you that your daughter died!\n" );
@@ -1871,7 +1871,7 @@ ohome ( void )
 		( "\nThe diagnosis is confirmed as dianthroritis.  He guesses that\n" );
 		lprintf
 		( "your daughter has only %d mobuls left in this world.  It's up to you,\n",
-		  ( ( TIMELIMIT - gtime + 99 ) / 100 ) );
+		  ( ( TIMELIMIT() - gtime + 99 ) / 100 ) );
 		lprintf ( "%s, to find the only hope for your daughter, the very rare\n",
 		          logname );
 		lprcat

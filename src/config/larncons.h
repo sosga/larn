@@ -1,10 +1,40 @@
-/*
-*
-* constants
-*
-*/
+/* Inline functions
+ * Finally changing this mess
+ * to inline functions.  Much better and cleaner!
+ * ~Gibbon
+ */
+ 
+/* Maximum mobuls (time) left
+ * ~Gibbon
+ */
+inline int TIMELIMIT(void)
+{
+   return 80000;
+}
 
-#define PATCHLEVEL 1
+/* Version numbering.
+ * ~Gibbon
+ */
+inline int PATCHLEVEL(void)
+{
+	int patch = 1;
+	return patch;
+}
+
+inline int VERSION(void)
+{
+	int ver = 1;
+	return ver;
+}
+
+inline int SUBVERSION(void)
+{
+	int subver = 1;
+	return subver;
+}
+
+#define MAXLEVEL 12		/*  max # levels in the dungeon         */
+#define MAXVLEVEL 3		/*  max # of levels in the temple of the larn  */
 
 /* defines below are for use in the termcap mode only */
 #define ST_START 1
@@ -18,9 +48,6 @@
 #define CL_DOWN 14
 #define CURSOR  15
 
-
-
-#define KNOWNOT   0x00
 #define HAVESEEN  0x1
 #define KNOWHERE  0x2
 #define KNOWALL   (HAVESEEN | KNOWHERE)
@@ -36,15 +63,14 @@
 #define TRUE 1
 #define FALSE 0
 
-#define MAXLEVEL 12		/*  max # levels in the dungeon         */
-#define MAXVLEVEL 3		/*  max # of levels in the temple of the larn  */
 #define MAXX 67
 #define MAXY 17
 
 #define SCORESIZE 10		/* this is the number of people on a scoreboard max */
 #define MAXPLEVEL 100		/* maximum player level allowed        */
 #define SPNUM 38		/* maximum number of spells in existance   */
-#define TIMELIMIT 80000		/* maximum number of moves before the game is called */
+
+		/* maximum number of moves before the game is called */
 #define TAXRATE 1/20		/* tax rate for the LRS */
 
 #define BUFBIG  4096		/* size of the output buffer */

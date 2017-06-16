@@ -5,7 +5,7 @@
 *  ttgetch()       Routine to read in one character from the terminal
 *  scbr()          Function to set cbreak -echo for the terminal
 *  sncbr()         Function to set -cbreak echo for the terminal
-*  newgame()       Subroutine to save the initial time and seed rnd()
+*  newgame()       Subroutine to save the initial time and seed TRnd()
 *
 *  FILE OUTPUT ROUTINES
 *
@@ -193,7 +193,7 @@ sncbr ( void )
 
 
 /*
-* newgame()       Subroutine to save the initial time and seed rnd()
+* newgame()       Subroutine to save the initial time and seed TRnd()
 */
 void
 newgame ( void )

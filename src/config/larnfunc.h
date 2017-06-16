@@ -7,42 +7,52 @@ using namespace std;
  * ~Gibbon
  */
 template<typename T>
-T rnd(T x)
+T TRnd(T x)
 {
 	return static_cast<T>(rand() % (x)) + 1;
 }
 
 template<typename T>
-T rund(T x)
+T TRund(T x)
 {
 	return static_cast<T>(rand() % (x));
 }
 
+template<class T>
+T TMathMin(T x, T y)
+{
+	return x > y ? y : x;
+}
+
+template<class T>
+T TMathMax(T x, T y)
+{
+	return x > y ? x : y;
+}
+
 /* macro to create scroll #'s with probability of occurrence */
-#define NewScroll() (scprob[rund(81)])
+#define NewScroll() (scprob[TRund(81)])
 
 /* macro to return a potion # created with probability of occurrence */
-#define newpotion() (potprob[rund(41)])
+#define newpotion() (potprob[TRund(41)])
 
 /* macro to return the + points on created leather armor */
-#define newleather() (nlpts[rund(cdesc[HARDGAME]?13:15)])
+#define newleather() (nlpts[TRund(cdesc[HARDGAME]?13:15)])
 
 /* macro to return the + points on chain armor */
-#define newchain() (nch[rund(10)])
+#define newchain() (nch[TRund(10)])
 
 /* macro to return + points on plate armor */
-#define newplate() (nplt[rund(cdesc[HARDGAME]?4:12)])
+#define newplate() (nplt[TRund(cdesc[HARDGAME]?4:12)])
 
 /* macro to return + points on new daggers */
-#define newdagger() (ndgg[rund(13)])
+#define newdagger() (ndgg[TRund(13)])
 
 /* macro to return + points on new swords */
-#define newsword() (nsw[rund(cdesc[HARDGAME]?6:13)])
+#define newsword() (nsw[TRund(cdesc[HARDGAME]?6:13)])
 
 /* macro to destroy object at present location */
 #define forget() (item[playerx][playery]=know[playerx][playery]=0)
-
-
 
 /* macro to turn on bold display for the terminal */
 #define setbold() (*lpnt++ = ST_START)
@@ -61,14 +71,6 @@ T rund(T x)
 
 /* macro to clear to end of line */
 #define cltoeoln() (*lpnt++ = CL_LINE)
-
-/* min/max */
-#ifndef min
-	#define min(x,y) (((x)>(y))?(y):(x))
-#endif
-#ifndef max
-	#define max(x,y) (((x)>(y))?(x):(y))
-#endif
 
 /*
 *

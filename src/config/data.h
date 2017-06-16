@@ -61,7 +61,6 @@ extern char floorc, wallc;
 
 /* extern char for the water. -Gibbon */
 extern char waterc;
-extern int VERSION, SUBVERSION;
 extern int beenhere[], cheat;
 extern int course[];
 extern int item[MAXX][MAXY], iven[], know[MAXX][MAXY];

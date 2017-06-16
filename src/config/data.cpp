@@ -5,8 +5,6 @@
 #include "../../includes/io.h"
 #include "../../includes/moreobj.h"
 
-#define VER    1
-#define SUBVER  0
 /*
 classname[cdesc[LEVEL]-1] gives the correct name of the players experience level
 */
@@ -81,7 +79,6 @@ long skill[] =
 char *lpbuf, *lpnt, *inbuffer, *lpend;	/* input/output pointers to the buffers */
 
 struct cel *cell;		/*  pointer to the dungeon storage  */
-
 int hitp[MAXX][MAXY];		/*  monster hp on level     */
 int iarg[MAXX][MAXY];		/*  arg for the item array  */
 int item[MAXX][MAXY];		/*  objects in maze if any  */
@@ -90,8 +87,6 @@ int mitem[MAXX][MAXY];		/*  monster item array      */
 int stealth[MAXX][MAXY];	/*  0=sleeping 1=awake monst */
 char lastmonst[40];		/*  this has the name of the current monster    */
 int beenhere[MAXLEVEL + MAXVLEVEL];	/*  1 if have been on this level */
-int VERSION = VER;		/*  this is the present version # of the program    */
-int SUBVERSION = SUBVER;
 int predostuff = 0;		/*  2 means that the trap handling routines must do a
 				   showplayer() after a trap.  0 means don't showplayer()
 				   0 - we are in create player screen
@@ -187,7 +182,7 @@ const char *objectname[] =
 /*
 *  for the monster data
 *
-*  array to do rnd() to create monsters <= a given level
+*  array to do TRnd() to create monsters <= a given level
 */
 int monstlevel[] = { 5, 11, 17, 22, 27, 33, 39, 42, 46, 50, 53, 56, 59 };
 

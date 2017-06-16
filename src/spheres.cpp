@@ -218,8 +218,8 @@ sphboom ( int x, int y )
 		cdesc[CANCELLATION] = 1;
 	}
 
-	for ( j = max ( 1, x - 2 ); j < min ( x + 3, MAXX - 1 ); j++ )
-		for ( i = max ( 1, y - 2 ); i < min ( y + 3, MAXY - 1 ); i++ )
+	for ( j = TMathMax ( 1, x - 2 ); j < TMathMin ( x + 3, MAXX - 1 ); j++ )
+		for ( i = TMathMax ( 1, y - 2 ); i < TMathMin ( y + 3, MAXY - 1 ); i++ )
 		{
 			item[j][i] = mitem[j][i] = 0;
 			show1cell ( j, i );
@@ -233,8 +233,6 @@ sphboom ( int x, int y )
 			}
 		}
 }
-
-
 
 /*
  *  movsphere()     Function to look for and move spheres of annihilation
@@ -251,7 +249,7 @@ sphboom ( int x, int y )
 void
 movsphere ( void )
 {
-	int x, y, dir, len;
+	int x, y;
 	struct sphere *sp, *sp2;
 	struct sphere sph[SPHMAX];
 
@@ -295,19 +293,14 @@ movsphere ( void )
 			rmsphere ( x, y );	/* delete sphere */
 			continue;
 		}
-
-		switch ( rnd ( ( int ) max ( 7,
-		                             cdesc[INTELLIGENCE]  ) ) )  	/* time to move the sphere */
-		{
-			case 1:
-			case 2:		/* change direction to a random one */
-				sp->dir = rnd (8);
-
-			default:		/* move in normal direction */
-				dir = sp->dir;
-				len = sp->lifetime;
-				rmsphere ( x, y );
-				newsphere ( x + diroffx[dir], y + diroffy[dir], dir, len );
-		};
-	}
+		/* Nothing special and then advance the sphere.
+		 * ~Gibbon
+		 */
+        if (TRnd(TMathMax(7, 5)))
+        {
+          /* sphere changes direction */
+          sp->dir = TRnd(8);
+        }
+    sp = sp2;
+  }
 }

@@ -509,8 +509,8 @@ parse(void)
                     y_larn_rep = 0;
                     nomove = 1;
                     cursors();
-                    lprintf("\nLarn-Next, Version %d.%d.%d, Diff=%d", (int) VERSION,
-                            (int) SUBVERSION, (int) PATCHLEVEL, (int) cdesc[HARDGAME]);
+                    lprintf("\nLarn-Next, Version %d.%d.%d, Diff=%d", VERSION(),
+                            SUBVERSION(), PATCHLEVEL(), (int) cdesc[HARDGAME]);
 
                     if(wizard)
                         {

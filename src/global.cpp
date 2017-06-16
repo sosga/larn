@@ -97,8 +97,8 @@ raiseexperience ( long x )
 	{
 		tmp = ( cdesc[CONSTITUTION] - cdesc[HARDGAME] ) >> 1;
 		cdesc[LEVEL]++;
-		raisemhp ( ( int ) ( rnd ( 3 ) + rnd ( ( tmp > 0 ) ? tmp : 1 ) ) );
-		raisemspells ( ( int ) rund ( 3 ) );
+		raisemhp ( ( int ) ( TRnd ( 3 ) + TRnd ( ( tmp > 0 ) ? tmp : 1 ) ) );
+		raisemspells ( ( int ) TRund ( 3 ) );
 
 		if ( cdesc[LEVEL] < 7 - cdesc[HARDGAME] )
 		{
@@ -144,7 +144,7 @@ loseexperience ( long x )
 
 		tmp = ( cdesc[CONSTITUTION] - cdesc[HARDGAME] ) >>
 		      1;	/* lose hpoints */
-		losemhp ( ( int ) rnd ( ( tmp > 0 ) ? tmp :
+		losemhp ( ( int ) TRnd ( ( tmp > 0 ) ? tmp :
 		                        1 ) );	/* lose hpoints */
 
 		if ( cdesc[LEVEL] < 7 - cdesc[HARDGAME] )
@@ -152,7 +152,7 @@ loseexperience ( long x )
 			losemhp ( ( int ) ( cdesc[CONSTITUTION] >> 2 ) );
 		}
 
-		losemspells ( ( int ) rund ( 3 ) );	/*  lose spells     */
+		losemspells ( ( int ) TRund ( 3 ) );	/*  lose spells     */
 	}
 
 	if ( i != cdesc[LEVEL] )
@@ -292,13 +292,13 @@ makemonst ( int lev )
 
 	if ( lev < 5 )
 	{
-		tmp = rnd ( ( x = monstlevel[lev - 1] ) ? x : 1 );
+		tmp = TRnd ( ( x = monstlevel[lev - 1] ) ? x : 1 );
 	}
 
 	else
 	{
 		tmp =
-		  rnd ( ( x =
+		  TRnd ( ( x =
 		            monstlevel[lev - 1] - monstlevel[lev - 4] ) ? x : 1 ) +
 		  monstlevel[lev - 4];
 	}
@@ -707,7 +707,7 @@ stealsomething ( void )
 
 	for ( ;; )
 	{
-		i = rund ( 26 );
+		i = TRund ( 26 );
 
 		if ( iven[i] && cdesc[WEAR] != i &&
 		     cdesc[WIELD] != i && cdesc[SHIELD] != i )
@@ -757,7 +757,7 @@ creategem ( void )
 {
 	int i, j;
 
-	switch ( rnd ( 4 ) )
+	switch ( TRnd ( 4 ) )
 	{
 		case 1:
 			i = ODIAMOND;
@@ -780,7 +780,7 @@ creategem ( void )
 			break;
 	};
 
-	createitem ( i, rnd ( j ) + j / 10 );
+	createitem ( i, TRnd ( j ) + j / 10 );
 }
 
 
