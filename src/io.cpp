@@ -744,17 +744,16 @@ lwclose ( void )
 *  lprcat(string)                  append a string to the output buffer
 *                                  avoids calls to lprintf (time consuming)
 */
-void
-lprcat ( const char *str )
+void lprcat(const char *str)
 {
 	char *str2;
 
-	if ( lpnt >= lpend )
+	if(lpnt >= lpend)
 	{
 		lflush();
 	}
 	str2 = lpnt;
-	while ( ( *str2++ = *str++ ) != '\0' );
+	while((*str2++ = *str++) != '\0');
 	lpnt = str2 - 1;
 	lflush();
 }

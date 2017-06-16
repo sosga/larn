@@ -92,38 +92,38 @@ bot_linex(void)
         {
             regen_bottom = TRUE;
             
-            cursor(1,19);
-            lprintf("Name: %s",logname);
+            cursor(1,18);
+            lprintf("%s",logname);
 
             if(cdesc[SPELLMAX] > 99)
                 {
-                    cursor(1, 18);
+                    cursor(1, 19);
                     lprintf("Spells:");
-                    cursor(8, 18);
+                    cursor(8, 19);
                     lprintf("%3d(%3d)", (int) cdesc[SPELLS],
                             (int) cdesc[SPELLMAX]);
                 }
 
             else
                 {
-                    cursor(1, 18);
+                    cursor(1, 19);
                     lprintf("Spells:");
-                    cursor(8, 18);
+                    cursor(8, 19);
                     lprintf("%3d/%2d", (int) cdesc[SPELLS],
                             (int) cdesc[SPELLMAX]);
                 }
-            cursor(15, 18);
+            cursor(15, 19);
             lprintf("Level:");
 
             if(cdesc[LEVEL] > 99)
                 {
-                    cursor(21, 18);
+                    cursor(21, 19);
                     lprintf("%3d", (int) cdesc[LEVEL]);
                 }
 
             else
                 {
-                    cursor(21, 18);
+                    cursor(21, 19);
                     lprintf("%-2d", (int) cdesc[LEVEL]);
                 }
             cursor(69, 1);
@@ -200,16 +200,16 @@ bot_linex(void)
 
             return;
         }
-    botsub(SPELLS, 8, 18, "%3d");
+    botsub(SPELLS, 8, 19, "%3d");
 
     if(cdesc[SPELLMAX] > 99)
         {
-            botsub(SPELLMAX, 8, 18, "%3d)");
+            botsub(SPELLMAX, 8, 19, "%3d)");
         }
 
     else
         {
-            botsub(SPELLMAX, 8, 18, "%2d) ");
+            botsub(SPELLMAX, 8, 19, "%2d) ");
         }
     botsub(HP, 69, 1, "%3d");
     botsub(HPMAX, 69, 1, "%3d");
@@ -225,12 +225,12 @@ bot_linex(void)
 
     if(cdesc[LEVEL] > 99)
         {
-            botsub(LEVEL, 25, 18, "%3d");
+            botsub(LEVEL, 25, 19, "%3d");
         }
 
     else
         {
-            botsub(LEVEL, 25, 18, " %-2d");
+            botsub(LEVEL, 25, 19, " %-2d");
         }
 
     cdesc[TMP] = cdesc[STRENGTH] + cdesc[STREXTRA];
@@ -308,7 +308,7 @@ special routine to update number of spells called from regen()
 static void
 bot_spellx(void)
 {
-    botsub(SPELLS, 8, 18, "%2d");
+    botsub(SPELLS, 8, 19, "%2d");
 }
 
 /*
