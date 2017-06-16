@@ -1,10 +1,22 @@
+#include <cstdlib>
 
+using namespace std;
 
-/*
-*
-* macros
-*
-*/
+/* Templates
+ * I am very happy to get rid of these crappy macros!
+ * ~Gibbon
+ */
+template<typename T>
+T rnd(T x)
+{
+	return static_cast<T>(rand() % (x)) + 1;
+}
+
+template<class T>
+T rund(T x)
+{
+	return static_cast<T>(rand() % (x));
+}
 
 /* macro to create scroll #'s with probability of occurrence */
 #define newscroll() (scprob[rund(81)])
@@ -51,18 +63,6 @@
 /* macro to clear to end of line */
 #define cltoeoln() (*lpnt++ = CL_LINE)
 
-/* macros to seed the random number generator */
-/* This is needed on Windows which throws an error due to 'random' not being defined on MingW.  I'll clean it up later. -Gibbon */
-#define srandom srand
-#define random rand
-
-/* New random seed function. -Gibbon */
-#define srand srandom
-#define rand random
-
-#define rnd(x)  ((int)(rand() % (x)) + 1)
-#define rund(x) ((int)(rand() % (x)))
-
 /* min/max */
 #ifndef min
 	#define min(x,y) (((x)>(y))?(y):(x))
@@ -70,8 +70,6 @@
 #ifndef max
 	#define max(x,y) (((x)>(y))?(x):(y))
 #endif
-
-
 
 /*
 *
