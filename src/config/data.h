@@ -138,3 +138,9 @@ extern int lasttime;
 */
 extern int move_no_pickup;
 
+/* Templates*/
+template<class T>
+T disappear(T x, T y)
+{
+	return (mitem[x][y]=know[x][y]=0);
+}

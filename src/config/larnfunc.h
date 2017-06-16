@@ -19,7 +19,7 @@ T rund(T x)
 }
 
 /* macro to create scroll #'s with probability of occurrence */
-#define newscroll() (scprob[rund(81)])
+#define NewScroll() (scprob[rund(81)])
 
 /* macro to return a potion # created with probability of occurrence */
 #define newpotion() (potprob[rund(41)])
@@ -42,8 +42,7 @@ T rund(T x)
 /* macro to destroy object at present location */
 #define forget() (item[playerx][playery]=know[playerx][playery]=0)
 
-/* macro to wipe out a monster at a location */
-#define disappear(x,y) (mitem[x][y]=know[x][y]=0)
+
 
 /* macro to turn on bold display for the terminal */
 #define setbold() (*lpnt++ = ST_START)
