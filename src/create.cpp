@@ -290,31 +290,55 @@ eat (int xx, int yy)
 *      -   random object
 */
 static int
-cannedlevel (int k)
+cannedlevel (int dungeon_level)
 {
-  char *row;
-  int i, j;
+  char *row, buf[128];
+  int i, j,k;
   int it, arg, mit, marg;
+  FILE *fp;
 
-  if (lopen (mazefile) < 0)
+  fp = fopen(mazefile, "r");
+  if (fp == (FILE *)NULL)
+  {
+    died (-282);
+    return -1;
+  }
+
+  if ((dungeon_level != MAXLEVEL) && (dungeon_level != MAXVLEVEL))
+  {
+    if (TRnd(100) < 50)
+      return -1;
+  }
+
+  //Reading the levels from the file
+  for (i = 0 ; i < MAXY ; i++)
+  {
+    row = fgets(buf, 128, fp);
+    if (row == (char *)NULL)
     {
-      fprintf (stderr, "Can't open the maze data file\n");
-      died (-282);
-      return (0);
+      perror("fgets");
+      fclose(fp);
+      return (-1);
     }
-  i = lgetc ();
-  if (i <= '0')
+
+  i = TRund(20);
+  for (j = 0 ; j < i ; j++)
+  {
+    //Skipping the blank lines or level
+    for (k=0; k < (MAXY+1); k++)
     {
-      died (-282);
-      return (0);
+      row = fgets(buf, 128, fp);
+      if (row == (char *)NULL)
+      {
+        perror("fgets");
+        fclose(fp);
+        return (-1);
+      }
     }
-  for (i = 18 * TRund (i - '0'); i > 0; i--)
-    lgetl ();			/* advance to desired maze */
-  for (i = 0; i < MAXY; i++)
+  }
+
+    for (j = 0 ; j < MAXX ; j++)
     {
-      row = lgetl ();
-      for (j = 0; j < MAXX; j++)
-	{
 	  it = mit = arg = marg = 0;
 	  switch (*row++)
 	    {
@@ -326,14 +350,14 @@ cannedlevel (int k)
 	      arg = TRnd (30);
 	      break;
 	    case '~':
-	      if (k != MAXLEVEL - 1)
+	      if (dungeon_level != MAXLEVEL - 1)
 		break;
 	      it = OLARNEYE;
 	      mit = TRund (8) + DEMONLORD;
 	      marg = monster[mit].hitpoints;
 	      break;
 	    case '!':
-	      if (k != MAXLEVEL + MAXVLEVEL - 1)
+	      if (dungeon_level != MAXLEVEL + MAXVLEVEL - 1)
 		break;
 	      it = OPOTION;
 	      arg = 21;
@@ -341,13 +365,13 @@ cannedlevel (int k)
 	      marg = monster[mit].hitpoints;
 	      break;
 	    case '.':
-	      if (k < MAXLEVEL)
+	      if (dungeon_level < MAXLEVEL)
 		break;
-	      mit = makemonst (k + 1);
+	      mit = makemonst (dungeon_level + 1);
 	      marg = monster[mit].hitpoints;
 	      break;
 	    case '-':
-	      it = newobject (k + 1, &arg);
+	      it = newobject (dungeon_level + 1, &arg);
 	      break;
 	    };
 	  item[j][i] = it;
@@ -362,8 +386,8 @@ cannedlevel (int k)
 #endif
 	}
     }
-  lrclose ();
-  return (1);
+  fclose(fp);
+  return(1);
 }
 
 
