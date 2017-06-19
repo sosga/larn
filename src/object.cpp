@@ -498,10 +498,19 @@ lookforobject ( char do_ident, char do_pickup,
 
 		/* fall through to OTELEPORTER case below!!! */
 		case OTELEPORTER:
-			lprcat ( "\nYou have been teleported!\n" );
-			nap ( NAPTIME );
-			oteleport ( 0 );
+		if (TRnd(20) < 15)
+		{
+			nap(NAPTIME);
+			oteleport(0);
+			know[playerx][playery] = KNOWALL;
+			lprcat("\nThe teleporter has miraculously made this maze known!");
 			refresh();
+		} else {
+			lprcat("\nYou have been teleported!\n");
+			nap(NAPTIME);
+			oteleport(0);
+			refresh();
+		}
 			break;
 
 		case OTRAPARROWIV:		/* for an arrow trap */
