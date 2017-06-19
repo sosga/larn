@@ -72,13 +72,7 @@ inline int PATHLEN(void)
 
 #define LARNHOME ""
 
-#ifndef WIZID
-inline int WIZID(void)
-{
-	int wizard = 1000;
-	return wizard;
-}
-#endif
+inline bool WIZID = false;
 
 #define TRUE 1
 #define FALSE 0

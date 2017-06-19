@@ -22,10 +22,6 @@
 #include "data.h"
 #include "larnfunc.h"
 
-#ifndef WIZID
-#define WIZID	0
-#endif
-
 char scorefile[PATHLEN];
 char logfile[PATHLEN];
 char mazefile[PATHLEN];
