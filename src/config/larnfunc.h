@@ -69,9 +69,6 @@ T TMathMax(T x, T y)
 /* macro to clear the screen and home the cursor */
 #define screen_clear() (*lpnt++ =CLEAR, regen_bottom=TRUE)
 
-/* macro to clear to end of line */
-#define cltoeoln() (*lpnt++ = CL_LINE)
-
 /*
 *
 * function declarations

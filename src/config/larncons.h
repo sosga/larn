@@ -3,18 +3,34 @@
  * to inline functions.  Much better and cleaner!
  * ~Gibbon
  */
- 
-/* Maximum mobuls (time) left
- * ~Gibbon
- */
-inline int TIMELIMIT(void)
+#define ST_START 1
+#define ST_END 2
+
+inline int BOLD(void)
 {
-   return 80000;
+	int bold = 3;
+	return bold;
 }
 
-/* Version numbering.
- * ~Gibbon
- */
+inline int END_BOLD(void)
+{
+	int end_bold = 4;
+	return end_bold;
+}
+
+#define CLEAR 5
+#define CL_LINE 6
+#define T_INIT 7
+#define T_END 8
+#define CL_DOWN 14
+#define CURSOR 15
+
+inline int TIMELIMIT(void)
+{
+	int timelimit = 80000;
+	return timelimit;
+}
+
 inline int PATCHLEVEL(void)
 {
 	int patch = 1;
@@ -33,31 +49,35 @@ inline int SUBVERSION(void)
 	return subver;
 }
 
+extern char *lpnt;
+inline int CLEAR_EOL(void)
+{
+	return *lpnt++ = CL_LINE;
+}
+
 #define MAXLEVEL 12		/*  max # levels in the dungeon         */
 #define MAXVLEVEL 3		/*  max # of levels in the temple of the larn  */
-
-/* defines below are for use in the termcap mode only */
-#define ST_START 1
-#define ST_END   2
-#define BOLD     3
-#define END_BOLD 4
-#define CLEAR    5
-#define CL_LINE  6
-#define T_INIT   7
-#define T_END    8
-#define CL_DOWN 14
-#define CURSOR  15
 
 #define HAVESEEN  0x1
 #define KNOWHERE  0x2
 #define KNOWALL   (HAVESEEN | KNOWHERE)
+
+inline int PATHLEN(void)
+{
+	int pathlength = 80;
+	return pathlength;
+}
 
 #define PATHLEN   80
 
 #define LARNHOME ""
 
 #ifndef WIZID
-	#define WIZID  1000
+inline int WIZID(void)
+{
+	int wizard = 1000;
+	return wizard;
+}
 #endif
 
 #define TRUE 1
@@ -71,17 +91,15 @@ inline int SUBVERSION(void)
 #define SPNUM 38		/* maximum number of spells in existance   */
 
 		/* maximum number of moves before the game is called */
+		
 #define TAXRATE 1/20		/* tax rate for the LRS */
 
 #define BUFBIG  4096		/* size of the output buffer */
 #define MAXIBUF 4096		/* size of the input buffer */
+
 #define LOGNAMESIZE 20		/* max size of the player's name */
-
 #define SAVEFILENAMESIZE 128	/* max size of the savefile path */
-
 #define STRING_BUFFER_SIZE	256
-
-
 
 /*
 * monster related constants
