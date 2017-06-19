@@ -1,6 +1,6 @@
 SOURCES = $(wildcard ../src/*.cpp) $(wildcard ../src/**/*.cpp)
 EXEC = larn-next.exe
-CXXFLAGS = -pipe -Wall -Wextra -pedantic -Wpointer-arith -Wshadow -Wmissing-declarations -Wredundant-decls -fomit-frame-pointer -DWINDOWS -DMULTIPLE_SCORE_ENTRY
+CXXFLAGS = -std=c++1z -Winline -pipe -Wall -Wextra -pedantic -Wpointer-arith -Wshadow -Wmissing-declarations -Wredundant-decls -fomit-frame-pointer -DWINDOWS -DMULTIPLE_SCORE_ENTRY
 CXX = g++
 LIBS = -lm -lpdcurses
 
