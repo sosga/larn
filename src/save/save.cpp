@@ -276,12 +276,6 @@ restoregame(char *fname)
             raiseexperience(tmp);
         }
    
-   if (TRnd(10) < 5)
-   {
-      know[playerx][playery] = 0;
-      lprintf("You mysteriously become enlightened and know this maze well!");
-   }
-   
     load();
     gtime -= 1;			/* HACK for time advancing either on save or reload */
     lasttime = gtime - 1;
