@@ -5,6 +5,11 @@ June 2017
 3. Rewrote the math which generates the mazes.
 4. Cleaned up some functions and squashed some bugs.
 5. Cleaned up UI (finalized).
+6. Templated functions.
+7. Inlined functions for #define's.
+8. Inlined variable for WIZID (more to come).
+9. Added more mazes to the file.
+10. Removed color.
 
 ~Gibbon
 
