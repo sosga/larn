@@ -39,7 +39,7 @@ inline int PATCHLEVEL(void)
 
 inline int VERSION(void)
 {
-	int ver = 1;
+	int ver = 0;
 	return ver;
 }
 
