@@ -13,7 +13,7 @@ variants rewritten individually, just to the historic, original version
 
 Since I eventually would love Larn to be an Open Source game.  I have
 decided to apply the Apache 2.0 License only to the files which
-I have rewritten fully (so far this is sysdep.c).  So as to make
+I have rewritten fully.  So as to make
 the file fully free.  This doesn't apply to files which I have not
 yet rewritten fully and (Noah's) License would still apply.
 
