@@ -439,9 +439,9 @@ act_donation_pray ( void )
 	{
 		lprcat ( "\n\n" );
 		cursor ( 1, 24 );
-		cltoeoln ();
+		CLEAR_EOL ();
 		cursor ( 1, 23 );
-		cltoeoln ();
+		CLEAR_EOL ();
 		lprcat ( "how much do you donate? " );
 		k = readnum ( ( int ) cdesc[GOLD] );
 		lprcat ( "\n" );

@@ -501,7 +501,7 @@ void
 show1 ( int idx )
 {
 	lprc ( '\n' );
-	cltoeoln ();
+	CLEAR_EOL ();
 
 	/*
 	 * Inventory will not be == 0 due to starting items. ~Gibbon
@@ -559,7 +559,7 @@ show2 ( int index )
 
 		default:
 			lprc ( '\n' );
-			cltoeoln ();
+			CLEAR_EOL ();
 			lprintf ( "%c) ", index + 'a' );
 			lprintf ( "%s", objectname[iven[index]] );
 

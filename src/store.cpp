@@ -270,7 +270,7 @@ dndstore ( void )
 		lprcat ( "You have " );
 		lprintf ( "%ld ", cdesc[GOLD] );
 		lprintf ( "gold pieces" );
-		cltoeoln ();
+		CLEAR_EOL ();
 		cl_dn ( 1, 20 );
 		lprcat ( "\nEnter your transaction [" );
 		lstandout ( "space" );
@@ -882,7 +882,7 @@ obanksub ( void )
 		{
 			case 'd':
 				lprcat ( "deposit\n" );
-				cltoeoln ();
+				CLEAR_EOL ();
 				lprcat ( "How much? " );
 				amt = readnum ( ( int ) cdesc[GOLD] );
 
