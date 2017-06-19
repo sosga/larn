@@ -850,7 +850,7 @@ opotion ( int pot )
 			case 'd':
 				lprcat ( "drink\n" );
 				forget ();		/* destroy potion  */
-				quaffpotion ( pot, TRUE );
+				quaffpotion ( pot, 1 );
 				return;
 
 			case 't':

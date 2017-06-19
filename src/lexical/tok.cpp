@@ -39,7 +39,7 @@ sethard()
 
 static char larn_final_k = 0;
 int y_larn_rep = 0;
-int move_no_pickup = FALSE;
+int move_no_pickup = 0;
 
 /*
 * lexical analyzer
@@ -48,7 +48,7 @@ int
 yylex(void)
 {
 	char cc;
-	char first_time = TRUE;
+	char first_time = 1;
 	
 	if (hit2flag)
 	{
@@ -69,7 +69,7 @@ yylex(void)
 	{
 		bottomdo();
 		showplayer();		/* show where the player is */
-		move_no_pickup = FALSE;	/* clear 'm' flag */
+		move_no_pickup = 0;	/* clear 'm' flag */
 	}
 	lflush();
 	for(;;)
@@ -93,7 +93,7 @@ yylex(void)
 					lprcat ("\n");
 				}
 				lprintf("count: %d", (int) y_larn_rep);
-				first_time = FALSE;
+				first_time = 0;
 				lflush();	/* show count */
 			}
 		}
@@ -103,7 +103,7 @@ yylex(void)
 			 */
 			if (cc == 'm')
 			{
-				move_no_pickup = TRUE;
+				move_no_pickup = 1;
 				cc = ttgetch ();
 			}
 			if (y_larn_rep > 0)

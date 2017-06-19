@@ -940,7 +940,7 @@ obanksub ( void )
 					{
 						if ( gemvalue[i] )
 						{
-							gems_sold = TRUE;
+							gems_sold = 1;
 							cdesc[GOLD] += gemvalue[i];
 							iven[i] = 0;
 							gemvalue[i] = 0;

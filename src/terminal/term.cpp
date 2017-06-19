@@ -21,8 +21,8 @@ ansiterm_init ( void )
 	cbreak();
 	noecho();
 	nonl();
-	intrflush ( stdscr, FALSE );
-	keypad ( stdscr, TRUE );
+	intrflush ( stdscr, 0 );
+	keypad ( stdscr, 1 );
 	curs_set ( 0 );
 #if defined WINDOWS || WINDOWS_VS
 	PDC_save_key_modifiers ( 1 );

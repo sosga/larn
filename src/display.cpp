@@ -90,7 +90,7 @@ bot_linex(void)
 	
     if(regen_bottom || (always))
         {
-            regen_bottom = TRUE;
+            regen_bottom = 1;
             
             cursor(1,18);
             lprintf("%s",logname);
@@ -913,7 +913,7 @@ seemagic(int arg)
     if(arg == -1)
         {
             seepage();
-            more(FALSE);
+            more(0);
             draws(0, MAXX, 0, ((number + 2) / 3 + 4));
             return;
         }
@@ -1012,7 +1012,7 @@ seemagic(int arg)
 
     if(lincount != 0)
         {
-            more(FALSE);
+            more(0);
         }
 
     setscroll();
@@ -1034,7 +1034,7 @@ seepage(void)
             if(lincount > 17)
                 {
                     lincount = 0;
-                    more(FALSE);
+                    more(0);
                     screen_clear();
                 }
         }

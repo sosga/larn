@@ -670,7 +670,7 @@ sortboard ( void )
 *      char *whoo;
 *
 *  Enter with the total score in gp in score,  players name in whoo,
-*      died() reason # in whyded, and TRUE/FALSE in winner if a winner
+*      died() reason # in whyded, and TRUE/0 in winner if a winner
 *  ex.     newscore(1000, "player 1", 32, 0);
 */
 static void
@@ -759,7 +759,7 @@ newscore ( int score, char *whoo, int whyded, int winner )
 *      char *whoo;                       is high enough
 *
 *  Enter with the total score in gp in score,  players name in whoo,
-*      died() reason # in whyded, and TRUE/FALSE in winner if a winner
+*      died() reason # in whyded, and TRUE/0 in winner if a winner
 *      slot in scoreboard in i, and the tax bill in taxes.
 *  Returns nothing of value
 */

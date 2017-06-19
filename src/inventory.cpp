@@ -227,7 +227,7 @@ showwear ( void )
 
 	if ( !itemselect )
 	{
-		itemselect = more ( TRUE );
+		itemselect = more ( 1 );
 	}
 
 	t_endup ( count );
@@ -315,7 +315,7 @@ showwield ( void )
 
 	if ( !itemselect )
 	{
-		itemselect = more ( TRUE );
+		itemselect = more ( 1 );
 	}
 
 	t_endup ( count );
@@ -373,7 +373,7 @@ showread ( void )
 
 	if ( !itemselect )
 	{
-		itemselect = more ( TRUE );
+		itemselect = more ( 1 );
 	}
 
 	t_endup ( count );
@@ -427,7 +427,7 @@ showeat ( void )
 
 	if ( !itemselect )
 	{
-		itemselect = more ( TRUE );
+		itemselect = more ( 1 );
 	}
 
 	t_endup ( count );
@@ -481,7 +481,7 @@ showquaff ( void )
 
 	if ( !itemselect )
 	{
-		itemselect = more ( TRUE );
+		itemselect = more ( 1 );
 	}
 
 	t_endup ( count );
@@ -590,7 +590,7 @@ show2 ( int index )
 	if ( ++srcount >= 22 )
 	{
 		srcount = 0;
-		itemselect = more ( TRUE );
+		itemselect = more ( 1 );
 		screen_clear();
 	}
 

@@ -219,7 +219,7 @@ act_drink_fountain ( void )
 	else
 		if ( x < 13 )
 			quaffpotion ( 23,
-			              FALSE );	/* see invisible,but don't know the potion */
+			              0 );	/* see invisible,but don't know the potion */
 		else
 			if ( x < 45 )
 			{

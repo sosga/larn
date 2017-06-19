@@ -159,13 +159,13 @@ movemonst ( void )
 
 					if ( monster[mitem[i][j]].intelligence > min_int )
 					{
-						movelist[movecnt].smart = TRUE;
+						movelist[movecnt].smart = 1;
 						smart_count++;
 					}
 
 					else
 					{
-						movelist[movecnt].smart = FALSE;
+						movelist[movecnt].smart = 0;
 					}
 
 					movecnt++;
@@ -184,13 +184,13 @@ movemonst ( void )
 
 					if ( monster[mitem[i][j]].intelligence > min_int )
 					{
-						movelist[movecnt].smart = TRUE;
+						movelist[movecnt].smart = 1;
 						smart_count++;
 					}
 
 					else
 					{
-						movelist[movecnt].smart = FALSE;
+						movelist[movecnt].smart = 0;
 					}
 
 					movecnt++;

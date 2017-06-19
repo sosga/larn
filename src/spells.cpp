@@ -1038,18 +1038,18 @@ godirect ( int spnum, int dam, const char *str, int delay,
 
 				case OMIRROR:
 					{
-						int bounce = FALSE, odx = dx, ody = dy;
+						int bounce = 0, odx = dx, ody = dy;
 
 						/* spells may bounce directly back or off at an angle */
 						if ( TRnd ( 100 ) < 50 )
 						{
-							bounce = TRUE;
+							bounce = 1;
 							dx *= -1;
 						}
 
 						if ( TRnd ( 100 ) < 50 )
 						{
-							bounce = TRUE;
+							bounce = 1;
 							dy *= -1;
 						}
 

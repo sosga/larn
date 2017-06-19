@@ -905,13 +905,13 @@ specify_obj_nocurs ( void )
 				return;
 			}
 
-			flag = FALSE;
+			flag = 0;
 
 			for ( j = 0; j < MAXMONST + 8; j++ )
 				if ( i == monstnamelist[j] )
 				{
 					lprintf ( "\n%c: %s", i, monster[j].name );
-					flag = TRUE;
+					flag = 1;
 				}
 
 			/* check for spurious object character
@@ -923,7 +923,7 @@ specify_obj_nocurs ( void )
 						lprc ( '\n' );
 						lprc ( i );
 						lprintf ( ": %s", objectname[j] );
-						flag = TRUE;
+						flag = 1;
 					}
 
 			if ( !flag )

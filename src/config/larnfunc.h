@@ -67,7 +67,7 @@ T TMathMax(T x, T y)
 #define resetscroll() enable_scroll=0
 
 /* macro to clear the screen and home the cursor */
-#define screen_clear() (*lpnt++ =CLEAR, regen_bottom=TRUE)
+#define screen_clear() (*lpnt++ =CLEAR, regen_bottom=1)
 
 /*
 *

@@ -232,7 +232,7 @@ main(int argc, char *argv[])
                        If in prompt mode, identify and prompt; else
                        identify, never prompt.
                      */
-                    lookforobject(TRUE, FALSE, FALSE);
+                    lookforobject(1, 0, 0);
                 }
 
             else
@@ -457,7 +457,7 @@ parse(void)
                 case 'i':		/* inventory */
                     y_larn_rep = 0;
                     nomove = 1;
-                    showstr(FALSE);
+                    showstr(0);
                     return;
 
                 case 'p':		/* pray at an altar */
@@ -678,13 +678,13 @@ parse(void)
                 case ',':		/* pick up an item */
                     y_larn_rep = 0;
                     /* pickup, don't identify or prompt for action */
-                    lookforobject(FALSE, TRUE, FALSE);
+                    lookforobject(0, 1, 0);
                     return;
 
                 case ':':		/* look at object */
                     y_larn_rep = 0;
                     /* identify, don't pick up or prompt for action */
-                    lookforobject(TRUE, FALSE, FALSE);
+                    lookforobject(1, 0, 0);
                     nomove = 1;		/* assumes look takes no time */
                     return;
 
@@ -1106,7 +1106,7 @@ dropobj(void)
 
             if(i == '*')
                 {
-                    i = showstr(TRUE);
+                    i = showstr(1);
                     cursors();
                 }
 
@@ -1343,7 +1343,7 @@ consume(int search_item, const char *prompt,
                                             return;
                                         }
 
-                                    quaffpotion(ivenarg[i - 'a'], TRUE);
+                                    quaffpotion(ivenarg[i - 'a'], 1);
                                     break;
 
                                 case 0:

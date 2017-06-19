@@ -129,11 +129,11 @@ createmonster ( int mon )
 *      int x,y,itm,monst;
 *
 *  Routine to return TRUE if a location does not have itm or monst there
-*  returns FALSE (0) otherwise
-*  Enter with itm or monst TRUE or FALSE if checking it
+*  returns 0 (0) otherwise
+*  Enter with itm or monst TRUE or 0 if checking it
 *  Example:  if itm==TRUE check for no item at this location
 *            if monst==TRUE check for no monster at this location
-*  This routine will return FALSE if at a wall,door or the dungeon exit
+*  This routine will return 0 if at a wall,door or the dungeon exit
 *  on level 1
 */
 static int
@@ -152,13 +152,13 @@ cgood ( int x, int y, int itm, int monst )
 	     ( item[x][y] == OCLOSEDDOOR ) ||
 	     ( ( level == 1 ) && ( x == 33 ) && ( y == MAXY - 1 ) ) )
 	{
-		return FALSE;
+		return 0;
 	}
 
 	/* if checking for an item, return False if one there already */
 	if ( itm && item[x][y] )
 	{
-		return FALSE;
+		return 0;
 	}
 
 	/*
@@ -169,7 +169,7 @@ cgood ( int x, int y, int itm, int monst )
 	{
 		if ( mitem[x][y] )
 		{
-			return FALSE;
+			return 0;
 		}
 
 		/*
@@ -184,12 +184,12 @@ cgood ( int x, int y, int itm, int monst )
 			case OTRAPARROW:
 			case ODARTRAP:
 			case OTRAPDOOR:
-				return FALSE;
+				return 0;
 		}
 	}
 
 	/* cgood! */
-	return TRUE;
+	return 1;
 }
 
 
