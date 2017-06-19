@@ -3,7 +3,7 @@
 I am the official maintainer of Larn.
 
 <b>Larn-NEXT</b></br>
-Larn-NEXT is a conversion of the C code of vanilla Larn to C++ (think C with classes style) in order to de-spaghettifi the
+Larn-NEXT is a conversion of the C code of vanilla Larn to C++ in order to de-spaghettifi the
 code and make it a good, clean game with a great codebase.
 
 NOTE: A change in accepting commits.  All pull-requests that deal with code changes
@@ -30,3 +30,9 @@ which take this to the extreme and end-up damaging the game.  When you start you
 
 # Compile Warnings #
 Due to the GNU/Linux distro I use as my primary machine, the officially supported compiler is GCC 6 (minimum).  If Larn throws warnings on earlier versions, I won't fix it, simply because I cannot verify it myself, my distro is now on GCC 7 and that is what will be used for future builds, I don't like staying with ancient versions of packages ;)
+
+# Compiling from Source #
+Compiling Larn from source will require GCC 7 as a minimum due to new inlined variables and [[fallthrough]] which is now used.  I realize this may p!!s some people off but the inline variables are important as they function almost like the old #define's did.  Since I am rewriting this so it is clean and up to date, this is the consequence.  If we all held back from being modern we'd still be using 8080 cpu's.
+
+# Releases #
+I will be doing alpha builds every Wednesday for GNU/Linux (32bit) and Windows (64bit cross-compiled) as well as arm generic and aarch64.
