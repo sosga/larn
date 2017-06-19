@@ -1201,8 +1201,6 @@ omnidirect ( int spnum, int dam, const char *str )
 	}
 }
 
-
-
 /*
 *  dirsub(x,y)      Routine to ask for direction, then modify playerx,
 *                   playery for it
@@ -1224,43 +1222,39 @@ dirsub ( int *x, int *y )
 		{
 			case 'b':
 				i++;
-
+				[[fallthrough]];
 			case 'n':
 				i++;
-
+				[[fallthrough]];
 			case 'y':
 				i++;
-
+				[[fallthrough]];
 			case 'u':
 				i++;
-
+				[[fallthrough]];
 			case 'h':
 				i++;
-
+				[[fallthrough]];
 			case 'k':
 				i++;
-
+				[[fallthrough]];
 			case 'l':
 				i++;
-
+				[[fallthrough]];
 			case 'j':
 				i++;
 
 			/* Added an ESC. -Gibbon */
+			[[fallthrough]];
 			case '\33':
 				drawscreen();
-				goto out;
+				*x = playerx + diroffx[i];
+				*y = playery + diroffy[i];
+				vxy(x, y);
+				return i;
 		};
 	}
-
-out:
-	*x = playerx + diroffx[i];
-	*y = playery + diroffy[i];
-	vxy ( x, y );
-	return i;
 }
-
-
 
 /*
 *  dirpoly(spnum)      Routine to ask for a direction and polymorph a monst

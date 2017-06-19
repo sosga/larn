@@ -378,16 +378,17 @@ cannedlevel (int dungeon_level)
 	  iarg[j][i] = arg;
 	  mitem[j][i] = mit;
 	  hitp[j][i] = marg;
-
-#if WIZID
-	  know[j][i] = (wizard) ? KNOWALL : 0;
-#else
-	  know[j][i] = 0;
-#endif
+	  
+	if (WIZID == true)
+	{
+		know[j][i] = (wizard) ? KNOWALL : 0;
+	} else {
+		know[j][i] = 0;
 	}
     }
-  fclose(fp);
-  return(1);
+	}
+	fclose(fp);
+	return(1);
 }
 
 

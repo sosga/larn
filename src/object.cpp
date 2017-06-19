@@ -486,7 +486,7 @@ lookforobject ( char do_ident, char do_pickup,
 			}
 
 			break;
-
+			
 		case OIVTELETRAP:
 			if ( TRnd ( 11 ) < 6 )
 			{
@@ -497,6 +497,7 @@ lookforobject ( char do_ident, char do_pickup,
 			know[playerx][playery] = KNOWALL;
 
 		/* fall through to OTELEPORTER case below!!! */
+		[[fallthrough]];
 		case OTELEPORTER:
 		if (TRnd(20) < 15)
 		{
@@ -523,6 +524,7 @@ lookforobject ( char do_ident, char do_pickup,
 			know[playerx][playery] = 0;
 
 		/* fall through to OTRAPARROW case below!!! */
+		[[fallthrough]];
 		case OTRAPARROW:
 			lprcat ( "\nYou are hit by an arrow" );
 			lastnum = 259;
@@ -535,11 +537,11 @@ lookforobject ( char do_ident, char do_pickup,
 			{
 				return;
 			}
-
 			item[playerx][playery] = ODARTRAP;
 			know[playerx][playery] = 0;
 
 		/* fall through to ODARTTRAP case below!!! */
+		[[fallthrough]];
 		case ODARTRAP:
 			lprcat ( "\nYou are hit by a dart" );
 			lastnum = 260;
@@ -552,17 +554,17 @@ lookforobject ( char do_ident, char do_pickup,
 
 			bottomline ();
 			return;
-
+			
 		case OIVTRAPDOOR:		/* for a trap door */
 			if ( TRnd ( 17 ) < 13 )
 			{
 				return;
 			}
-
 			item[playerx][playery] = OTRAPDOOR;
 			know[playerx][playery] = KNOWALL;
 
 		/* fall through to OTRAPDOOR case below!!! */
+		[[fallthrough]];
 		case OTRAPDOOR:
 			lastnum = 272;		/* a trap door */
 
@@ -622,7 +624,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 		case OWALL:
 			break;
-
+			
 		case OANNIHILATION:
 			died ( 283 );		/* annihilated by sphere of annihilation */
 			return;
@@ -713,8 +715,6 @@ lookforobject ( char do_ident, char do_pickup,
 			break;
 	};
 }
-
-
 
 /*
 * subroutine to process the stair cases if dir > 0 the up else down

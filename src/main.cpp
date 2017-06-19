@@ -743,8 +743,8 @@ parse(void)
                         }
 
                     return;
-#if WIZID
-
+				if (WIZID == true)
+				{
                 case '_':		/*  this is the fudge player password for wizard mode */
                     y_larn_rep = 0;
                     cursors();
@@ -829,7 +829,7 @@ parse(void)
                     cdesc[GOLD] += 250000;
                     drawscreen();
                     return;
-#endif
+					}
                 };
         }
 }
