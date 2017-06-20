@@ -13,7 +13,6 @@
    limitations under the License.
 */
 
-#include "templates/math.t.hpp"
 #include "../includes/io.h"
 #include "../includes/sysdep.h"
 
