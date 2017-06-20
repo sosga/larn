@@ -504,8 +504,7 @@ lookforobject ( char do_ident, char do_pickup,
 			nap(NAPTIME);
 			oteleport(0);
 			know[playerx][playery] = KNOWALL;
-			lprcat("\nThe teleporter has miraculously made this maze known!");
-			refresh();
+			lprcat("\n\nThe teleporter has miraculously made this maze known!");
 		} else {
 			lprcat("\nYou have been teleported!\n");
 			nap(NAPTIME);

@@ -7,25 +7,25 @@ using namespace std;
  * ~Gibbon
  */
 template<typename T>
-T TRnd(T x)
+inline T TRnd(const T& x)
 {
 	return static_cast<T>(rand() % (x)) + 1;
 }
 
 template<typename T>
-T TRund(T x)
+inline T TRund(const T& x)
 {
 	return static_cast<T>(rand() % (x));
 }
 
-template<class T>
-T TMathMin(T x, T y)
+template<typename T>
+inline T TMathMin(const T& x, const T& y)
 {
 	return x > y ? y : x;
 }
 
-template<class T>
-T TMathMax(T x, T y)
+template<typename T>
+inline T TMathMax(const T& x, const T& y)
 {
 	return x > y ? x : y;
 }
