@@ -384,6 +384,7 @@ hitmonster ( int x, int y )
 *  This routine is used to specifically damage a monster at a location (x,y)
 *  Called by hitmonster(x,y)
 */
+int
 HitMonster::hitm(int x, int y, int amt)
 {
 	int monst;

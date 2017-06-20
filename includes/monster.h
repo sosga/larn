@@ -7,7 +7,7 @@ class HitMonster {
 	int lastx;
 	int lasty;
 public:
-	hitm(int,int,int);
+	int hitm(int,int,int);
 	int hpoints;
 	int amt2;
 };
