@@ -8,5 +8,4 @@ all: compile
 
 compile: $(SOURCES)
 	$(CXX) $(CXXFLAGS) -o $(EXEC) $(SOURCES) $(LIBS)
-	strip $(EXEC)
 	mv $(EXEC) ../bin/

@@ -64,21 +64,8 @@ inline int TIMELIMIT(void)
 	const int timelimit = 80000;
 	return timelimit;
 }
-inline int PATCHLEVEL(void)
-{
-	const int patch = 1;
-	return patch;
-}
-inline int VERSION(void)
-{
-	const int ver = 0;
-	return ver;
-}
-inline int SUBVERSION(void)
-{
-	const int subver = 1;
-	return subver;
-}
+inline const char* VERSION = "Xvart";
+inline const char* COMPILED = "20 June 2017";
 
 extern char *lpnt;
 inline int CLEAR_EOL(void)

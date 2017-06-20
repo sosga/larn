@@ -163,8 +163,8 @@ Save::savegame(char *fname)
     temptime = zzz - initialtime;
     lwrite(reinterpret_cast<char *>(&temptime), sizeof(time_t));
 
-    lprintf("%d",VERSION);
-    lprintf("%d",SUBVERSION);
+    lprintf("%s",VERSION);
+    lprintf("%s",COMPILED);
 
     lwclose();
 

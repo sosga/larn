@@ -333,8 +333,6 @@ randmonst(void)
         }
 }
 
-
-
 /*
 * parse()
 *
@@ -343,6 +341,7 @@ randmonst(void)
 static void
 parse(void)
 {
+
     int i, j, k, flag;
 	Save save;
 
@@ -512,8 +511,8 @@ parse(void)
                     y_larn_rep = 0;
                     nomove = 1;
                     cursors();
-                    lprintf("\nLarn-Next, Version %d.%d.%d, Diff=%d", VERSION(),
-                            SUBVERSION(), PATCHLEVEL(), (int) cdesc[HARDGAME]);
+                    lprintf("\nLarn-Next, Version: %s, Compiled: %s, Diff: %d",
+                        VERSION, COMPILED, (int)cdesc[HARDGAME]);
 
                     if(wizard)
                         {
