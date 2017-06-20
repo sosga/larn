@@ -287,7 +287,7 @@ bot_hpx(void)
 
             cursor(69, 1);
             lprintf("HP:");
-            cursor(73, 1);
+            cursor(72, 1);
             lprintf("%3d", (int) cdesc[HP]);
 
     if(cdesc[EXPERIENCE] != cbak[EXPERIENCE])
