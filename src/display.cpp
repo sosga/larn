@@ -7,7 +7,7 @@
 #include "../includes/action.h"
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "terminal/term.hpp"
 #include "../includes/create.h"
 #include "../includes/display.h"
@@ -172,12 +172,12 @@ bot_linex(void)
 
             if(cdesc[TELEFLAG])
                 {
-                    lprcat(" ?");
+                    lprintf(" ?");
                 }
 
             else
                 {
-                    lprcat(levelname[level]);
+                    lprintf(levelname[level]);
                 }
             cursor(39, 18);
             lprintf("Gold:");
@@ -220,7 +220,7 @@ bot_linex(void)
     if(cdesc[LEVEL] != cbak[LEVEL])
         {
             cursor(52, 18);
-            lprcat(classname[cdesc[LEVEL] - 1]);
+            lprintf(classname[cdesc[LEVEL] - 1]);
         }
 
     if(cdesc[LEVEL] > 99)
@@ -254,12 +254,12 @@ bot_linex(void)
             cursor(70, 18);
             if(cdesc[TELEFLAG])
                 {
-                    lprcat(" ?");
+                    lprintf(" ?");
                 }
 
             else
                 {
-                    lprcat(levelname[level]);
+                    lprintf(levelname[level]);
                 }
         }
 
@@ -359,7 +359,7 @@ botside(void)
                             if(cdesc[idx])
                                 {
                                     cursor(52, i + 11);
-                                    lprcat(bot_data[i].string);
+                                    lprintf(bot_data[i].string);
                                     /*Reset cursor position. ~Gibbon */
                                     cursors();
                                 }
@@ -368,7 +368,7 @@ botside(void)
                     else if(cdesc[idx] == 0)
                         {
                             cursor(52, i + 11);
-                            lprcat("          ");
+                            lprintf("          ");
                             /*Reset cursor position. ~Gibbon */
                             cursors();
                         }
@@ -426,7 +426,7 @@ draws(int xmin, int xmax, int ymin, int ymax)
                     if(cdesc[idx])
                         {
                             cursor(52, i + 11);
-                            lprcat(bot_data[i].string);
+                            lprintf(bot_data[i].string);
                         }
 
                     cbak[idx] = cdesc[idx];
@@ -825,7 +825,7 @@ if direction=0, don't move--just show where he is */
     if(item[playerx][playery] == OALTAR && !prayed)
         {
             cursors();
-            lprcat("\nYou have ignored the altar!");
+            lprintf("\nYou have ignored the altar!");
             act_ignore_altar();
         }
 
@@ -898,11 +898,11 @@ seemagic(int arg)
 
     else
         {
-            resetscroll();
+            enable_scroll = 0;
             screen_clear();
         }
 
-    lprcat("The magic spells you have discovered thus far:\n\n");
+    lprintf("The magic spells you have discovered thus far:\n\n");
 
     for(i = 0; i < number; i++)
         {
@@ -955,7 +955,7 @@ seemagic(int arg)
                 sort[j] = i;
             }
 
-    lprcat("\nThe magic scrolls you have found to date are:\n\n");
+    lprintf("\nThe magic scrolls you have found to date are:\n\n");
     count = 0;
 
     for(i = 0; i < number; i++)
@@ -1001,7 +1001,7 @@ seemagic(int arg)
                 sort[j] = i;
             }
 
-    lprcat("\nThe magic potions you have found to date are:\n\n");
+    lprintf("\nThe magic potions you have found to date are:\n\n");
     count = 0;
 
     for(i = 0; i < number; i++)
@@ -1015,7 +1015,7 @@ seemagic(int arg)
             more(0);
         }
 
-    setscroll();
+    enable_scroll = 1;
     drawscreen();
 }
 

@@ -20,7 +20,7 @@
  */
 #include "larncons.h"
 #include "data.h"
-#include "larnfunc.h"
+#include "../templates/math.t.hpp"
 
 char scorefile[PATHLEN];
 char logfile[PATHLEN];

@@ -1,6 +1,6 @@
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/inventory.h"
@@ -11,20 +11,6 @@ static void t_setup(int);
 static void t_endup(int);
 static int show2(int);
 static int qshowstr(char);
-
-/* Allow only 12 items (a to l) in the player's inventory */
-#define MAXINVEN 12
-
-/* The starting limit to the number of items the player can carry.
-The limit should probably be based on player strength and the
-weight of the items.
-*/
-#define MIN_LIMIT 10
-
-/* define a sentinel to place at the end of the sorted inventory.
-(speeds up display reads )
-*/
-#define END_SENTINEL 255
 
 /* declare the player's inventory.  These should only be referenced
 in this module.
@@ -144,12 +130,10 @@ t_setup ( int count )
 
 	else
 	{
-		resetscroll ();
+		enable_scroll = 0;
 		screen_clear();
 	}
 }
-
-
 
 /*
 * subroutine to restore normal display screen depending on t_setup()
@@ -166,7 +150,7 @@ t_endup ( int count )
 	else
 	{
 		drawscreen ();
-		setscroll ();
+		enable_scroll = 1;
 	}
 }
 
@@ -579,12 +563,12 @@ show2 ( int index )
 
 	if ( cdesc[WIELD] == index )
 	{
-		lprcat ( " (in hand)" );
+		fl_display_message ( " (in hand)" );
 	}
 
 	if ( ( cdesc[WEAR] == index ) || ( cdesc[SHIELD] == index ) )
 	{
-		lprcat ( " (being worn)" );
+		fl_display_message ( " (being worn)" );
 	}
 
 	if ( ++srcount >= 22 )
@@ -672,7 +656,7 @@ take ( int itm, int arg )
 					break;
 			};
 
-			lprcat ( "\nYou pick up:" );
+			fl_display_message ( "\nYou pick up:" );
 
 			show3 ( i );
 
@@ -684,7 +668,7 @@ take ( int itm, int arg )
 			return ( 0 );
 		}
 
-	lprcat ( "\nYou can't carry anything else" );
+	fl_display_message ( "\nYou can't carry anything else" );
 	return ( 1 );
 }
 
@@ -727,7 +711,7 @@ drop_object ( int k )
 
 	item[playerx][playery] = itm;
 	iarg[playerx][playery] = ivenarg[k];
-	lprcat ( "\n  You drop:" );
+	fl_display_message ( "\n  You drop:" );
 	show3 ( k );			/* show what item you dropped */
 	know[playerx][playery] = 0;
 	iven[k] = 0;

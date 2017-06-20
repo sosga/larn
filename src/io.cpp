@@ -1,3 +1,6 @@
+#include <iostream>
+#include <fstream>
+
 /* io.c
 *
 *  setupvt100()    Subroutine to set up terminal in correct mode for game
@@ -12,7 +15,7 @@
 *  lprintf(format,args . . .)  printf to the output buffer
 *  lprint(integer)         send binary integer to output buffer
 *  lwrite(buf,len)         write a buffer to the output buffer
-*  lprcat(str)         sent string to output buffer
+*  fl_display_message(str)         sent string to output buffer
 *
 *  FILE OUTPUT MACROS
 *
@@ -84,13 +87,12 @@
 #include "termcap/termcap.hpp"
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "terminal/getch.hpp"
 #include "terminal/out.hpp"
 
 using namespace std;
 
-#define LINBUFSIZE 128		/* size of the lgetw() and lgetl() buffer       */
 int lfd;			/*  output file numbers     */
 int fd;				/*  input file numbers      */
 
@@ -117,7 +119,7 @@ void
 setupvt100 ( void )
 {
 	screen_clear();
-	setscroll ();
+	enable_scroll = 1;
 	scbr ();			/* system("stty cbreak -echo"); */
 }
 
@@ -132,7 +134,7 @@ void
 clearvt100 ( void )
 {
 	ansiterm_clean_up ();
-	resetscroll ();
+	enable_scroll = 0;
 	/* clear(); *//* why does this routine need to clear() ? */
 	sncbr ();			/* system("stty -cbreak echo"); */
 }
@@ -236,11 +238,36 @@ lprintf ( const char *fmt, ... )
 	vsprintf ( buffer, fmt, vl );
 	va_end ( vl );
 	p = buffer;
-
 	while ( *p != '\0' )
 	{
 		lprc ( *p );
 		++p;
+	}
+}
+
+/* This function will append the messages to a logfile. ~Gibbon */
+void
+fl_display_message ( const char *fmt, ... )
+{
+	ofstream message_file;
+	message_file.open(MESSAGELOG, ios::app);
+	va_list vl;
+	char fl_message_buffer[STRING_BUFFER_SIZE];
+	const char *print_char;
+	va_start(vl, fmt);
+	vsprintf(fl_message_buffer, fmt, vl);
+	va_end(vl);
+	print_char = fl_message_buffer;
+	
+	/* Convert to std::string. ~Gibbon */
+	std::string cppstr2 = fl_message_buffer;
+	
+	message_file << "Cave Level:" << levelname[level] << "\n" << cppstr2 << endl;
+	message_file.close();
+	while(*print_char != '\0')
+	{
+		lprc (*print_char);
+		++print_char;
 	}
 }
 
@@ -291,12 +318,6 @@ lprc ( char ch )
 
 	lflush();
 }
-
-
-
-
-
-
 
 /*
 *  lwrite(buf,len)         write a buffer to the output buffer
@@ -741,24 +762,6 @@ lwclose ( void )
 }
 
 /*
-*  lprcat(string)                  append a string to the output buffer
-*                                  avoids calls to lprintf (time consuming)
-*/
-void lprcat(const char *str)
-{
-	char *str2;
-
-	if(lpnt >= lpend)
-	{
-		lflush();
-	}
-	str2 = lpnt;
-	while((*str2++ = *str++) != '\0');
-	lpnt = str2 - 1;
-	lflush();
-}
-
-/*
 * cursor(x,y)    Put cursor at specified coordinates staring at [1,1] (termcap)
 */
 void
@@ -1140,7 +1143,7 @@ lflushall ( void )
 {
 	while ( kbhit() )
 	{
-		_getch();
+		ansiterm_getch();
 	}
 }
 #endif
@@ -1230,7 +1233,7 @@ void
 enter_name ( void )
 {
 	int i;
-	lprcat ( "\n\nEnter character name:\n" );
+	fl_display_message ( "\n\nEnter character name:\n" );
 	sncbr ();
 	i = 0;
 

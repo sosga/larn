@@ -13,7 +13,7 @@
    limitations under the License.
 */
 
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "../includes/io.h"
 #include "../includes/sysdep.h"
 

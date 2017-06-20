@@ -16,7 +16,7 @@
 #include <string>
 #include "../config/larncons.h"
 #include "../config/data.h"
-#include "../config/larnfunc.h"
+#include "../templates/math.t.hpp"
 #include "../../includes/global.h"
 #include "../../includes/io.h"
 #include "../../includes/scores.h"
@@ -29,7 +29,7 @@
  */
 
 void
-save(void)
+Save::save(void)
 {
     struct cel *pcel;
     int *pitem, *pknow, *pmitem;
@@ -62,7 +62,7 @@ save(void)
  * routine to restore a level from storage
  */
 void
-load(void)
+Load::load(void)
 {
     struct cel *pcel;
     int *pitem;
@@ -96,18 +96,19 @@ load(void)
 static time_t zzz = 0;
 
 int
-savegame(char *fname)
+Save::savegame(char *fname)
 {
     int i, k;
     struct sphere *sp;
     time_t temptime;
+	Save save;
 
     lflush();
-    save();
+    save.save();
     ointerest();
     if(lcreat(fname) < 0)
         {
-            lcreat((char *) 0);
+            lcreat(reinterpret_cast<char *>(0));
             lprintf("\nCan't open file <%s> to save game\n", fname);
             return (-1);
         }
@@ -115,16 +116,17 @@ savegame(char *fname)
     set_score_output();
 
     lwrite(logname, LOGNAMESIZE);
-    lwrite((char *) beenhere, (sizeof(int) * (MAXLEVEL + MAXVLEVEL)));
-    lwrite((char *) &cdesc[0], 100 * sizeof(long));
-    lwrite((char *) &gtime, 1 * sizeof(long));
+	
+    lwrite(reinterpret_cast<char *>(beenhere), (sizeof(int) * (MAXLEVEL + MAXVLEVEL)));
+    lwrite(reinterpret_cast<char *>(&cdesc[0]), 100 * sizeof(long));
+    lwrite(reinterpret_cast<char *>(&gtime), 1 * sizeof(long));
 
     lprint(level);
     lprint(playerx);
     lprint(playery);
 
-    lwrite((char *) iven, 26 * sizeof(int));
-    lwrite((char *) ivenarg, 26 * sizeof(int));
+    lwrite(reinterpret_cast<char *>(iven), 26 * sizeof(int));
+    lwrite(reinterpret_cast<char *>(ivenarg), 26 * sizeof(int));
 
     for(k = 0; k < MAXSCROLL; k++)
         {
@@ -138,7 +140,7 @@ savegame(char *fname)
             lprc(potionname[k][0]);
         }
 
-    lwrite((char *) spelknow, SPNUM * sizeof(int));
+    lwrite(reinterpret_cast<char *>(spelknow), SPNUM * sizeof(int));
     lprint(wizard);
     lprint(rmst);		/*  random monster generation counter */
 
@@ -148,18 +150,18 @@ savegame(char *fname)
             lprint(dnd_item[i].qty);
         }
 
-    lwrite((char *) course, 25 * sizeof(int));
+    lwrite(reinterpret_cast<char *>(course), 25 * sizeof(int));
     lprint(cheat);
 
     for(i = 0; i < MAXMONST; i++)
         lprint(monster[i].genocided);	/* genocide info */
 
     for(sp = spheres; sp; sp = sp->p)
-        lwrite((char *) sp, sizeof(struct sphere));	/* save spheres of annihilation */
+        lwrite(reinterpret_cast<char *>(sp), sizeof(struct sphere));	/* save spheres of annihilation */
 
     time(&zzz);
     temptime = zzz - initialtime;
-    lwrite((char *) &temptime, sizeof(time_t));
+    lwrite(reinterpret_cast<char *>(&temptime), sizeof(time_t));
 
     lprintf("%d",VERSION);
     lprintf("%d",SUBVERSION);
@@ -167,25 +169,26 @@ savegame(char *fname)
     lwclose();
 
     lastmonst[0] = 0;
-    setscroll();
-    lcreat((char *) 0);
+    enable_scroll = 1;
+    lcreat(reinterpret_cast<char *>(0));
     return (0);
 }
 
 void
-restoregame(char *fname)
+Load::restoregame(char *fname)
 {
     int i, k;
     struct sphere *sp, *sp2;
     /*struct stat filetimes; */
     time_t temptime;
+	Load load;
 
     cursors();
-    lprcat("\nRestoring . . .");
+    fl_display_message("\nRestoring . . .");
     lflush();
     if(lopen(fname) <= 0)
         {
-            lcreat((char *) 0);
+            lcreat(reinterpret_cast<char *>(0));
             lprintf("\nCan't open file <%s>to restore game\n", fname);
             nap(NAPTIME);
             cdesc[GOLD] = cdesc[BANKACCOUNT] = 0;
@@ -194,17 +197,17 @@ restoregame(char *fname)
         }
 
     lrfill(logname, LOGNAMESIZE);
-    lrfill((char *) beenhere, (sizeof(int) * (MAXLEVEL + MAXVLEVEL)));
-    lrfill((char *) &cdesc[0], 100 * sizeof(long));
-    lrfill((char *) &gtime, 1 * sizeof(long));
+    lrfill(reinterpret_cast<char *>(beenhere), (sizeof(int) * (MAXLEVEL + MAXVLEVEL)));
+    lrfill(reinterpret_cast<char *>(&cdesc[0]), 100 * sizeof(long));
+    lrfill(reinterpret_cast<char *>(&gtime), 1 * sizeof(long));
 
     level = cdesc[CAVELEVEL] = larint();
     playerx = larint();
     playery = larint();
     newcavelevel(level);
 
-    lrfill((char *) iven, 26 * sizeof(int));
-    lrfill((char *) ivenarg, 26 * sizeof(int));
+    lrfill(reinterpret_cast<char *>(iven), 26 * sizeof(int));
+    lrfill(reinterpret_cast<char *>(ivenarg), 26 * sizeof(int));
 
     for(k = 0; k < MAXSCROLL; k++)
         {
@@ -218,7 +221,7 @@ restoregame(char *fname)
             potionname[k][0] = lgetc();
         }
 
-    lrfill((char *) spelknow, SPNUM * sizeof(int));
+    lrfill(reinterpret_cast<char *>(spelknow), SPNUM * sizeof(int));
     wizard = larint();
     rmst = larint();		/*  random monster creation flag */
 
@@ -228,7 +231,7 @@ restoregame(char *fname)
             dnd_item[i].qty = larint();
         }
 
-    lrfill((char *) course, 25 * sizeof(int));
+    lrfill(reinterpret_cast<char *>(course), 25 * sizeof(int));
     cheat = larint();
 
 
@@ -244,7 +247,7 @@ restoregame(char *fname)
                     fprintf(stderr, "Can't malloc() for sphere space\n");
                     break;
                 }
-            lrfill((char *) sp, sizeof(struct sphere));	/* get spheres of annihilation */
+            lrfill(reinterpret_cast<char *>(sp), sizeof(struct sphere));	/* get spheres of annihilation */
             sp->p = 0;		/* null out pointer */
             if(i == 0)
                 spheres = sp;		/* beginning of list */
@@ -253,7 +256,7 @@ restoregame(char *fname)
         }
 
     time(&zzz);
-    lrfill((char *) &temptime, sizeof(time_t));
+    lrfill(reinterpret_cast<char *>(&temptime), sizeof(time_t));
     initialtime = zzz - temptime;
 
     lrclose();
@@ -276,7 +279,7 @@ restoregame(char *fname)
             raiseexperience(tmp);
         }
    
-    load();
+    load.load();
     gtime -= 1;			/* HACK for time advancing either on save or reload */
     lasttime = gtime - 1;
 }

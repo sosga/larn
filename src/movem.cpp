@@ -12,7 +12,7 @@
 #include "../includes/create.h"
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/io.h"
@@ -26,14 +26,6 @@ static void move_smart ( int, int );
 static void move_dumb ( int, int );
 static void mmove ( int, int, int, int );
 
-
-#if 0
-	#define IDISTNORM   8		/* was 17 - dgk */
-	#define IDISTAGGR  20		/* was 40 - dgk */
-#endif
-#define IDISTNORM  17		/* was 17 - dgk */
-#define IDISTAGGR  40		/* was 40 - dgk */
-
 static int w1x[9], w1y[9];
 static int tmp1, tmp2, tmp3, tmp4, distance;
 
@@ -44,8 +36,6 @@ static struct foo
 	int y;
 	int smart;
 } movelist[250];
-
-
 
 /*
 *  movemonst()     Routine to move the monsters toward the player
@@ -320,14 +310,10 @@ movemonst ( void )
 	}
 }
 
-
-
-
 int screen[MAXX][MAXY];		/* proximity ripple storage */
 
 /* queue for breadth-first 'search' build of proximity ripple.
 */
-#define MAX_QUEUE 100
 static struct queue_entry
 {
 	int x;
@@ -360,10 +346,6 @@ static int queue_tail = 0;
 		if (queue_head == MAX_QUEUE)        \
 			queue_head = 0 ;                \
 	}
-
-/* check for the proximity ripple queue being empty
-*/
-#define QUEUEEMPTY() (queue_head == queue_tail)
 
 /*
 For smart monster movement, build a proximity ripple from the player's
@@ -457,10 +439,9 @@ build_proximity_ripple ( void )
 			}
 		}
 	}
-	while ( !QUEUEEMPTY () );
+	/* check for the proximity ripple queue being empty */
+	while (queue_head != queue_tail);
 }
-
-
 
 /*
 Move scared monsters randomly away from the player position.

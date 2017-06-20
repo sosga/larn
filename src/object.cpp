@@ -5,7 +5,7 @@
 #include "../includes/action.h"
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "../includes/create.h"
 #include "../includes/display.h"
 #include "../includes/global.h"
@@ -76,14 +76,14 @@ lookforobject ( char do_ident, char do_pickup,
 		case OMAXGOLD:
 		case OKGOLD:
 		case ODGOLD:
-			lprcat ( "\nYou have found some gold!" );
+			fl_display_message ( "\nYou have found some gold!" );
 			ogold ( i );
 			break;
 
 		case OPOTION:
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found a magic potion" );
+				fl_display_message ( "\nYou have found a magic potion" );
 
 				if ( potionname[j][0] )
 				{
@@ -107,7 +107,7 @@ lookforobject ( char do_ident, char do_pickup,
 		case OSCROLL:
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found a magic scroll" );
+				fl_display_message ( "\nYou have found a magic scroll" );
 
 				if ( scrollname[j][0] )
 				{
@@ -136,7 +136,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ("\nThere is a Holy Altar here!");
+				fl_display_message ("\nThere is a Holy Altar here!");
 				oaltar();
 			}
 
@@ -145,7 +145,7 @@ lookforobject ( char do_ident, char do_pickup,
 		case OBOOK:
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found a Book." );
+				fl_display_message ( "\nYou have found a Book." );
 			}
 
 			if ( do_pickup )
@@ -164,7 +164,7 @@ lookforobject ( char do_ident, char do_pickup,
 		case OPRAYERBOOK:
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found a Prayer Book." );
+				fl_display_message ( "\nYou have found a Prayer Book." );
 			}
 
 			if ( do_pickup )
@@ -183,7 +183,7 @@ lookforobject ( char do_ident, char do_pickup,
 		case OCOOKIE:
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found a fortune cookie." );
+				fl_display_message ( "\nYou have found a fortune cookie." );
 			}
 
 			if ( do_pickup )
@@ -238,14 +238,14 @@ lookforobject ( char do_ident, char do_pickup,
 
 		case OPIT:
 			/* always perform these actions. */
-			lprcat ( "\nYou're standing at the top of a pit." );
+			fl_display_message ( "\nYou're standing at the top of a pit." );
 			opit ();
 			break;
 
 		case OSTAIRSUP:		/* up */
 			if ( do_ident )
 			{
-				lprcat ( "\nThere is a circular staircase here" );
+				fl_display_message ( "\nThere is a circular staircase here" );
 			}
 
 			if ( do_action )
@@ -264,7 +264,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nThere is a fountain here" );
+				fl_display_message ( "\nThere is a fountain here" );
 				ofountain ();
 			}
 
@@ -278,7 +278,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nYou are standing in front of a statue" );
+				fl_display_message ( "\nYou are standing in front of a statue" );
 				ostatue ();
 			}
 
@@ -287,7 +287,7 @@ lookforobject ( char do_ident, char do_pickup,
 		case OCHEST:
 			if ( do_ident )
 			{
-				lprcat ( "\nThere is a chest here" );
+				fl_display_message ( "\nThere is a chest here" );
 			}
 
 			if ( do_pickup )
@@ -311,7 +311,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found the College of Larn." );
+				fl_display_message ( "\nYou have found the College of Larn." );
 			}
 
 			if ( do_action )
@@ -329,7 +329,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nThere is a mirror here" );
+				fl_display_message ( "\nThere is a mirror here" );
 				omirror ();
 			}
 
@@ -343,7 +343,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found a branch office of the bank of Larn." );
+				fl_display_message ( "\nYou have found a branch office of the bank of Larn." );
 			}
 
 			if ( do_action )
@@ -361,7 +361,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found the bank of Larn." );
+				fl_display_message ( "\nYou have found the bank of Larn." );
 			}
 
 			if ( do_action )
@@ -379,7 +379,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nThere is a dead fountain here" );
+				fl_display_message ( "\nThere is a dead fountain here" );
 			}
 
 			break;
@@ -392,7 +392,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nThere is a DND store here." );
+				fl_display_message ( "\nThere is a DND store here." );
 			}
 
 			if ( do_action )
@@ -405,7 +405,7 @@ lookforobject ( char do_ident, char do_pickup,
 		case OSTAIRSDOWN:		/* down */
 			if ( do_ident )
 			{
-				lprcat ( "\nThere is a circular staircase here" );
+				fl_display_message ( "\nThere is a circular staircase here" );
 			}
 
 			if ( do_action )
@@ -445,10 +445,10 @@ lookforobject ( char do_ident, char do_pickup,
 		case OENTRANCE:
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found " );
+				fl_display_message ( "\nYou have found " );
 			}
 
-			lprcat ( objectname[i] );
+			fl_display_message ( objectname[i] );
 
 			if ( do_action )
 			{
@@ -460,10 +460,10 @@ lookforobject ( char do_ident, char do_pickup,
 		case OVOLDOWN:
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found " );
+				fl_display_message ( "\nYou have found " );
 			}
 
-			lprcat ( objectname[i] );
+			fl_display_message ( objectname[i] );
 
 			if ( do_action )
 			{
@@ -475,10 +475,10 @@ lookforobject ( char do_ident, char do_pickup,
 		case OVOLUP:
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found " );
+				fl_display_message ( "\nYou have found " );
 			}
 
-			lprcat ( objectname[i] );
+			fl_display_message ( objectname[i] );
 
 			if ( do_action )
 			{
@@ -504,9 +504,9 @@ lookforobject ( char do_ident, char do_pickup,
 			nap(NAPTIME);
 			oteleport(0);
 			know[playerx][playery] = KNOWALL;
-			lprcat("\n\nThe teleporter has miraculously made this maze known!");
+			fl_display_message("\n\nThe teleporter has miraculously made this maze known!");
 		} else {
-			lprcat("\nYou have been teleported!\n");
+			fl_display_message("\nYou have been teleported!\n");
 			nap(NAPTIME);
 			oteleport(0);
 			refresh();
@@ -525,7 +525,7 @@ lookforobject ( char do_ident, char do_pickup,
 		/* fall through to OTRAPARROW case below!!! */
 		[[fallthrough]];
 		case OTRAPARROW:
-			lprcat ( "\nYou are hit by an arrow" );
+			fl_display_message ( "\nYou are hit by an arrow" );
 			lastnum = 259;
 			losehp ( TRnd ( 10 ) + level );
 			bottomhp ();
@@ -542,7 +542,7 @@ lookforobject ( char do_ident, char do_pickup,
 		/* fall through to ODARTTRAP case below!!! */
 		[[fallthrough]];
 		case ODARTRAP:
-			lprcat ( "\nYou are hit by a dart" );
+			fl_display_message ( "\nYou are hit by a dart" );
 			lastnum = 260;
 			losehp ( TRnd ( 5 ) );
 
@@ -570,7 +570,7 @@ lookforobject ( char do_ident, char do_pickup,
 			if ( ( level == MAXLEVEL - 1 )
 			     || ( level == MAXLEVEL + MAXVLEVEL - 1 ) )
 			{
-				lprcat ( "\nYou fell through a bottomless trap door!" );
+				fl_display_message ( "\nYou fell through a bottomless trap door!" );
 				nap ( NAPTIME );
 				died ( 271 );
 			}
@@ -593,7 +593,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found the Larn trading Post." );
+				fl_display_message ( "\nYou have found the Larn trading Post." );
 			}
 
 			if ( do_action )
@@ -611,7 +611,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nYou have found your way home." );
+				fl_display_message ( "\nYou have found your way home." );
 			}
 
 			if ( do_action )
@@ -636,7 +636,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 			if ( do_ident )
 			{
-				lprcat ( "\nThere is an LRS office here." );
+				fl_display_message ( "\nThere is an LRS office here." );
 			}
 
 			if ( do_action )
@@ -688,7 +688,7 @@ lookforobject ( char do_ident, char do_pickup,
 			if ( do_action )
 			{
 				char tempc = 0;
-				lprcat ( "\nDo you want to (t) take it" );
+				fl_display_message ( "\nDo you want to (t) take it" );
 				iopts ();
 
 				while ( tempc != 't' && tempc != 'i' && tempc != '\33' )
@@ -698,7 +698,7 @@ lookforobject ( char do_ident, char do_pickup,
 
 				if ( tempc == 't' )
 				{
-					lprcat ( "take" );
+					fl_display_message ( "take" );
 
 					if ( take ( i, j ) == 0 )
 					{
@@ -721,16 +721,16 @@ lookforobject ( char do_ident, char do_pickup,
 static void
 ostairs ( int dir )
 {
-	lprcat ( "\nDo you (s) stay here " );
+	fl_display_message ( "\nDo you (s) stay here " );
 
 	if ( dir > 0 )
 	{
-		lprcat ( "or (u) go up? " );
+		fl_display_message ( "or (u) go up? " );
 	}
 
 	else
 	{
-		lprcat ( "or (d) go down? " );
+		fl_display_message ( "or (d) go down? " );
 	}
 
 	for ( ;; )
@@ -740,16 +740,16 @@ ostairs ( int dir )
 			case '\33':
 			case 's':
 			case 'i':
-				lprcat ( "stay here" );
+				fl_display_message ( "stay here" );
 				return;
 
 			case 'u':
-				lprcat ( "go up" );
+				fl_display_message ( "go up" );
 				act_up_stairs ();
 				return;
 
 			case 'd':
-				lprcat ( "go down" );
+				fl_display_message ( "go down" );
 				act_down_stairs ();
 				return;
 		};
@@ -771,7 +771,7 @@ oteleport ( int err )
 		{
 			/* Fix for bug #10 ~Gibbon*/
 			cursor ( 1, 19 );
-			lprcat ( "\nYou died by teleporting into solid rock." );
+			fl_display_message ( "\nYou died by teleporting into solid rock." );
 			nap ( 4000 );
 			died ( 264 );	/* stuck in a rock */
 		}
@@ -834,7 +834,7 @@ oteleport ( int err )
 static void
 opotion ( int pot )
 {
-	lprcat ( "\nDo you (d) drink it, (t) take it" );
+	fl_display_message ( "\nDo you (d) drink it, (t) take it" );
 	iopts ();
 
 	for ( ;; )
@@ -847,13 +847,13 @@ opotion ( int pot )
 				return;
 
 			case 'd':
-				lprcat ( "drink\n" );
+				fl_display_message ( "drink\n" );
 				forget ();		/* destroy potion  */
 				quaffpotion ( pot, 1 );
 				return;
 
 			case 't':
-				lprcat ( "take\n" );
+				fl_display_message ( "take\n" );
 
 				if ( take ( OPOTION, pot ) == 0 )
 				{
@@ -896,7 +896,7 @@ quaffpotion ( int pot, int set_known )
 	switch ( pot )
 	{
 		case 0:
-			lprcat ( "\nYou fall asleep. . ." );
+			fl_display_message ( "\nYou fall asleep. . ." );
 			i = TRnd ( 11 ) - ( cdesc[CONSTITUTION] >> 2 ) + 2;
 
 			while ( --i > 0 )
@@ -906,11 +906,11 @@ quaffpotion ( int pot, int set_known )
 			}
 
 			cursors ();
-			lprcat ( "\nYou woke up!" );
+			fl_display_message ( "\nYou woke up!" );
 			return;
 
 		case 1:
-			lprcat ( "\nYou feel better" );
+			fl_display_message ( "\nYou feel better" );
 
 			if ( cdesc[HP] == cdesc[HPMAX] )
 			{
@@ -927,23 +927,23 @@ quaffpotion ( int pot, int set_known )
 			break;
 
 		case 2:
-			lprcat ( "\nSuddenly, you feel much more skillful!" );
+			fl_display_message ( "\nSuddenly, you feel much more skillful!" );
 			raiselevel ();
 			raisemhp ( 1 );
 			return;
 
 		case 3:
-			lprcat ( "\nYou feel strange for a moment" );
+			fl_display_message ( "\nYou feel strange for a moment" );
 			cdesc[TRund ( 6 )]++;
 			break;
 
 		case 4:
-			lprcat ( "\nYou feel more self confident!" );
+			fl_display_message ( "\nYou feel more self confident!" );
 			cdesc[WISDOM] += TRnd ( 2 );
 			break;
 
 		case 5:
-			lprcat ( "\nWow!  You feel great!" );
+			fl_display_message ( "\nWow!  You feel great!" );
 
 			if ( cdesc[STRENGTH] < 12 )
 			{
@@ -958,12 +958,12 @@ quaffpotion ( int pot, int set_known )
 			break;
 
 		case 6:
-			lprcat ( "\nYour charm went up by one!" );
+			fl_display_message ( "\nYour charm went up by one!" );
 			cdesc[CHARISMA]++;
 			break;
 
 		case 7:
-			lprcat ( "\nYou become dizzy!" );
+			fl_display_message ( "\nYou become dizzy!" );
 
 			if ( --cdesc[STRENGTH] < 3 )
 			{
@@ -973,12 +973,12 @@ quaffpotion ( int pot, int set_known )
 			break;
 
 		case 8:
-			lprcat ( "\nYour intelligence went up by one!" );
+			fl_display_message ( "\nYour intelligence went up by one!" );
 			cdesc[INTELLIGENCE]++;
 			break;
 
 		case 9:
-			lprcat ( "\nYou sense the presence of objects!" );
+			fl_display_message ( "\nYou sense the presence of objects!" );
 			nap ( NAPTIME );
 
 			if ( cdesc[BLINDCOUNT] )
@@ -1038,7 +1038,7 @@ quaffpotion ( int pot, int set_known )
 			return;
 
 		case 10:			/* monster detection */
-			lprcat ( "\nYou detect the presence of monsters!" );
+			fl_display_message ( "\nYou detect the presence of monsters!" );
 			nap ( NAPTIME );
 
 			if ( cdesc[BLINDCOUNT] )
@@ -1057,7 +1057,7 @@ quaffpotion ( int pot, int set_known )
 			return;
 
 		case 11:
-			lprcat ( "\nYou stagger for a moment . ." );
+			fl_display_message ( "\nYou stagger for a moment . ." );
 
 			for ( i = 0; i < MAXY; i++ )
 				for ( j = 0; j < MAXX; j++ )
@@ -1070,21 +1070,21 @@ quaffpotion ( int pot, int set_known )
 			return;
 
 		case 12:
-			lprcat ( "\nThis potion has no taste to it" );
+			fl_display_message ( "\nThis potion has no taste to it" );
 			return;
 
 		case 13:
-			lprcat ( "\nYou can't see anything!" );	/* blindness */
+			fl_display_message ( "\nYou can't see anything!" );	/* blindness */
 			cdesc[BLINDCOUNT] += 500;
 			return;
 
 		case 14:
-			lprcat ( "\nYou feel confused" );
+			fl_display_message ( "\nYou feel confused" );
 			cdesc[CONFUSE] += 20 + TRnd ( 9 );
 			return;
 
 		case 15:
-			lprcat ( "\nWOW!!!  You feel Super-fantastic!!!" );
+			fl_display_message ( "\nWOW!!!  You feel Super-fantastic!!!" );
 
 			if ( cdesc[HERO] == 0 )
 				for ( i = 0; i < 6; i++ )
@@ -1096,12 +1096,12 @@ quaffpotion ( int pot, int set_known )
 			break;
 
 		case 16:
-			lprcat ( "\nYou have a greater intestinal constitude!" );
+			fl_display_message ( "\nYou have a greater intestinal constitude!" );
 			cdesc[CONSTITUTION]++;
 			break;
 
 		case 17:
-			lprcat ( "\nYou now have incredibly bulging muscles!!!" );
+			fl_display_message ( "\nYou now have incredibly bulging muscles!!!" );
 
 			if ( cdesc[GIANTSTR] == 0 )
 			{
@@ -1112,12 +1112,12 @@ quaffpotion ( int pot, int set_known )
 			break;
 
 		case 18:
-			lprcat ( "\nYou feel a chill run up your spine!" );
+			fl_display_message ( "\nYou feel a chill run up your spine!" );
 			cdesc[FIRERESISTANCE] += 1000;
 			break;
 
 		case 19:
-			lprcat ( "\nYou feel greedy . . ." );
+			fl_display_message ( "\nYou feel greedy . . ." );
 			nap ( NAPTIME );
 
 			if ( cdesc[BLINDCOUNT] )
@@ -1145,21 +1145,21 @@ quaffpotion ( int pot, int set_known )
 			return;
 
 		case 20:
-			lprcat ( "\nYou feel all better now!" );
+			fl_display_message ( "\nYou feel all better now!" );
 			cdesc[HP] = cdesc[HPMAX];
 			break;			/* instant healing */
 
 		case 21:
-			lprcat ( "\nYou don't seem to be affected" );
+			fl_display_message ( "\nYou don't seem to be affected" );
 			return;			/* cure dianthroritis */
 
 		case 22:
-			lprcat ( "\nYou feel a sickness engulf you" );	/* poison */
+			fl_display_message ( "\nYou feel a sickness engulf you" );	/* poison */
 			cdesc[HALFDAM] += 200 + TRnd ( 200 );
 			return;
 
 		case 23:
-			lprcat ( "\nYou feel your vision sharpen" );	/* see invisible */
+			fl_display_message ( "\nYou feel your vision sharpen" );	/* see invisible */
 			cdesc[SEEINVISIBLE] += TRnd ( 1000 ) + 400;
 			monstnamelist[INVISIBLESTALKER] = 'I';
 			return;
@@ -1178,14 +1178,14 @@ quaffpotion ( int pot, int set_known )
 static void
 oscroll ( int typ )
 {
-	lprcat ( "\nDo you " );
+	fl_display_message ( "\nDo you " );
 
 	if ( cdesc[BLINDCOUNT] == 0 )
 	{
-		lprcat ( "(r) read it, " );
+		fl_display_message ( "(r) read it, " );
 	}
 
-	lprcat ( "(t) take it" );
+	fl_display_message ( "(t) take it" );
 	iopts ();
 
 	for ( ;; )
@@ -1203,7 +1203,7 @@ oscroll ( int typ )
 					break;
 				}
 
-				lprcat ( "read" );
+				fl_display_message ( "read" );
 				forget ();
 
 				if ( typ == 2 || typ == 15 )
@@ -1216,7 +1216,7 @@ oscroll ( int typ )
 				return;
 
 			case 't':
-				lprcat ( "take" );
+				fl_display_message ( "take" );
 
 				if ( take ( OSCROLL, typ ) == 0 )
 				{
@@ -1293,17 +1293,17 @@ read_scroll ( int typ )
 	switch ( typ )
 	{
 		case 0:
-			lprcat ( "\nYour armor glows for a moment" );
+			fl_display_message ( "\nYour armor glows for a moment" );
 			enchantarmor ();
 			return;
 
 		case 1:
-			lprcat ( "\nYour weapon glows for a moment" );
+			fl_display_message ( "\nYour weapon glows for a moment" );
 			enchweapon ();
 			return;			/* enchant weapon */
 
 		case 2:
-			lprcat ( "\nYou have been granted enlightenment!" );
+			fl_display_message ( "\nYou have been granted enlightenment!" );
 			yh = TMathMin(playery + 7, MAXY);
 			xh = TMathMin(playerx + 25, MAXX);
 			yl = TMathMax(playery - 7, 0);
@@ -1320,7 +1320,7 @@ read_scroll ( int typ )
 			return;
 
 		case 3:
-			lprcat ( "\nThis scroll seems to be blank" );
+			fl_display_message ( "\nThis scroll seems to be blank" );
 			return;
 
 		case 4:
@@ -1332,7 +1332,7 @@ read_scroll ( int typ )
 			return;
 
 		case 6:
-			lprcat ( "\nSomething isn't right..." );
+			fl_display_message ( "\nSomething isn't right..." );
 			cdesc[AGGRAVATE] += 800;
 			return;			/* aggravate monsters */
 
@@ -1351,23 +1351,23 @@ read_scroll ( int typ )
 			return;
 
 		case 8:
-			lprcat ( "\nYour surroundings change" );
+			fl_display_message ( "\nYour surroundings change" );
 			oteleport ( 0 );
 			refresh();
 			return;			/* teleportation */
 
 		case 9:
-			lprcat ( "\nYou feel extra alert" );
+			fl_display_message ( "\nYou feel extra alert" );
 			cdesc[AWARENESS] += 1800;
 			return;			/* expanded awareness   */
 
 		case 10:
-			lprcat ( "\nSomething isn't right..." );
+			fl_display_message ( "\nSomething isn't right..." );
 			cdesc[HASTEMONST] += TRnd ( 55 ) + 12;
 			return;			/* haste monster */
 
 		case 11:
-			lprcat ( "\nSomething isn't right..." );
+			fl_display_message ( "\nSomething isn't right..." );
 
 			for ( i = 0; i < MAXY; i++ )
 				for ( j = 0; j < MAXX; j++ )
@@ -1394,7 +1394,7 @@ read_scroll ( int typ )
 			return;			/* stealth */
 
 		case 15:
-			lprcat ( "\nYou have been granted enlightenment!" );	/* magic mapping */
+			fl_display_message ( "\nYou have been granted enlightenment!" );	/* magic mapping */
 
 			for ( i = 0; i < MAXY; i++ )
 				for ( j = 0; j < MAXX; j++ )
@@ -1412,7 +1412,7 @@ read_scroll ( int typ )
 			return;			/* hold monster */
 
 		case 17:
-			lprcat ( "\nYou feel someone eyeing your belongings" );
+			fl_display_message ( "\nYou feel someone eyeing your belongings" );
 
 			for ( i = 0; i < 26; i++ )	/* gem perfection */
 				switch ( iven[i] )
@@ -1437,7 +1437,7 @@ read_scroll ( int typ )
 			break;
 
 		case 18:
-			lprcat ( "\nYou feel a twitch at the base of your skull" );
+			fl_display_message ( "\nYou feel a twitch at the base of your skull" );
 
 			for ( i = 0; i < 11; i++ )
 			{
@@ -1447,7 +1447,7 @@ read_scroll ( int typ )
 			break;
 
 		case 19:
-			lprcat ( "\nYou feel someone eyeing your belongings" );
+			fl_display_message ( "\nYou feel someone eyeing your belongings" );
 
 			for ( i = 0; i < 26; i++ )  	/* identify */
 			{
@@ -1465,7 +1465,7 @@ read_scroll ( int typ )
 			break;
 
 		case 20:
-			lprcat ( "\nYou sense a benign presence" );
+			fl_display_message ( "\nYou sense a benign presence" );
 
 			for ( i = 0; i < 10; i++ )	/* remove curse */
 				if ( cdesc[curse[i]] )
@@ -1485,7 +1485,7 @@ read_scroll ( int typ )
 			break;
 
 		case 23:
-			lprcat ( "\nYou sense a benign presence" );
+			fl_display_message ( "\nYou sense a benign presence" );
 			cdesc[LIFEPROT]++;
 			break;			/* life protection */
 	};
@@ -1518,7 +1518,7 @@ opit ( void )
 					if ( TRnd ( 101 ) < 20 )
 					{
 						i = 0;
-						lprcat
+						fl_display_message
 						( "\nYou fell into a pit!  Your fall is cushioned by an unknown force\n" );
 					}
 
@@ -1543,7 +1543,7 @@ opit ( void )
 static void
 obottomless ( void )
 {
-	lprcat ( "\nYou fell into a bottomless pit!" );
+	fl_display_message ( "\nYou fell into a bottomless pit!" );
 	nap ( 3000 );
 	died ( 262 );
 }
@@ -1558,20 +1558,20 @@ ostatue ( void )
 static void
 omirror ( void )
 {
-	lprcat ( "\nMirror mirror on the wall.." );
+	fl_display_message ( "\nMirror mirror on the wall.." );
 }
 
 static void
 obook ( void )
 {
-	lprcat ( "\nDo you " );
+	fl_display_message ( "\nDo you " );
 
 	if ( cdesc[BLINDCOUNT] == 0 )
 	{
-		lprcat ( "(r) read it, " );
+		fl_display_message ( "(r) read it, " );
 	}
 
-	lprcat ( "(t) take it" );
+	fl_display_message ( "(t) take it" );
 	iopts ();
 
 	for ( ;; )
@@ -1589,13 +1589,13 @@ obook ( void )
 					break;
 				}
 
-				lprcat ( "read" );
+				fl_display_message ( "read" );
 				/* no more book */ readbook ( iarg[playerx][playery] );
 				forget ();
 				return;
 
 			case 't':
-				lprcat ( "take" );
+				fl_display_message ( "take" );
 
 				if ( take ( OBOOK, iarg[playerx][playery] ) == 0 )
 				{
@@ -1610,14 +1610,14 @@ obook ( void )
 static void
 oprayerbook ( void )
 {
-	lprcat ( "\nDo you " );
+	fl_display_message ( "\nDo you " );
 
 	if ( cdesc[BLINDCOUNT] == 0 )
 	{
-		lprcat ( "(r) read it, " );
+		fl_display_message ( "(r) read it, " );
 	}
 
-	lprcat ( "(t) take it" );
+	fl_display_message ( "(t) take it" );
 	iopts ();
 
 	for ( ;; )
@@ -1635,13 +1635,13 @@ oprayerbook ( void )
 					break;
 				}
 
-				lprcat ( "read" );
+				fl_display_message ( "read" );
 				/* no more book */ readprayerbook ( iarg[playerx][playery] );
 				forget ();
 				return;
 
 			case 't':
-				lprcat ( "take" );
+				fl_display_message ( "take" );
 
 				if ( take ( OPRAYERBOOK, iarg[playerx][playery] ) == 0 )
 				{
@@ -1692,7 +1692,7 @@ readbook ( int lev )
 
 	if ( TRnd ( 10 ) == 4 )
 	{
-		lprcat ( "\nYour int went up by one!" );
+		fl_display_message ( "\nYour int went up by one!" );
 		cdesc[INTELLIGENCE]++;
 		bottomline ();
 	}
@@ -1737,7 +1737,7 @@ readprayerbook ( int lev )
 
 	if ( TRnd ( 10 ) == 4 )
 	{
-		lprcat ( "\nYour WISDOM has increased by one!" );
+		fl_display_message ( "\nYour WISDOM has increased by one!" );
 		cdesc[WISDOM]++;
 		bottomline ();
 	}
@@ -1746,7 +1746,7 @@ readprayerbook ( int lev )
 static void
 ocookie ( void )
 {
-	lprcat ( "\nDo you (e) eat it, (t) take it" );
+	fl_display_message ( "\nDo you (e) eat it, (t) take it" );
 	iopts ();
 
 	for ( ;; )
@@ -1759,12 +1759,12 @@ ocookie ( void )
 				return;
 
 			case 'e':
-				lprcat ( "eat" );
+				fl_display_message ( "eat" );
 				forget ();		/* no more cookie */
 				return;
 
 			case 't':
-				lprcat ( "take" );
+				fl_display_message ( "take" );
 
 				if ( take ( OCOOKIE, 0 ) == 0 )
 				{
@@ -1805,14 +1805,12 @@ ogold ( int arg )
 				i *= 10;
 			}
 
-	lprintf ( "\nIt is worth %d!", ( int ) i );
+	fl_display_message("\nIt is worth %d!", (int) i);
 	cdesc[GOLD] += i;
 	bottomgold ();
 	item[playerx][playery] = know[playerx][playery] =
 	                           0;	/* destroy gold    */
 }
-
-
 
 void
 ohome ( void )
@@ -1827,16 +1825,16 @@ ohome ( void )
 				 * dianthroritis from
 				 * inventory */
 				screen_clear();
-				lprcat
+				lprintf
 				( "Congratulations.  You found a potion of cure dianthroritis.\n" );
-				lprcat
+				lprintf
 				( "\nFrankly, No one thought you could do it.  Boy!  Did you surprise them!\n" );
 
 				if ( gtime > TIMELIMIT() )
 				{
-					lprcat
+					lprintf
 					( "\nThe doctor has the sad duty to inform you that your daughter died" );
-					lprcat
+					lprintf
 					( "\nbefore your return.  There was nothing he could do without the potion.\n" );
 					nap ( NAPTIME );
 					died ( 269 );
@@ -1844,15 +1842,15 @@ ohome ( void )
 
 				else
 				{
-					lprcat
+					lprintf
 					( "\nThe doctor is now administering the potion, and in a few moments\n" );
-					lprcat
+					lprintf
 					( "your daughter should be well on her way to recovery.\n" );
 					nap ( NAPTIME );
-					lprcat ( "\nThe potion is" );
+					lprintf ( "\nThe potion is" );
 					nap ( NAPTIME );
-					lprcat ( " working!  The doctor thinks that\n" );
-					lprcat
+					lprintf ( " working!  The doctor thinks that\n" );
+					lprintf
 					( "your daughter will recover in a few days.  Congratulations!\n" );
 					nap ( NAPTIME );
 					died ( 263 );
@@ -1867,29 +1865,29 @@ ohome ( void )
 
 		if ( gtime > TIMELIMIT() )
 		{
-			lprcat
+			lprintf
 			( "\nThe doctor has the sad duty to inform you that your daughter died!\n" );
-			lprcat
+			lprintf
 			( "You didn't make it in time.  There was nothing he could do without the potion.\n" );
 			nap ( NAPTIME );
 			died ( 269 );
 		}
 
-		lprcat
+		lprintf
 		( "\nThe diagnosis is confirmed as dianthroritis.  He guesses that\n" );
 		lprintf
 		( "your daughter has only %d mobuls left in this world.  It's up to you,\n",
 		  ( ( TIMELIMIT() - gtime + 99 ) / 100 ) );
 		lprintf ( "%s, to find the only hope for your daughter, the very rare\n",
 		          logname );
-		lprcat
+		lprintf
 		( "potion of cure dianthroritis.  It is rumored that only deep in the\n" );
-		lprcat ( "depths of the caves can this potion be found.\n\n\n" );
-		lprcat ( "\n     ----- press " );
+		lprintf ( "depths of the caves can this potion be found.\n\n\n" );
+		lprintf ( "\n     ----- press " );
 		lstandout ( "return" );
-		lprcat ( " to continue, " );
+		lprintf ( " to continue, " );
 		lstandout ( "escape" );
-		lprcat ( " to leave ----- " );
+		lprintf ( " to leave ----- " );
 		i = ttgetch ();
 
 		while ( i != '\33' && i != '\n' )
@@ -1908,14 +1906,14 @@ ohome ( void )
 void
 iopts ( void )
 {
-	lprcat ( ", or (i) ignore it? " );
+	fl_display_message ( ", or (i) ignore it? " );
 }
 
 
 void
 ignore ( void )
 {
-	lprcat ( "ignore\n" );
+	fl_display_message ( "ignore\n" );
 }
 
 
@@ -1929,7 +1927,7 @@ static void
 prompt_enter ( void )
 {
 	char i;
-	lprcat ( "\nDo you (g) go inside, or (i) stay here? " );
+	fl_display_message ( "\nDo you (g) go inside, or (i) stay here? " );
 	i = 0;
 
 	while ( ( i != 'g' ) && ( i != 'i' ) && ( i != '\33' ) )
@@ -1944,7 +1942,7 @@ prompt_enter ( void )
 
 	else
 	{
-		lprcat ( " stay here" );
+		fl_display_message ( " stay here" );
 	}
 }
 
@@ -1962,16 +1960,16 @@ static void
 prompt_volshaft ( int dir )
 {
 	char i;
-	lprcat ( "\nDo you (c) climb " );
+	fl_display_message ( "\nDo you (c) climb " );
 
 	if ( dir > 0 )
 	{
-		lprcat ( "up" );
+		fl_display_message ( "up" );
 	}
 
 	else
 	{
-		lprcat ( "down" );
+		fl_display_message ( "down" );
 	}
 
 	iopts ();
@@ -2006,7 +2004,7 @@ static void
 o_open_door ( void )
 {
 	char i;
-	lprcat ( "\nDo you (c) close it" );
+	fl_display_message ( "\nDo you (c) close it" );
 	iopts ();
 	i = 0;
 
@@ -2021,7 +2019,7 @@ o_open_door ( void )
 		return;
 	}
 
-	lprcat ( "close" );
+	fl_display_message ( "close" );
 	forget ();
 	item[playerx][playery] = OCLOSEDDOOR;
 	iarg[playerx][playery] = 0;
@@ -2035,7 +2033,7 @@ static void
 o_closed_door ( void )
 {
 	char i;
-	lprcat ( "\nDo you (o) try to open it" );
+	fl_display_message ( "\nDo you (o) try to open it" );
 	iopts ();
 	i = 0;
 
@@ -2054,7 +2052,7 @@ o_closed_door ( void )
 
 	else
 	{
-		lprcat ( "open" );
+		fl_display_message ( "open" );
 
 		/*
 		 * if he failed to open the door ...

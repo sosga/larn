@@ -24,7 +24,7 @@ genmonst()         Function to ask for monster and genocide from game
 #include "../includes/create.h"
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/io.h"
@@ -88,19 +88,19 @@ cast ( void )
 	if ( cdesc[SPELLS] <= 0 )
 	{
 		move ( 10, 19 );
-		lprcat ( "\nYou don't have any spells!" );
+		fl_display_message ( "\nYou don't have any spells!" );
 		refresh();
 		return;
 	}
 
-	lprcat ( eys );
+	fl_display_message ( eys );
 	--cdesc[SPELLS];
 
 	while ( ( a = ttgetch () ) == 'I' )
 	{
 		seemagic ( -1 );
 		cursors ();
-		lprcat ( eys );
+		fl_display_message ( eys );
 	}
 
 	if ( a == '\33' )
@@ -116,7 +116,7 @@ cast ( void )
 	if ( ( d = ttgetch () ) == '\33' )
 	{
 	over:
-		lprcat ( aborted );
+		fl_display_message ( aborted );
 		cdesc[SPELLS]++;
 		return;
 	}				/*  to escape casting a spell   */
@@ -134,7 +134,7 @@ cast ( void )
 
 	if ( j == -1 )
 	{
-		lprcat ( "Nothing Happened" );
+		fl_display_message ( "Nothing Happened" );
 	}
 
 	bottomline ();
@@ -155,6 +155,7 @@ speldamage ( int x )
 	int i, j, clev;
 	int xl, xh, yl, yh;
 	int *kn, *pm, *p;
+	HitMonster hitpoints;
 
 	if ( x >= SPNUM )
 	{
@@ -163,7 +164,7 @@ speldamage ( int x )
 
 	if ( cdesc[TIMESTOP] )
 	{
-		lprcat ( "  It didn't seem to work" );
+		fl_display_message ( "  It didn't seem to work" );
 		return;
 	}				/* not if time stopped */
 
@@ -171,13 +172,13 @@ speldamage ( int x )
 
 	if ( ( TRnd ( 23 ) == 7 ) || ( TRnd ( 18 ) > cdesc[INTELLIGENCE] ) )
 	{
-		lprcat ( "  It didn't work!" );
+		fl_display_message ( "  It didn't work!" );
 		return;
 	}
 
 	if ( clev * 3 + 2 < x )
 	{
-		lprcat ( "  Nothing happens.  You seem inexperienced at this" );
+		fl_display_message ( "  Nothing happens.  You seem inexperienced at this" );
 		return;
 	}
 
@@ -214,7 +215,7 @@ speldamage ( int x )
 		case 3:
 			i = TRnd ( 3 ) + 1;
 			/*Fix for bug #24 added newlines to the 'msg' for web and sleep spells.
-			Removed the msg and used lprcat instead plus color. ~Gibbon*/
+			Removed the msg and used fl_display_message instead plus color. ~Gibbon*/
 			direct ( x, fullhit ( i ),
 			         "\nwhile the %s slept, you hit %d times ",
 			         i );	/*    sleep   */
@@ -284,7 +285,7 @@ speldamage ( int x )
 
 			else
 			{
-				lprcat ( "\n It didn't believe the illusions!" );
+				fl_display_message ( "\n It didn't believe the illusions!" );
 			}
 
 			return;
@@ -377,7 +378,7 @@ speldamage ( int x )
 					{
 						case XORN:
 							ifblind ( i, j );
-							hitm ( i, j, 200 );
+							hitpoints.hitm ( i, j, 200 );
 							break;		/* Xorn takes damage from vpr */
 					}
 				}
@@ -420,7 +421,7 @@ speldamage ( int x )
 		case 26:
 			if ( TRnd ( 151 ) == 63 )
 			{
-				lprcat ( "\nYour heart stopped!\n" );
+				fl_display_message ( "\nYour heart stopped!\n" );
 				nap ( NAPTIME );
 				died ( 270 );
 				return;
@@ -431,7 +432,7 @@ speldamage ( int x )
 				         0 );	/* finger of death */
 			else
 			{
-				lprcat ( " It didn't work" );
+				fl_display_message ( " It didn't work" );
 			}
 
 			return;
@@ -463,7 +464,7 @@ speldamage ( int x )
 			if ( ( TRnd ( 23 ) == 5 )
 			     && ( wizard == 0 ) )  	/* sphere of annihilation */
 			{
-				lprcat ( "\n You have been enveloped by the zone of nothingness!\n" );
+				fl_display_message ( "\n You have been enveloped by the zone of nothingness!\n" );
 				nap ( NAPTIME );
 				died ( 258 );
 				return;
@@ -491,13 +492,13 @@ speldamage ( int x )
 
 			if ( TRnd ( 100 ) > 15 )
 			{
-				lprcat ( " Nothing seems to have happened" );
+				fl_display_message ( " Nothing seems to have happened" );
 				return;
 			}
 
-			lprcat ( " The" );
-			lprcat ( " demon " );
-			lprcat ( "turned on you and vanished!" );
+			fl_display_message ( " The" );
+			fl_display_message ( " demon " );
+			fl_display_message ( "turned on you and vanished!" );
 			i = TRnd ( 40 ) + 30;
 			lastnum = 277;
 			losehp ( i );		/* must say killed by a demon */
@@ -518,7 +519,7 @@ speldamage ( int x )
 
 				if ( save == NULL )
 				{
-					lprcat ( "\n Polinneaus won't let you mess with his dungeon!" );
+					fl_display_message ( "\n Polinneaus won't let you mess with his dungeon!" );
 					return;
 				}
 
@@ -685,7 +686,7 @@ isconfuse ( void )
 {
 	if ( cdesc[CONFUSE] )
 	{
-		lprcat ( " You can't aim your magic!" );
+		fl_display_message ( " You can't aim your magic!" );
 	}
 
 	return ( cdesc[CONFUSE] );
@@ -772,6 +773,7 @@ direct ( int spnum, int dam, const char* str, int arg )
 {
 	int x, y;
 	int m;
+	HitMonster hitpoints;
 
 	/* bad arguments */
 	if ( spnum < 0 || spnum >= SPNUM || str == NULL )
@@ -791,7 +793,7 @@ direct ( int spnum, int dam, const char* str, int arg )
 	{
 		if ( spnum == 3 )  	/* sleep */
 		{
-			lprcat ( "You fall asleep! " );
+			fl_display_message ( "You fall asleep! " );
 		fool:
 			arg += 2;
 
@@ -807,7 +809,7 @@ direct ( int spnum, int dam, const char* str, int arg )
 		else
 			if ( spnum == 6 )  	/* web */
 			{
-				lprcat ( "You get stuck in your own web! " );
+				fl_display_message ( "You get stuck in your own web! " );
 				goto fool;
 			}
 
@@ -822,7 +824,7 @@ direct ( int spnum, int dam, const char* str, int arg )
 
 	if ( m == 0 )
 	{
-		lprcat ( "  There wasn't anything there!" );
+		fl_display_message ( "  There wasn't anything there!" );
 		return;
 	}
 
@@ -836,7 +838,7 @@ direct ( int spnum, int dam, const char* str, int arg )
 	}
 
 	lprintf ( str, lastmonst, ( int ) arg );
-	hitm ( x, y, dam );
+	hitpoints.hitm ( x, y, dam );
 }
 
 
@@ -860,6 +862,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
 	int *p;
 	int x, y, m;
 	int dx, dy;
+	HitMonster hitpoints;
 
 	/* bad args */
 	if ( spnum < 0 || spnum >= SPNUM || str == 0 || delay < 0 )
@@ -897,7 +900,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
 		if ( ( x == playerx ) && ( y == playery ) )
 		{
 			cursors ();
-			lprcat ( "\nYou are hit by your own magic!" );
+			fl_display_message ( "\nYou are hit by your own magic!" );
 			lastnum = 278;
 			losehp ( dam );
 			return;
@@ -929,10 +932,11 @@ godirect ( int spnum, int dam, const char *str, int delay,
 			cursors ();
 			lprc ( '\n' );
 			lprintf ( str, lastmonst );
-			hitm(x,y,dam);
-			show1cell ( x, y );
-			//x -= dx;
-			//y -= dy;
+			hitpoints.hitm(x,y,dam);
+			dam -= hitpoints.hitm(x, y, dam);
+			show1cell(x, y);
+			x -= dx;
+			y -= dy;
 		}
 
 		else
@@ -950,7 +954,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
 					  level < MAXLEVEL + MAXVLEVEL - 1 &&
 					  x < MAXX - 1 && y < MAXY - 1 && x != 0 && y != 0 )
 					{
-						lprcat ( "  The wall crumbles" );
+						fl_display_message ( "  The wall crumbles" );
 						*p = 0;
 						know[x][y] = 0;
 						show1cell ( x, y );
@@ -966,7 +970,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
 
 					if ( dam >= 40 )
 					{
-						lprcat ( "  The door is blasted apart" );
+						fl_display_message ( "  The door is blasted apart" );
 						*p = 0;
 						know[x][y] = 0;
 						show1cell ( x, y );
@@ -983,7 +987,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
 					if ( cdesc[HARDGAME] < 3 )
 						if ( dam > 44 )
 						{
-							lprcat ( "  The statue crumbles" );
+							fl_display_message ( "  The statue crumbles" );
 							*p = OPRAYERBOOK;
 							iarg[x][y] = level;
 							know[x][y] = 0;
@@ -1130,7 +1134,7 @@ tdirect ( int spnum )
 
 	if ( m == 0 )
 	{
-		lprcat ( "  There wasn't anything there!" );
+		fl_display_message ( "  There wasn't anything there!" );
 		return;
 	}
 
@@ -1164,6 +1168,7 @@ static void
 omnidirect ( int spnum, int dam, const char *str )
 {
 	int x, y, m;
+	HitMonster hitpoints;
 
 	/* bad args */
 	if ( spnum < 0 || spnum >= SPNUM || str == 0 )
@@ -1188,7 +1193,7 @@ omnidirect ( int spnum, int dam, const char *str )
 				cursors ();
 				lprc ( '\n' );
 				lprintf ( str, lastmonst );
-				hitm ( x, y, dam );
+				hitpoints.hitm ( x, y, dam );
 				nap ( NAPTIME );
 			}
 
@@ -1214,7 +1219,7 @@ int
 dirsub ( int *x, int *y )
 {
 	int i;
-	lprcat ( "\nIn What Direction? " );
+	fl_display_message ( "\nIn What Direction? " );
 
 	for ( i = 0;; )
 	{
@@ -1285,7 +1290,7 @@ dirpoly ( int spnum )
 
 	if ( mitem[x][y] == 0 )
 	{
-		lprcat ( "  There wasn't anything there!" );
+		fl_display_message ( "  There wasn't anything there!" );
 		return;
 	}
 
@@ -1361,7 +1366,7 @@ annihilate ( void )
 
 	if ( k > 0 )
 	{
-		lprcat ( "\nYou hear loud screams of agony!" );
+		fl_display_message ( "\nYou hear loud screams of agony!" );
 		raiseexperience ( k );
 	}
 }
@@ -1378,7 +1383,7 @@ genmonst ( void )
 {
 	int i, j;
 	cursors ();
-	lprcat ( "\nGenocide what monster? " );
+	fl_display_message ( "\nGenocide what monster? " );
 
 	for ( i = 0; !isalpha ( i ) && i != ' '; i = ttgetch () )
 	{
@@ -1404,5 +1409,5 @@ genmonst ( void )
 		}
 	}
 
-	lprcat ( "  You sense failure!" );
+	fl_display_message ( "  You sense failure!" );
 }

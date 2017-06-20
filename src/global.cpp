@@ -38,7 +38,7 @@
 
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/inventory.h"
@@ -108,9 +108,8 @@ raiseexperience ( long x )
 
 	if ( cdesc[LEVEL] != i )
 	{
-		cursors ();
-		lprintf ( "\nWelcome to level %d",
-		          ( int ) cdesc[LEVEL] );	/* if we changed levels */
+		cursors();
+		fl_display_message("\nWelcome to level %d",(int) cdesc[LEVEL]);	/* if we changed levels */
 	}
 
 	bottomline ();
@@ -179,7 +178,7 @@ losehp ( int x )
 {
 	if ( ( cdesc[HP] -= x ) <= 0 )
 	{
-		lprcat ( "\nYou have been slain." );
+		fl_display_message ( "\nYou have been slain." );
 		nap ( NAPTIME );
 		died ( lastnum );
 	}
@@ -337,7 +336,7 @@ positionplayer ( void )
 			}
 		}
 	if (pp_try == 0)	 
-		lprcat("Failure in positionplayer()\n");
+		fl_display_message("Failure in positionplayer()\n");
 }
 
 
@@ -518,7 +517,7 @@ quit ( void )
 	int i;
 	cursors ();
 	strcpy ( lastmonst, "" );
-	lprcat ( "\nDo you really want to quit (all progress will be lost)?" );
+	fl_display_message ( "\nDo you really want to quit (all progress will be lost)?" );
 
 	for ( ;; )
 	{
@@ -532,7 +531,7 @@ quit ( void )
 
 		if ( ( i == 'n' ) || ( i == 'N' ) || ( i == '\33' ) )
 		{
-			lprcat ( " no" );
+			fl_display_message ( " no" );
 			lflush ();
 			return;
 		}
@@ -550,13 +549,13 @@ int
 more ( char select_allowed )
 {
 	int i;
-	lprcat ( "\n  --- press " );
+	fl_display_message ( "\n  --- press " );
 	lstandout ( "space" );
-	lprcat ( " to continue --- " );
+	fl_display_message ( " to continue --- " );
 
 	if ( select_allowed )
 	{
-		lprcat ( "letter to select --- " );
+		fl_display_message ( "letter to select --- " );
 	}
 
 	for ( ;; )
@@ -601,7 +600,7 @@ enchantarmor ( void )
 		if ( cdesc[SHIELD] < 0 )
 		{
 			cursors ();
-			lprcat ( "\nYou feel a sense of loss" );
+			fl_display_message ( "\nYou feel a sense of loss" );
 			return;
 		}
 
@@ -641,7 +640,7 @@ enchweapon ( void )
 	if ( cdesc[WIELD] < 0 )
 	{
 		cursors ();
-		lprcat ( "\nYou feel a sense of loss" );
+		fl_display_message ( "\nYou feel a sense of loss" );
 		return;
 	}
 

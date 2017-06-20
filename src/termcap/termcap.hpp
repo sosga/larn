@@ -1,4 +1,3 @@
-#define MAXARGS 2
 class Termcap
 {
 public:
@@ -6,3 +5,4 @@ public:
 };
 void term_conversion(void);
 
+inline const int MAXARGS = 2;

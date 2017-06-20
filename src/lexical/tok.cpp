@@ -29,13 +29,11 @@ sethard()
 
 #include "../config/larncons.h"
 #include "../config/data.h"
-#include "../config/larnfunc.h"
+#include "../templates/math.t.hpp"
 #include "tok.hpp"
 #include "../../includes/display.h"
 #include "../../includes/io.h"
 #include "../../includes/scores.h"
-
-#define CHKPTINT 400
 
 static char larn_final_k = 0;
 int y_larn_rep = 0;
@@ -90,7 +88,7 @@ yylex(void)
 				cursors();
 				if (first_time)
 				{
-					lprcat ("\n");
+					fl_display_message ("\n");
 				}
 				lprintf("count: %d", (int) y_larn_rep);
 				first_time = 0;

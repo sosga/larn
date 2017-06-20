@@ -49,7 +49,7 @@
 #include "terminal/term.hpp"
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include <stdio.h>
 #include "../includes/display.h"
 #include "../includes/global.h"
@@ -291,6 +291,7 @@ void
 hitmonster ( int x, int y )
 {
 	int tmp, monst, flag, damag = 0;
+	HitMonster hitpoints;
 
 	if ( cdesc[TIMESTOP] )
 	{
@@ -314,7 +315,7 @@ hitmonster ( int x, int y )
 	     || ( TRnd ( 71 ) <
 	          5 ) )  	/* need at least random chance to hit */
 	{
-		lprcat ( "\nYou hit" );
+		fl_display_message ( "\nYou hit" );
 		flag = 1;
 		damag = fullhit ( 1 );
 
@@ -326,12 +327,12 @@ hitmonster ( int x, int y )
 
 	else
 	{
-		lprcat ( "\nYou missed" );
+		fl_display_message ( "\nYou missed" );
 		flag = 0;
 	}
 
-	lprcat ( " the " );
-	lprcat ( lastmonst );
+	fl_display_message ( " the " );
+	fl_display_message ( lastmonst );
 
 	if ( flag )			/* if the monster was hit */
 		if ( ( monst == RUSTMONSTER ) || ( monst == DISENCHANTRESS )
@@ -363,7 +364,7 @@ hitmonster ( int x, int y )
 
 	if ( flag )
 	{
-		hitm ( x, y, damag );
+		hitpoints.hitm ( x, y, damag );
 	}
 
 	if ( monst == VAMPIRE )
@@ -383,7 +384,7 @@ hitmonster ( int x, int y )
 *  This routine is used to specifically damage a monster at a location (x,y)
 *  Called by hitmonster(x,y)
 */
-hitm::hitm(int x, int y, int amt)
+HitMonster::hitm(int x, int y, int amt)
 {
 	int monst;
 	vxy ( &x, &y );			/* verify coordinates are within range */
@@ -443,11 +444,11 @@ hitm::hitm(int x, int y, int amt)
 		dropsomething ( monst );
 		disappear ( x, y );
 		bottomline ();
-		return;
+		return 0;
 	}
 
 	hitp[x][y] = hpoints - amt;
-	return;
+	return 0;
 }
 
 
@@ -721,14 +722,14 @@ newobject ( int lev, int *i )
 		case 2:
 		case 3:
 		case 4:			/* scroll */
-			*i = NewScroll();
+			*i = scroll_probability[TRund(81)];
 			break;
 
 		case 5:
 		case 6:
 		case 7:
 		case 8:			/* potion */
-			*i = newpotion ();
+			*i = potion_probability[TRund(41)];
 			break;
 
 		case 9:
@@ -747,8 +748,9 @@ newobject ( int lev, int *i )
 
 		case 17:
 		case 18:
-		case 19:			/* dagger */
-			hacktmp = ( *i = newdagger () );
+		case 19:
+		/* Return + points on new daggers */
+			hacktmp = (*i = ndgg[TRund(13)]);
 
 			if ( !hacktmp )
 			{
@@ -759,8 +761,9 @@ newobject ( int lev, int *i )
 
 		case 20:
 		case 21:
-		case 22:			/* leather armor */
-			hacktmp = ( *i = newleather () );
+		case 22:
+		/* Return the + points on created leather armor */
+			hacktmp = (*i = nlpts[TRund(cdesc[HARDGAME]?13:15)]);
 
 			if ( !hacktmp )
 			{
@@ -821,16 +824,19 @@ newobject ( int lev, int *i )
 			*i = 0;
 			break;
 
-		case 35:			/* chain mail */
-			*i = newchain ();
+		case 35:
+		/* Return the + points on chain armor */
+			*i = nch[TRund(10)];
 			break;
 
-		case 40:			/* plate mail */
-			*i = newplate ();
+		case 40:
+		/* Return + points on plate armor */
+			*i = nplt[TRund(cdesc[HARDGAME]?4:12)];
 			break;
 
-		case 41:			/* longsword */
-			*i = newsword ();
+		case 41:
+		/* Return + points on new swords */
+			*i = nsw[TRund(cdesc[HARDGAME]?6:13)];
 			break;
 	}
 
@@ -871,7 +877,7 @@ newobject ( int lev, int *i )
 *  special array for maximum rust damage to armor from rustmonster
 *  format is: { armor type , minimum attribute
 */
-#define ARMORTYPES 6
+
 static int rustarm[ARMORTYPES][2] =
 {
 
@@ -1121,7 +1127,7 @@ spattack ( int x, int xx, int yy )
 
 			if ( stealsomething () == 0 )
 			{
-				lprcat ( " nothing" );
+				fl_display_message ( " nothing" );
 			}
 
 			disappear ( xx, yy );

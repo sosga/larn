@@ -26,7 +26,7 @@ pray_at_altar()
 #include "../includes/action.h"
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "../includes/create.h"
 #include "../includes/display.h"
 #include "../includes/global.h"
@@ -51,7 +51,7 @@ static void move_cursor ( int *, int *, int );
 void
 oaltar ( void )
 {
-	lprcat ( "\nDo you (p) pray  (d) desecrate" );
+	fl_display_message ( "\nDo you (p) pray  (d) desecrate" );
 	iopts ();
 
 	for ( ;; )
@@ -59,20 +59,20 @@ oaltar ( void )
 		switch ( ttgetch () )
 		{
 			case 'p':
-				lprcat ( " pray\nDo you (m) give money, (t) give thanks or (j) just pray? " );
+				fl_display_message ( " pray\nDo you (m) give money, (t) give thanks or (j) just pray? " );
 
 				for ( ;; )
 					switch ( ttgetch () )
 					{
 						case 'j':
-							lprcat ( "\n" );
+							fl_display_message ( "\n" );
 							act_just_pray ();
 							return;
 						
 						case 't':
-							lprcat ( "\n" );
+							fl_display_message ( "\n" );
 							act_give_thanks();
-							lprcat("\nThe Altar descends into the floor and vanishes before your eyes!");
+							fl_display_message("\nThe Altar descends into the floor and vanishes before your eyes!");
 							forget();
 							return;
 
@@ -85,7 +85,7 @@ oaltar ( void )
 					};
 
 			case 'd':
-				lprcat ( " desecrate" );
+				fl_display_message ( " desecrate" );
 				act_desecrate_altar ();
 				return;
 
@@ -106,7 +106,7 @@ subroutine to process a throne object
 void
 othrone ( int arg )
 {
-	lprcat ( "\nDo you (p) pry off jewels, (s) sit down" );
+	fl_display_message ( "\nDo you (p) pry off jewels, (s) sit down" );
 	iopts ();
 
 	for ( ;; )
@@ -116,12 +116,12 @@ othrone ( int arg )
 			switch ( ttgetch () )
 			{
 				case 'p':
-					lprcat ( " pry off" );
+					fl_display_message ( " pry off" );
 					act_remove_gems ( arg );
 					return;
 
 				case 's':
-					lprcat ( " sit down" );
+					fl_display_message ( " sit down" );
 					act_sit_throne ( arg );
 					return;
 
@@ -139,7 +139,7 @@ othrone ( int arg )
 void
 odeadthrone ( void )
 {
-	lprcat ( "\nDo you (s) sit down" );
+	fl_display_message ( "\nDo you (s) sit down" );
 	iopts ();
 
 	for ( ;; )
@@ -149,7 +149,7 @@ odeadthrone ( void )
 			switch ( ttgetch () )
 			{
 				case 's':
-					lprcat ( " sit down" );
+					fl_display_message ( " sit down" );
 					act_sit_throne ( 1 );
 					return;
 
@@ -170,7 +170,7 @@ odeadthrone ( void )
 void
 ochest ( void )
 {
-	lprcat ( "\nDo you (t) take it, (o) try to open it" );
+	fl_display_message ( "\nDo you (t) take it, (o) try to open it" );
 	iopts ();
 
 	for ( ;; )
@@ -178,12 +178,12 @@ ochest ( void )
 		switch ( ttgetch () )
 		{
 			case 'o':
-				lprcat ( " open it" );
+				fl_display_message ( " open it" );
 				act_open_chest ( playerx, playery );
 				return;
 
 			case 't':
-				lprcat ( " take" );
+				fl_display_message ( " take" );
 
 				if ( take ( OCHEST, iarg[playerx][playery] ) == 0 )
 				{
@@ -209,7 +209,7 @@ void
 ofountain ( void )
 {
 	cursors ();
-	lprcat ( "\nDo you (d) drink, (w) wash yourself" );
+	fl_display_message ( "\nDo you (d) drink, (w) wash yourself" );
 	iopts ();
 
 	for ( ;; )
@@ -247,32 +247,32 @@ fntchange ( int how )
 	switch ( TRnd ( 9 ) )
 	{
 		case 1:
-			lprcat ( "Your strength" );
+			fl_display_message ( "Your strength" );
 			fch ( how, &cdesc[STRENGTH] );
 			break;
 
 		case 2:
-			lprcat ( "Your intelligence" );
+			fl_display_message ( "Your intelligence" );
 			fch ( how, &cdesc[INTELLIGENCE] );
 			break;
 
 		case 3:
-			lprcat ( "Your wisdom" );
+			fl_display_message ( "Your wisdom" );
 			fch ( how, &cdesc[WISDOM] );
 			break;
 
 		case 4:
-			lprcat ( "Your constitution" );
+			fl_display_message ( "Your constitution" );
 			fch ( how, &cdesc[CONSTITUTION] );
 			break;
 
 		case 5:
-			lprcat ( "Your dexterity" );
+			fl_display_message ( "Your dexterity" );
 			fch ( how, &cdesc[DEXTERITY] );
 			break;
 
 		case 6:
-			lprcat ( "Your charm" );
+			fl_display_message ( "Your charm" );
 			fch ( how, &cdesc[CHARISMA] );
 			break;
 
@@ -285,7 +285,7 @@ fntchange ( int how )
 
 				if ( j > 1 )
 				{
-					lprcat ( "s!" );
+					fl_display_message ( "s!" );
 				}
 
 				else
@@ -302,7 +302,7 @@ fntchange ( int how )
 
 				if ( j > 1 )
 				{
-					lprcat ( "s!" );
+					fl_display_message ( "s!" );
 				}
 
 				else
@@ -326,7 +326,7 @@ fntchange ( int how )
 
 				if ( j > 1 )
 				{
-					lprcat ( "s!" );
+					fl_display_message ( "s!" );
 				}
 
 				else
@@ -342,7 +342,7 @@ fntchange ( int how )
 
 				if ( j > 1 )
 				{
-					lprcat ( "s!" );
+					fl_display_message ( "s!" );
 				}
 
 				else
@@ -363,7 +363,7 @@ fntchange ( int how )
 
 				if ( j > 1 )
 				{
-					lprcat ( "s!" );
+					fl_display_message ( "s!" );
 				}
 
 				else
@@ -380,7 +380,7 @@ fntchange ( int how )
 
 				if ( j > 1 )
 				{
-					lprcat ( "s!" );
+					fl_display_message ( "s!" );
 				}
 
 				else
@@ -407,13 +407,13 @@ fch ( int how, long *x )
 {
 	if ( how < 0 )
 	{
-		lprcat ( " went down by one!" );
+		fl_display_message ( " went down by one!" );
 		-- ( *x );
 	}
 
 	else
 	{
-		lprcat ( " went up by one!" );
+		fl_display_message ( " went up by one!" );
 		( *x )++;
 	}
 
@@ -432,13 +432,13 @@ drink_fountain ( void )
 
 	if ( item[playerx][playery] == ODEADFOUNTAIN )
 	{
-		lprcat ( "\nThere is no water to drink!" );
+		fl_display_message ( "\nThere is no water to drink!" );
 	}
 
 	else
 		if ( item[playerx][playery] != OFOUNTAIN )
 		{
-			lprcat ( "\nI see no fountain to drink from here!" );
+			fl_display_message ( "\nI see no fountain to drink from here!" );
 		}
 
 		else
@@ -462,13 +462,13 @@ wash_fountain ( void )
 
 	if ( item[playerx][playery] == ODEADFOUNTAIN )
 	{
-		lprcat ( "\nThere is no water to wash in!" );
+		fl_display_message ( "\nThere is no water to wash in!" );
 	}
 
 	else
 		if ( item[playerx][playery] != OFOUNTAIN )
 		{
-			lprcat ( "\nI see no fountain to wash at here!" );
+			fl_display_message ( "\nI see no fountain to wash at here!" );
 		}
 
 		else
@@ -534,7 +534,7 @@ enter ( void )
 			break;
 
 		default:
-			lprcat ( "\nThere is no place to enter here!\n" );
+			fl_display_message ( "\nThere is no place to enter here!\n" );
 			break;
 	}
 }
@@ -551,7 +551,7 @@ remove_gems ( void )
 
 	if ( item[playerx][playery] == ODEADTHRONE )
 	{
-		lprcat ( "\nThere are no gems to remove!" );
+		fl_display_message ( "\nThere are no gems to remove!" );
 	}
 
 	else
@@ -568,7 +568,7 @@ remove_gems ( void )
 
 			else
 			{
-				lprcat ( "\nI see no throne here to remove gems from!" );
+				fl_display_message ( "\nI see no throne here to remove gems from!" );
 			}
 
 	return;
@@ -598,7 +598,7 @@ sit_on_throne ( void )
 
 		else
 		{
-			lprcat ( "\nI see no throne to sit on here!" );
+			fl_display_message ( "\nI see no throne to sit on here!" );
 		}
 
 	return;
@@ -617,7 +617,7 @@ up_stairs ( void )
 
 	if ( item[playerx][playery] == OSTAIRSDOWN )
 	{
-		lprcat ( "\nThe stairs don't go up!" );
+		fl_display_message ( "\nThe stairs don't go up!" );
 	}
 
 	else
@@ -629,7 +629,7 @@ up_stairs ( void )
 		else
 			if ( item[playerx][playery] != OSTAIRSUP )
 			{
-				lprcat ( "\nI see no way to go up here!" );
+				fl_display_message ( "\nI see no way to go up here!" );
 			}
 
 			else
@@ -652,7 +652,7 @@ down_stairs ( void )
 
 	if ( item[playerx][playery] == OSTAIRSUP )
 	{
-		lprcat ( "\nThe stairs don't go down!" );
+		fl_display_message ( "\nThe stairs don't go down!" );
 	}
 
 	else
@@ -664,7 +664,7 @@ down_stairs ( void )
 		else
 			if ( item[playerx][playery] != OSTAIRSDOWN )
 			{
-				lprcat ( "\nI see no way to go down here!" );
+				fl_display_message ( "\nI see no way to go down here!" );
 			}
 
 			else
@@ -689,7 +689,7 @@ open_something ( void )
 	 */
 	if ( cdesc[CONFUSE] )
 	{
-		lprcat ( "You're too confused!" );
+		fl_display_message ( "You're too confused!" );
 		return;
 	}
 
@@ -699,7 +699,7 @@ open_something ( void )
 	 */
 	if ( item[playerx][playery] == OCHEST )
 	{
-		lprcat ( "There is a chest here.  Open it?" );
+		fl_display_message ( "There is a chest here.  Open it?" );
 
 		if ( ( tempc = getyn () ) == 'y' )
 		{
@@ -724,7 +724,7 @@ open_something ( void )
 	switch ( item[x][y] )
 	{
 		case OOPENDOOR:
-			lprcat ( "The door is already open!" );
+			fl_display_message ( "The door is already open!" );
 			break;
 
 		case OCHEST:
@@ -737,7 +737,7 @@ open_something ( void )
 
 		/* This message is rephrased to handle other scenarios. -Gibbon */
 		default:
-			lprcat ( "\nNothing happens.." );
+			fl_display_message ( "\nNothing happens.." );
 			break;
 	}
 }
@@ -758,7 +758,7 @@ close_something ( void )
 	 */
 	if ( cdesc[CONFUSE] )
 	{
-		lprcat ( "You're too confused!" );
+		fl_display_message ( "You're too confused!" );
 		return;
 	}
 
@@ -770,13 +770,13 @@ close_something ( void )
 	switch ( item[x][y] )
 	{
 		case OCLOSEDDOOR:
-			lprcat ( "The door is already closed!" );
+			fl_display_message ( "The door is already closed!" );
 			break;
 
 		case OOPENDOOR:
 			if ( mitem[x][y] )
 			{
-				lprcat ( "Theres a monster in the way!" );
+				fl_display_message ( "Theres a monster in the way!" );
 				return;
 			}
 
@@ -786,7 +786,7 @@ close_something ( void )
 			break;
 
 		default:
-			lprcat ( "You can't close that!" );
+			fl_display_message ( "You can't close that!" );
 			break;
 	}
 }
@@ -809,7 +809,7 @@ desecrate_altar ( void )
 
 	else
 	{
-		lprcat ( "\nI see no altar to desecrate here!" );
+		fl_display_message ( "\nI see no altar to desecrate here!" );
 	}
 }
 
@@ -827,7 +827,7 @@ pray_at_altar ( void )
 
 	if ( item[playerx][playery] != OALTAR )
 	{
-		lprcat ( "\nI see no altar to pray at here!" );
+		fl_display_message ( "\nI see no altar to pray at here!" );
 	}
 
 	else
@@ -847,7 +847,7 @@ void
 specify_object ( void )
 {
 	cursors ();
-	lprcat ( "\nIdentify unknown object by cursor [ynq]?" );
+	fl_display_message ( "\nIdentify unknown object by cursor [ynq]?" );
 
 	for ( ;; )
 	{
@@ -880,7 +880,7 @@ specify_obj_nocurs ( void )
 {
 	char i;
 	int j, flag;
-	lprcat ( "\nType object character:" );
+	fl_display_message ( "\nType object character:" );
 
 	switch ( i = ttgetch () )
 	{
@@ -941,8 +941,8 @@ specify_obj_cursor ( void )
 {
 	int objx, objy;
 	int i;
-	lprcat ( "\nMove the cursor to an unknown item." );
-	lprcat ( "\n(For instructions type a ?)" );
+	fl_display_message ( "\nMove the cursor to an unknown item." );
+	fl_display_message ( "\n(For instructions type a ?)" );
 	objx = playerx;
 	objy = playery;
 	cursor ( objx + 1, objy + 1 );
@@ -955,10 +955,10 @@ specify_obj_cursor ( void )
 		{
 			case '?':
 				cursors ();
-				lprcat
+				fl_display_message
 				( "\nUse [hjklnbyu] to move the cursor to the unknown object." );
-				lprcat ( "\nType a . when the cursor is at the desired place." );
-				lprcat ( "\nType q, Return, or Escape to exit." );
+				fl_display_message ( "\nType a . when the cursor is at the desired place." );
+				fl_display_message ( "\nType q, Return, or Escape to exit." );
 				cursor ( objx + 1, objy + 1 );
 				break;
 

@@ -1,4 +1,13 @@
-void save(void);
-void load(void);
-int savegame(char *);
-void restoregame(char *);
+class Save
+{
+public:
+	void save(void);
+	int savegame(char *);
+};
+
+class Load
+{
+public:
+	void load(void);
+	void restoregame(char *);
+};

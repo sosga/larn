@@ -1,23 +1,18 @@
-/* Inline functions
- * Finally changing this mess
- * to inline functions.  Much better and cleaner!
+#define HAVESEEN  0x1
+#define KNOWHERE  0x2
+#define KNOWALL   (HAVESEEN | KNOWHERE)
+#define LARNHOME ""
+/* tax rate for the LRS */
+#define TAXRATE 1/20
+
+/* Inline functions and variables.
+ * Much better, safer and cleaner!
  * ~Gibbon
  */
- 
+inline const int MAXX = 67;
+inline const int MAXY = 17;
 inline const int ST_START = 1;
 inline const int ST_END = 2;
-
-inline int BOLD(void)
-{
-	int bold = 3;
-	return bold;
-}
-inline int END_BOLD(void)
-{
-	int end_bold = 4;
-	return end_bold;
-}
-
 inline const int CLEAR = 5;
 inline const int CL_LINE = 6;
 inline const int T_INIT = 7;
@@ -25,24 +20,63 @@ inline const int T_END = 8;
 inline const int CL_DOWN = 14;
 inline const int CURSOR = 15;
 
+/* Destroy object at present location */
+extern int item[MAXX][MAXY];
+extern int playerx;
+extern int playery;
+extern int know[MAXX][MAXY];
+inline int forget(void)
+{
+	return item[playerx][playery]=know[playerx][playery] = 0;
+}
+
+/* Turn on bold display for the terminal */
+extern char *lpnt;
+inline int setbold(void)
+{
+	return *lpnt++ = ST_START;
+}
+
+/* Turn off bold display for the terminal */
+inline int resetbold(void)
+{
+	return *lpnt++ = ST_END;
+}
+
+/* macro to clear the screen and home the cursor */
+inline int screen_clear(void)
+{
+	int regen_bottom = 1;
+	return *lpnt++ = CLEAR, regen_bottom;
+}
+inline int BOLD(void)
+{
+	const int bold = 3;
+	return bold;
+}
+inline int END_BOLD(void)
+{
+	const int end_bold = 4;
+	return end_bold;
+}
 inline int TIMELIMIT(void)
 {
-	int timelimit = 80000;
+	const int timelimit = 80000;
 	return timelimit;
 }
 inline int PATCHLEVEL(void)
 {
-	int patch = 1;
+	const int patch = 1;
 	return patch;
 }
 inline int VERSION(void)
 {
-	int ver = 0;
+	const int ver = 0;
 	return ver;
 }
 inline int SUBVERSION(void)
 {
-	int subver = 1;
+	const int subver = 1;
 	return subver;
 }
 
@@ -54,27 +88,16 @@ inline int CLEAR_EOL(void)
 
 inline const int MAXLEVEL = 12;
 inline const int MAXVLEVEL = 3;
-
-#define HAVESEEN  0x1
-#define KNOWHERE  0x2
-#define KNOWALL   (HAVESEEN | KNOWHERE)
-
 inline const int PATHLEN = 80;
 
-#define LARNHOME ""
-
 inline bool WIZID = false;
-inline const int MAXX = 67;
-inline const int MAXY = 17;
+
 /* this is the number of people on a scoreboard max */
 inline const int SCORESIZE = 10;
 /* maximum player level allowed */
 inline const int MAXPLEVEL = 100;
 /* maximum number of spells in existance */
 inline const int SPNUM = 38;
-		
-#define TAXRATE 1/20		/* tax rate for the LRS */
-
 /* size of the output buffer */
 inline const int BUFBIG = 4096;
 /* size of the input buffer */
@@ -84,6 +107,7 @@ inline const int LOGNAMESIZE = 20;
 /* max size of the savefile path */
 inline const int SAVEFILENAMESIZE = 128;
 inline const int STRING_BUFFER_SIZE = 256;
+
 /* maximum # monsters in the dungeon */
 inline const int MAXMONST = 56;
 
@@ -337,5 +361,3 @@ inline const int OGHANISTATUE = 86;
 //#define OSPHTAILSMAN 87		/* tailsman of the sphere */
 //#define OWWAND 88		/* wand of wonder */
 //#define OPSTAFF 89		/* staff of power */
-
-

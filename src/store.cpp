@@ -25,7 +25,7 @@ olrs          larn revenue service function
 
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/inventory.h"
@@ -68,12 +68,10 @@ static int
 lrs_welcome_text ( void )
 {
 	screen_clear();
-	resetscroll();
+	enable_scroll = 0;
 	lprintf ( "Welcome to the Larn Revenue Service\n" );
 	return ( 0 );
 }
-/* number of items in the dnd inventory table   */
-#define MAXITM 83
 
 /*  this is the data for the stuff in the dnd store */
 struct _itm dnd_item[90] =
@@ -209,11 +207,11 @@ function for the dnd store
 static void
 dnd_2hed ( void )
 {
-	lprcat
+	fl_display_message
 	( "Welcome to the Larn Thrift Shoppe.  We stock many items explorers find useful\n" );
-	lprcat
+	fl_display_message
 	( " in their adventures.  Feel free to browse to your hearts content.\n" );
-	lprcat ( "Also be advised, if you break 'em, you pay for 'em." );
+	fl_display_message ( "Also be advised, if you break 'em, you pay for 'em." );
 }
 
 
@@ -239,17 +237,17 @@ dndstore ( void )
 
 	if ( outstanding_taxes > 0 )
 	{
-		lprcat
+		fl_display_message
 		( "\n\nThe Larn Revenue Service has ordered us to not do business with tax evaders.\n" );
 		lprintf
 		( "They have also told us that you owe %d gp in back taxes, and as we must\n",
 		  ( int ) outstanding_taxes );
-		lprcat
+		fl_display_message
 		( "comply with the law, we cannot serve you at this time.  Soo Sorry.\n" );
 		cursors ();
-		lprcat ( "\nPress " );
+		fl_display_message ( "\nPress " );
 		lstandout ( "escape" );
-		lprcat ( " to leave: " );
+		fl_display_message ( " to leave: " );
 		lflush ();
 		i = 0;
 
@@ -267,16 +265,16 @@ dndstore ( void )
 	for ( ;; )
 	{
 		cursor ( 1, 19 );
-		lprcat ( "You have " );
+		fl_display_message ( "You have " );
 		lprintf ( "%ld ", cdesc[GOLD] );
 		lprintf ( "gold pieces" );
 		CLEAR_EOL ();
 		cl_dn ( 1, 20 );
-		lprcat ( "\nEnter your transaction [" );
+		fl_display_message ( "\nEnter your transaction [" );
 		lstandout ( "space" );
-		lprcat ( " for more, " );
+		fl_display_message ( " for more, " );
 		lstandout ( "escape" );
-		lprcat ( " to leave]? " );
+		fl_display_message ( " to leave]? " );
 		i = 0;
 
 		while ( ( i < 'a' || i > 'z' ) && ( i != ' ' ) && ( i != '\33' )
@@ -379,7 +377,7 @@ function for the players hands are full
 static void
 handsfull ( void )
 {
-	lprcat ( "\nYou can't carry anything more!" );
+	fl_display_message ( "\nYou can't carry anything more!" );
 	lflush ();
 	nap ( NAPTIME );
 }
@@ -388,7 +386,7 @@ handsfull ( void )
 static void
 outofstock ( void )
 {
-	lprcat ( "\nSorry, but we are out of that item." );
+	fl_display_message ( "\nSorry, but we are out of that item." );
 	lflush ();
 	nap ( NAPTIME );
 }
@@ -396,7 +394,7 @@ outofstock ( void )
 static void
 nogold ( void )
 {
-	lprcat ( "\nYou don't have enough gold to pay for that!" );
+	fl_display_message ( "\nYou don't have enough gold to pay for that!" );
 	lflush ();
 	nap ( 2200 );
 }
@@ -430,14 +428,14 @@ dnditem ( int i )
 
 	if ( dnd_item[i].obj == OPOTION )
 	{
-		lprcat ( "potion of " );
+		fl_display_message ( "potion of " );
 		lprintf ( "%s", &potionname[dnd_item[i].arg][1] );
 	}
 
 	else
 		if ( dnd_item[i].obj == OSCROLL )
 		{
-			lprcat ( "scroll of " );
+			fl_display_message ( "scroll of " );
 			lprintf ( "%s", &scrollname[dnd_item[i].arg][1] );
 		}
 
@@ -460,69 +458,69 @@ static void
 sch_hed ( void )
 {
 	screen_clear();
-	lprcat
+	fl_display_message
 	( "The College of Larn offers the exciting opportunity of higher education to\n" );
-	lprcat
+	fl_display_message
 	( "all inhabitants of the caves.  Here is a list of the class schedule:\n\n\n" );
-	lprcat ( "\t\t    Course Name \t       Time Needed\n\n" );
+	fl_display_message ( "\t\t    Course Name \t       Time Needed\n\n" );
 
 	if ( course[0] == 0 )
 	{
-		lprcat ( "\t\ta)  Fighters Training I         10 mobuls" );  /*line 7 of crt */
+		fl_display_message ( "\t\ta)  Fighters Training I         10 mobuls" );  /*line 7 of crt */
 	}
 
 	lprc ( '\n' );
 
 	if ( course[1] == 0 )
 	{
-		lprcat ( "\t\tb)  Fighters Training II        15 mobuls" );
+		fl_display_message ( "\t\tb)  Fighters Training II        15 mobuls" );
 	}
 
 	lprc ( '\n' );
 
 	if ( course[2] == 0 )
 	{
-		lprcat ( "\t\tc)  Introduction to Wizardry    10 mobuls" );
+		fl_display_message ( "\t\tc)  Introduction to Wizardry    10 mobuls" );
 	}
 
 	lprc ( '\n' );
 
 	if ( course[3] == 0 )
 	{
-		lprcat ( "\t\td)  Applied Wizardry            20 mobuls" );
+		fl_display_message ( "\t\td)  Applied Wizardry            20 mobuls" );
 	}
 
 	lprc ( '\n' );
 
 	if ( course[4] == 0 )
 	{
-		lprcat ( "\t\te)  Behavioral Psychology       10 mobuls" );
+		fl_display_message ( "\t\te)  Behavioral Psychology       10 mobuls" );
 	}
 
 	lprc ( '\n' );
 
 	if ( course[5] == 0 )
 	{
-		lprcat ( "\t\tf)  Faith for Today             10 mobuls" );
+		fl_display_message ( "\t\tf)  Faith for Today             10 mobuls" );
 	}
 
 	lprc ( '\n' );
 
 	if ( course[6] == 0 )
 	{
-		lprcat ( "\t\tg)  Contemporary Dance          10 mobuls" );
+		fl_display_message ( "\t\tg)  Contemporary Dance          10 mobuls" );
 	}
 
 	lprc ( '\n' );
 
 	if ( course[7] == 0 )
 	{
-		lprcat ( "\t\th)  History of Larn              5 mobuls" );
+		fl_display_message ( "\t\th)  History of Larn              5 mobuls" );
 	}
 
-	lprcat ( "\n\n\t\tAll courses cost 250 gold pieces." );
+	fl_display_message ( "\n\n\t\tAll courses cost 250 gold pieces." );
 	cursor ( 1, 19 );
-	lprcat ( "You are presently carrying " );
+	fl_display_message ( "You are presently carrying " );
 }
 
 
@@ -540,9 +538,9 @@ oschool ( void )
 		lprintf ( "%d ", ( int ) cdesc[GOLD] );
 		lprintf ( "gold pieces." );
 		cursors ();
-		lprcat ( "\nWhat is your choice [" );
+		fl_display_message ( "\nWhat is your choice [" );
 		lstandout ( "escape" );
-		lprcat ( " to leave] ? " );
+		fl_display_message ( " to leave] ? " );
 		y_larn_rep = 0;
 		i = 0;
 
@@ -574,7 +572,7 @@ oschool ( void )
 		else
 			if ( course[i - 'a'] )
 			{
-				lprcat ( "\nSorry, but that class is filled." );
+				fl_display_message ( "\nSorry, but that class is filled." );
 				nap ( NAPTIME );
 			}
 
@@ -589,21 +587,21 @@ oschool ( void )
 						case 'a':
 							cdesc[STRENGTH] += 2;
 							cdesc[CONSTITUTION]++;
-							lprcat ( "\nYou feel stronger!" );
+							fl_display_message ( "\nYou feel stronger!" );
 							cl_line ( 16, 7 );
 							break;
 
 						case 'b':
 							if ( course[0] == 0 )
 							{
-								lprcat
+								fl_display_message
 								( "\nSorry, but this class has a prerequisite of Fighters Training I" );
 								cdesc[GOLD] += 250;
 								time_used = -10000;
 								break;
 							}
 
-							lprcat ( "\nYou feel much stronger!" );
+							fl_display_message ( "\nYou feel much stronger!" );
 							cl_line ( 16, 8 );
 							cdesc[STRENGTH] += 2;
 							cdesc[CONSTITUTION] += 2;
@@ -611,49 +609,49 @@ oschool ( void )
 
 						case 'c':
 							cdesc[INTELLIGENCE] += 2;
-							lprcat ( "\nThe task before you now seems more attainable!" );
+							fl_display_message ( "\nThe task before you now seems more attainable!" );
 							cl_line ( 16, 9 );
 							break;
 
 						case 'd':
 							if ( course[2] == 0 )
 							{
-								lprcat
+								fl_display_message
 								( "\nSorry, but this class has a prerequisite of Introduction to Wizardry" );
 								cdesc[GOLD] += 250;
 								time_used = -10000;
 								break;
 							}
 
-							lprcat ( "\nThe task before you now seems very attainable!" );
+							fl_display_message ( "\nThe task before you now seems very attainable!" );
 							cl_line ( 16, 10 );
 							cdesc[INTELLIGENCE] += 2;
 							break;
 
 						case 'e':
 							cdesc[CHARISMA] += 3;
-							lprcat ( "\nYou now feel like a born leader!" );
+							fl_display_message ( "\nYou now feel like a born leader!" );
 							cl_line ( 16, 11 );
 							break;
 
 						case 'f':
 							cdesc[WISDOM] += 2;
-							lprcat
+							fl_display_message
 							( "\nYou now feel more confident that you can find the potion in time!" );
 							cl_line ( 16, 12 );
 							break;
 
 						case 'g':
 							cdesc[DEXTERITY] += 3;
-							lprcat ( "\nYou feel like dancing!" );
+							fl_display_message ( "\nYou feel like dancing!" );
 							cl_line ( 16, 13 );
 							break;
 
 						case 'h':
 							cdesc[INTELLIGENCE]++;
-							lprcat
+							fl_display_message
 							( "\nYour instructor told you that the Eye of Larn is rumored to be guarded\n" );
-							lprcat
+							fl_display_message
 							( "by a platinum dragon who possesses psionic abilities. " );
 							cl_line ( 16, 14 );
 							break;
@@ -716,23 +714,23 @@ static void
 banktitle ( const char *str )
 {
 	screen_clear();
-	lprcat ( str );
+	fl_display_message ( str );
 
 	if ( outstanding_taxes > 0 )
 	{
 		int i;
-		lprcat
+		fl_display_message
 		( "\n\nThe Larn Revenue Service has ordered that your account be frozen until all\n" );
 		lprintf
 		( "levied taxes have been paid.  They have also told us that you owe %d gp in\n",
 		  ( int ) outstanding_taxes );
-		lprcat
+		fl_display_message
 		( "taxes, and we must comply with them. We cannot serve you at this time.  Sorry.\n" );
-		lprcat ( "We suggest you go to the LRS office and pay your taxes.\n" );
+		fl_display_message ( "We suggest you go to the LRS office and pay your taxes.\n" );
 		cursors ();
-		lprcat ( "\nPress " );
+		fl_display_message ( "\nPress " );
 		lstandout ( "escape" );
-		lprcat ( " to leave: " );
+		fl_display_message ( " to leave: " );
 		lflush ();
 		i = 0;
 
@@ -793,7 +791,7 @@ obanksub ( void )
 	int gemvalue[26];
 	int amt;
 	int i, k, gems_sold = 0;
-	lprcat ( "\n\n\tGemstone\t      Appraisal\t\tGemstone\t      Appraisal" );
+	fl_display_message ( "\n\n\tGemstone\t      Appraisal\t\tGemstone\t      Appraisal" );
 	/* credit any needed interest */
 	ointerest ();
 
@@ -855,21 +853,21 @@ obanksub ( void )
 	lprintf ( "%8d", ( long ) cdesc[GOLD] );
 
 	if ( cdesc[BANKACCOUNT] + cdesc[GOLD] >= 500000 )
-		lprcat
+		fl_display_message
 		( "\nNote:  Larndom law states that only deposits under 500,000gp  can earn interest." );
 
 	for ( ;; )
 	{
 		cl_dn ( 1, 20 );
-		lprcat ( "\nYour wish? [(" );
+		fl_display_message ( "\nYour wish? [(" );
 		lstandout ( "d" );
-		lprcat ( ") deposit, (" );
+		fl_display_message ( ") deposit, (" );
 		lstandout ( "w" );
-		lprcat ( ") withdraw, (" );
+		fl_display_message ( ") withdraw, (" );
 		lstandout ( "s" );
-		lprcat ( ") sell a stone, or " );
+		fl_display_message ( ") sell a stone, or " );
 		lstandout ( "escape" );
-		lprcat ( "]  " );
+		fl_display_message ( "]  " );
 		y_larn_rep = 0;
 		i = 0;
 
@@ -881,21 +879,21 @@ obanksub ( void )
 		switch ( i )
 		{
 			case 'd':
-				lprcat ( "deposit\n" );
+				fl_display_message ( "deposit\n" );
 				CLEAR_EOL ();
-				lprcat ( "How much? " );
+				fl_display_message ( "How much? " );
 				amt = readnum ( ( int ) cdesc[GOLD] );
 
 				if ( amt > cdesc[GOLD] )
 				{
-					lprcat ( "You don't have that much." );
+					fl_display_message ( "You don't have that much." );
 					nap ( NAPTIME );
 				}
 
 				/* Added if statement for catching 0 value to deposit. -Gibbon */
 				if ( amt == 0 )
 				{
-					lprcat ( "You cannot deposit nothing" );
+					fl_display_message ( "You cannot deposit nothing" );
 					nap ( NAPTIME );
 				}
 
@@ -908,12 +906,12 @@ obanksub ( void )
 				break;
 
 			case 'w':
-				lprcat ( "withdraw\nHow much? " );
+				fl_display_message ( "withdraw\nHow much? " );
 				amt = readnum ( ( int ) cdesc[BANKACCOUNT] );
 
 				if ( amt > cdesc[BANKACCOUNT] )
 				{
-					lprcat ( "\nYou don't have that much in the bank!" );
+					fl_display_message ( "\nYou don't have that much in the bank!" );
 					nap ( NAPTIME );
 				}
 
@@ -926,7 +924,7 @@ obanksub ( void )
 				break;
 
 			case 's':
-				lprcat ( "\nWhich stone would you like to sell? " );
+				fl_display_message ( "\nWhich stone would you like to sell? " );
 				i = 0;
 
 				while ( ( i < 'a' || i > 'z' ) && i != '*' && i != '\33' )
@@ -952,7 +950,7 @@ obanksub ( void )
 
 					if ( !gems_sold )
 					{
-						lprcat ( "\nYou have no gems to sell!" );
+						fl_display_message ( "\nYou have no gems to sell!" );
 						nap ( NAPTIME );
 					}
 				}
@@ -1001,16 +999,16 @@ static void
 otradhead ( void )
 {
 	screen_clear();
-	lprcat
+	fl_display_message
 	( "Welcome to the Larn Trading Post.  We buy items that explorers no longer find\n" );
-	lprcat
+	fl_display_message
 	( "useful.  Since the condition of the items you bring in is not certain,\n" );
-	lprcat
+	fl_display_message
 	( "and we incur great expense in reconditioning the items, we usually pay\n" );
-	lprcat
+	fl_display_message
 	( "only 20% of their value were they to be new.  If the items are badly\n" );
-	lprcat ( "damaged, we will pay only 10% of their new value.\n\n" );
-	lprcat ( "Here are the items we would be willing to buy from you:\n" );
+	fl_display_message ( "damaged, we will pay only 10% of their new value.\n\n" );
+	fl_display_message ( "Here are the items we would be willing to buy from you:\n" );
 }
 
 
@@ -1120,9 +1118,9 @@ otradepost ( void )
 	for ( ;; )
 	{
 		cursor ( 1, 23 );
-		lprcat ( "\nWhat item do you want to sell to us [" );
+		fl_display_message ( "\nWhat item do you want to sell to us [" );
 		lstandout ( "escape" );
-		lprcat ( "] ? " );
+		fl_display_message ( "] ? " );
 		/* display gold in inventory ~Gibbon */
 		cursor ( 1, 22 );
 		amtgoldtrad();
@@ -1205,7 +1203,7 @@ otradepost ( void )
 
 					if ( found == MAXITM )
 					{
-						lprcat
+						fl_display_message
 						( "\nSo sorry, but we are not authorized to accept that item." );
 						nap ( NAPTIME );
 						break;	/* leave inner while */
@@ -1242,7 +1240,7 @@ otradepost ( void )
 
 			if ( getyn () == 'y' )
 			{
-				lprcat ( "yes\n" );
+				fl_display_message ( "yes\n" );
 				cdesc[GOLD] += value;
 
 				if ( cdesc[WEAR] == isub )
@@ -1289,7 +1287,7 @@ otradepost ( void )
 static void
 cnsitm ( void )
 {
-	lprcat ( "\nSorry, we can't accept unidentified objects." );
+	fl_display_message ( "\nSorry, we can't accept unidentified objects." );
 	nap ( 2000 );
 }
 
@@ -1319,13 +1317,13 @@ olrs ( void )
 			goto nxt;
 		}
 
-		setscroll();
+		enable_scroll = 1;
 		cursor ( 1, 21 );
-		lprcat ( "\n\nYour wish? [(" );
+		fl_display_message ( "\n\nYour wish? [(" );
 		lstandout ( "p" );
-		lprcat ( ") pay taxes, or " );
+		fl_display_message ( ") pay taxes, or " );
 		lstandout ( "escape" );
-		lprcat ( "]  " );
+		fl_display_message ( "]  " );
 		y_larn_rep = 0;
 		i = 0;
 
@@ -1337,12 +1335,12 @@ olrs ( void )
 		switch ( i )
 		{
 			case 'p':
-				lprcat ( "pay taxes\nHow much? " );
+				fl_display_message ( "pay taxes\nHow much? " );
 				amt = readnum ( ( int ) cdesc[GOLD] );
 
 				if ( amt > cdesc[GOLD] )
 				{
-					lprcat ( "  You don't have that much.\n" );
+					fl_display_message ( "  You don't have that much.\n" );
 				}
 
 				else
@@ -1355,7 +1353,7 @@ olrs ( void )
 				break;
 
 			case '\33':
-				setscroll();
+				enable_scroll = 1;
 				drawscreen();
 				return;
 		};
@@ -1371,7 +1369,7 @@ olrs ( void )
 
 		else
 		{
-			lprcat ( "You do not owe us any taxes.           " );
+			fl_display_message ( "You do not owe us any taxes.           " );
 		}
 
 		cursor ( 1, 19 );
@@ -1383,7 +1381,7 @@ olrs ( void )
 
 		else
 		{
-			lprcat ( "You have no gold pieces.  " );
+			fl_display_message ( "You have no gold pieces.  " );
 		}
 	}
 }

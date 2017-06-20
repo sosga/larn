@@ -19,6 +19,12 @@
 *  getplid(name)       Function to get players id # from id file
 */
 
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <errno.h>
+#include <setjmp.h>
 #include <curses.h>
 #include <cstring>
 #include <sys/types.h>
@@ -35,7 +41,10 @@
 #endif
 
 #include "../includes/bill.h"
-#include "../includes/larn.h"
+#include "../src/config/larncons.h"
+#include "../src/config/data.h"
+#include "../src/templates/math.t.hpp"
+#include "../src/terminal/term.hpp"
 #include "../includes/inventory.h"
 #include "../includes/scores.h"
 #include "../includes/sysdep.h"
@@ -386,7 +395,7 @@ winshou ( void )
 
 	if ( j )
 	{
-		lprcat ( "\n  Score    Difficulty   Time Needed   Larn Winners List\n" );
+		fl_display_message ( "\n  Score    Difficulty   Time Needed   Larn Winners List\n" );
 
 		for ( i = 0; i < SCORESIZE;
 		      i++ )	/* this loop is needed to print out the */
@@ -436,7 +445,7 @@ shou ( int x )
 
 	if ( j )
 	{
-		lprcat ( "\n   Score   Difficulty   Larn Visitor Log\n" );
+		fl_display_message ( "\n   Score   Difficulty   Larn Visitor Log\n" );
 
 		for ( i = 0; i < SCORESIZE;
 		      i++ )	/* be sure to print them out in order */
@@ -483,7 +492,7 @@ shou ( int x )
 								}
 							}
 
-							lprcat ( "\n\n" );
+							fl_display_message ( "\n\n" );
 						}
 
 						else
@@ -525,7 +534,7 @@ showscores ( void )
 
 	if ( i + j == 0 )
 	{
-		lprcat ( esb );
+		fl_display_message ( esb );
 	}
 
 	else
@@ -598,7 +607,7 @@ showallscores ( void )
 
 	if ( i + j == 0 )
 	{
-		lprcat ( esb );
+		fl_display_message ( esb );
 	}
 
 	else
@@ -893,14 +902,14 @@ died ( int x )
 		cdesc[HP] = cdesc[HPMAX];
 		--cdesc[CONSTITUTION];
 		cursors ();
-		lprcat ( "\nYou feel wiiieeeeerrrrrd all over! " );
+		fl_display_message ( "\nYou feel wiiieeeeerrrrrd all over! " );
 		lflush ();
 		nap ( 3000 );
 		return;			/* only case where died() returns */
 	}
 
 	cursors ();
-	lprcat ( "\nPress any key to continue. " );
+	fl_display_message ( "\nPress any key to continue. " );
 	ttgetch ();
 invalid:
 	/*clearvt100(); */
@@ -962,10 +971,10 @@ invalid:
 	{
 		lflush ();
 		screen_clear();
-		resetscroll ();
+		enable_scroll = 0;
 		showscores ();		/* if we updated the scoreboard */
 		cursors ();
-		lprcat ( "\nPress any key to exit. " );
+		fl_display_message ( "\nPress any key to exit. " );
 		scbr ();
 		ttgetch ();
 	}

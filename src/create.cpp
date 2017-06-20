@@ -1,6 +1,14 @@
-/* create.c */
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <errno.h>
+#include <setjmp.h>
 #include "../includes/create.h"
-#include "../includes/larn.h"
+#include "../src/config/larncons.h"
+#include "../src/config/data.h"
+#include "../src/templates/math.t.hpp"
+#include "../src/terminal/term.hpp"
 #include "../includes/global.h"
 #include "../includes/io.h"
 #include "../includes/monster.h"
@@ -566,12 +574,12 @@ makeobject(int j)
 
     for(i = 0; i < TRnd(4) + 3; i++)
         {
-            fillroom(OPOTION, newpotion());      /*  make a POTION   */
+            fillroom(OPOTION, potion_probability[TRund(41)]);      /*  make a POTION   */
         }
 
     for(i = 0; i < TRnd(5) + 3; i++)
         {
-            fillroom(OSCROLL, NewScroll());      /*  make a SCROLL   */
+            fillroom(OSCROLL, scroll_probability[TRund(81)]);      /*  make a SCROLL   */
         }
 
     for(i = 0; i < TRnd(12) + 11; i++)

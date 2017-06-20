@@ -1,6 +1,6 @@
 #include "larncons.h"
 #include "data.h"
-#include "larnfunc.h"
+#include "../templates/math.t.hpp"
 #include <time.h>
 #include "../../includes/io.h"
 #include "../../includes/moreobj.h"
@@ -57,7 +57,6 @@ const char *classname[] = { "  novice explorer  ", "apprentice explorer", " prac
 table of experience needed to be a certain level of player
 skill[cdesc[LEVEL]] is the experience required to attain the next level
 */
-#define MEG 1000000
 long skill[] =
 {
 	0, 10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120,	/*  1-11 */
@@ -825,7 +824,7 @@ const char *spelmes[] = { "",
 *  20 - remove curse   21 - annihilation           22 - pulverization
 *  23 - life protection
 */
-int scprob[] = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3,
+int scroll_probability[] = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3,
                  3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9,
                  9, 9, 10, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 13, 14, 14,
                  15, 15, 16, 16, 16, 17, 17, 18, 18, 19, 19, 19, 20, 20, 20, 20, 21, 22,
@@ -845,7 +844,7 @@ int scprob[] = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3,
 *  18 - fire resistance    19 - treasure finding       20 - instant healing
 *  21 - cure dianthroritis 22 - poison                 23 - see invisible
 */
-int potprob[] = { 0, 0, 1, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 9, 9, 9,
+int potion_probability[] = { 0, 0, 1, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 9, 9, 9,
                   10, 10, 10, 11, 11, 12, 12, 13, 14, 15, 16, 17, 18, 19, 19, 19,
                   20, 20, 22, 22, 23, 23
                 };

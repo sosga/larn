@@ -41,7 +41,7 @@ act_open_door           open a door
 #include "../includes/action.h"
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "../includes/create.h"
 #include "../includes/display.h"
 #include "../includes/global.h"
@@ -100,7 +100,7 @@ act_remove_gems ( int arg )
 
 		else
 		{
-			lprcat ( "\nNothing happens" );
+			fl_display_message ( "\nNothing happens" );
 		}
 }
 
@@ -131,13 +131,13 @@ act_sit_throne ( int arg )
 	else
 		if ( k < 35 )
 		{
-			lprcat ( "\nZaaaappp!  You've been teleported!\n" );
+			fl_display_message ( "\nZaaaappp!  You've been teleported!\n" );
 			oteleport ( 0 );
 		}
 
 		else
 		{
-			lprcat ( "\nNothing happens" );
+			fl_display_message ( "\nNothing happens" );
 		}
 }
 
@@ -160,7 +160,7 @@ act_up_stairs ( void )
 
 	else
 	{
-		lprcat ( "\nThe stairs lead to a dead end!" );
+		fl_display_message ( "\nThe stairs lead to a dead end!" );
 	}
 }
 
@@ -183,7 +183,7 @@ act_down_stairs ( void )
 
 	else
 	{
-		lprcat ( "\nThe stairs lead to a dead end!" );
+		fl_display_message ( "\nThe stairs lead to a dead end!" );
 	}
 }
 
@@ -201,7 +201,7 @@ act_drink_fountain ( void )
 
 	if ( TRnd ( 1501 ) < 2 )
 	{
-		lprcat ( "\nOops!  You seem to have caught the dreadful sleep!" );
+		fl_display_message ( "\nOops!  You seem to have caught the dreadful sleep!" );
 		lflush ();
 		nap ( NAPTIME );
 		died ( 280 );
@@ -213,7 +213,7 @@ act_drink_fountain ( void )
 	if ( x < 7 )
 	{
 		cdesc[HALFDAM] += 200 + TRnd ( 200 );
-		lprcat ( "\nYou feel a sickness coming on" );
+		fl_display_message ( "\nYou feel a sickness coming on" );
 	}
 
 	else
@@ -223,7 +223,7 @@ act_drink_fountain ( void )
 		else
 			if ( x < 45 )
 			{
-				lprcat ( "\nnothing seems to have happened" );
+				fl_display_message ( "\nnothing seems to have happened" );
 			}
 
 			else
@@ -239,7 +239,7 @@ act_drink_fountain ( void )
 
 	if ( TRnd ( 12 ) < 3 )
 	{
-		lprcat ( "\nThe fountains bubbling slowly quiets" );
+		fl_display_message ( "\nThe fountains bubbling slowly quiets" );
 		item[playerx][playery] = ODEADFOUNTAIN;	/* dead fountain */
 		know[playerx][playery] = 0;
 	}
@@ -273,12 +273,12 @@ act_wash_fountain ( void )
 	else
 		if ( TRnd ( 100 ) < 29 )
 		{
-			lprcat ( "\nYou got the dirt off!" );
+			fl_display_message ( "\nYou got the dirt off!" );
 		}
 
 		else
 			if ( TRnd ( 100 ) < 31 )
-				lprcat
+				fl_display_message
 				( "\nThis water seems to be hard water!  The dirt didn't come off!" );
 
 			else
@@ -289,7 +289,7 @@ act_wash_fountain ( void )
 
 				else
 				{
-					lprcat ( "\nnothing seems to have happened" );
+					fl_display_message ( "\nnothing seems to have happened" );
 				}
 
 	return;
@@ -307,14 +307,14 @@ act_down_shaft ( void )
 {
 	if ( level != 0 )
 	{
-		lprcat ( "\nThe hobbit hole only extends 5 feet downward!" );
+		fl_display_message ( "\nThe hobbit hole only extends 5 feet downward!" );
 		return;
 	}
 
 	if ( packweight () > 45 + 3 * ( cdesc[STRENGTH] +
 	                                cdesc[STREXTRA] ) )
 	{
-		lprcat ( "\nYou slip down the hobbit hole" );
+		fl_display_message ( "\nYou slip down the hobbit hole" );
 		lastnum = 275;
 		losehp ( 30 + TRnd ( 20 ) );
 		bottomhp ();
@@ -339,7 +339,7 @@ act_up_shaft ( void )
 {
 	if ( level != 11 )
 	{
-		lprcat
+		fl_display_message
 		( "\nThe hobbit hole only extends 8 feet upwards before you find a blockage!" );
 		return;
 	}
@@ -347,7 +347,7 @@ act_up_shaft ( void )
 	if ( packweight () > 45 + 5 * ( cdesc[STRENGTH] +
 	                                cdesc[STREXTRA] ) )
 	{
-		lprcat ( "\nDown the hobbit hole!" );
+		fl_display_message ( "\nDown the hobbit hole!" );
 		lastnum = 275;
 		losehp ( 15 + TRnd ( 20 ) );
 		bottomhp ();
@@ -402,7 +402,7 @@ act_desecrate_altar ( void )
 	if ( TRnd ( 100 ) < 60 )
 	{
 		createmonster ( makemonst ( level + 2 ) + 8 );
-		lprcat ( "\nThe altar explodes violently and spawns a monster!" );
+		fl_display_message ( "\nThe altar explodes violently and spawns a monster!" );
 		losehp (5);
 		cdesc[AGGRAVATE] += 2500;
 		forget ();
@@ -411,13 +411,13 @@ act_desecrate_altar ( void )
 	else
 		if ( TRnd ( 101 ) < 30 )
 		{
-			lprcat ( "\nThe altar crumbles into a pile of dust before your eyes" );
+			fl_display_message ( "\nThe altar crumbles into a pile of dust before your eyes" );
 			forget ();		/*  remember to destroy the altar   */
 		}
 
 		else
 		{
-			lprcat ( "\nThe altar was desecrated and ruined!" );
+			fl_display_message ( "\nThe altar was desecrated and ruined!" );
 			forget();
 		}
 
@@ -437,14 +437,14 @@ act_donation_pray ( void )
 
 	for ( ;; )
 	{
-		lprcat ( "\n\n" );
+		fl_display_message ( "\n\n" );
 		cursor ( 1, 24 );
 		CLEAR_EOL ();
 		cursor ( 1, 23 );
 		CLEAR_EOL ();
-		lprcat ( "how much do you donate? " );
+		fl_display_message ( "how much do you donate? " );
 		k = readnum ( ( int ) cdesc[GOLD] );
-		lprcat ( "\n" );
+		fl_display_message ( "\n" );
 
 		/* make giving zero gold equivalent to 'just pray'ing.  Allows player to
 		   'just pray' in command mode, without having to add yet another command.
@@ -466,7 +466,7 @@ act_donation_pray ( void )
 			if ( k < temp || k < TRnd ( 50 ) )
 			{
 				/* added by ~Gibbon */
-				lprcat("You have offended the Gods.");
+				fl_display_message("You have offended the Gods.");
 				createmonster ( makemonst ( level + 1 ) );
 				cdesc[AGGRAVATE] += 200;
 				return;
@@ -482,7 +482,7 @@ act_donation_pray ( void )
 			{
 				if ( cdesc[WEAR] )
 				{
-					lprcat ( "You feel your armor vibrate for a moment" );
+					fl_display_message ( "You feel your armor vibrate for a moment" );
 				}
 
 				enchantarmor ();
@@ -493,21 +493,21 @@ act_donation_pray ( void )
 			{
 				if ( cdesc[WIELD] )
 				{
-					lprcat ( "You feel your weapon vibrate for a moment" );
+					fl_display_message ( "You feel your weapon vibrate for a moment" );
 				}
 
 				enchweapon ();
 				return;
 			}
 
-			lprcat("The Gods thank you for your prayers.");
+			fl_display_message("The Gods thank you for your prayers.");
 			return;
 		}
 
 		/* Player donates more gold than they have.  Loop back around so
 		   player can't escape the altar for free.
 		 */
-		lprcat ( "You don't have that much!" );
+		fl_display_message ( "You don't have that much!" );
 	}
 	forget();
 }
@@ -526,7 +526,7 @@ act_just_pray ( void )
 {
 	if ( TRnd ( 100 ) < 75 )
 	{
-		lprcat ( "The altar ascends!" );
+		fl_display_message ( "The altar ascends!" );
 	}
 
 	else
@@ -534,7 +534,7 @@ act_just_pray ( void )
 		{
 			if ( cdesc[WEAR] )
 			{
-				lprcat ( "You feel your armor vibrate for a moment" );
+				fl_display_message ( "You feel your armor vibrate for a moment" );
 			}
 
 			enchantarmor ();
@@ -546,7 +546,7 @@ act_just_pray ( void )
 			{
 				if ( cdesc[WIELD] )
 				{
-					lprcat ( "You feel your weapon vibrate for a moment" );
+					fl_display_message ( "You feel your weapon vibrate for a moment" );
 				}
 
 				enchweapon ();
@@ -587,8 +587,8 @@ act_give_thanks(void)
 		
 	if (iven[i] == OGHANISTATUE)
 		{
-				lprcat("You place the statues on the altar and close your eyes reverently..");
-				lprcat("\nWe hear your prayers.\nBehold your increased strength and experience!");
+				fl_display_message("You place the statues on the altar and close your eyes reverently..");
+				fl_display_message("\nWe hear your prayers.\nBehold your increased strength and experience!");
 				cdesc[STRENGTH] += 4;
 				raiseexperience(600);
 				//Then we remove the statue from the inventory.  If the user has more than 1 all will be removed. ~Gibbon
@@ -604,7 +604,7 @@ act_give_thanks(void)
 static void
 act_prayer_heard ( void )
 {
-	lprcat ( "You have been heard!" );
+	fl_display_message ( "You have been heard!" );
 
 	if ( cdesc[ALTPRO] == 0 )
 	{
@@ -628,14 +628,14 @@ act_ignore_altar ( void )
 	if ( TRnd ( 100 ) < 30 )
 	{
 		createmonster ( makemonst ( level + 1 ) );
-		lprcat("The altar turns into a monster!");
+		fl_display_message("The altar turns into a monster!");
 		cdesc[AGGRAVATE] += TRnd ( 450 );
 		forget();
 	}
 
 	else
 	{
-		lprcat ( "\nThe altar crumbles into stone!" );
+		fl_display_message ( "\nThe altar crumbles into stone!" );
 		forget();
 	}
 
@@ -658,7 +658,7 @@ act_open_chest ( int x, int y )
 
 	if ( k < 40 )
 	{
-		lprcat ( "\nThe chest explodes as you open it" );
+		fl_display_message ( "\nThe chest explodes as you open it" );
 		i = TRnd ( 10 );
 		lastnum = 281;		/* in case he dies */
 		lprintf ( "\nYou suffer %d hit points damage!", ( int ) i );
@@ -668,17 +668,17 @@ act_open_chest ( int x, int y )
 		{
 			case 1:
 				cdesc[ITCHING] += TRnd ( 1000 ) + 100;
-				lprcat ( "\nYou feel an irritation spread over your skin!" );
+				fl_display_message ( "\nYou feel an irritation spread over your skin!" );
 				break;
 
 			case 2:
 				cdesc[CLUMSINESS] += TRnd ( 1600 ) + 200;
-				lprcat ( "\nYou begin to lose hand to eye coordination!" );
+				fl_display_message ( "\nYou begin to lose hand to eye coordination!" );
 				break;
 
 			case 3:
 				cdesc[HALFDAM] += TRnd ( 1600 ) + 200;
-				lprcat ( "\nA sickness engulfs you!" );
+				fl_display_message ( "\nA sickness engulfs you!" );
 				break;
 		};
 
@@ -699,7 +699,7 @@ act_open_chest ( int x, int y )
 
 	else
 	{
-		lprcat ( "\nNothing happens" );
+		fl_display_message ( "\nNothing happens" );
 	}
 
 	return;
@@ -722,24 +722,24 @@ act_open_door ( int x, int y )
 		switch ( iarg[x][y] )
 		{
 			case 6:
-				lprcat ( "\nThe door makes an awful groan, but remains stuck" );
+				fl_display_message ( "\nThe door makes an awful groan, but remains stuck" );
 				cdesc[AGGRAVATE] += TRnd ( 400 );
 				break;
 
 			case 7:
-				lprcat ( "\nYou are jolted by an electric shock" );
+				fl_display_message ( "\nYou are jolted by an electric shock" );
 				lastnum = 274;
 				losehp ( TRnd ( 20 ) );
 				bottomline ();
 				break;
 
 			case 8:
-				lprcat ( "\nYou feel drained" );
+				fl_display_message ( "\nYou feel drained" );
 				loselevel ();
 				break;
 
 			case 9:
-				lprcat ( "\nYou suddenly feel weaker" );
+				fl_display_message ( "\nYou suddenly feel weaker" );
 
 				if ( cdesc[STRENGTH] > 3 )
 				{
@@ -750,7 +750,7 @@ act_open_door ( int x, int y )
 				break;
 
 			default:
-				lprcat ( "\nThe door makes an awful groan, but remains stuck" );
+				fl_display_message ( "\nThe door makes an awful groan, but remains stuck" );
 				break;
 		}
 
@@ -759,7 +759,7 @@ act_open_door ( int x, int y )
 
 	else
 	{
-		lprcat ( "\nThe door opens" );
+		fl_display_message ( "\nThe door opens" );
 		know[x][y] = 0;
 		item[x][y] = OOPENDOOR;
 		return ( 1 );

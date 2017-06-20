@@ -10,6 +10,11 @@ June 2017
 8. Inlined variable for WIZID (more to come).
 9. Added more mazes to the file.
 10. Removed color.
+11. Removed all #define macros and replaced them with inline functions,
+	variables, templates and declared the rest correctly.
+12. Renamed some variables like scprob to scroll_probability.
+13. Removed larnfunc.h and created templates/math.t.hpp.
+14. Now compiles cleanly with GCC 7.1 with very strict rules.
 
 ~Gibbon
 

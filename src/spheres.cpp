@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/help.h"
@@ -100,7 +100,7 @@ newsphere ( int x, int y, int dir, int life )
 	if ( cdesc[CANCELLATION] )  	/* cancellation cancels spheres */
 	{
 		cursors ();
-		lprcat
+		fl_display_message
 		( "\nAs the cancellation takes effect, you hear a great earth shaking blast!" );
 		goto boom;
 	}
@@ -109,7 +109,7 @@ newsphere ( int x, int y, int dir, int life )
 	     OANNIHILATION )  	/* collision of spheres detonates spheres */
 	{
 		cursors ();
-		lprcat
+		fl_display_message
 		( "\nTwo spheres of annihilation collide! You hear a great earth shaking blast!" );
 		rmsphere ( x, y );
 		goto boom;
@@ -119,7 +119,7 @@ newsphere ( int x, int y, int dir, int life )
 	     && playery == y )  	/* collision of sphere and player! */
 	{
 		cursors ();
-		lprcat ( "\nYou have been enveloped by the zone of nothingness!\n" );
+		fl_display_message ( "\nYou have been enveloped by the zone of nothingness!\n" );
 		rmsphere ( x, y );		/* remove any spheres that are here */
 		nap ( NAPTIME );
 		died ( 258 );
@@ -227,7 +227,7 @@ sphboom ( int x, int y )
 			if ( playerx == j && playery == i )
 			{
 				cursors ();
-				lprcat ( "\nYou were too close to the sphere!" );
+				fl_display_message ( "\nYou were too close to the sphere!" );
 				nap ( NAPTIME );
 				died ( 283 );		/* player killed in explosion */
 			}
@@ -244,7 +244,6 @@ sphboom ( int x, int y )
  *  spheres.
  *  No value is returned.
  */
-#define SPHMAX 20		/* maximum number of spheres movsphere can handle */
 
 void
 movsphere ( void )

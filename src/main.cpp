@@ -1,7 +1,14 @@
-/* main.c */
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <errno.h>
+#include <setjmp.h>
 #include <curses.h>
-
-#include "../includes/larn.h"
+#include "../src/config/larncons.h"
+#include "../src/config/data.h"
+#include "../src/templates/math.t.hpp"
+#include "../src/terminal/term.hpp"
 #include "lexical/tok.hpp"
 #include "../includes/create.h"
 #include "../includes/display.h"
@@ -20,12 +27,6 @@
 #include "save/save.hpp"
 
 using std::cout;
-
-#define SCORENAME	"data/scorefile.dat"
-#define LOGFNAME	"data/logfile.log"
-#define PLAYERIDS	"data/playerid.txt"
-#define LEVELSNAME	"data/mazefile.txt"
-#define SAVEFILE	"data/savefile.dat"
 
 static void parse(void);
 static void randmonst(void);
@@ -71,6 +72,7 @@ main(int argc, char *argv[])
     int i;
     int hard = -1;
     FILE *pFile;
+	Load load;
     /*
      *  first task is to identify the player
      */
@@ -125,14 +127,14 @@ main(int argc, char *argv[])
                     {
                     case 's':		/* show scoreboard   */
                         showscores();
-                        lprcat("Press any key to exit...");
+                        fl_display_message("Press any key to exit...");
                         ttgetch();
                         ansiterm_clean_up();	/* hacky way */
                         exit(EXIT_SUCCESS);
 
                     case 'i':		/* show all scoreboard */
                         showallscores();
-                        lprcat("Press any key to exit...");
+                        fl_display_message("Press any key to exit...");
                         ttgetch();
                         ansiterm_clean_up();
                         exit(EXIT_SUCCESS);
@@ -186,7 +188,7 @@ main(int argc, char *argv[])
             screen_clear();
             restorflag = 1;
             hitflag = 1;
-            restoregame(savefilename);	/* restore last game    */
+            load.restoregame(savefilename);	/* restore last game    */
             remove(savefilename);
         }
 
@@ -342,6 +344,7 @@ static void
 parse(void)
 {
     int i, j, k, flag;
+	Save save;
 
     for(;;)
         {
@@ -482,7 +485,7 @@ parse(void)
                     if(cdesc[BLINDCOUNT])
                         {
                             cursors();
-                            lprcat("\nYou can't read anything when you're blind!");
+                            fl_display_message("\nYou can't read anything when you're blind!");
                         }
 
                     else if(cdesc[TIMESTOP] == 0)
@@ -514,12 +517,12 @@ parse(void)
 
                     if(wizard)
                         {
-                            lprcat(" Wizard");
+                            fl_display_message(" Wizard");
                         }
 
                     if(cheat)
                         {
-                            lprcat(" Cheater");
+                            fl_display_message(" Cheater");
                         }
 
                     return;
@@ -577,7 +580,7 @@ parse(void)
 
                     else
                         {
-                            lprcat("\nYou do not owe any taxes.");
+                            fl_display_message("\nYou do not owe any taxes.");
                         }
 
                     return;
@@ -603,7 +606,7 @@ parse(void)
                     lprintf("\nSaving file '%s' . . . ", savefilename);
                     lflush();
                     save_mode = 1;
-                    savegame(savefilename);
+                    save.savegame(savefilename);
                     screen_clear();
                     lflush();
                     wizard = 1;
@@ -617,20 +620,20 @@ parse(void)
                     if(cdesc[SHIELD] != -1)
                         {
                             cdesc[SHIELD] = -1;
-                            lprcat("\nYour shield is off");
+                            fl_display_message("\nYour shield is off");
                             bottomline();
                         }
 
                     else if(cdesc[WEAR] != -1)
                         {
                             cdesc[WEAR] = -1;
-                            lprcat("\nYour armor is off");
+                            fl_display_message("\nYour armor is off");
                             bottomline();
                         }
 
                     else
                         {
-                            lprcat("\nYou aren't wearing anything");
+                            fl_display_message("\nYou aren't wearing anything");
                         }
 
                     return;
@@ -650,7 +653,7 @@ parse(void)
                         }
 
                     cursors();
-                    lprcat
+                    fl_display_message
                     ("\nAs yet, you don't have enough experience to use teleportation");
                     return;		/*  teleport yourself   */
 
@@ -730,8 +733,8 @@ parse(void)
                                         case OTRAPARROW:
                                         case OTELEPORTER:
                                         case OPIT:
-                                            lprcat("\nIts ");
-                                            lprcat(objectname[item[i][j]]);
+                                            fl_display_message("\nIts ");
+                                            fl_display_message(objectname[item[i][j]]);
                                             flag++;
                                         };
                                 }
@@ -739,7 +742,7 @@ parse(void)
 
                     if(flag == 0)
                         {
-                            lprcat("\nNo traps are visible");
+                            fl_display_message("\nNo traps are visible");
                         }
 
                     return;
@@ -946,14 +949,14 @@ wield(void)
                     else if(cdesc[SHIELD] != -1
                             && iven[i - 'a'] == O2SWORD)
                         {
-                            lprcat("\nBut one arm is busy with your shield!");
+                            fl_display_message("\nBut one arm is busy with your shield!");
                             return;
                         }
 
                     else if(cdesc[SHIELD] != -1
                             && iven[i - 'a'] == OHSWORD)
                         {
-                            lprcat("\nA longsword of Hymie cannot be used while a shield is equipped!");
+                            fl_display_message("\nA longsword of Hymie cannot be used while a shield is equipped!");
                             return;
                         }
 
@@ -1044,7 +1047,7 @@ wear(void)
                             case OSSPLATE:
                                 if(cdesc[WEAR] != -1)
                                     {
-                                        lprcat("\nYou're already wearing some armor");
+                                        fl_display_message("\nYou're already wearing some armor");
                                         return;
                                     }
 
@@ -1055,20 +1058,20 @@ wear(void)
                             case OSHIELD:
                                 if(cdesc[SHIELD] != -1)
                                     {
-                                        lprcat("\nYou are already wearing a shield");
+                                        fl_display_message("\nYou are already wearing a shield");
                                         return;
                                     }
 
                                 if(iven[cdesc[WIELD]] == O2SWORD)
                                     {
-                                        lprcat
+                                        fl_display_message
                                         ("\nYour hands are busy with the two handed sword!");
                                         return;
                                     }
 
                                 if(iven[cdesc[WIELD]] == OHSWORD)
                                     {
-                                        lprcat("\nYou are holding a longsword of Hymie!");
+                                        fl_display_message("\nYou are holding a longsword of Hymie!");
                                         return;
                                     }
 
@@ -1077,7 +1080,7 @@ wear(void)
                                 return;
 
                             default:
-                                lprcat("\nYou can't wear that!");
+                                fl_display_message("\nYou can't wear that!");
                             };
                 }
         }
@@ -1122,9 +1125,9 @@ dropobj(void)
                                     return;
                                 }
 
-                            lprcat("\n\n");
+                            fl_display_message("\n\n");
                             cl_dn(1, 23);
-                            lprcat("How much gold do you drop? ");
+                            fl_display_message("How much gold do you drop? ");
 
                             if((amt = readnum((int) cdesc[GOLD])) == 0)
                                 {
@@ -1133,8 +1136,8 @@ dropobj(void)
 
                             if(amt > cdesc[GOLD])
                                 {
-                                    lprcat("\n");
-                                    lprcat("You don't have that much!");
+                                    fl_display_message("\n");
+                                    fl_display_message("You don't have that much!");
                                     return;
                                 }
 
@@ -1231,7 +1234,7 @@ floor_consume(int search_item, const char *cons_verb)
 
     else if(tempc != 'y')
         {
-            lprcat(" aborted");
+            fl_display_message(" aborted");
             return (-1);		/* abort */
         }
 
@@ -1383,7 +1386,7 @@ whatitem(const char *str)
 
     if(i == '\33')
         {
-            lprcat(" aborted");
+            fl_display_message(" aborted");
         }
 
     return (i);
@@ -1418,7 +1421,7 @@ readnum(int mx)
                 if(i == '\033')
                     {
                         scbr();
-                        lprcat(" aborted");
+                        fl_display_message(" aborted");
                         return (0);
                     }
 

@@ -17,7 +17,7 @@
 
 #include "config/larncons.h"
 #include "config/data.h"
-#include "config/larnfunc.h"
+#include "templates/math.t.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/inventory.h"
@@ -118,13 +118,13 @@ regen(void)
 		if (--larn_cdesc_id[BLINDCOUNT] <= 0)
 		{
 			cursors();
-			lprcat("\nThe blindness subsides");
+			fl_display_message("\nThe blindness subsides");
 		}
 	if (larn_cdesc_id[CONFUSE])
 		if (--larn_cdesc_id[CONFUSE] <= 0)
 		{
 			cursors();
-			lprcat("\nYou regain your senses");
+			fl_display_message("\nYou regain your senses");
 		}
 	if (larn_cdesc_id[GIANTSTR])
 		if (--larn_cdesc_id[GIANTSTR] <= 0)
@@ -209,7 +209,7 @@ regen(void)
 		if ( --larn_cdesc_id[HALFDAM] <= 0)
 		{
 			cursors();
-			lprcat("\nYou're feeling better");
+			fl_display_message("\nYou're feeling better");
 		}
 	if (larn_cdesc_id[SEEINVISIBLE])
 		if (--larn_cdesc_id[SEEINVISIBLE] <= 0)
@@ -219,7 +219,7 @@ regen(void)
 			if (!larn_cdesc_id[BLINDCOUNT])
 			{
 				cursors();
-				lprcat("\nYour vision returns to normal");
+				fl_display_message("\nYour vision returns to normal");
 			}
 		}
 	if (larn_cdesc_id[ITCHING])
@@ -230,14 +230,14 @@ regen(void)
 				{
 					larn_cdesc_id[WEAR] = larn_cdesc_id[SHIELD] = -1;
 					cursors();
-					lprcat("\nThe unbareable itching forces you to remove your armor!");
+					fl_display_message("\nThe unbareable itching forces you to remove your armor!");
 					recalc();
 					bottomline();
 				}
 		if (--larn_cdesc_id[ITCHING] <= 0)
 		{
 			cursors();
-			lprcat("\nThe irritation subsides!");
+			fl_display_message("\nThe irritation subsides!");
 		}
 	}
 	if (larn_cdesc_id[CLUMSINESS])
@@ -252,7 +252,7 @@ regen(void)
 	if (--larn_cdesc_id[CLUMSINESS] <= 0)
 	{
 		cursors();
-		lprcat("\nYou feel less awkward!");
+		fl_display_message("\nYou feel less awkward!");
 	}
 	}
 	if (flag)

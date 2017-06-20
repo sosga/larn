@@ -3,5 +3,5 @@
 #include "putch.hpp"
 #include "term.hpp"
 
-#define ANSITERM_ESC	27
-void ansiterm_out ( const char *, int );
+void ansiterm_out(const char *, int);
+inline const int ANSITERM_ESC = 27;

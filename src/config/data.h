@@ -1,5 +1,7 @@
 #include <time.h>
 
+inline const int MEG = 1000000;
+
 /*
 *
 * types
@@ -72,7 +74,7 @@ extern int level;
 extern int mitem[MAXX][MAXY], monstlevel[];
 extern int nch[], ndgg[], nlpts[], nomove;
 extern int nplt[], nsw[];
-extern int potprob[];
+extern int potion_probability[];
 extern char monstnamelist[];
 extern const char *levelname[];
 extern const char objnamelist[];
@@ -84,7 +86,7 @@ extern char playerids[];
 extern int predostuff, restorflag;
 extern char savefilename[];
 extern char scorefile[];
-extern int scprob[];
+extern int scroll_probability[];
 extern int screen[MAXX][MAXY], sex;
 extern int spelknow[];
 extern const char *spelmes[];
