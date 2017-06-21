@@ -452,19 +452,15 @@ drawscreen(void)
             d_flag = 1;
             screen_clear();
         }
-
-    else
-        {
+    else {
             d_flag = 0;
             cursor(1, 1);
         }
-
     if(d_xmin < 0)
         {
             /* d_xmin=-1 means display all without bottomline */
             d_xmin = 0;
         }
-
     /* display lines of the screen */
     for(j = d_ymin; j < d_ymax; j++)
         {
@@ -483,7 +479,6 @@ drawscreen(void)
                we reach a location that the user knows.
              */
             ileft = d_xmin - 1;
-
             while(++ileft < d_xmax)
                 {
                     if(know[ileft][j])
@@ -491,18 +486,15 @@ drawscreen(void)
                             break;
                         }
                 }
-
             /* if blank line ... */
             if(ileft >= d_xmax)
                 {
                     continue;
                 }
-
             /* scan from right of line until we reach a location that the
                user knows.
              */
             iright = d_xmax;
-
             while(--iright > ileft)
                 {
                     if(know[iright][j])
@@ -510,14 +502,12 @@ drawscreen(void)
                             break;
                         }
                 }
-
             /*
              * now print the line, after positioning the cursor.
              * print the line with bold objects in a different
              * loop for effeciency
              */
             cursor(ileft + 1, j + 1);
-
             for(i = ileft; i <= iright; i++)
                 {
                     /* we still need to check for the location being known,
@@ -527,9 +517,7 @@ drawscreen(void)
                     if(know[i][j] == 0)
                         {
                             nlprc(' ');
-                        }
-
-                    else if(know[i][j] & HAVESEEN)
+                        } else if(know[i][j] & HAVESEEN)
                         {
                             /*
                              * if monster there and the user still knows the place,
@@ -547,16 +535,10 @@ drawscreen(void)
                             if(k && know[i][j] & KNOWHERE)
                                 {
                                     nlprc(monstnamelist[k]);
-                                }
-
-                            else
-                                {
+                                } else {
                                     nlprc(objnamelist[item[i][j]]);
                                 }
-                        }
-
-                    else
-                        {
+                        } else {
                             /*
                              * error condition.  recover by resetting location
                              * to an 'unknown' state.
@@ -566,9 +548,7 @@ drawscreen(void)
                         }
                 }
         }
-
     resetbold();
-
     if(d_flag)
         {
             always = 1;
@@ -576,8 +556,6 @@ drawscreen(void)
             always = 1;
             bot_linex();
         }
-
-    /* oldx=99; */
     /* for limited screen drawing */
     d_xmin = d_ymin = 0;
     d_xmax = MAXX;

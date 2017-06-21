@@ -7,8 +7,8 @@
 #include "../includes/io.h"
 #include <curses.h>
 
-static void t_setup(int);
-static void t_endup(int);
+static void fl_clear_for_inventory(void);
+static void fl_draw_after_inventory(void);
 static int show2(int);
 static int qshowstr(char);
 
@@ -60,16 +60,17 @@ int
 showstr(char select_allowed)
 {
 	int i, number, item_select;
-	
-	for (number = 3, i = 0; i < MAXINVEN; i++)
-		if (iven[i])
+	number = 3;
+	for (i = 0; i < MAXINVEN; i++)
+	{
+		if (iven[i] != 0)
 		{
 			number++;  /* count items in inventory */
 		}
-
-	t_setup (number);
+	}
+	fl_clear_for_inventory();
 	item_select = qshowstr (select_allowed);
-	t_endup (number);
+	fl_draw_after_inventory();
 	return item_select;
 }
 
@@ -81,7 +82,7 @@ qshowstr(char select_allowed)
 
 	if (cdesc[GOLD])
 	{
-		lprintf (".) %d gold pieces",(int)cdesc[GOLD]);
+		lprintf(".) %d gold pieces",(int)cdesc[GOLD]);
 		srcount++;
 	}
 	
@@ -95,22 +96,16 @@ qshowstr(char select_allowed)
 	* ~Gibbon
 	*/
 	for (k = 0; k < MAXINVEN; k++)
-		if (iven[k])
+		if (iven[k] != 0)
 		{
 			show3(k);
 		}
-
-	lprintf ( "\nElapsed time is %d. You have %d mobuls left",
-	          gtime / 100,(TIMELIMIT() - gtime ) / 100);
-			  
+	lprintf("\nElapsed time is %d. You have %d mobuls left",gtime / 100,(TIMELIMIT() - gtime) / 100);	  
 	itemselect = more(select_allowed);
-	
 	if (select_allowed)
 	{
 		return((itemselect > 0) ? itemselect : 0);
-	}
-	else
-	{
+	} else {
 		return(0);
 	}
 }
@@ -119,42 +114,21 @@ qshowstr(char select_allowed)
 * subroutine to clear screen depending on # lines to display
 */
 static void
-t_setup ( int count )
+fl_clear_for_inventory(void)
 {
-	/* how do we clear the screen? */
-	if ( count < 20 )
-	{
-		cl_up ( 79, count );
-		cursor ( 1, 1 );
-	}
-
-	else
-	{
-		enable_scroll = 0;
 		screen_clear();
-	}
+		enable_scroll = 0;
 }
 
 /*
-* subroutine to restore normal display screen depending on t_setup()
+* subroutine to restore normal display screen depending on fl_clear_for_inventory()
 */
 static void
-t_endup ( int count )
+fl_draw_after_inventory(void)
 {
-	/* how did we clear the screen? */
-	if ( count < 18 )
-	{
-		draws ( 0, MAXX, 0, ( count > MAXY ) ? MAXY : count );
-	}
-
-	else
-	{
-		drawscreen ();
 		enable_scroll = 1;
-	}
+		drawscreen();
 }
-
-
 
 /*
 * function to show the things player is wearing only
@@ -184,7 +158,7 @@ showwear ( void )
 		}
 	}
 
-	t_setup ( count );
+	fl_clear_for_inventory();
 
 	for ( i = 0; i < MAXINVEN; i++ )
 	{
@@ -214,7 +188,7 @@ showwear ( void )
 		itemselect = more ( 1 );
 	}
 
-	t_endup ( count );
+	fl_draw_after_inventory();
 
 	if ( itemselect > 1 )
 	{
@@ -263,7 +237,7 @@ showwield ( void )
 		}
 	}
 
-	t_setup ( count );
+	fl_clear_for_inventory();
 
 	for ( i = 0; i < MAXINVEN; i++ )
 	{
@@ -302,7 +276,7 @@ showwield ( void )
 		itemselect = more ( 1 );
 	}
 
-	t_endup ( count );
+	fl_draw_after_inventory();
 
 	if ( itemselect > 1 )
 	{
@@ -336,7 +310,7 @@ showread ( void )
 		}
 	}
 
-	t_setup ( count );
+	fl_clear_for_inventory();
 
 	for ( i = 0; i < MAXINVEN; i++ )
 	{
@@ -360,7 +334,7 @@ showread ( void )
 		itemselect = more ( 1 );
 	}
 
-	t_endup ( count );
+	fl_draw_after_inventory();
 
 	if ( itemselect > 1 )
 	{
@@ -392,7 +366,7 @@ showeat ( void )
 		}
 	}
 
-	t_setup ( count );
+	fl_clear_for_inventory();
 
 	for ( i = 0; i < MAXINVEN; i++ )
 	{
@@ -414,7 +388,7 @@ showeat ( void )
 		itemselect = more ( 1 );
 	}
 
-	t_endup ( count );
+	fl_draw_after_inventory();
 
 	if ( itemselect > 1 )
 	{
@@ -446,7 +420,7 @@ showquaff ( void )
 		}
 	}
 
-	t_setup ( count );
+	fl_clear_for_inventory();
 
 	for ( i = 0; i < MAXINVEN; i++ )
 	{
@@ -468,7 +442,7 @@ showquaff ( void )
 		itemselect = more ( 1 );
 	}
 
-	t_endup ( count );
+	fl_draw_after_inventory();
 
 	if ( itemselect > 1 )
 	{
