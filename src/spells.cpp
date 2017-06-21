@@ -88,7 +88,9 @@ cast ( void )
 	if ( cdesc[SPELLS] <= 0 )
 	{
 		move ( 10, 19 );
+		setbold();
 		fl_display_message ( "\nYou don't have any spells!" );
+		resetbold();
 		refresh();
 		return;
 	}

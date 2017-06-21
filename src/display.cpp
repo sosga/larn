@@ -97,33 +97,33 @@ bot_linex(void)
 
             if(cdesc[SPELLMAX] > 99)
                 {
-                    cursor(1, 19);
-                    lprintf("Spells:");
-                    cursor(8, 19);
-                    lprintf("%3d(%3d)", (int) cdesc[SPELLS],
+                    cursor(69, 10);
+                    lprintf("SPL:");
+                    cursor(73, 10);
+                    lprintf("%3d/%3d", (int) cdesc[SPELLS],
                             (int) cdesc[SPELLMAX]);
                 }
 
             else
                 {
-                    cursor(1, 19);
-                    lprintf("Spells:");
-                    cursor(8, 19);
+                    cursor(69, 10);
+                    lprintf("SPL:");
+                    cursor(73, 10);
                     lprintf("%3d/%2d", (int) cdesc[SPELLS],
                             (int) cdesc[SPELLMAX]);
                 }
-            cursor(15, 19);
-            lprintf("Level:");
+            cursor(1, 19);
+            lprintf("LVL:");
 
             if(cdesc[LEVEL] > 99)
                 {
-                    cursor(21, 19);
+                    cursor(5, 19);
                     lprintf("%3d", (int) cdesc[LEVEL]);
                 }
 
             else
                 {
-                    cursor(21, 19);
+                    cursor(5, 19);
                     lprintf("%-2d", (int) cdesc[LEVEL]);
                 }
             cursor(69, 1);
@@ -183,9 +183,9 @@ bot_linex(void)
             lprintf("Gold:");
             cursor(44, 18);
             lprintf("%-6d", (int) cdesc[GOLD]);
-            cursor(69, 10);
+            cursor(24, 19);
             lprintf("EXP:");
-            cursor(73, 10);
+            cursor(28, 19);
             lprintf("%-9d",(int)cdesc[EXPERIENCE]);
             cursor(52, 18);
             lprintf("%s",classname[cdesc[LEVEL] - 1]);
@@ -200,37 +200,37 @@ bot_linex(void)
 
             return;
         }
-    botsub(SPELLS, 8, 19, "%3d");
+    botsub(SPELLS, 73, 10, "%3d");
 
     if(cdesc[SPELLMAX] > 99)
         {
-            botsub(SPELLMAX, 8, 19, "%3d)");
+            botsub(SPELLMAX, 73, 10, "%3d)");
         }
 
     else
         {
-            botsub(SPELLMAX, 8, 19, "%2d) ");
+            botsub(SPELLMAX, 73, 10, "%2d) ");
         }
     botsub(HP, 69, 1, "%3d");
     botsub(HPMAX, 69, 1, "%3d");
     botsub(AC, 73, 8, "%-3d");
     botsub(WCLASS, 73, 9, "%-3d");
-    botsub(EXPERIENCE, 73, 10, "%-9d");
+    botsub(EXPERIENCE, 28, 19, "%-9d");
 
     if(cdesc[LEVEL] != cbak[LEVEL])
         {
-            cursor(52, 18);
+            cursor(50, 18);
             lprintf(classname[cdesc[LEVEL] - 1]);
         }
 
     if(cdesc[LEVEL] > 99)
         {
-            botsub(LEVEL, 25, 19, "%3d");
+            botsub(LEVEL, 5, 19, "%3d");
         }
 
     else
         {
-            botsub(LEVEL, 25, 19, " %-2d");
+            botsub(LEVEL, 5, 19, " %-2d");
         }
 
     cdesc[TMP] = cdesc[STRENGTH] + cdesc[STREXTRA];
@@ -298,7 +298,7 @@ bot_hpx(void)
 
     else
         {
-            botsub(HP, 73, 1, "%3d");
+            botsub(HP, 72, 1, "%3d");
         }
 }
 
@@ -308,7 +308,7 @@ special routine to update number of spells called from regen()
 static void
 bot_spellx(void)
 {
-    botsub(SPELLS, 8, 19, "%2d");
+    botsub(SPELLS, 73, 10, "%2d");
 }
 
 /*
@@ -358,25 +358,22 @@ botside(void)
                         {
                             if(cdesc[idx])
                                 {
-                                    cursor(52, i + 11);
+                                    cursor(53, 19);
                                     lprintf(bot_data[i].string);
                                     /*Reset cursor position. ~Gibbon */
                                     cursors();
                                 }
                         }
-
                     else if(cdesc[idx] == 0)
                         {
-                            cursor(52, i + 11);
+                            cursor(53, 19);
                             lprintf("          ");
                             /*Reset cursor position. ~Gibbon */
                             cursors();
                         }
-
                     cbak[idx] = cdesc[idx];
                 }
         }
-
     always = 0;
 }
 
@@ -425,7 +422,7 @@ draws(int xmin, int xmax, int ymin, int ymax)
 
                     if(cdesc[idx])
                         {
-                            cursor(52, i + 11);
+                            cursor(53, 19);
                             lprintf(bot_data[i].string);
                         }
 
