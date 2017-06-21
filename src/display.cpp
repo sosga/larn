@@ -318,29 +318,29 @@ struct bot_side_def
 {
 
     int typ;
-    char *string;
+    const char *spell_text;
 
 };
 
 static struct bot_side_def bot_data[] =
 {
-    {STEALTH, (char*) "stealth"},
-    {UNDEADPRO, (char*) "undead pro"},
-    {SPIRITPRO, (char*) "spirit pro"},
-    {CHARMCOUNT, (char*) "Charm"},
-    {TIMESTOP, (char*) "Time Stop"},
-    {HOLDMONST, (char*) "Hold Monst"},
-    {GIANTSTR, (char*) "Giant Str"},
-    {FIRERESISTANCE, (char*) "Fire Resit"},
-    {DEXCOUNT, (char*) "Dexterity"},
-    {STRCOUNT, (char*) "Strength"},
-    {SCAREMONST, (char*) "Scare"},
-    {HASTESELF, (char*) "Haste Self"},
-    {CANCELLATION, (char*) "Cancel"},
-    {INVISIBILITY, (char*) "Invisible"},
-    {ALTPRO, (char*) "Protect 3"},
-    {PROTECTIONTIME, (char*) "Protect 2"},
-    {WTW, (char*) "Wall-Walk"}
+    {STEALTH,"stealth"},
+    {UNDEADPRO,"undead pro"},
+    {SPIRITPRO,"spirit pro"},
+    {CHARMCOUNT,"Charm"},
+    {TIMESTOP,"Time Stop"},
+    {HOLDMONST,"Hold Monst"},
+    {GIANTSTR,"Giant Str"},
+    {FIRERESISTANCE,"Fire Resit"},
+    {DEXCOUNT,"Dexterity"},
+    {STRCOUNT,"Strength"},
+    {SCAREMONST,"Scare"},
+    {HASTESELF,"Haste Self"},
+    {CANCELLATION,"Cancel"},
+    {INVISIBILITY,"Invisible"},
+    {ALTPRO,"Protect 3"},
+    {PROTECTIONTIME,"Protect 2"},
+    {WTW,"Wall-Walk"}
 };
 
 static void
@@ -359,7 +359,7 @@ botside(void)
                             if(cdesc[idx])
                                 {
                                     cursor(53, 19);
-                                    lprintf(bot_data[i].string);
+                                    lprintf(bot_data[i].spell_text);
                                     /*Reset cursor position. ~Gibbon */
                                     cursors();
                                 }
@@ -423,7 +423,7 @@ draws(int xmin, int xmax, int ymin, int ymax)
                     if(cdesc[idx])
                         {
                             cursor(53, 19);
-                            lprintf(bot_data[i].string);
+                            lprintf(bot_data[i].spell_text);
                         }
 
                     cbak[idx] = cdesc[idx];
