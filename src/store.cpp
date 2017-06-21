@@ -59,7 +59,7 @@ static int
 amtgoldtrad ( void )
 {
 	lprintf ( "You have" );
-	lprintf ( " %-6d ", ( int ) cdesc[GOLD] );
+	lprintf ( " %-6d ",cdesc[GOLD] );
 	lprintf ( "gold pieces." );
 	return ( 0 );
 }
@@ -230,7 +230,8 @@ dnd_hed ( void )
 void
 dndstore ( void )
 {
-	int i;
+	int i, inventory_limit;
+	inventory_limit = 0;
 	dnditm = 0;
 	screen_clear();
 	dnd_2hed ();
@@ -240,8 +241,7 @@ dndstore ( void )
 		fl_display_message
 		( "\n\nThe Larn Revenue Service has ordered us to not do business with tax evaders.\n" );
 		lprintf
-		( "They have also told us that you owe %d gp in back taxes, and as we must\n",
-		  ( int ) outstanding_taxes );
+		( "They have also told us that you owe %d gp in back taxes, and as we must\n", outstanding_taxes );
 		fl_display_message
 		( "comply with the law, we cannot serve you at this time.  Soo Sorry.\n" );
 		cursors ();
@@ -328,9 +328,9 @@ dndstore ( void )
 						}
 
 						else
-							if ( pocketfull () )
+							if (inventory_limit == MAXINVEN)
 							{
-								handsfull ();
+								handsfull();
 							}
 
 							else
@@ -367,9 +367,6 @@ dndstore ( void )
 				}
 	}
 }
-
-
-
 
 /*
 function for the players hands are full
@@ -445,7 +442,7 @@ dnditem ( int i )
 		}
 
 	cursor ( j + 31, k );
-	price = ( ( int ) dnd_item[i].price ) * 10L;
+	price = ( dnd_item[i].price ) * 10L;
 	lprintf ( "%6ld", price );
 }
 
@@ -523,8 +520,6 @@ sch_hed ( void )
 	fl_display_message ( "You are presently carrying " );
 }
 
-
-
 void
 oschool ( void )
 {
@@ -535,7 +530,7 @@ oschool ( void )
 	for ( ;; )
 	{
 		cursor ( 1, 19 );
-		lprintf ( "%d ", ( int ) cdesc[GOLD] );
+		lprintf ( "%d ", cdesc[GOLD] );
 		lprintf ( "gold pieces." );
 		cursors ();
 		fl_display_message ( "\nWhat is your choice [" );
@@ -677,8 +672,7 @@ oschool ( void )
 							cdesc[CONFUSE] = 1;  /*  end confusion   */
 						}
 
-						adjtimel ( ( int )
-						           time_used );	/* adjust parameters for time change */
+						adjtimel (time_used );	/* adjust parameters for time change */
 					}
 
 					nap ( NAPTIME );
@@ -722,8 +716,7 @@ banktitle ( const char *str )
 		fl_display_message
 		( "\n\nThe Larn Revenue Service has ordered that your account be frozen until all\n" );
 		lprintf
-		( "levied taxes have been paid.  They have also told us that you owe %d gp in\n",
-		  ( int ) outstanding_taxes );
+		( "levied taxes have been paid.  They have also told us that you owe %d gp in\n", outstanding_taxes );
 		fl_display_message
 		( "taxes, and we must comply with them. We cannot serve you at this time.  Sorry.\n" );
 		fl_display_message ( "We suggest you go to the LRS office and pay your taxes.\n" );
@@ -842,7 +835,7 @@ obanksub ( void )
 
 	cursor ( 1, 16 );
 
-	lprintf ( "%8d", ( long ) cdesc[BANKACCOUNT] );
+	lprintf ( "%8d", cdesc[BANKACCOUNT] );
 
 	cursor ( 1, 18 );
 
@@ -850,7 +843,7 @@ obanksub ( void )
 
 	cursor ( 1, 19 );
 
-	lprintf ( "%8d", ( long ) cdesc[GOLD] );
+	lprintf ( "%8d", cdesc[GOLD] );
 
 	if ( cdesc[BANKACCOUNT] + cdesc[GOLD] >= 500000 )
 		fl_display_message
@@ -882,7 +875,7 @@ obanksub ( void )
 				fl_display_message ( "deposit\n" );
 				CLEAR_EOL ();
 				fl_display_message ( "How much? " );
-				amt = readnum ( ( int ) cdesc[GOLD] );
+				amt = readnum(cdesc[GOLD] );
 
 				if ( amt > cdesc[GOLD] )
 				{
@@ -907,7 +900,7 @@ obanksub ( void )
 
 			case 'w':
 				fl_display_message ( "withdraw\nHow much? " );
-				amt = readnum ( ( int ) cdesc[BANKACCOUNT] );
+				amt = readnum (cdesc[BANKACCOUNT] );
 
 				if ( amt > cdesc[BANKACCOUNT] )
 				{
@@ -983,11 +976,11 @@ obanksub ( void )
 		cursor ( 1, 16 );
 
 
-		lprintf ( "%8d", ( long ) cdesc[BANKACCOUNT] );
+		lprintf ( "%8d", cdesc[BANKACCOUNT] );
 
 		cursor ( 1, 19 );
 
-		lprintf ( "%8d", ( long ) cdesc[GOLD] );
+		lprintf ( "%8d", cdesc[GOLD] );
 
 	}
 }
@@ -1073,13 +1066,13 @@ otradiven ( void )
 
 					if ( ivenarg[i] > 0 )
 					{
-						lprintf ( " +%d", ( int ) ivenarg[i] );
+						lprintf ( " +%d", ivenarg[i] );
 					}
 
 					else
 						if ( ivenarg[i] < 0 )
 						{
-							lprintf ( " %d", ( int ) ivenarg[i] );
+							lprintf ( " %d", ivenarg[i] );
 						}
 
 					break;
@@ -1211,7 +1204,7 @@ otradepost ( void )
 
 					if ( iven[isub] == OSCROLL || iven[isub] == OPOTION )
 					{
-						value = 2 * ( int ) dnd_item[j + ivenarg[isub]].price;
+						value = 2 * dnd_item[j + ivenarg[isub]].price;
 					}
 
 					else
@@ -1235,7 +1228,7 @@ otradepost ( void )
 			 */
 			lprintf
 			( "\nItem (%c) is worth %d gold pieces to us.  Do you want to sell it? ",
-			  i, ( int ) value );
+			  i, value );
 			y_larn_rep = 0;
 
 			if ( getyn () == 'y' )
@@ -1280,8 +1273,6 @@ otradepost ( void )
 		}			/* end of inner while */
 	}				/* end of outer while */
 }				/* end of routine */
-
-
 
 
 static void
@@ -1336,7 +1327,7 @@ olrs ( void )
 		{
 			case 'p':
 				fl_display_message ( "pay taxes\nHow much? " );
-				amt = readnum ( ( int ) cdesc[GOLD] );
+				amt = readnum (cdesc[GOLD] );
 
 				if ( amt > cdesc[GOLD] )
 				{
@@ -1346,7 +1337,7 @@ olrs ( void )
 				else
 				{
 					/*Fix for bug #23 ~Gibbon*/
-					cdesc[GOLD] -= paytaxes ( ( int ) amt );
+					cdesc[GOLD] -= paytaxes (amt);
 					lrs_welcome_text();
 				}
 
@@ -1363,8 +1354,7 @@ olrs ( void )
 
 		if ( outstanding_taxes > 0 )
 		{
-			lprintf ( "You presently owe %d gp in taxes.  ",
-			          ( int ) outstanding_taxes );
+			lprintf ( "You presently owe %d gp in taxes.  ", outstanding_taxes );
 		}
 
 		else

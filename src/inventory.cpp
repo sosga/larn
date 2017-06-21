@@ -82,7 +82,7 @@ qshowstr(char select_allowed)
 
 	if (cdesc[GOLD])
 	{
-		lprintf(".) %d gold pieces",(int)cdesc[GOLD]);
+		lprintf(".) %d gold pieces",cdesc[GOLD]);
 		srcount++;
 	}
 	
@@ -198,8 +198,6 @@ showwear ( void )
 	return 0;
 }
 
-
-
 /*
 * function to show the things player can wield only
 */
@@ -286,8 +284,6 @@ showwield ( void )
 	return 0;
 }
 
-
-
 /*
 * function to show the things player can read only
 */
@@ -344,8 +340,6 @@ showread ( void )
 	return 0;
 }
 
-
-
 /*
 *  function to show the things player can eat only
 */
@@ -397,8 +391,6 @@ showeat ( void )
 
 	return 0;
 }
-
-
 
 /*
 * function to show the things player can quaff only
@@ -523,13 +515,13 @@ show2 ( int index )
 
 			if ( ivenarg[index] > 0 )
 			{
-				lprintf ( " + %d", ( long ) ivenarg[index] );
+				lprintf ( " + %d", ivenarg[index] );
 			}
 
 			else
 				if ( ivenarg[index] < 0 )
 				{
-					lprintf ( " %d", ( long ) ivenarg[index] );
+					lprintf ( " %d", ivenarg[index] );
 				}
 
 			break;
@@ -711,28 +703,3 @@ drop_object ( int k )
 	return ( 0 );
 }
 
-/*
-* routine to tell if player can carry one more thing
-* returns 1 if pockets are full, else 0
-*/
-int
-pocketfull ( void )
-{
-	int i, limit;
-	limit = MIN_LIMIT + ( cdesc[LEVEL] >> 1 );
-
-	if ( limit > MAXINVEN )
-	{
-		limit = MAXINVEN;
-	}
-
-	for ( i = 0; i < limit; i++ )
-	{
-		if ( iven[i] == 0 )
-		{
-			return 0;
-		}
-	}
-
-	return 1;
-}

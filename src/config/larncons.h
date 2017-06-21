@@ -75,11 +75,10 @@ inline int END_BOLD(void)
 }
 inline int TIMELIMIT(void)
 {
-	const int timelimit = 80000;
+	const int timelimit = 70000;
 	return timelimit;
 }
 inline const char* VERSION = "Xvart";
-inline const char* COMPILED = "20 June 2017";
 
 extern char *lpnt;
 inline int CLEAR_EOL(void)
@@ -87,7 +86,7 @@ inline int CLEAR_EOL(void)
 	return *lpnt++ = CL_LINE;
 }
 
-inline const int MAXLEVEL = 12;
+inline const int MAXLEVEL = 11;
 inline const int MAXVLEVEL = 3;
 inline const int PATHLEN = 80;
 

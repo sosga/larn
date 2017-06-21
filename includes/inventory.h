@@ -20,8 +20,6 @@ int take ( int, int );
 
 int drop_object ( int );
 
-int pocketfull ( void );
-
 /* Allow only 12 items (a to l) in the player's inventory */
 inline const int MAXINVEN = 12;
 

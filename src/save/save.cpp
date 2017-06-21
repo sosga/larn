@@ -164,7 +164,6 @@ Save::savegame(char *fname)
     lwrite(reinterpret_cast<char *>(&temptime), sizeof(time_t));
 
     lprintf("%s",VERSION);
-    lprintf("%s",COMPILED);
 
     lwclose();
 

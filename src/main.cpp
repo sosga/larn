@@ -511,8 +511,8 @@ parse(void)
                     y_larn_rep = 0;
                     nomove = 1;
                     cursors();
-                    lprintf("\nLarn-Next, Version: %s, Compiled: %s, Diff: %d",
-                        VERSION, COMPILED, (int)cdesc[HARDGAME]);
+                    lprintf("\nLarn-Next, Version: %s, Difficulty: %d",
+                        VERSION, cdesc[HARDGAME]);
 
                     if(wizard)
                         {
