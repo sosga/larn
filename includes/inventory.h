@@ -1,24 +1,23 @@
-void init_inventory ( void );
+/* Copyright 2017 Gibbon aka 'atsb'
 
-int showstr (char);
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
 
-int showwear ( void );
-
-int showwield ( void );
-
-int showread ( void );
-
-int showeat ( void );
-
-int showquaff ( void );
-
-void show1 ( int );
-
-int show3 ( int );
-
-int take ( int, int );
-
-int drop_object ( int );
+void fl_init_inventory(void);
+int showstr(char);
+int fl_display_inventory(int);
+int take(int, int);
+int drop_object(int);
 
 /* Allow only 12 items (a to l) in the player's inventory */
 inline const int MAXINVEN = 12;

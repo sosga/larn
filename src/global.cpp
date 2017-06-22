@@ -706,12 +706,12 @@ stealsomething ( void )
 
 	for ( ;; )
 	{
-		i = TRund ( 26 );
+		i = TRund (12);
 
 		if ( iven[i] && cdesc[WEAR] != i &&
 		     cdesc[WIELD] != i && cdesc[SHIELD] != i )
 		{
-			show3 ( i );
+			fl_display_inventory(i);
 			adjustcvalues ( iven[i], ivenarg[i] );
 			iven[i] = 0;
 			return 1;

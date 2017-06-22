@@ -37,7 +37,7 @@ static void ycwi(int);
 static void wear(void);
 static void dropobj(void);
 static int floor_consume(int, const char *);
-static void consume(int, const char *, int (*)(void));
+static void consume(int, const char *);
 static int whatitem(const char *);
 
 int dropflag =
@@ -66,8 +66,7 @@ int restorflag = 0;
 MAIN PROGRAM
 ************
 */
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     int i;
     int hard = -1;
@@ -444,7 +443,7 @@ parse(void)
                     if(cdesc[TIMESTOP] == 0)
                         if(!floor_consume(OCOOKIE, "eat"))
                             {
-                                consume(OCOOKIE, "eat", showeat);
+                                consume(OCOOKIE, "eat");
                             }
 
                     return;
@@ -473,7 +472,7 @@ parse(void)
                     if(cdesc[TIMESTOP] == 0)
                         if(!floor_consume(OPOTION, "quaff"))
                             {
-                                consume(OPOTION, "quaff", showquaff);
+                                consume(OPOTION, "quaff");
                             }
 
                     return;
@@ -492,7 +491,7 @@ parse(void)
                             if(!floor_consume(OBOOK, "read"))
                                 if(!floor_consume(OPRAYERBOOK, "read"))
                                     {
-                                        consume(OSCROLL, "read", showread);
+                                        consume(OSCROLL, "read");
                                     }
 
                     return;		/*  to read a scroll    */
@@ -909,12 +908,6 @@ wield(void)
 
             if(i != '.')
                 {
-                    if(i == '*')
-                        {
-                            i = showwield();
-                            cursors();
-                        }
-
                     if(i == '-')
                         {
                             cdesc[WIELD] = -1;
@@ -1023,12 +1016,6 @@ wear(void)
 
             if(i != '.' && i != '-')
                 {
-                    if(i == '*')
-                        {
-                            i = showwear();
-                            cursors();
-                        }
-
                     if(i && i != '.')
                         switch(iven[i - 'a'])
                             {
@@ -1105,13 +1092,6 @@ dropobj(void)
                 {
                     return;
                 }
-
-            if(i == '*')
-                {
-                    i = showstr(1);
-                    cursors();
-                }
-
             if(i != '-')
                 {
                     if(i == '.')  	/* drop some gold */
@@ -1276,8 +1256,7 @@ floor_consume(int search_item, const char *cons_verb)
 
 
 static void
-consume(int search_item, const char *prompt,
-        int (*showfunc)(void))
+consume(int search_item, const char *prompt)
 {
     int i;
 
@@ -1290,12 +1269,6 @@ consume(int search_item, const char *prompt,
 
             if(i != '.' && i != '-')
                 {
-                    if(i == '*')
-                        {
-                            i = showfunc();
-                            cursors();
-                        }
-
                     if(i && i != '.')
                         {
                             switch(iven[i - 'a'])
@@ -1374,7 +1347,7 @@ whatitem(const char *str)
 {
     int i = 0;
     cursors();
-    lprintf("\nWhat do you want to %s [* for all] ? ", str);
+    lprintf("\nWhat do you want to %s? ", str);
 
     while(i > 'z'
             || (i < 'a' && i != '-' && i != '*' && i != '\33'

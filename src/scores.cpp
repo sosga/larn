@@ -487,7 +487,7 @@ shou ( int x )
 								{
 									if ( k == iven[n] )
 									{
-										show3 ( n );
+										fl_display_inventory(n);
 									}
 								}
 							}

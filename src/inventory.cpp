@@ -1,3 +1,18 @@
+/* Copyright 2017 Gibbon aka 'atsb'
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+       http://www.apache.org/licenses/LICENSE-2.0
+       
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 #include "config/larncons.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
@@ -9,7 +24,6 @@
 
 static void fl_clear_for_inventory(void);
 static void fl_draw_after_inventory(void);
-static int show2(int);
 static int qshowstr(char);
 
 /* declare the player's inventory.  These should only be referenced
@@ -28,7 +42,7 @@ static char srcount = 0;	/* line counter for showstr() */
 * Initialize the player's inventory
 */
 void
-init_inventory ( void )
+fl_init_inventory ( void )
 {
 	int i;
 
@@ -37,13 +51,7 @@ init_inventory ( void )
 		iven[i] = ivenarg[i] = 0;
 		ivensort[i] = END_SENTINEL;
 	}
-
 	ivensort[MAXINVEN] = END_SENTINEL;
-
-	/* For zero difficulty games, start the player out with armor and weapon.
-	   We can sort the inventory right away because a dagger is 'later' than
-	   leather armor.
-	 */
 	if ( cdesc[HARDGAME] <= 0 )
 	{
 		iven[0] = OLEATHER;
@@ -85,20 +93,10 @@ qshowstr(char select_allowed)
 		lprintf(".) %d gold pieces",cdesc[GOLD]);
 		srcount++;
 	}
-	
-	/*
-	* I don't know who wrote the spaghetti code that was here
-	* but I do know that it was not needed and complicated a rather simple piece of functionality.
-	* Why do we need fancy hard-coded limits for a simple inventory?  Just get the contents as long as it is less than the
-	* MAXINVEN size.  What's the problem?  Passing the variable to show3() which in-turn calls show2() then show1() and displays.
-	* Nice and simple and no s****y code needed. /rant
-	*
-	* ~Gibbon
-	*/
 	for (k = 0; k < MAXINVEN; k++)
 		if (iven[k] != 0)
 		{
-			show3(k);
+			fl_display_inventory(k);
 		}
 	lprintf("\nElapsed time is %d. You have %d mobuls left",gtime / 100,(TIMELIMIT() - gtime) / 100);	  
 	itemselect = more(select_allowed);
@@ -130,420 +128,39 @@ fl_draw_after_inventory(void)
 		drawscreen();
 }
 
-/*
-* function to show the things player is wearing only
-*/
 int
-showwear ( void )
-{
-	int i, count, itemselect;
-	itemselect = 0;
-	srcount = 0;
-
-	for ( count = 2, i = 0; i < MAXINVEN; i++ )
-	{
-		switch ( iven[i] )
-		{
-			case OLEATHER:
-			case OPLATE:
-			case OCHAIN:
-			case ORING:
-			case OSTUDLEATHER:
-			case OSPLINT:
-			case OPLATEARMOR:
-			case OSSPLATE:
-			case OSHIELD:
-				++count;
-				break;
-		}
-	}
-
-	fl_clear_for_inventory();
-
-	for ( i = 0; i < MAXINVEN; i++ )
-	{
-		switch ( iven[i] )
-		{
-			case OLEATHER:
-			case OPLATE:
-			case OCHAIN:
-			case ORING:
-			case OSTUDLEATHER:
-			case OSPLINT:
-			case OPLATEARMOR:
-			case OSSPLATE:
-			case OSHIELD:
-				itemselect = show2 ( i );
-				break;
-		}
-
-		if ( itemselect )
-		{
-			break;
-		}
-	}
-
-	if ( !itemselect )
-	{
-		itemselect = more ( 1 );
-	}
-
-	fl_draw_after_inventory();
-
-	if ( itemselect > 1 )
-	{
-		return itemselect;
-	}
-
-	return 0;
-}
-
-/*
-* function to show the things player can wield only
-*/
-int
-showwield ( void )
-{
-	int i, count, itemselect;
-	itemselect = 0;
-	srcount = 0;
-
-	for ( count = 2, i = 0; i < MAXINVEN; i++ )
-	{
-		if ( iven[i] != 0 )
-		{
-			switch ( iven[i] )
-			{
-				case ODIAMOND:
-				case ORUBY:
-				case OEMERALD:
-				case OSAPPHIRE:
-				case OBOOK:
-				case OPRAYERBOOK:
-				case OCHEST:
-				case OLARNEYE:
-				case ONOTHEFT:
-				case OSPIRITSCARAB:
-				case OCUBEofUNDEAD:
-				case OPOTION:
-				case OSCROLL:
-					break;
-
-				default:
-					++count;
-			}
-		}
-	}
-
-	fl_clear_for_inventory();
-
-	for ( i = 0; i < MAXINVEN; i++ )
-	{
-		if ( iven[i] != 0 )
-		{
-			switch ( iven[i] )
-			{
-				case ODIAMOND:
-				case ORUBY:
-				case OEMERALD:
-				case OSAPPHIRE:
-				case OBOOK:
-				case OPRAYERBOOK:
-				case OCHEST:
-				case OLARNEYE:
-				case ONOTHEFT:
-				case OSPIRITSCARAB:
-				case OCUBEofUNDEAD:
-				case OPOTION:
-				case OSCROLL:
-					break;
-
-				default:
-					itemselect = show2 ( i );
-			}
-		}
-
-		if ( itemselect )
-		{
-			break;
-		}
-	}
-
-	if ( !itemselect )
-	{
-		itemselect = more ( 1 );
-	}
-
-	fl_draw_after_inventory();
-
-	if ( itemselect > 1 )
-	{
-		return itemselect;
-	}
-
-	return 0;
-}
-
-/*
-* function to show the things player can read only
-*/
-int
-showread ( void )
-{
-	int i, count, itemselect;
-	itemselect = 0;
-	srcount = 0;
-
-	for ( count = 2, i = 0; i < MAXINVEN; i++ )
-	{
-		switch ( iven[i] )
-		{
-			case OBOOK:
-			case OPRAYERBOOK:
-			case OSCROLL:
-				++count;
-				break;
-		}
-	}
-
-	fl_clear_for_inventory();
-
-	for ( i = 0; i < MAXINVEN; i++ )
-	{
-		switch ( iven[i] )
-		{
-			case OBOOK:
-			case OPRAYERBOOK:
-			case OSCROLL:
-				itemselect = show2 ( i );
-				break;
-		}
-
-		if ( itemselect )
-		{
-			break;
-		}
-	}
-
-	if ( !itemselect )
-	{
-		itemselect = more ( 1 );
-	}
-
-	fl_draw_after_inventory();
-
-	if ( itemselect > 1 )
-	{
-		return itemselect;
-	}
-
-	return 0;
-}
-
-/*
-*  function to show the things player can eat only
-*/
-int
-showeat ( void )
-{
-	int i, count, itemselect;
-	itemselect = 0;
-	srcount = 0;
-
-	for ( count = 2, i = 0; i < MAXINVEN; i++ )
-	{
-		switch ( iven[i] )
-		{
-			case OCOOKIE:
-				++count;
-				break;
-		}
-	}
-
-	fl_clear_for_inventory();
-
-	for ( i = 0; i < MAXINVEN; i++ )
-	{
-		switch ( iven[i] )
-		{
-			case OCOOKIE:
-				itemselect = show2 ( i );
-				break;
-		}
-
-		if ( itemselect )
-		{
-			break;
-		}
-	}
-
-	if ( !itemselect )
-	{
-		itemselect = more ( 1 );
-	}
-
-	fl_draw_after_inventory();
-
-	if ( itemselect > 1 )
-	{
-		return itemselect;
-	}
-
-	return 0;
-}
-
-/*
-* function to show the things player can quaff only
-*/
-int
-showquaff ( void )
-{
-	int i, count, itemselect;
-	itemselect = 0;
-	srcount = 0;
-
-	for ( count = 2, i = 0; i < MAXINVEN; i++ )
-	{
-		switch ( iven[i] )
-		{
-			case OPOTION:
-				++count;
-				break;
-		}
-	}
-
-	fl_clear_for_inventory();
-
-	for ( i = 0; i < MAXINVEN; i++ )
-	{
-		switch ( iven[i] )
-		{
-			case OPOTION:
-				itemselect = show2 ( i );
-				break;
-		}
-
-		if ( itemselect )
-		{
-			break;
-		}
-	}
-
-	if ( !itemselect )
-	{
-		itemselect = more ( 1 );
-	}
-
-	fl_draw_after_inventory();
-
-	if ( itemselect > 1 )
-	{
-		return itemselect;
-	}
-
-	return 0;
-}
-
-/*some backporting from 12.3 with my own changes and fixes.
- *Cleaned up and squashed a bug with duplication of text shown. ~Gibbon
- */
-void
-show1 ( int idx )
-{
-	lprc ( '\n' );
-	CLEAR_EOL ();
-
-	/*
-	 * Inventory will not be == 0 due to starting items. ~Gibbon
-	 */
-		lprintf ( "%c) ", idx + 'a' );
-		lprintf ( "%s", objectname[iven[idx]] );
-
-	/*we can remove the index to object name and concatenate the above with the below for scrolls and potions.
-	 *since OPOTION and OSCROLL (object names) will be stuffed into the above, we can focus on identified names. ~Gibbon
-	 */
-	if ( iven[idx] == OPOTION
-	     && potionname[ivenarg[idx]][0] != '\0' )
-	{
-		lprintf ( " of%s", potionname[ivenarg[idx]] );
-	}
-
-	else
-		if ( iven[idx] == OSCROLL
-		     && scrollname[ivenarg[idx]][0] != '\0' )
-		{
-			lprintf ( " of%s", scrollname[ivenarg[idx]] );
-		}
-}
-
-int
-show3 ( int index )
+fl_display_inventory(int index)
 {
 	srcount = 0;
-	return show2 ( index );
-}
-
-static int
-show2 ( int index )
-{
 	int itemselect = 0;
 
-	switch ( iven[index] )
+	lprc ( '\n' );
+	CLEAR_EOL ();
+	lprintf ( "%c) ", index + 'a' );
+	lprintf ( "%s", objectname[iven[index]] );
+
+	if ( iven[index] == OPOTION && potionname[ivenarg[index]][0] != '\0' )
 	{
-		case OPOTION:
-		case OSCROLL:
-		case OLARNEYE:
-		case OBOOK:
-		case OPRAYERBOOK:
-		case OSPIRITSCARAB:
-		case ODIAMOND:
-		case ORUBY:
-		case OCUBEofUNDEAD:
-		case OEMERALD:
-		case OCHEST:
-		case OCOOKIE:
-		case OSAPPHIRE:
-		case ONOTHEFT:
-			show1 ( index );
-			break;
-
-		default:
-			lprc ( '\n' );
-			CLEAR_EOL ();
-			lprintf ( "%c) ", index + 'a' );
-			lprintf ( "%s", objectname[iven[index]] );
-
-			if ( ivenarg[index] > 0 )
-			{
-				lprintf ( " + %d", ivenarg[index] );
-			}
-
-			else
-				if ( ivenarg[index] < 0 )
-				{
-					lprintf ( " %d", ivenarg[index] );
-				}
-
-			break;
+		lprintf ( " of%s", potionname[ivenarg[index]] );
 	}
-
+	if ( iven[index] == OSCROLL && scrollname[ivenarg[index]][0] != '\0' )
+	{
+		lprintf ( " of%s", scrollname[ivenarg[index]] );
+	}
 	if ( cdesc[WIELD] == index )
 	{
 		fl_display_message ( " (in hand)" );
 	}
-
 	if ( ( cdesc[WEAR] == index ) || ( cdesc[SHIELD] == index ) )
 	{
 		fl_display_message ( " (being worn)" );
 	}
-
 	if ( ++srcount >= 22 )
 	{
 		srcount = 0;
 		itemselect = more ( 1 );
 		screen_clear();
 	}
-
 	return ( itemselect );
 }
 
@@ -624,7 +241,7 @@ take ( int itm, int arg )
 
 			fl_display_message ( "\nYou pick up:" );
 
-			show3 ( i );
+			fl_display_inventory ( i );
 
 			if ( limit )
 			{
@@ -678,7 +295,7 @@ drop_object ( int k )
 	item[playerx][playery] = itm;
 	iarg[playerx][playery] = ivenarg[k];
 	fl_display_message ( "\n  You drop:" );
-	show3 ( k );			/* show what item you dropped */
+	fl_display_inventory ( k );			/* show what item you dropped */
 	know[playerx][playery] = 0;
 	iven[k] = 0;
 
@@ -702,4 +319,3 @@ drop_object ( int k )
 	  1;			/* say dropped an item so wont ask to pick it up right away */
 	return ( 0 );
 }
-
