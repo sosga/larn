@@ -220,7 +220,7 @@ dnd_hed ( void )
 {
 	int i;
 
-	for ( i = dnditm; i < 26 + dnditm; i++ )
+	for ( i = dnditm; i < MAXDNDSIZE + dnditm; i++ )
 	{
 		dnditem ( i );
 	}
@@ -278,12 +278,12 @@ dndstore ( void )
 		i = 0;
 
 		while ( ( i < 'a' || i > 'z' ) && ( i != ' ' ) && ( i != '\33' )
-		        && ( i != 12 ) )
+		        && ( i != MAXINVEN ) )
 		{
 			i = ttgetch ();
 		}
 
-		if ( i == 12 )
+		if ( i == MAXINVEN )
 		{
 			screen_clear();
 			dnd_2hed ();
@@ -302,7 +302,7 @@ dndstore ( void )
 				{
 					cl_dn ( 1, 4 );
 
-					if ( ( dnditm += 26 ) >= MAXITM )
+					if ( ( dnditm += MAXDNDSIZE ) >= MAXITM )
 					{
 						dnditm = 0;
 					}
@@ -413,7 +413,7 @@ dnditem ( int i )
 		return;
 	}
 
-	cursor ( ( j = ( i & 1 ) * 40 + 1 ), ( k = ( ( i % 26 ) >> 1 ) + 5 ) );
+	cursor ( ( j = ( i & 1 ) * 40 + 1 ), ( k = ( ( i % MAXDNDSIZE ) >> 1 ) + 5 ) );
 
 	if ( dnd_item[i].qty == 0 )
 	{
@@ -421,7 +421,7 @@ dnditem ( int i )
 		return;
 	}
 
-	lprintf ( "%c) ", ( i % 26 ) + 'a' );
+	lprintf ( "%c) ", ( i % MAXDNDSIZE ) + 'a' );
 
 	if ( dnd_item[i].obj == OPOTION )
 	{
@@ -539,12 +539,12 @@ oschool ( void )
 		y_larn_rep = 0;
 		i = 0;
 
-		while ( ( i < 'a' || i > 'h' ) && ( i != '\33' ) && ( i != 12 ) )
+		while ( ( i < 'a' || i > 'h' ) && ( i != '\33' ) && ( i != MAXINVEN ) )
 		{
 			i = ttgetch ();
 		}
 
-		if ( i == 12 )
+		if ( i == MAXINVEN )
 		{
 			sch_hed ();
 			continue;
@@ -788,7 +788,7 @@ obanksub ( void )
 	/* credit any needed interest */
 	ointerest ();
 
-	for ( k = i = 0; i < 26; i++ )
+	for ( k = i = 0; i < MAXDNDSIZE; i++ )
 		switch ( iven[i] )
 		{
 			case OLARNEYE:
@@ -927,7 +927,7 @@ obanksub ( void )
 
 				if ( i == '*' )
 				{
-					for ( i = 0; i < 26; i++ )
+					for ( i = 0; i < MAXDNDSIZE; i++ )
 					{
 						if ( gemvalue[i] )
 						{
@@ -974,12 +974,9 @@ obanksub ( void )
 
 		/*Fix for #38 -Gibbon*/
 		cursor ( 1, 16 );
-
-
 		lprintf ( "%8d", cdesc[BANKACCOUNT] );
 
 		cursor ( 1, 19 );
-
 		lprintf ( "%8d", cdesc[GOLD] );
 
 	}
@@ -1014,7 +1011,7 @@ otradiven ( void )
 	int i, j;
 
 	/* Print user's inventory like bank */
-	for ( j = i = 0; i < 12; i++ )
+	for ( j = i = 0; i < MAXINVEN; i++ )
 		if ( iven[i] )
 		{
 			cursor ( ( j % 2 ) * 40 + 1, ( j >> 1 ) + 8 );
@@ -1119,7 +1116,7 @@ otradepost ( void )
 		amtgoldtrad();
 		i = 0;
 
-		while ( ( i > 'z' || i < 'a' ) && i != 12 && i != '\33' )
+		while ( ( i > 'z' || i < 'a' ) && i != MAXINVEN && i != '\33' )
 		{
 			i = ttgetch ();
 		}
@@ -1133,7 +1130,7 @@ otradepost ( void )
 
 		for ( ;; )  		/* inner loop for simpler control */
 		{
-			if ( i == 12 )
+			if ( i == MAXINVEN )
 			{
 				screen_clear();
 				otradhead ();

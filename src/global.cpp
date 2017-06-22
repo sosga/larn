@@ -706,7 +706,7 @@ stealsomething ( void )
 
 	for ( ;; )
 	{
-		i = TRund (12);
+		i = TRund (MAXINVEN);
 
 		if ( iven[i] && cdesc[WEAR] != i &&
 		     cdesc[WIELD] != i && cdesc[SHIELD] != i )
