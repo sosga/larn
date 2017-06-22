@@ -15,6 +15,13 @@ June 2017
 12. Renamed some variables like scprob to scroll_probability.
 13. Removed larnfunc.h and created templates/math.t.hpp.
 14. Now compiles cleanly with GCC 7.1 with very strict rules.
+15. Cleaned up inventory code and made it fullscreen.
+16. Increased mobuls to 699.
+17. Created a log of messages (data/messages.log) for review if
+	players miss any of the messages scrolling while playing.
+18. Removed pointless casting.
+19. Large amount of bug fixing.
+20. Apache 2.0 applies to more files.
 
 ~Gibbon
 
