@@ -33,6 +33,3 @@ Due to the GNU/Linux distro I use as my primary machine, the officially supporte
 
 # Compiling from Source #
 Compiling Larn from source will require GCC 7 as a minimum due to new inlined variables and [[fallthrough]] which is now used.  I realize this may p!!s some people off but the inline variables are important as they function almost like the old #define's did.  Since I am rewriting this so it is clean and up to date, this is the consequence.  If we all held back from being modern we'd still be using 8080 cpu's.
-
-# Releases #
-I will be doing alpha builds every Wednesday for various architectures.
