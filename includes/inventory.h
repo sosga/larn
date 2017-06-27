@@ -15,7 +15,7 @@
 
 void fl_init_inventory(void);
 int showstr(char);
-int fl_display_inventory(int);
+int fl_display_inventory(int,char);
 int take(int, int);
 int drop_object(int);
 

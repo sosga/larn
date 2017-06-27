@@ -711,7 +711,7 @@ stealsomething ( void )
 		if ( iven[i] && cdesc[WEAR] != i &&
 		     cdesc[WIELD] != i && cdesc[SHIELD] != i )
 		{
-			fl_display_inventory(i);
+			fl_display_inventory(i,0);
 			adjustcvalues ( iven[i], ivenarg[i] );
 			iven[i] = 0;
 			return 1;

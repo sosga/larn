@@ -71,7 +71,7 @@ showstr(char select_allowed)
 	number = 3;
 	for (i = 0; i < MAXINVEN; i++)
 	{
-		if (iven[i] != 0)
+		if (iven[i])
 		{
 			number++;  /* count items in inventory */
 		}
@@ -96,7 +96,7 @@ qshowstr(char select_allowed)
 	for (k = 0; k < MAXINVEN; k++)
 		if (iven[k] != 0)
 		{
-			fl_display_inventory(k);
+			itemselect = fl_display_inventory(k,select_allowed);
 		}
 	lprintf("\nElapsed time is %d. You have %d mobuls left",gtime / 100,(TIMELIMIT() - gtime) / 100);	  
 	itemselect = more(select_allowed);
@@ -129,39 +129,50 @@ fl_draw_after_inventory(void)
 }
 
 int
-fl_display_inventory(int index)
+fl_display_inventory(int index, char select_allowed)
 {
-	srcount = 0;
-	int itemselect = 0;
+  int itemselect = 0;
 
-	lprc ( '\n' );
-	CLEAR_EOL ();
-	lprintf ( "%c) ", index + 'a' );
-	lprintf ( "%s", objectname[iven[index]] );
-
-	if ( iven[index] == OPOTION && potionname[ivenarg[index]][0] != '\0' )
-	{
-		lprintf ( " of%s", potionname[ivenarg[index]] );
-	}
-	if ( iven[index] == OSCROLL && scrollname[ivenarg[index]][0] != '\0' )
-	{
-		lprintf ( " of%s", scrollname[ivenarg[index]] );
-	}
-	if ( cdesc[WIELD] == index )
-	{
-		fl_display_message ( " (in hand)" );
-	}
-	if ( ( cdesc[WEAR] == index ) || ( cdesc[SHIELD] == index ) )
-	{
-		fl_display_message ( " (being worn)" );
-	}
-	if ( ++srcount >= 22 )
-	{
-		srcount = 0;
-		itemselect = more ( 1 );
-		screen_clear();
-	}
-	return ( itemselect );
+  switch (iven[index])
+  {
+    case OPOTION:
+    case OSCROLL:
+    case OLARNEYE:
+    case OBOOK:
+    case OSPIRITSCARAB:
+    case ODIAMOND:
+    case ORUBY:
+    case OCUBEofUNDEAD:
+    case OEMERALD:
+    case OCHEST:
+    case OCOOKIE:
+    case OSAPPHIRE:
+    case ONOTHEFT:
+      lprc('\n');
+      CLEAR_EOL();
+      lprintf("%c) %s", index + 'a', objectname[iven[index]]);
+           if (iven[index] == OPOTION && potionname[ivenarg[index]]) lprintf(" of %s", potionname[ivenarg[index]]);
+      else if (iven[index] == OSCROLL && scrollname[ivenarg[index]]) lprintf(" of %s", scrollname[ivenarg[index]]);
+    break;
+    default:
+      lprc('\n');
+      CLEAR_EOL();
+      lprintf("%c) %s", index + 'a', objectname[iven[index]]);
+           if (ivenarg[index] > 0) lprintf(" +%d", ivenarg[index]);
+      else if (ivenarg[index] < 0) lprintf( " %d", ivenarg[index]);
+    break;
+  }
+  if (cdesc[WIELD] == index)
+  	fl_display_message(" (weapon in hand)");
+  if ((cdesc[WEAR] == index) || (cdesc[SHIELD] == index))
+  	fl_display_message(" (being worn)");
+  if (++srcount >= 23)
+  {
+    srcount = 0;
+    itemselect = more(select_allowed);
+    clear();
+  }
+  return itemselect;
 }
 
 
@@ -241,7 +252,7 @@ take ( int itm, int arg )
 
 			fl_display_message ( "\nYou pick up:" );
 
-			fl_display_inventory ( i );
+			fl_display_inventory ( i ,0);
 
 			if ( limit )
 			{
@@ -295,7 +306,7 @@ drop_object ( int k )
 	item[playerx][playery] = itm;
 	iarg[playerx][playery] = ivenarg[k];
 	fl_display_message ( "\n  You drop:" );
-	fl_display_inventory ( k );			/* show what item you dropped */
+	fl_display_inventory ( k ,0);			/* show what item you dropped */
 	know[playerx][playery] = 0;
 	iven[k] = 0;
 

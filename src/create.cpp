@@ -100,10 +100,14 @@ newcavelevel(int x)
     int i, j;
 
     level = x;	/* get the new level and put in working storage*/
-	
-	for (i=0; i<MAXY; i++)
-		for (j=0; j<MAXX; j++)
-			know[j][i]=mitem[j][i]=0;
+    for (i = 0; i < MAXY ; i++)
+    {
+    	for (j = 0 ; j < MAXX ; j++)
+    	{
+    		know[j][i] = 0;
+    		mitem[j][i] = 0;
+    	}
+    }
 	makemaze(x);
 	makeobject(x);
 	beenhere[x]=1;   /* first time here */
