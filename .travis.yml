@@ -12,6 +12,7 @@ install:
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
 
 before_script:
+  - mkdir bin
   - cd build
 
 script:
