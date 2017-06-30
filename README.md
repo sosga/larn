@@ -2,7 +2,7 @@
 # RL_M
 I am the official maintainer of Larn.
 
-![Travis CI logo](TravisCI.png)](https://travis-ci.org)
+[![Travis CI logo](TravisCI.png)](https://travis-ci.org)
 
 [![Build Status](https://travis-ci.org/atsb/RL_M.svg?branch=master)](https://travis-ci.org/atsb/RL_M)
 
