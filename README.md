@@ -28,6 +28,10 @@ which take this to the extreme and end-up damaging the game.  When you start you
 
 * More portable and more binaries.
 
+# Build Status #
+
+[![Build Status](https://travis-ci.org/atsb/RL_M.svg?branch=master)](https://travis-ci.org/atsb/RL_M)
+
 # Compile Warnings #
 Due to the GNU/Linux distro I use as my primary machine, the officially supported compiler is GCC 7 (minimum).  If Larn throws warnings on earlier versions, I won't fix it, simply because I cannot verify it myself, my distro is now on GCC 7 and that is what will be used for future builds, I don't like staying with ancient versions of packages ;)
 
