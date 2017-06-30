@@ -19,93 +19,90 @@ static int llgetch ( void );
 static int
 llgetch ( void )
 {
-	int key;
-	key = wgetch ( stdscr );
+    int key;
+    key = wgetch ( stdscr );
 #ifdef WINDOWS
-	if ( PDC_get_key_modifiers () & PDC_KEY_MODIFIER_SHIFT )
-	{
-		switch ( key )
-		{
-			case '1':
-				return 'B';
+    if ( PDC_get_key_modifiers () & PDC_KEY_MODIFIER_SHIFT ) {
+        switch ( key ) {
+        case '1':
+            return 'B';
 
-			case '2':
-				return 'J';
+        case '2':
+            return 'J';
 
-			case '3':
-				return 'N';
+        case '3':
+            return 'N';
 
-			case '4':
-				return 'H';
+        case '4':
+            return 'H';
 
-			case '5':
-				return '.';
+        case '5':
+            return '.';
 
-			case '6':
-				return 'L';
+        case '6':
+            return 'L';
 
-			case '7':
-				return 'Y';
+        case '7':
+            return 'Y';
 
-			case '8':
-				return 'K';
+        case '8':
+            return 'K';
 
-			case '9':
-				return 'U';
-		}
-	}
+        case '9':
+            return 'U';
+        }
+    }
 
 #endif
-	switch ( key )
-	{
-		case KEY_UP:
-			return 'k';
+    switch ( key ) {
+    case KEY_UP:
+        return 'k';
 
-		case KEY_DOWN:
-			return 'j';
+    case KEY_DOWN:
+        return 'j';
 
-		case KEY_LEFT:
-			return 'h';
+    case KEY_LEFT:
+        return 'h';
 
-		case KEY_RIGHT:
-			return 'l';
+    case KEY_RIGHT:
+        return 'l';
 #ifdef WINDOWS
-		case KEY_A2:
-			return 'k';
+    case KEY_A2:
+        return 'k';
 
-		case KEY_B1:
-			return 'h';
+    case KEY_B1:
+        return 'h';
 
-		case KEY_B3:
-			return 'l';
+    case KEY_B3:
+        return 'l';
 
-		case KEY_C2:
-			return 'j';
+    case KEY_C2:
+        return 'j';
 
-		case PADENTER:
-			return 13;
+    case PADENTER:
+        return 13;
 #endif
-		case KEY_A1:
-			return 'y';
+    case KEY_A1:
+        return 'y';
 
-		case KEY_A3:
-			return 'u';
+    case KEY_A3:
+        return 'u';
 
-		case KEY_C1:
-			return 'b';
+    case KEY_C1:
+        return 'b';
 
-		case KEY_C3:
-			return 'n';
+    case KEY_C3:
+        return 'n';
 
-		case KEY_B2:
-			return '.';
+    case KEY_B2:
+        return '.';
 
-		case KEY_ENTER:
-			return 13;
+    case KEY_ENTER:
+        return 13;
 
-		default:
-			return key;
-	}
+    default:
+        return key;
+    }
 }
 
 /*
@@ -114,11 +111,11 @@ llgetch ( void )
 int
 ansiterm_getche ( void )
 {
-	int key;
-	echo ();
-	key = llgetch();
-	noecho ();
-	return key;
+    int key;
+    echo ();
+    key = llgetch();
+    noecho ();
+    return key;
 }
 
 /*
@@ -127,7 +124,7 @@ ansiterm_getche ( void )
 int
 ansiterm_getch ( void )
 {
-	return llgetch ();
+    return llgetch ();
 }
 
 
@@ -136,5 +133,5 @@ ansiterm_getch ( void )
 void
 ansiterm_delch ( void )
 {
-	delch();
+    delch();
 }

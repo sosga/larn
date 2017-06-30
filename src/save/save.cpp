@@ -22,7 +22,7 @@
 #include "../../includes/scores.h"
 #include "../../includes/store.h"
 #include "../../includes/sysdep.h"
-#include "../../includes/create.h"
+#include "../dungeon/dungeon.hpp"
 #include "save.hpp"
 /*
  *  routine to save the present level into storage
@@ -46,16 +46,15 @@ Save::save(void)
     pmitem = mitem[0];
     phitp = hitp[0];
 
-    while(pcel < pecel)
-        {
+    while(pcel < pecel) {
 
-            pcel->mitem = *pmitem++;
-            pcel->hitp = *phitp++;
-            pcel->item = *pitem++;
-            pcel->know = *pknow++;
-            pcel->iarg = *piarg++;
-            pcel++;
-        }
+        pcel->mitem = *pmitem++;
+        pcel->hitp = *phitp++;
+        pcel->item = *pitem++;
+        pcel->know = *pknow++;
+        pcel->iarg = *piarg++;
+        pcel++;
+    }
 }
 
 /*
@@ -81,16 +80,15 @@ Load::load(void)
     pmitem = mitem[0];
     phitp = hitp[0];
 
-    while(pcel < pecel)
-        {
+    while(pcel < pecel) {
 
-            *pmitem++ = pcel->mitem;
-            *phitp++ = pcel->hitp;
-            *pitem++ = pcel->item;
-            *pknow++ = pcel->know;
-            *piarg++ = pcel->iarg;
-            pcel++;
-        }
+        *pmitem++ = pcel->mitem;
+        *phitp++ = pcel->hitp;
+        *pitem++ = pcel->item;
+        *pknow++ = pcel->know;
+        *piarg++ = pcel->iarg;
+        pcel++;
+    }
 }
 
 static time_t zzz = 0;
@@ -101,22 +99,21 @@ Save::savegame(char *fname)
     int i, k;
     struct sphere *sp;
     time_t temptime;
-	Save save;
+    Save save;
 
     lflush();
     save.save();
     ointerest();
-    if(lcreat(fname) < 0)
-        {
-            lcreat(reinterpret_cast<char *>(0));
-            lprintf("\nCan't open file <%s> to save game\n", fname);
-            return (-1);
-        }
+    if(lcreat(fname) < 0) {
+        lcreat(reinterpret_cast<char *>(0));
+        lprintf("\nCan't open file <%s> to save game\n", fname);
+        return (-1);
+    }
 
     set_score_output();
 
     lwrite(logname, LOGNAMESIZE);
-	
+
     lwrite(reinterpret_cast<char *>(beenhere), (sizeof(int) * (MAXLEVEL + MAXVLEVEL)));
     lwrite(reinterpret_cast<char *>(&cdesc[0]), 100 * sizeof(long));
     lwrite(reinterpret_cast<char *>(&gtime), 1 * sizeof(long));
@@ -128,27 +125,24 @@ Save::savegame(char *fname)
     lwrite(reinterpret_cast<char *>(iven), 26 * sizeof(int));
     lwrite(reinterpret_cast<char *>(ivenarg), 26 * sizeof(int));
 
-    for(k = 0; k < MAXSCROLL; k++)
-        {
+    for(k = 0; k < MAXSCROLL; k++) {
 
-            lprc(scrollname[k][0]);
-        }
+        lprc(scrollname[k][0]);
+    }
 
-    for(k = 0; k < MAXPOTION; k++)
-        {
+    for(k = 0; k < MAXPOTION; k++) {
 
-            lprc(potionname[k][0]);
-        }
+        lprc(potionname[k][0]);
+    }
 
     lwrite(reinterpret_cast<char *>(spelknow), SPNUM * sizeof(int));
     lprint(wizard);
     lprint(rmst);		/*  random monster generation counter */
 
-    for(i = 0; i < 90; i++)
-        {
+    for(i = 0; i < 90; i++) {
 
-            lprint(dnd_item[i].qty);
-        }
+        lprint(dnd_item[i].qty);
+    }
 
     lwrite(reinterpret_cast<char *>(course), 25 * sizeof(int));
     lprint(cheat);
@@ -180,20 +174,19 @@ Load::restoregame(char *fname)
     struct sphere *sp, *sp2;
     /*struct stat filetimes; */
     time_t temptime;
-	Load load;
+    Load load;
 
     cursors();
     fl_display_message("\nRestoring . . .");
     lflush();
-    if(lopen(fname) <= 0)
-        {
-            lcreat(reinterpret_cast<char *>(0));
-            lprintf("\nCan't open file <%s>to restore game\n", fname);
-            nap(NAPTIME);
-            cdesc[GOLD] = cdesc[BANKACCOUNT] = 0;
-            died(-265);
-            return;
-        }
+    if(lopen(fname) <= 0) {
+        lcreat(reinterpret_cast<char *>(0));
+        lprintf("\nCan't open file <%s>to restore game\n", fname);
+        nap(NAPTIME);
+        cdesc[GOLD] = cdesc[BANKACCOUNT] = 0;
+        died(-265);
+        return;
+    }
 
     lrfill(logname, LOGNAMESIZE);
     lrfill(reinterpret_cast<char *>(beenhere), (sizeof(int) * (MAXLEVEL + MAXVLEVEL)));
@@ -208,27 +201,24 @@ Load::restoregame(char *fname)
     lrfill(reinterpret_cast<char *>(iven), 26 * sizeof(int));
     lrfill(reinterpret_cast<char *>(ivenarg), 26 * sizeof(int));
 
-    for(k = 0; k < MAXSCROLL; k++)
-        {
+    for(k = 0; k < MAXSCROLL; k++) {
 
-            scrollname[k][0] = lgetc();
-        }
+        scrollname[k][0] = lgetc();
+    }
 
-    for(k = 0; k < MAXPOTION; k++)
-        {
+    for(k = 0; k < MAXPOTION; k++) {
 
-            potionname[k][0] = lgetc();
-        }
+        potionname[k][0] = lgetc();
+    }
 
     lrfill(reinterpret_cast<char *>(spelknow), SPNUM * sizeof(int));
     wizard = larint();
     rmst = larint();		/*  random monster creation flag */
 
-    for(i = 0; i < 90; i++)
-        {
+    for(i = 0; i < 90; i++) {
 
-            dnd_item[i].qty = larint();
-        }
+        dnd_item[i].qty = larint();
+    }
 
     lrfill(reinterpret_cast<char *>(course), 25 * sizeof(int));
     cheat = larint();
@@ -237,22 +227,20 @@ Load::restoregame(char *fname)
     for(i = 0; i < MAXMONST; i++)
         monster[i].genocided = larint();	/* genocide info */
 
-    for(sp = 0, i = 0; i < cdesc[SPHCAST]; i++)
-        {
-            sp2 = sp;
-            sp = (struct sphere *) operator new(sizeof(struct sphere));
-            if(sp == 0)
-                {
-                    fprintf(stderr, "Can't malloc() for sphere space\n");
-                    break;
-                }
-            lrfill(reinterpret_cast<char *>(sp), sizeof(struct sphere));	/* get spheres of annihilation */
-            sp->p = 0;		/* null out pointer */
-            if(i == 0)
-                spheres = sp;		/* beginning of list */
-            else
-                sp2->p = sp;
+    for(sp = 0, i = 0; i < cdesc[SPHCAST]; i++) {
+        sp2 = sp;
+        sp = (struct sphere *) operator new(sizeof(struct sphere));
+        if(sp == 0) {
+            fprintf(stderr, "Can't malloc() for sphere space\n");
+            break;
         }
+        lrfill(reinterpret_cast<char *>(sp), sizeof(struct sphere));	/* get spheres of annihilation */
+        sp->p = 0;		/* null out pointer */
+        if(i == 0)
+            spheres = sp;		/* beginning of list */
+        else
+            sp2->p = sp;
+    }
 
     time(&zzz);
     lrfill(reinterpret_cast<char *>(&temptime), sizeof(time_t));
@@ -263,21 +251,19 @@ Load::restoregame(char *fname)
     oldx = oldy = 0;
 
     /* died a post mortem death */
-    if(cdesc[HP] < 0)
-        {
-            died(284);
-            return;
-        }
+    if(cdesc[HP] < 0) {
+        died(284);
+        return;
+    }
 
     /* if patch up lev 25 player */
-    if(cdesc[LEVEL] == 25 && cdesc[EXPERIENCE] > skill[24])
-        {
-            long tmp;
-            tmp = cdesc[EXPERIENCE] - skill[24];	/* amount to go up */
-            cdesc[EXPERIENCE] = skill[24];
-            raiseexperience(tmp);
-        }
-   
+    if(cdesc[LEVEL] == 25 && cdesc[EXPERIENCE] > skill[24]) {
+        long tmp;
+        tmp = cdesc[EXPERIENCE] - skill[24];	/* amount to go up */
+        cdesc[EXPERIENCE] = skill[24];
+        raiseexperience(tmp);
+    }
+
     load.load();
     gtime -= 1;			/* HACK for time advancing either on save or reload */
     lasttime = gtime - 1;

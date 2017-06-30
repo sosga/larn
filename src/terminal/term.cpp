@@ -17,25 +17,25 @@
 void
 ansiterm_init ( void )
 {
-	initscr();
-	cbreak();
-	noecho();
-	nonl();
-	intrflush ( stdscr, 0 );
-	keypad ( stdscr, 1 );
-	curs_set ( 0 );
+    initscr();
+    cbreak();
+    noecho();
+    nonl();
+    intrflush ( stdscr, 0 );
+    keypad ( stdscr, 1 );
+    curs_set ( 0 );
 #if defined WINDOWS || WINDOWS_VS
-	PDC_save_key_modifiers ( 1 );
+    PDC_save_key_modifiers ( 1 );
 #endif
 }
 
 void
 ansiterm_clean_up ( void )
 {
-	nocbreak ();
-	nl ();
-	echo ();
-	endwin ();
+    nocbreak ();
+    nl ();
+    echo ();
+    endwin ();
 }
 
 
@@ -43,97 +43,75 @@ void
 ansiterm_command ( int ansi_cmd, const char *param1,
                    const char *param2 )
 {
-	if ( ansi_cmd == 'H' )
-	{
-		int y, x;
+    if ( ansi_cmd == 'H' ) {
+        int y, x;
 
-		if ( *param1 == '\0' )
-		{
-			y = 0;
-		}
+        if ( *param1 == '\0' ) {
+            y = 0;
+        }
 
-		else
-		{
-			y = atoi ( param1 ) - 1;
-		}
+        else {
+            y = atoi ( param1 ) - 1;
+        }
 
-		if ( *param2 == '\0' )
-		{
-			x = 0;
-		}
+        if ( *param2 == '\0' ) {
+            x = 0;
+        }
 
-		else
-		{
-			x = atoi ( param2 ) - 1;
-		}
+        else {
+            x = atoi ( param2 ) - 1;
+        }
 
-		move ( y, x );
-	}
+        move ( y, x );
+    }
 
-	else
-		if ( ansi_cmd == 'J' )
-		{
-			clear();
-		}
+    else if ( ansi_cmd == 'J' ) {
+        clear();
+    }
 
-		else
-			if ( ansi_cmd == 'M' )
-			{
-				int i, n_lines;
+    else if ( ansi_cmd == 'M' ) {
+        int i, n_lines;
 
-				if ( *param1 != '\0' )
-				{
-					n_lines = 1;
-				}
+        if ( *param1 != '\0' ) {
+            n_lines = 1;
+        }
 
-				else
-				{
-					n_lines = atoi ( param1 );
-				}
+        else {
+            n_lines = atoi ( param1 );
+        }
 
-				for ( i = 0; i < n_lines; i++ )
-				{
-					move ( 0, 0 );
-					clrtoeol ();
-				}
-			}
+        for ( i = 0; i < n_lines; i++ ) {
+            move ( 0, 0 );
+            clrtoeol ();
+        }
+    }
 
-			else
-				if ( ansi_cmd == 'K' )
-				{
-					clrtoeol ();
-				}
+    else if ( ansi_cmd == 'K' ) {
+        clrtoeol ();
+    }
 
-				else
-					if ( ansi_cmd == 'm' )
-					{
-						int attribute;
+    else if ( ansi_cmd == 'm' ) {
+        int attribute;
 
-						if ( *param1 == '\0' )
-						{
-							attribute = 0;
-						}
+        if ( *param1 == '\0' ) {
+            attribute = 0;
+        }
 
-						else
-						{
-							attribute = atoi ( param1 );
-						}
+        else {
+            attribute = atoi ( param1 );
+        }
 
-						if ( attribute == 0 )
-						{
-							attrset ( A_NORMAL );
-						}
+        if ( attribute == 0 ) {
+            attrset ( A_NORMAL );
+        }
 
-						else
-							if ( attribute == 1 )
-							{
-								attrset ( A_REVERSE );
-							}
-					}
+        else if ( attribute == 1 ) {
+            attrset ( A_REVERSE );
+        }
+    }
 
-					else
-					{
-						exit ( EXIT_FAILURE );
-					}
+    else {
+        exit ( EXIT_FAILURE );
+    }
 }
 

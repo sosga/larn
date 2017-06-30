@@ -21,7 +21,7 @@ genmonst()         Function to ask for monster and genocide from game
 #include <cstring>
 #include <curses.h>
 
-#include "../includes/create.h"
+#include "dungeon/dungeon.hpp"
 #include "config/larncons.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
@@ -42,10 +42,10 @@ using std::cout;
 struct isave
 {
 
-	int type;			/* 0=item,  1=monster */
-	int id;			/* item number or monster number */
+    int type;			/* 0=item,  1=monster */
+    int id;			/* item number or monster number */
 
-	int arg;			/* the type of item or hitpoints of monster */
+    int arg;			/* the type of item or hitpoints of monster */
 };
 
 
@@ -82,64 +82,57 @@ static char eys[] = "\nEnter your spell: ";
 void
 cast ( void )
 {
-	int i, j, a, b, d;
-	cursors ();
+    int i, j, a, b, d;
+    cursors ();
 
-	if ( cdesc[SPELLS] <= 0 )
-	{
-		move ( 10, 19 );
-		setbold();
-		fl_display_message ( "\nYou don't have any spells!" );
-		resetbold();
-		refresh();
-		return;
-	}
+    if ( cdesc[SPELLS] <= 0 ) {
+        move ( 10, 19 );
+        setbold();
+        fl_display_message ( "\nYou don't have any spells!" );
+        resetbold();
+        refresh();
+        return;
+    }
 
-	fl_display_message ( eys );
-	--cdesc[SPELLS];
+    fl_display_message ( eys );
+    --cdesc[SPELLS];
 
-	while ( ( a = ttgetch () ) == 'I' )
-	{
-		seemagic ( -1 );
-		cursors ();
-		fl_display_message ( eys );
-	}
+    while ( ( a = ttgetch () ) == 'I' ) {
+        seemagic ( -1 );
+        cursors ();
+        fl_display_message ( eys );
+    }
 
-	if ( a == '\33' )
-	{
-		goto over;  /*  to escape casting a spell   */
-	}
+    if ( a == '\33' ) {
+        goto over;  /*  to escape casting a spell   */
+    }
 
-	if ( ( b = ttgetch () ) == '\33' )
-	{
-		goto over;  /*  to escape casting a spell   */
-	}
+    if ( ( b = ttgetch () ) == '\33' ) {
+        goto over;  /*  to escape casting a spell   */
+    }
 
-	if ( ( d = ttgetch () ) == '\33' )
-	{
-	over:
-		fl_display_message ( aborted );
-		cdesc[SPELLS]++;
-		return;
-	}				/*  to escape casting a spell   */
+    if ( ( d = ttgetch () ) == '\33' ) {
+over:
+        fl_display_message ( aborted );
+        cdesc[SPELLS]++;
+        return;
+    }				/*  to escape casting a spell   */
 
-	for ( lprc ( '\n' ), j = -1, i = 0; i < SPNUM;
-	      i++ )	/*seq search for his spell, hash? */
-		if ( ( spelcode[i][0] == a ) && ( spelcode[i][1] == b )
-		     && ( spelcode[i][2] == d ) )
-			if ( spelknow[i] )
-			{
-				speldamage ( i );
-				j = 1;
-				i = SPNUM;
-			}
+    for ( lprc ( '\n' ), j = -1, i = 0; i < SPNUM;
+            i++ )	/*seq search for his spell, hash? */
+        if ( ( spelcode[i][0] == a ) && ( spelcode[i][1] == b )
+                && ( spelcode[i][2] == d ) )
+            if ( spelknow[i] ) {
+                speldamage ( i );
+                j = 1;
+                i = SPNUM;
+            }
 
-	if ( j == -1 )
-	{
-		fl_display_message ( "Nothing Happened" );
-	}
+    if ( j == -1 ) {
+        fl_display_message ( "Nothing Happened" );
+    }
 
-	bottomline ();
+    bottomline ();
 }
 
 
@@ -154,481 +147,443 @@ cast ( void )
 static void
 speldamage ( int x )
 {
-	int i, j, clev;
-	int xl, xh, yl, yh;
-	int *kn, *pm, *p;
-	HitMonster hitpoints;
-
-	if ( x >= SPNUM )
-	{
-		return;  /* no such spell */
-	}
-
-	if ( cdesc[TIMESTOP] )
-	{
-		fl_display_message ( "  It didn't seem to work" );
-		return;
-	}				/* not if time stopped */
-
-	clev = cdesc[LEVEL];
-
-	if ( ( TRnd ( 23 ) == 7 ) || ( TRnd ( 18 ) > cdesc[INTELLIGENCE] ) )
-	{
-		fl_display_message ( "  It didn't work!" );
-		return;
-	}
-
-	if ( clev * 3 + 2 < x )
-	{
-		fl_display_message ( "  Nothing happens.  You seem inexperienced at this" );
-		return;
-	}
-
-	switch ( x )
-	{
-		/* ----- LEVEL 1 SPELLS ----- */
-		case 0:
-			if ( cdesc[PROTECTIONTIME] == 0 )
-			{
-				cdesc[MOREDEFENSES] += 2;  /* protection field +2 */
-			}
-
-			cdesc[PROTECTIONTIME] += 250;
-			return;
-
-		case 1:
-			i = TRnd ( ( ( clev + 1 ) << 1 ) ) + clev + 3;
-			godirect ( x, i, ( clev >= 2 ) ? "  Your missiles hit the %s" :
-			           "  Your missile hit the %s", 100,
-			           '+' );	/* magic missile */
-			return;
-
-		case 2:
-			if ( cdesc[DEXCOUNT] == 0 )
-			{
-				cdesc[DEXTERITY] += 3;  /* dexterity   */
-			}
-
-			cdesc[DEXCOUNT] += 400;
-			return;
-
-		/*Further fixes below for issue #36.  Removed crusty old 'C' and replaced with
-			direct function calls. -Gibbon*/
-		case 3:
-			i = TRnd ( 3 ) + 1;
-			/*Fix for bug #24 added newlines to the 'msg' for web and sleep spells.
-			Removed the msg and used fl_display_message instead plus color. ~Gibbon*/
-			direct ( x, fullhit ( i ),
-			         "\nwhile the %s slept, you hit %d times ",
-			         i );	/*    sleep   */
-			return;
-
-		case 4:			/*  charm monster   */
-			cdesc[CHARMCOUNT] += cdesc[CHARISMA] << 1;
-			return;
-
-		case 5:
-			godirect ( x, TRnd ( 10 ) + 15 + clev,
-			           "  The sound damages the %s", 70,
-			           '@' );	/* sonic spear */
-			return;
-
-		/* ----- LEVEL 2 SPELLS ----- */
-		case 6:
-			i = TRnd ( 3 ) + 2;
-			direct ( x, fullhit ( i ),
-			         "\nYou damage the %s and hit %d times ",
-			         i );			/* web */
-			return;
-
-		case 7:
-			if ( cdesc[STRCOUNT] == 0 )
-			{
-				cdesc[STREXTRA] += 3;  /*  strength    */
-			}
-
-			cdesc[STRCOUNT] += 150 + TRnd ( 100 );
-			return;
-
-		case 8:
-			yl = playery - 5;		/* enlightenment */
-			yh = playery + 6;
-			xl = playerx - 15;
-			xh = playerx + 16;
-			vxy ( &xl, &yl );
-			vxy ( &xh, &yh );		/* check bounds */
-
-			for ( i = yl; i <= yh; i++ )	/* enlightenment */
-				for ( j = xl; j <= xh; j++ )
-				{
-					know[j][i] = KNOWALL;
-				}
-
-			draws ( xl, xh + 1, yl, yh + 1 );
-			return;
-
-		case 9:
-			raisehp ( 20 + ( clev << 1 ) );
-			return;			/* healing */
-
-		case 10:
-			cdesc[BLINDCOUNT] = 0;
-			return;			/* cure blindness   */
-
-		case 11:
-			createmonster ( makemonst ( level + 1 ) + 8 );
-			return;
-
-		case 12:
-			if ( TRnd ( 11 ) + 7 <= cdesc[WISDOM] )
-			{
-				direct ( x, TRnd ( 20 ) + 20 + clev, "\nThe %s believed!", 0 );
-			}
-
-			else
-			{
-				fl_display_message ( "\n It didn't believe the illusions!" );
-			}
-
-			return;
-
-		case 13:			/* if he has the amulet of invisibility then add more time */
-			for ( j = i = 0; i < 26; i++ )
-				if ( iven[i] == OAMULET )
-				{
-					j += 1 + ivenarg[i];
-				}
-
-			cdesc[INVISIBILITY] += ( j << 7 ) + 12;
-			return;
-
-		/* ----- LEVEL 3 SPELLS ----- */
-		case 14:
-			godirect ( x, TRnd ( 25 + clev ) + 25 + clev,
-			           "\nThe fireball hits the %s",
-			           40, '*' );
-			return;			/*    fireball */
-
-		case 15:
-			godirect ( x, TRnd ( 25 ) + 20 + clev,
-			           "\nYour cone of cold strikes the %s", 60, 'O' );	/*  cold */
-			return;
-
-		case 16:
-			dirpoly ( x );
-			return;			/*  polymorph */
-
-		case 17:
-			cdesc[CANCELLATION] += 5 + clev;
-			return;			/*  cancellation    */
-
-		case 18:
-			cdesc[HASTESELF] += 7 + clev;
-			return;			/* haste self  */
-
-		case 19:
-			omnidirect ( x, 30 + TRnd ( 10 ),
-			             "\nThe %s gasps for air" );	/* cloud kill */
-			return;
-
-		case 20:
-			xh = TMathMin ( playerx + 1, MAXX - 2 );
-			yh = TMathMin ( playery + 1, MAXY - 2 );
-
-			for ( i = TMathMax ( playerx - 1, 1 ); i <= xh;
-			      i++ )	/* vaporize rock */
-				for ( j = TMathMax ( playery - 1, 1 ); j <= yh; j++ )
-				{
-					kn = &know[i][j];
-					pm = &mitem[i][j];
-
-					switch ( * ( p = &item[i][j] ) )
-					{
-						case OWALL:
-							if ( level < MAXLEVEL + MAXVLEVEL - 1 )
-							{
-								*p = *kn = 0;
-							}
-
-							break;
-
-						case OSTATUE:
-							if ( cdesc[HARDGAME] < 3 )
-							{
-								*p = OBOOK;
-								iarg[i][j] = level;
-								*kn = 0;
-							}
-
-							break;
-
-						case OTHRONE:
-							*p = OTHRONE2;
-							create_guardian ( GNOMEKING, i, j );
-							break;
-
-						case OALTAR:
-							create_guardian ( DEMONPRINCE, i, j );
-							break;
-
-						case OFOUNTAIN:
-							create_guardian ( WATERLORD, i, j );
-							break;
-					};
-
-					switch ( *pm )
-					{
-						case XORN:
-							ifblind ( i, j );
-							hitpoints.hitm ( i, j, 200 );
-							break;		/* Xorn takes damage from vpr */
-					}
-				}
-
-			return;
-
-		/* ----- LEVEL 4 SPELLS ----- */
-		case 21:
-			direct ( x, 100 + clev, "\nThe %s shrivels up",
-			         0 );	/* dehydration */
-			return;
-
-		case 22:
-			godirect ( x, TRnd ( 25 ) + 20 + ( clev << 1 ),
-			           "\nA lightning bolt hits the %s", 1,
-			           '~' );	/*  lightning */
-			return;
-
-		case 23:
-			i = TMathMin ( cdesc[HP] - 1, cdesc[HPMAX] / 2 );	/* drain life */
-			direct ( x, i + i, "", 0 );
-			cdesc[HP] -= i;
-			return;
-
-		case 24:
-			if ( cdesc[GLOBE] == 0 )
-			{
-				cdesc[MOREDEFENSES] += 10;
-			}
-
-			cdesc[GLOBE] += 200;
-			loseint ();		/* globe of invulnerability */
-			return;
-
-		case 25:
-			omnidirect ( x, 32 + clev,
-			             "\nThe %s struggles for air in your flood!" );	/* flood */
-			return;
-
-		case 26:
-			if ( TRnd ( 151 ) == 63 )
-			{
-				fl_display_message ( "\nYour heart stopped!\n" );
-				nap ( NAPTIME );
-				died ( 270 );
-				return;
-			}
-
-			if ( cdesc[WISDOM] > TRnd ( 10 ) + 10 )
-				direct ( x, 2000, " \nThe %s's heart stopped",
-				         0 );	/* finger of death */
-			else
-			{
-				fl_display_message ( " It didn't work" );
-			}
-
-			return;
-
-		/* ----- LEVEL 5 SPELLS ----- */
-		case 27:
-			cdesc[SCAREMONST] += TRnd ( 10 ) + clev;
-			return;			/* scare monster */
-
-		case 28:
-			cdesc[HOLDMONST] += TRnd ( 10 ) + clev;
-			return;			/* hold monster */
-
-		case 29:
-			cdesc[TIMESTOP] += TRnd ( 20 ) + ( clev << 1 );
-			return;			/* time stop */
-
-		case 30:
-			tdirect ( x );
-			return;			/* teleport away */
-
-		case 31:
-			omnidirect ( x, 35 + TRnd ( 10 ) + clev,
-			             "\nThe %s cringes from the flame" );	/* magic fire */
-			return;
-
-		/* ----- LEVEL 6 SPELLS ----- */
-		case 32:
-			if ( ( TRnd ( 23 ) == 5 )
-			     && ( wizard == 0 ) )  	/* sphere of annihilation */
-			{
-				fl_display_message ( "\n You have been enveloped by the zone of nothingness!\n" );
-				nap ( NAPTIME );
-				died ( 258 );
-				return;
-			}
-
-			xl = playerx;
-			yl = playery;
-			loseint ();
-			i = dirsub ( &xl, &yl );	/* get direction of sphere */
-			newsphere ( xl, yl, i, TRnd ( 20 ) + 11 );	/* make a sphere */
-			return;
-
-		case 33:
-			genmonst ();
-			spelknow[33] = 0;		/* genocide */
-			loseint ();
-			return;
-
-		case 34:			/* summon demon */
-			if ( TRnd ( 100 ) > 30 )
-			{
-				direct ( x, 150, "\n The demon strikes at the %s", 0 );
-				return;
-			}
-
-			if ( TRnd ( 100 ) > 15 )
-			{
-				fl_display_message ( " Nothing seems to have happened" );
-				return;
-			}
-
-			fl_display_message ( " The" );
-			fl_display_message ( " demon " );
-			fl_display_message ( "turned on you and vanished!" );
-			i = TRnd ( 40 ) + 30;
-			lastnum = 277;
-			losehp ( i );		/* must say killed by a demon */
-			return;
-
-		case 35:			/* walk through walls */
-			cdesc[WTW] += TRnd ( 10 ) + 5;
-			return;
-
-		case 36:  		/* alter reality */
-			{
-				struct isave *save;	/* pointer to item save structure */
-				int sc;
-				sc = 0;			/* # items saved */
-				save =
-				  ( struct isave * ) operator new ( sizeof ( struct isave ) * MAXX * MAXY
-				                                    * 2 );
-
-				if ( save == NULL )
-				{
-					fl_display_message ( "\n Polinneaus won't let you mess with his dungeon!" );
-					return;
-				}
-
-				for ( j = 0; j < MAXY; j++ )
-					for ( i = 0; i < MAXX;
-					      i++ )  	/* save all items and monsters */
-					{
-						xl = item[i][j];
-
-						if ( xl && xl != OWALL && xl != OANNIHILATION )
-						{
-							save[sc].type = 0;
-							save[sc].id = item[i][j];
-							save[sc++].arg = iarg[i][j];
-						}
-
-						if ( mitem[i][j] )
-						{
-							save[sc].type = 1;
-							save[sc].id = mitem[i][j];
-							save[sc++].arg = hitp[i][j];
-						}
-
-						item[i][j] = OWALL;
-						mitem[i][j] = 0;
-
-						if ( wizard )
-						{
-							know[i][j] = KNOWALL;
-						}
-
-						else
-						{
-							know[i][j] = 0;
-						}
-					}
-
-				eat ( 1, 1 );
-
-				if ( level == 1 )
-				{
-					item[33][MAXY - 1] = OENTRANCE;
-				}
-
-				for ( j = TRnd ( MAXY - 2 ), i = 1; i < MAXX - 1; i++ )
-				{
-					item[i][j] = 0;
-				}
-
-				while ( sc > 0 )  	/* put objects back in level */
-				{
-					--sc;
-
-					if ( save[sc].type == 0 )
-					{
-						int trys;
-
-						for ( trys = 100, i = j = 1; --trys > 0 && item[i][j];
-						      i = TRnd ( MAXX - 1 ), j = TRnd ( MAXY - 1 ) );
-
-						if ( trys )
-						{
-							item[i][j] = save[sc].id;
-							iarg[i][j] = save[sc].arg;
-						}
-					}
-
-					else
-					{
-						/* put monsters back in */
-						int trys;
-
-						for ( trys = 100, i = j = 1;
-						      --trys > 0 && ( item[i][j] == OWALL || mitem[i][j] );
-						      i = TRnd ( MAXX - 1 ), j = TRnd ( MAXY - 1 ) );
-
-						if ( trys )
-						{
-							mitem[i][j] = save[sc].id;
-							hitp[i][j] = save[sc].arg;
-						}
-					}
-				}
-
-				loseint ();
-				draws ( 0, MAXX, 0, MAXY );
-
-				if ( wizard == 0 )
-				{
-					spelknow[36] = 0;
-				}
-
-				free ( ( char * ) save );
-				positionplayer ();
-				return;
-			}
-
-		case 37:			/* permanence */
-			adjtimel ( -99999L );
-			spelknow[37] = 0;		/* forget */
-			loseint ();
-			return;
-
-		default:
-			lprintf ( "spell %d not available!", ( int ) x );
-			return;
-	};
+    int i, j, clev;
+    int xl, xh, yl, yh;
+    int *kn, *pm, *p;
+    HitMonster hitpoints;
+
+    if ( x >= SPNUM ) {
+        return;  /* no such spell */
+    }
+
+    if ( cdesc[TIMESTOP] ) {
+        fl_display_message ( "  It didn't seem to work" );
+        return;
+    }				/* not if time stopped */
+
+    clev = cdesc[LEVEL];
+
+    if ( ( TRnd ( 23 ) == 7 ) || ( TRnd ( 18 ) > cdesc[INTELLIGENCE] ) ) {
+        fl_display_message ( "  It didn't work!" );
+        return;
+    }
+
+    if ( clev * 3 + 2 < x ) {
+        fl_display_message ( "  Nothing happens.  You seem inexperienced at this" );
+        return;
+    }
+
+    switch ( x ) {
+    /* ----- LEVEL 1 SPELLS ----- */
+    case 0:
+        if ( cdesc[PROTECTIONTIME] == 0 ) {
+            cdesc[MOREDEFENSES] += 2;  /* protection field +2 */
+        }
+
+        cdesc[PROTECTIONTIME] += 250;
+        return;
+
+    case 1:
+        i = TRnd ( ( ( clev + 1 ) << 1 ) ) + clev + 3;
+        godirect ( x, i, ( clev >= 2 ) ? "  Your missiles hit the %s" :
+                   "  Your missile hit the %s", 100,
+                   '+' );	/* magic missile */
+        return;
+
+    case 2:
+        if ( cdesc[DEXCOUNT] == 0 ) {
+            cdesc[DEXTERITY] += 3;  /* dexterity   */
+        }
+
+        cdesc[DEXCOUNT] += 400;
+        return;
+
+    /*Further fixes below for issue #36.  Removed crusty old 'C' and replaced with
+    	direct function calls. -Gibbon*/
+    case 3:
+        i = TRnd ( 3 ) + 1;
+        /*Fix for bug #24 added newlines to the 'msg' for web and sleep spells.
+        Removed the msg and used fl_display_message instead plus color. ~Gibbon*/
+        direct ( x, fullhit ( i ),
+                 "\nwhile the %s slept, you hit %d times ",
+                 i );	/*    sleep   */
+        return;
+
+    case 4:			/*  charm monster   */
+        cdesc[CHARMCOUNT] += cdesc[CHARISMA] << 1;
+        return;
+
+    case 5:
+        godirect ( x, TRnd ( 10 ) + 15 + clev,
+                   "  The sound damages the %s", 70,
+                   '@' );	/* sonic spear */
+        return;
+
+    /* ----- LEVEL 2 SPELLS ----- */
+    case 6:
+        i = TRnd ( 3 ) + 2;
+        direct ( x, fullhit ( i ),
+                 "\nYou damage the %s and hit %d times ",
+                 i );			/* web */
+        return;
+
+    case 7:
+        if ( cdesc[STRCOUNT] == 0 ) {
+            cdesc[STREXTRA] += 3;  /*  strength    */
+        }
+
+        cdesc[STRCOUNT] += 150 + TRnd ( 100 );
+        return;
+
+    case 8:
+        yl = playery - 5;		/* enlightenment */
+        yh = playery + 6;
+        xl = playerx - 15;
+        xh = playerx + 16;
+        vxy ( &xl, &yl );
+        vxy ( &xh, &yh );		/* check bounds */
+
+        for ( i = yl; i <= yh; i++ )	/* enlightenment */
+            for ( j = xl; j <= xh; j++ ) {
+                know[j][i] = KNOWALL;
+            }
+
+        draws ( xl, xh + 1, yl, yh + 1 );
+        return;
+
+    case 9:
+        raisehp ( 20 + ( clev << 1 ) );
+        return;			/* healing */
+
+    case 10:
+        cdesc[BLINDCOUNT] = 0;
+        return;			/* cure blindness   */
+
+    case 11:
+        createmonster ( makemonst ( level + 1 ) + 8 );
+        return;
+
+    case 12:
+        if ( TRnd ( 11 ) + 7 <= cdesc[WISDOM] ) {
+            direct ( x, TRnd ( 20 ) + 20 + clev, "\nThe %s believed!", 0 );
+        }
+
+        else {
+            fl_display_message ( "\n It didn't believe the illusions!" );
+        }
+
+        return;
+
+    case 13:			/* if he has the amulet of invisibility then add more time */
+        for ( j = i = 0; i < 26; i++ )
+            if ( iven[i] == OAMULET ) {
+                j += 1 + ivenarg[i];
+            }
+
+        cdesc[INVISIBILITY] += ( j << 7 ) + 12;
+        return;
+
+    /* ----- LEVEL 3 SPELLS ----- */
+    case 14:
+        godirect ( x, TRnd ( 25 + clev ) + 25 + clev,
+                   "\nThe fireball hits the %s",
+                   40, '*' );
+        return;			/*    fireball */
+
+    case 15:
+        godirect ( x, TRnd ( 25 ) + 20 + clev,
+                   "\nYour cone of cold strikes the %s", 60, 'O' );	/*  cold */
+        return;
+
+    case 16:
+        dirpoly ( x );
+        return;			/*  polymorph */
+
+    case 17:
+        cdesc[CANCELLATION] += 5 + clev;
+        return;			/*  cancellation    */
+
+    case 18:
+        cdesc[HASTESELF] += 7 + clev;
+        return;			/* haste self  */
+
+    case 19:
+        omnidirect ( x, 30 + TRnd ( 10 ),
+                     "\nThe %s gasps for air" );	/* cloud kill */
+        return;
+
+    case 20:
+        xh = TMathMin ( playerx + 1, MAXX - 2 );
+        yh = TMathMin ( playery + 1, MAXY - 2 );
+
+        for ( i = TMathMax ( playerx - 1, 1 ); i <= xh;
+                i++ )	/* vaporize rock */
+            for ( j = TMathMax ( playery - 1, 1 ); j <= yh; j++ ) {
+                kn = &know[i][j];
+                pm = &mitem[i][j];
+
+                switch ( * ( p = &item[i][j] ) ) {
+                case OWALL:
+                    if ( level < MAXLEVEL + MAXVLEVEL - 1 ) {
+                        *p = *kn = 0;
+                    }
+
+                    break;
+
+                case OSTATUE:
+                    if ( cdesc[HARDGAME] < 3 ) {
+                        *p = OBOOK;
+                        iarg[i][j] = level;
+                        *kn = 0;
+                    }
+
+                    break;
+
+                case OTHRONE:
+                    *p = OTHRONE2;
+                    create_guardian ( GNOMEKING, i, j );
+                    break;
+
+                case OALTAR:
+                    create_guardian ( DEMONPRINCE, i, j );
+                    break;
+
+                case OFOUNTAIN:
+                    create_guardian ( WATERLORD, i, j );
+                    break;
+                };
+
+                switch ( *pm ) {
+                case XORN:
+                    ifblind ( i, j );
+                    hitpoints.hitm ( i, j, 200 );
+                    break;		/* Xorn takes damage from vpr */
+                }
+            }
+
+        return;
+
+    /* ----- LEVEL 4 SPELLS ----- */
+    case 21:
+        direct ( x, 100 + clev, "\nThe %s shrivels up",
+                 0 );	/* dehydration */
+        return;
+
+    case 22:
+        godirect ( x, TRnd ( 25 ) + 20 + ( clev << 1 ),
+                   "\nA lightning bolt hits the %s", 1,
+                   '~' );	/*  lightning */
+        return;
+
+    case 23:
+        i = TMathMin ( cdesc[HP] - 1, cdesc[HPMAX] / 2 );	/* drain life */
+        direct ( x, i + i, "", 0 );
+        cdesc[HP] -= i;
+        return;
+
+    case 24:
+        if ( cdesc[GLOBE] == 0 ) {
+            cdesc[MOREDEFENSES] += 10;
+        }
+
+        cdesc[GLOBE] += 200;
+        loseint ();		/* globe of invulnerability */
+        return;
+
+    case 25:
+        omnidirect ( x, 32 + clev,
+                     "\nThe %s struggles for air in your flood!" );	/* flood */
+        return;
+
+    case 26:
+        if ( TRnd ( 151 ) == 63 ) {
+            fl_display_message ( "\nYour heart stopped!\n" );
+            nap ( NAPTIME );
+            died ( 270 );
+            return;
+        }
+
+        if ( cdesc[WISDOM] > TRnd ( 10 ) + 10 )
+            direct ( x, 2000, " \nThe %s's heart stopped",
+                     0 );	/* finger of death */
+        else {
+            fl_display_message ( " It didn't work" );
+        }
+
+        return;
+
+    /* ----- LEVEL 5 SPELLS ----- */
+    case 27:
+        cdesc[SCAREMONST] += TRnd ( 10 ) + clev;
+        return;			/* scare monster */
+
+    case 28:
+        cdesc[HOLDMONST] += TRnd ( 10 ) + clev;
+        return;			/* hold monster */
+
+    case 29:
+        cdesc[TIMESTOP] += TRnd ( 20 ) + ( clev << 1 );
+        return;			/* time stop */
+
+    case 30:
+        tdirect ( x );
+        return;			/* teleport away */
+
+    case 31:
+        omnidirect ( x, 35 + TRnd ( 10 ) + clev,
+                     "\nThe %s cringes from the flame" );	/* magic fire */
+        return;
+
+    /* ----- LEVEL 6 SPELLS ----- */
+    case 32:
+        if ( ( TRnd ( 23 ) == 5 )
+                && ( wizard == 0 ) ) {	/* sphere of annihilation */
+            fl_display_message ( "\n You have been enveloped by the zone of nothingness!\n" );
+            nap ( NAPTIME );
+            died ( 258 );
+            return;
+        }
+
+        xl = playerx;
+        yl = playery;
+        loseint ();
+        i = dirsub ( &xl, &yl );	/* get direction of sphere */
+        newsphere ( xl, yl, i, TRnd ( 20 ) + 11 );	/* make a sphere */
+        return;
+
+    case 33:
+        genmonst ();
+        spelknow[33] = 0;		/* genocide */
+        loseint ();
+        return;
+
+    case 34:			/* summon demon */
+        if ( TRnd ( 100 ) > 30 ) {
+            direct ( x, 150, "\n The demon strikes at the %s", 0 );
+            return;
+        }
+
+        if ( TRnd ( 100 ) > 15 ) {
+            fl_display_message ( " Nothing seems to have happened" );
+            return;
+        }
+
+        fl_display_message ( " The" );
+        fl_display_message ( " demon " );
+        fl_display_message ( "turned on you and vanished!" );
+        i = TRnd ( 40 ) + 30;
+        lastnum = 277;
+        losehp ( i );		/* must say killed by a demon */
+        return;
+
+    case 35:			/* walk through walls */
+        cdesc[WTW] += TRnd ( 10 ) + 5;
+        return;
+
+    case 36: {		/* alter reality */
+        struct isave *save;	/* pointer to item save structure */
+        int sc;
+        sc = 0;			/* # items saved */
+        save =
+            ( struct isave * ) operator new ( sizeof ( struct isave ) * MAXX * MAXY
+                                              * 2 );
+
+        if ( save == NULL ) {
+            fl_display_message ( "\n Polinneaus won't let you mess with his dungeon!" );
+            return;
+        }
+
+        for ( j = 0; j < MAXY; j++ )
+            for ( i = 0; i < MAXX;
+                    i++ ) {	/* save all items and monsters */
+                xl = item[i][j];
+
+                if ( xl && xl != OWALL && xl != OANNIHILATION ) {
+                    save[sc].type = 0;
+                    save[sc].id = item[i][j];
+                    save[sc++].arg = iarg[i][j];
+                }
+
+                if ( mitem[i][j] ) {
+                    save[sc].type = 1;
+                    save[sc].id = mitem[i][j];
+                    save[sc++].arg = hitp[i][j];
+                }
+
+                item[i][j] = OWALL;
+                mitem[i][j] = 0;
+
+                if ( wizard ) {
+                    know[i][j] = KNOWALL;
+                }
+
+                else {
+                    know[i][j] = 0;
+                }
+            }
+
+        eat ( 1, 1 );
+
+        if ( level == 1 ) {
+            item[33][MAXY - 1] = OENTRANCE;
+        }
+
+        for ( j = TRnd ( MAXY - 2 ), i = 1; i < MAXX - 1; i++ ) {
+            item[i][j] = 0;
+        }
+
+        while ( sc > 0 ) {	/* put objects back in level */
+            --sc;
+
+            if ( save[sc].type == 0 ) {
+                int trys;
+
+                for ( trys = 100, i = j = 1; --trys > 0 && item[i][j];
+                        i = TRnd ( MAXX - 1 ), j = TRnd ( MAXY - 1 ) );
+
+                if ( trys ) {
+                    item[i][j] = save[sc].id;
+                    iarg[i][j] = save[sc].arg;
+                }
+            }
+
+            else {
+                /* put monsters back in */
+                int trys;
+
+                for ( trys = 100, i = j = 1;
+                        --trys > 0 && ( item[i][j] == OWALL || mitem[i][j] );
+                        i = TRnd ( MAXX - 1 ), j = TRnd ( MAXY - 1 ) );
+
+                if ( trys ) {
+                    mitem[i][j] = save[sc].id;
+                    hitp[i][j] = save[sc].arg;
+                }
+            }
+        }
+
+        loseint ();
+        draws ( 0, MAXX, 0, MAXY );
+
+        if ( wizard == 0 ) {
+            spelknow[36] = 0;
+        }
+
+        free ( ( char * ) save );
+        positionplayer ();
+        return;
+    }
+
+    case 37:			/* permanence */
+        adjtimel ( -99999L );
+        spelknow[37] = 0;		/* forget */
+        loseint ();
+        return;
+
+    default:
+        lprintf ( "spell %d not available!", ( int ) x );
+        return;
+    };
 }
 
 
@@ -644,19 +599,18 @@ speldamage ( int x )
 static void
 create_guardian ( int monst, int x, int y )
 {
-	int k;
+    int k;
 
-	/* prevent the guardian from being created on top of the player */
-	if ( x == playerx && y == playery )
-	{
-		k = TRnd ( 8 );
-		x += diroffx[k];
-		y += diroffy[k];
-	}
+    /* prevent the guardian from being created on top of the player */
+    if ( x == playerx && y == playery ) {
+        k = TRnd ( 8 );
+        x += diroffx[k];
+        y += diroffy[k];
+    }
 
-	know[x][y] = 0;
-	mitem[x][y] = monst;
-	hitp[x][y] = monster[monst].hitpoints;
+    know[x][y] = 0;
+    mitem[x][y] = monst;
+    hitp[x][y] = monster[monst].hitpoints;
 }
 
 
@@ -669,10 +623,9 @@ create_guardian ( int monst, int x, int y )
 static void
 loseint ( void )
 {
-	if ( --cdesc[INTELLIGENCE] < 3 )
-	{
-		cdesc[INTELLIGENCE] = 3;
-	}
+    if ( --cdesc[INTELLIGENCE] < 3 ) {
+        cdesc[INTELLIGENCE] = 3;
+    }
 }
 
 
@@ -686,12 +639,11 @@ loseint ( void )
 static int
 isconfuse ( void )
 {
-	if ( cdesc[CONFUSE] )
-	{
-		fl_display_message ( " You can't aim your magic!" );
-	}
+    if ( cdesc[CONFUSE] ) {
+        fl_display_message ( " You can't aim your magic!" );
+    }
 
-	return ( cdesc[CONFUSE] );
+    return ( cdesc[CONFUSE] );
 }
 
 
@@ -707,23 +659,21 @@ isconfuse ( void )
 static int
 nospell ( int x, int monst )
 {
-	int tmp;
+    int tmp;
 
-	if ( x >= SPNUM || monst >= MAXMONST + 8 || monst < 0
-	     || x < 0 )
-	{
-		return ( 0 );  /* bad spell or monst */
-	}
+    if ( x >= SPNUM || monst >= MAXMONST + 8 || monst < 0
+            || x < 0 ) {
+        return ( 0 );  /* bad spell or monst */
+    }
 
-	if ( ( tmp = spelweird[monst - 1][x] ) == 0 )
-	{
-		return ( 0 );
-	}
+    if ( ( tmp = spelweird[monst - 1][x] ) == 0 ) {
+        return ( 0 );
+    }
 
-	cursors ();
-	lprc ( '\n' );
-	lprintf ( spelmes[tmp], monster[monst].name );
-	return ( 1 );
+    cursors ();
+    lprc ( '\n' );
+    lprintf ( spelmes[tmp], monster[monst].name );
+    return ( 1 );
 }
 
 
@@ -739,22 +689,20 @@ nospell ( int x, int monst )
 int
 fullhit ( int xx )
 {
-	int i;
+    int i;
 
-	if ( xx < 0 || xx > 20 )
-	{
-		return ( 0 );  /* fullhits are out of range */
-	}
+    if ( xx < 0 || xx > 20 ) {
+        return ( 0 );  /* fullhits are out of range */
+    }
 
-	if ( cdesc[GREATSWORDDEATH] )
-	{
-		return ( 10000 );  /* great sword of death */
-	}
+    if ( cdesc[GREATSWORDDEATH] ) {
+        return ( 10000 );  /* great sword of death */
+    }
 
-	i = xx * ( ( cdesc[WCLASS] >> 1 ) + cdesc[STRENGTH] +
-	           cdesc[STREXTRA] -
-	           cdesc[HARDGAME] - 12 + cdesc[MOREDAM] );
-	return ( ( i >= 1 ) ? i : xx );
+    i = xx * ( ( cdesc[WCLASS] >> 1 ) + cdesc[STRENGTH] +
+               cdesc[STREXTRA] -
+               cdesc[HARDGAME] - 12 + cdesc[MOREDAM] );
+    return ( ( i >= 1 ) ? i : xx );
 }
 
 
@@ -773,74 +721,64 @@ fullhit ( int xx )
 static void
 direct ( int spnum, int dam, const char* str, int arg )
 {
-	int x, y;
-	int m;
-	HitMonster hitpoints;
+    int x, y;
+    int m;
+    HitMonster hitpoints;
 
-	/* bad arguments */
-	if ( spnum < 0 || spnum >= SPNUM || str == NULL )
-	{
-		return;
-	}
+    /* bad arguments */
+    if ( spnum < 0 || spnum >= SPNUM || str == NULL ) {
+        return;
+    }
 
-	if ( isconfuse () )
-	{
-		return;
-	}
+    if ( isconfuse () ) {
+        return;
+    }
 
-	dirsub ( &x, &y );
-	m = mitem[x][y];
+    dirsub ( &x, &y );
+    m = mitem[x][y];
 
-	if ( item[x][y] == OMIRROR )
-	{
-		if ( spnum == 3 )  	/* sleep */
-		{
-			fl_display_message ( "You fall asleep! " );
-		fool:
-			arg += 2;
+    if ( item[x][y] == OMIRROR ) {
+        if ( spnum == 3 ) {	/* sleep */
+            fl_display_message ( "You fall asleep! " );
+fool:
+            arg += 2;
 
-			while ( arg-- > 0 )
-			{
-				parse2 ();
-				nap ( NAPTIME );
-			}
+            while ( arg-- > 0 ) {
+                parse2 ();
+                nap ( NAPTIME );
+            }
 
-			return;
-		}
+            return;
+        }
 
-		else
-			if ( spnum == 6 )  	/* web */
-			{
-				fl_display_message ( "You get stuck in your own web! " );
-				goto fool;
-			}
+        else if ( spnum == 6 ) {	/* web */
+            fl_display_message ( "You get stuck in your own web! " );
+            goto fool;
+        }
 
-			else
-			{
-				lastnum = 278;
-				lprintf ( str, "spell caster (thats you)", ( int ) arg );
-				losehp ( dam );
-				return;
-			}
-	}
+        else {
+            lastnum = 278;
+            lprintf ( str, "spell caster (thats you)", ( int ) arg );
+            losehp ( dam );
+            return;
+        }
+    }
 
-	if ( m == 0 )
-	{
-		fl_display_message ( "  There wasn't anything there!" );
-		return;
-	}
+    if ( m == 0 ) {
+        fl_display_message ( "  There wasn't anything there!" );
+        return;
+    }
 
-	ifblind ( x, y );
+    ifblind ( x, y );
 
-	if ( nospell ( spnum, m ) )
-	{
-		lasthx = x;
-		lasthy = y;
-		return;
-	}
+    if ( nospell ( spnum, m ) ) {
+        lasthx = x;
+        lasthy = y;
+        return;
+    }
 
-	lprintf ( str, lastmonst, ( int ) arg );
-	hitpoints.hitm ( x, y, dam );
+    lprintf ( str, lastmonst, ( int ) arg );
+    hitpoints.hitm ( x, y, dam );
 }
 
 
@@ -861,216 +799,197 @@ void
 godirect ( int spnum, int dam, const char *str, int delay,
            const char cshow )
 {
-	int *p;
-	int x, y, m;
-	int dx, dy;
-	HitMonster hitpoints;
+    int *p;
+    int x, y, m;
+    int dx, dy;
+    HitMonster hitpoints;
 
-	/* bad args */
-	if ( spnum < 0 || spnum >= SPNUM || str == 0 || delay < 0 )
-	{
-		return;
-	}
+    /* bad args */
+    if ( spnum < 0 || spnum >= SPNUM || str == 0 || delay < 0 ) {
+        return;
+    }
 
-	if ( isconfuse () )
-	{
-		return;
-	}
+    if ( isconfuse () ) {
+        return;
+    }
 
-	dirsub ( &dx, &dy );
-	x = dx;
-	y = dy;
-	dx = x - playerx;
-	dy = y - playery;
-	x = playerx;
-	y = playery;
+    dirsub ( &dx, &dy );
+    x = dx;
+    y = dy;
+    dx = x - playerx;
+    dy = y - playery;
+    x = playerx;
+    y = playery;
 
-	while ( dam > 0 )
-	{
-		x += dx;
-		y += dy;
+    while ( dam > 0 ) {
+        x += dx;
+        y += dy;
 
-		if ( ( x > MAXX - 1 ) || ( y > MAXY - 1 ) || ( x < 0 )
-		     || ( y < 0 ) )
-		{
-			dam = 0;
-			/* out of bounds */
-			break;
-		}
+        if ( ( x > MAXX - 1 ) || ( y > MAXY - 1 ) || ( x < 0 )
+                || ( y < 0 ) ) {
+            dam = 0;
+            /* out of bounds */
+            break;
+        }
 
-		/* if energy hits player */
-		if ( ( x == playerx ) && ( y == playery ) )
-		{
-			cursors ();
-			fl_display_message ( "\nYou are hit by your own magic!" );
-			lastnum = 278;
-			losehp ( dam );
-			return;
-		}
+        /* if energy hits player */
+        if ( ( x == playerx ) && ( y == playery ) ) {
+            cursors ();
+            fl_display_message ( "\nYou are hit by your own magic!" );
+            lastnum = 278;
+            losehp ( dam );
+            return;
+        }
 
-		/* if not blind show effect */
-		if ( cdesc[BLINDCOUNT] == 0 )
-		{
-			cursor ( x + 1, y + 1 );
-			lprc ( cshow );
-			nap ( delay );
-			show1cell ( x, y );
-		}
+        /* if not blind show effect */
+        if ( cdesc[BLINDCOUNT] == 0 ) {
+            cursor ( x + 1, y + 1 );
+            lprc ( cshow );
+            nap ( delay );
+            show1cell ( x, y );
+        }
 
-		m = mitem[x][y];
+        m = mitem[x][y];
 
-		/* is there a monster there? */
-		if ( m != 0 )
-		{
-			ifblind ( x, y );
+        /* is there a monster there? */
+        if ( m != 0 ) {
+            ifblind ( x, y );
 
-			if ( nospell ( spnum, m ) )
-			{
-				lasthx = x;
-				lasthy = y;
-				return;
-			}
+            if ( nospell ( spnum, m ) ) {
+                lasthx = x;
+                lasthy = y;
+                return;
+            }
 
-			cursors ();
-			lprc ( '\n' );
-			lprintf ( str, lastmonst );
-			hitpoints.hitm(x,y,dam);
-			dam -= hitpoints.hitm(x, y, dam);
-			show1cell(x, y);
-			x -= dx;
-			y -= dy;
-		}
+            cursors ();
+            lprc ( '\n' );
+            lprintf ( str, lastmonst );
+            hitpoints.hitm(x,y,dam);
+            dam -= hitpoints.hitm(x, y, dam);
+            show1cell(x, y);
+            x -= dx;
+            y -= dy;
+        }
 
-		else
-			switch ( * ( p = &item[x][y] ) )
-			{
-				case OWALL:
-					cursors ();
-					lprc ( '\n' );
-					lprintf ( str, "wall" );
+        else
+            switch ( * ( p = &item[x][y] ) ) {
+            case OWALL:
+                cursors ();
+                lprc ( '\n' );
+                lprintf ( str, "wall" );
 
-					if (
-					  /* enough damage? */
-					  dam >= 50 + cdesc[HARDGAME] &&
-					  /* not on V3 */
-					  level < MAXLEVEL + MAXVLEVEL - 1 &&
-					  x < MAXX - 1 && y < MAXY - 1 && x != 0 && y != 0 )
-					{
-						fl_display_message ( "  The wall crumbles" );
-						*p = 0;
-						know[x][y] = 0;
-						show1cell ( x, y );
-					}
+                if (
+                    /* enough damage? */
+                    dam >= 50 + cdesc[HARDGAME] &&
+                    /* not on V3 */
+                    level < MAXLEVEL + MAXVLEVEL - 1 &&
+                    x < MAXX - 1 && y < MAXY - 1 && x != 0 && y != 0 ) {
+                    fl_display_message ( "  The wall crumbles" );
+                    *p = 0;
+                    know[x][y] = 0;
+                    show1cell ( x, y );
+                }
 
-					dam = 0;
-					break;
+                dam = 0;
+                break;
 
-				case OCLOSEDDOOR:
-					cursors ();
-					lprc ( '\n' );
-					lprintf ( str, "door" );
+            case OCLOSEDDOOR:
+                cursors ();
+                lprc ( '\n' );
+                lprintf ( str, "door" );
 
-					if ( dam >= 40 )
-					{
-						fl_display_message ( "  The door is blasted apart" );
-						*p = 0;
-						know[x][y] = 0;
-						show1cell ( x, y );
-					}
+                if ( dam >= 40 ) {
+                    fl_display_message ( "  The door is blasted apart" );
+                    *p = 0;
+                    know[x][y] = 0;
+                    show1cell ( x, y );
+                }
 
-					dam = 0;
-					break;
+                dam = 0;
+                break;
 
-				case OSTATUE:
-					cursors ();
-					lprc ( '\n' );
-					lprintf ( str, "statue" );
+            case OSTATUE:
+                cursors ();
+                lprc ( '\n' );
+                lprintf ( str, "statue" );
 
-					if ( cdesc[HARDGAME] < 3 )
-						if ( dam > 44 )
-						{
-							fl_display_message ( "  The statue crumbles" );
-							*p = OPRAYERBOOK;
-							iarg[x][y] = level;
-							know[x][y] = 0;
-							show1cell ( x, y );
-						}
+                if ( cdesc[HARDGAME] < 3 )
+                    if ( dam > 44 ) {
+                        fl_display_message ( "  The statue crumbles" );
+                        *p = OPRAYERBOOK;
+                        iarg[x][y] = level;
+                        know[x][y] = 0;
+                        show1cell ( x, y );
+                    }
 
-					dam = 0;
-					break;
+                dam = 0;
+                break;
 
-				case OTHRONE:
-					cursors ();
-					lprc ( '\n' );
-					lprintf ( str, "throne" );
+            case OTHRONE:
+                cursors ();
+                lprc ( '\n' );
+                lprintf ( str, "throne" );
 
-					if ( dam > 39 )
-					{
-						*p = OTHRONE2;
-						create_guardian ( GNOMEKING, x, y );
-						show1cell ( x, y );
-					}
+                if ( dam > 39 ) {
+                    *p = OTHRONE2;
+                    create_guardian ( GNOMEKING, x, y );
+                    show1cell ( x, y );
+                }
 
-					dam = 0;
-					break;
+                dam = 0;
+                break;
 
-				case OALTAR:
-					cursors ();
-					lprc ( '\n' );
-					lprintf ( str, "altar" );
+            case OALTAR:
+                cursors ();
+                lprc ( '\n' );
+                lprintf ( str, "altar" );
 
-					if ( dam > 75 - ( cdesc[HARDGAME] >> 2 ) )
-					{
-						create_guardian ( DEMONPRINCE, x, y );
-						show1cell ( x, y );
-					}
+                if ( dam > 75 - ( cdesc[HARDGAME] >> 2 ) ) {
+                    create_guardian ( DEMONPRINCE, x, y );
+                    show1cell ( x, y );
+                }
 
-					dam = 0;
-					break;
+                dam = 0;
+                break;
 
-				case OFOUNTAIN:
-					cursors ();
-					lprc ( '\n' );
-					lprintf ( str, "fountain" );
+            case OFOUNTAIN:
+                cursors ();
+                lprc ( '\n' );
+                lprintf ( str, "fountain" );
 
-					if ( dam > 55 )
-					{
-						create_guardian ( WATERLORD, x, y );
-						show1cell ( x, y );
-					}
+                if ( dam > 55 ) {
+                    create_guardian ( WATERLORD, x, y );
+                    show1cell ( x, y );
+                }
 
-					dam = 0;
-					break;
+                dam = 0;
+                break;
 
-				case OMIRROR:
-					{
-						int bounce = 0, odx = dx, ody = dy;
+            case OMIRROR: {
+                int bounce = 0, odx = dx, ody = dy;
 
-						/* spells may bounce directly back or off at an angle */
-						if ( TRnd ( 100 ) < 50 )
-						{
-							bounce = 1;
-							dx *= -1;
-						}
+                /* spells may bounce directly back or off at an angle */
+                if ( TRnd ( 100 ) < 50 ) {
+                    bounce = 1;
+                    dx *= -1;
+                }
 
-						if ( TRnd ( 100 ) < 50 )
-						{
-							bounce = 1;
-							dy *= -1;
-						}
+                if ( TRnd ( 100 ) < 50 ) {
+                    bounce = 1;
+                    dy *= -1;
+                }
 
-						/* guarentee a bounce */
-						if ( !bounce || ( odx == dx && ody == dy ) )
-						{
-							dx = -odx;
-							dy = -ody;
-						}
-					}
-					break;
-			};
+                /* guarentee a bounce */
+                if ( !bounce || ( odx == dx && ody == dy ) ) {
+                    dx = -odx;
+                    dy = -ody;
+                }
+            }
+            break;
+            };
 
-		dam -= 3 + ( cdesc[HARDGAME] >> 1 );
-	}
+        dam -= 3 + ( cdesc[HARDGAME] >> 1 );
+    }
 }
 
 
@@ -1086,23 +1005,21 @@ godirect ( int spnum, int dam, const char *str, int delay,
 void
 ifblind ( int x, int y )
 {
-	const char *p;
-	/* verify correct x, y coordinates */
-	vxy ( &x, &y );
+    const char *p;
+    /* verify correct x, y coordinates */
+    vxy ( &x, &y );
 
-	if ( cdesc[BLINDCOUNT] )
-	{
-		lastnum = 279;
-		p = "monster";
-	}
+    if ( cdesc[BLINDCOUNT] ) {
+        lastnum = 279;
+        p = "monster";
+    }
 
-	else
-	{
-		lastnum = mitem[x][y];
-		p = monster[lastnum].name;
-	}
+    else {
+        lastnum = mitem[x][y];
+        p = monster[lastnum].name;
+    }
 
-	std::strncpy ( lastmonst, p, 50 );
+    std::strncpy ( lastmonst, p, 50 );
 }
 
 
@@ -1118,40 +1035,36 @@ ifblind ( int x, int y )
 static void
 tdirect ( int spnum )
 {
-	int x, y, m;
+    int x, y, m;
 
-	/* bad args */
-	if ( spnum < 0 || spnum >= SPNUM )
-	{
-		return;
-	}
+    /* bad args */
+    if ( spnum < 0 || spnum >= SPNUM ) {
+        return;
+    }
 
-	if ( isconfuse () )
-	{
-		return;
-	}
+    if ( isconfuse () ) {
+        return;
+    }
 
-	dirsub ( &x, &y );
-	m = mitem[x][y];
+    dirsub ( &x, &y );
+    m = mitem[x][y];
 
-	if ( m == 0 )
-	{
-		fl_display_message ( "  There wasn't anything there!" );
-		return;
-	}
+    if ( m == 0 ) {
+        fl_display_message ( "  There wasn't anything there!" );
+        return;
+    }
 
-	ifblind ( x, y );
+    ifblind ( x, y );
 
-	if ( nospell ( spnum, m ) )
-	{
-		lasthx = x;
-		lasthy = y;
-		return;
-	}
+    if ( nospell ( spnum, m ) ) {
+        lasthx = x;
+        lasthy = y;
+        return;
+    }
 
-	fillmonst ( m );
-	mitem[x][y] = 0;
-	know[x][y] &= ~KNOWHERE;
+    fillmonst ( m );
+    mitem[x][y] = 0;
+    know[x][y] &= ~KNOWHERE;
 }
 
 
@@ -1169,43 +1082,37 @@ tdirect ( int spnum )
 static void
 omnidirect ( int spnum, int dam, const char *str )
 {
-	int x, y, m;
-	HitMonster hitpoints;
+    int x, y, m;
+    HitMonster hitpoints;
 
-	/* bad args */
-	if ( spnum < 0 || spnum >= SPNUM || str == 0 )
-	{
-		return;
-	}
+    /* bad args */
+    if ( spnum < 0 || spnum >= SPNUM || str == 0 ) {
+        return;
+    }
 
-	for ( x = playerx - 1; x < playerx + 2; x++ )
-	{
-		for ( y = playery - 1; y < playery + 2; y++ )
-		{
-			m = mitem[x][y];
+    for ( x = playerx - 1; x < playerx + 2; x++ ) {
+        for ( y = playery - 1; y < playery + 2; y++ ) {
+            m = mitem[x][y];
 
-			if ( m == 0 )
-			{
-				continue;
-			}
+            if ( m == 0 ) {
+                continue;
+            }
 
-			if ( nospell ( spnum, m ) == 0 )
-			{
-				ifblind ( x, y );
-				cursors ();
-				lprc ( '\n' );
-				lprintf ( str, lastmonst );
-				hitpoints.hitm ( x, y, dam );
-				nap ( NAPTIME );
-			}
+            if ( nospell ( spnum, m ) == 0 ) {
+                ifblind ( x, y );
+                cursors ();
+                lprc ( '\n' );
+                lprintf ( str, lastmonst );
+                hitpoints.hitm ( x, y, dam );
+                nap ( NAPTIME );
+            }
 
-			else
-			{
-				lasthx = x;
-				lasthy = y;
-			}
-		}
-	}
+            else {
+                lasthx = x;
+                lasthy = y;
+            }
+        }
+    }
 }
 
 /*
@@ -1220,47 +1127,45 @@ omnidirect ( int spnum, int dam, const char *str )
 int
 dirsub ( int *x, int *y )
 {
-	int i;
-	fl_display_message ( "\nIn What Direction? " );
+    int i;
+    fl_display_message ( "\nIn What Direction? " );
 
-	for ( i = 0;; )
-	{
-		switch ( ttgetch () )
-		{
-			case 'b':
-				i++;
-				[[fallthrough]];
-			case 'n':
-				i++;
-				[[fallthrough]];
-			case 'y':
-				i++;
-				[[fallthrough]];
-			case 'u':
-				i++;
-				[[fallthrough]];
-			case 'h':
-				i++;
-				[[fallthrough]];
-			case 'k':
-				i++;
-				[[fallthrough]];
-			case 'l':
-				i++;
-				[[fallthrough]];
-			case 'j':
-				i++;
+    for ( i = 0;; ) {
+        switch ( ttgetch () ) {
+        case 'b':
+            i++;
+            [[fallthrough]];
+        case 'n':
+            i++;
+            [[fallthrough]];
+        case 'y':
+            i++;
+            [[fallthrough]];
+        case 'u':
+            i++;
+            [[fallthrough]];
+        case 'h':
+            i++;
+            [[fallthrough]];
+        case 'k':
+            i++;
+            [[fallthrough]];
+        case 'l':
+            i++;
+            [[fallthrough]];
+        case 'j':
+            i++;
 
-			/* Added an ESC. -Gibbon */
-			[[fallthrough]];
-			case '\33':
-				drawscreen();
-				*x = playerx + diroffx[i];
-				*y = playery + diroffy[i];
-				vxy(x, y);
-				return i;
-		};
-	}
+            /* Added an ESC. -Gibbon */
+            [[fallthrough]];
+        case '\33':
+            drawscreen();
+            *x = playerx + diroffx[i];
+            *y = playery + diroffy[i];
+            vxy(x, y);
+            return i;
+        };
+    }
 }
 
 /*
@@ -1274,47 +1179,41 @@ dirsub ( int *x, int *y )
 static void
 dirpoly ( int spnum )
 {
-	int x, y, m;
+    int x, y, m;
 
-	/* bad args */
-	if ( spnum < 0 || spnum >= SPNUM )
-	{
-		return;
-	}
+    /* bad args */
+    if ( spnum < 0 || spnum >= SPNUM ) {
+        return;
+    }
 
-	/* if he is confused, he can't aim his magic */
-	if ( isconfuse () )
-	{
-		return;
-	}
+    /* if he is confused, he can't aim his magic */
+    if ( isconfuse () ) {
+        return;
+    }
 
-	dirsub ( &x, &y );
+    dirsub ( &x, &y );
 
-	if ( mitem[x][y] == 0 )
-	{
-		fl_display_message ( "  There wasn't anything there!" );
-		return;
-	}
+    if ( mitem[x][y] == 0 ) {
+        fl_display_message ( "  There wasn't anything there!" );
+        return;
+    }
 
-	ifblind ( x, y );
+    ifblind ( x, y );
 
-	if ( nospell ( spnum, mitem[x][y] ) )
-	{
-		lasthx = x;
-		lasthy = y;
-		return;
-	}
+    if ( nospell ( spnum, mitem[x][y] ) ) {
+        lasthx = x;
+        lasthy = y;
+        return;
+    }
 
-	do
-	{
-		m = TRnd ( MAXMONST + 7 );
-		mitem[x][y] = m;
-	}
-	while ( monster[m].genocided );
+    do {
+        m = TRnd ( MAXMONST + 7 );
+        mitem[x][y] = m;
+    } while ( monster[m].genocided );
 
-	hitp[x][y] = monster[m].hitpoints;
-	/* show the new monster */
-	show1cell ( x, y );
+    hitp[x][y] = monster[m].hitpoints;
+    /* show the new monster */
+    show1cell ( x, y );
 }
 
 
@@ -1328,49 +1227,42 @@ dirpoly ( int spnum )
 void
 annihilate ( void )
 {
-	int i, j;
-	int k;
-	int *p;
+    int i, j;
+    int k;
+    int *p;
 
-	for ( k = 0, i = playerx - 1; i <= playerx + 1; i++ )
-	{
-		for ( j = playery - 1; j <= playery + 1; j++ )
-		{
-			/* out of bounds */
-			if ( vxy ( &i, &j ) )
-			{
-				continue;
-			}
+    for ( k = 0, i = playerx - 1; i <= playerx + 1; i++ ) {
+        for ( j = playery - 1; j <= playery + 1; j++ ) {
+            /* out of bounds */
+            if ( vxy ( &i, &j ) ) {
+                continue;
+            }
 
-			p = &mitem[i][j];
+            p = &mitem[i][j];
 
-			/* no monster here */
-			if ( *p == 0 )
-			{
-				continue;
-			}
+            /* no monster here */
+            if ( *p == 0 ) {
+                continue;
+            }
 
-			if ( *p < DEMONLORD + 2 )
-			{
-				k += monster[*p].experience;
-				*p = know[i][j] &= ~KNOWHERE;
-			}
+            if ( *p < DEMONLORD + 2 ) {
+                k += monster[*p].experience;
+                *p = know[i][j] &= ~KNOWHERE;
+            }
 
-			else
-			{
-				lprintf ( "\nThe %s barely escapes being annihilated!",
-				          monster[*p].name );
-				/* lose half hit points */
-				hitp[i][j] = ( hitp[i][j] >> 1 ) + 1;
-			}
-		}
-	}
+            else {
+                lprintf ( "\nThe %s barely escapes being annihilated!",
+                          monster[*p].name );
+                /* lose half hit points */
+                hitp[i][j] = ( hitp[i][j] >> 1 ) + 1;
+            }
+        }
+    }
 
-	if ( k > 0 )
-	{
-		fl_display_message ( "\nYou hear loud screams of agony!" );
-		raiseexperience ( k );
-	}
+    if ( k > 0 ) {
+        fl_display_message ( "\nYou hear loud screams of agony!" );
+        raiseexperience ( k );
+    }
 }
 
 
@@ -1383,33 +1275,30 @@ annihilate ( void )
 static void
 genmonst ( void )
 {
-	int i, j;
-	cursors ();
-	fl_display_message ( "\nGenocide what monster? " );
+    int i, j;
+    cursors ();
+    fl_display_message ( "\nGenocide what monster? " );
 
-	for ( i = 0; !isalpha ( i ) && i != ' '; i = ttgetch () )
-	{
-		;
-	}
+    for ( i = 0; !isalpha ( i ) && i != ' '; i = ttgetch () ) {
+        ;
+    }
 
-	lprint ( i );
+    lprint ( i );
 
-	/* search for the monster type */
-	for ( j = 0; j < MAXMONST; j++ )
-	{
-		/* have we found it? */
-		if ( monstnamelist[j] == i )
-		{
-			/* genocided from game */
-			monster[j].genocided = 1;
-			lprintf ( "  There will be no more %s's", monster[j].name );
-			/* now wipe out monsters on this level */
-			newcavelevel ( level );
-			draws ( 0, MAXX, 0, MAXY );
-			bot_linex ();
-			return;
-		}
-	}
+    /* search for the monster type */
+    for ( j = 0; j < MAXMONST; j++ ) {
+        /* have we found it? */
+        if ( monstnamelist[j] == i ) {
+            /* genocided from game */
+            monster[j].genocided = 1;
+            lprintf ( "  There will be no more %s's", monster[j].name );
+            /* now wipe out monsters on this level */
+            newcavelevel ( level );
+            draws ( 0, MAXX, 0, MAXY );
+            bot_linex ();
+            return;
+        }
+    }
 
-	fl_display_message ( "  You sense failure!" );
+    fl_display_message ( "  You sense failure!" );
 }

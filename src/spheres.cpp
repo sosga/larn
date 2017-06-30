@@ -34,120 +34,105 @@ static void sphboom ( int x, int y );
 int
 newsphere ( int x, int y, int dir, int life )
 {
-	int m;
-	struct sphere *sp;
+    int m;
+    struct sphere *sp;
 
-	if ( ( ( sp = ( struct sphere * ) operator new ( sizeof (
-	                struct sphere ) ) ) ) == 0 )
-	{
-		return ( cdesc[SPHCAST] );  /* can't malloc, therefore failure */
-	}
+    if ( ( ( sp = ( struct sphere * ) operator new ( sizeof (
+                      struct sphere ) ) ) ) == 0 ) {
+        return ( cdesc[SPHCAST] );  /* can't malloc, therefore failure */
+    }
 
-	if ( dir >= 9 )
-	{
-		dir = 0;  /* no movement if direction not found */
-	}
+    if ( dir >= 9 ) {
+        dir = 0;  /* no movement if direction not found */
+    }
 
-	if ( level == 0 )
-	{
-		vxy ( &x, &y );  /* don't go out of bounds */
-	}
+    if ( level == 0 ) {
+        vxy ( &x, &y );  /* don't go out of bounds */
+    }
 
-	else
-	{
-		if ( x < 1 )
-		{
-			x = 1;
-		}
+    else {
+        if ( x < 1 ) {
+            x = 1;
+        }
 
-		if ( x >= MAXX - 1 )
-		{
-			x = MAXX - 2;
-		}
+        if ( x >= MAXX - 1 ) {
+            x = MAXX - 2;
+        }
 
-		if ( y < 1 )
-		{
-			y = 1;
-		}
+        if ( y < 1 ) {
+            y = 1;
+        }
 
-		if ( y >= MAXY - 1 )
-		{
-			y = MAXY - 2;
-		}
-	}
+        if ( y >= MAXY - 1 ) {
+            y = MAXY - 2;
+        }
+    }
 
-	if ( ( m = mitem[x][y] ) >= DEMONLORD +
-	     4 )  	/* demons dispel spheres */
-	{
-		show1cell ( x, y );		/* show the demon (ha ha) */
-		cursors ();
-		lprintf ( "\nThe %s dispels the sphere!", monster[m].name );
-		rmsphere ( x, y );		/* remove any spheres that are here */
-		return ( cdesc[SPHCAST] );
-	}
+    if ( ( m = mitem[x][y] ) >= DEMONLORD +
+            4 ) {	/* demons dispel spheres */
+        show1cell ( x, y );		/* show the demon (ha ha) */
+        cursors ();
+        lprintf ( "\nThe %s dispels the sphere!", monster[m].name );
+        rmsphere ( x, y );		/* remove any spheres that are here */
+        return ( cdesc[SPHCAST] );
+    }
 
-	if ( m == DISENCHANTRESS )  	/* disenchantress cancels spheres */
-	{
-		cursors ();
-		lprintf ( "\nThe %s causes cancellation of the sphere!",
-		          monster[m].name );
-	boom:
-		sphboom ( x, y );	/* blow up stuff around sphere */
-		rmsphere ( x, y );		/* remove any spheres that are here */
-		return ( cdesc[SPHCAST] );
-	}
+    if ( m == DISENCHANTRESS ) {	/* disenchantress cancels spheres */
+        cursors ();
+        lprintf ( "\nThe %s causes cancellation of the sphere!",
+                  monster[m].name );
+boom:
+        sphboom ( x, y );	/* blow up stuff around sphere */
+        rmsphere ( x, y );		/* remove any spheres that are here */
+        return ( cdesc[SPHCAST] );
+    }
 
-	if ( cdesc[CANCELLATION] )  	/* cancellation cancels spheres */
-	{
-		cursors ();
-		fl_display_message
-		( "\nAs the cancellation takes effect, you hear a great earth shaking blast!" );
-		goto boom;
-	}
+    if ( cdesc[CANCELLATION] ) {	/* cancellation cancels spheres */
+        cursors ();
+        fl_display_message
+        ( "\nAs the cancellation takes effect, you hear a great earth shaking blast!" );
+        goto boom;
+    }
 
-	if ( item[x][y] ==
-	     OANNIHILATION )  	/* collision of spheres detonates spheres */
-	{
-		cursors ();
-		fl_display_message
-		( "\nTwo spheres of annihilation collide! You hear a great earth shaking blast!" );
-		rmsphere ( x, y );
-		goto boom;
-	}
+    if ( item[x][y] ==
+            OANNIHILATION ) {	/* collision of spheres detonates spheres */
+        cursors ();
+        fl_display_message
+        ( "\nTwo spheres of annihilation collide! You hear a great earth shaking blast!" );
+        rmsphere ( x, y );
+        goto boom;
+    }
 
-	if ( playerx == x
-	     && playery == y )  	/* collision of sphere and player! */
-	{
-		cursors ();
-		fl_display_message ( "\nYou have been enveloped by the zone of nothingness!\n" );
-		rmsphere ( x, y );		/* remove any spheres that are here */
-		nap ( NAPTIME );
-		died ( 258 );
-	}
+    if ( playerx == x
+            && playery == y ) {	/* collision of sphere and player! */
+        cursors ();
+        fl_display_message ( "\nYou have been enveloped by the zone of nothingness!\n" );
+        rmsphere ( x, y );		/* remove any spheres that are here */
+        nap ( NAPTIME );
+        died ( 258 );
+    }
 
-	item[x][y] = OANNIHILATION;
-	mitem[x][y] = 0;
-	know[x][y] = 1;
-	show1cell ( x, y );		/* show the new sphere */
-	sp->x = x;
-	sp->y = y;
-	sp->lev = level;
-	sp->dir = dir;
-	sp->lifetime = life;
-	sp->p = 0;
+    item[x][y] = OANNIHILATION;
+    mitem[x][y] = 0;
+    know[x][y] = 1;
+    show1cell ( x, y );		/* show the new sphere */
+    sp->x = x;
+    sp->y = y;
+    sp->lev = level;
+    sp->dir = dir;
+    sp->lifetime = life;
+    sp->p = 0;
 
-	if ( spheres == 0 )
-	{
-		spheres = sp;  /* if first node in the sphere list */
-	}
+    if ( spheres == 0 ) {
+        spheres = sp;  /* if first node in the sphere list */
+    }
 
-	else  			/* add sphere to beginning of linked list */
-	{
-		sp->p = spheres;
-		spheres = sp;
-	}
+    else {			/* add sphere to beginning of linked list */
+        sp->p = spheres;
+        spheres = sp;
+    }
 
-	return ( ++cdesc[SPHCAST] );	/* one more sphere in the world */
+    return ( ++cdesc[SPHCAST] );	/* one more sphere in the world */
 }
 
 
@@ -163,36 +148,33 @@ newsphere ( int x, int y, int dir, int life )
 int
 rmsphere ( int x, int y )
 {
-	struct sphere *sp, *sp2 = 0;
+    struct sphere *sp, *sp2 = 0;
 
-	for ( sp = spheres; sp; sp2 = sp, sp = sp->p )
-		if ( level == sp->lev )	/* is sphere on this level? */
-			if ( ( x == sp->x )
-			     && ( y == sp->y ) )  	/* locate sphere at this location */
-			{
-				item[x][y] = mitem[x][y] = 0;
-				know[x][y] = 1;
-				show1cell ( x, y );	/* show the now missing sphere */
-				--cdesc[SPHCAST];
+    for ( sp = spheres; sp; sp2 = sp, sp = sp->p )
+        if ( level == sp->lev )	/* is sphere on this level? */
+            if ( ( x == sp->x )
+                    && ( y == sp->y ) ) {	/* locate sphere at this location */
+                item[x][y] = mitem[x][y] = 0;
+                know[x][y] = 1;
+                show1cell ( x, y );	/* show the now missing sphere */
+                --cdesc[SPHCAST];
 
-				if ( sp == spheres )
-				{
-					sp2 = sp;
-					spheres = sp->p;
-					free ( ( char * ) sp2 );
-				}
+                if ( sp == spheres ) {
+                    sp2 = sp;
+                    spheres = sp->p;
+                    free ( ( char * ) sp2 );
+                }
 
-				else
-				{
-					sp2->p = sp->p;
-					free ( ( char * ) sp );
-				}
+                else {
+                    sp2->p = sp->p;
+                    free ( ( char * ) sp );
+                }
 
-				break;
-			}
+                break;
+            }
 
-	/* return number of spheres in the world */
-	return cdesc[SPHCAST];
+    /* return number of spheres in the world */
+    return cdesc[SPHCAST];
 }
 
 
@@ -206,32 +188,28 @@ rmsphere ( int x, int y )
 static void
 sphboom ( int x, int y )
 {
-	int i, j;
+    int i, j;
 
-	if ( cdesc[HOLDMONST] )
-	{
-		cdesc[HOLDMONST] = 1;
-	}
+    if ( cdesc[HOLDMONST] ) {
+        cdesc[HOLDMONST] = 1;
+    }
 
-	if ( cdesc[CANCELLATION] )
-	{
-		cdesc[CANCELLATION] = 1;
-	}
+    if ( cdesc[CANCELLATION] ) {
+        cdesc[CANCELLATION] = 1;
+    }
 
-	for ( j = TMathMax ( 1, x - 2 ); j < TMathMin ( x + 3, MAXX - 1 ); j++ )
-		for ( i = TMathMax ( 1, y - 2 ); i < TMathMin ( y + 3, MAXY - 1 ); i++ )
-		{
-			item[j][i] = mitem[j][i] = 0;
-			show1cell ( j, i );
+    for ( j = TMathMax ( 1, x - 2 ); j < TMathMin ( x + 3, MAXX - 1 ); j++ )
+        for ( i = TMathMax ( 1, y - 2 ); i < TMathMin ( y + 3, MAXY - 1 ); i++ ) {
+            item[j][i] = mitem[j][i] = 0;
+            show1cell ( j, i );
 
-			if ( playerx == j && playery == i )
-			{
-				cursors ();
-				fl_display_message ( "\nYou were too close to the sphere!" );
-				nap ( NAPTIME );
-				died ( 283 );		/* player killed in explosion */
-			}
-		}
+            if ( playerx == j && playery == i ) {
+                cursors ();
+                fl_display_message ( "\nYou were too close to the sphere!" );
+                nap ( NAPTIME );
+                died ( 283 );		/* player killed in explosion */
+            }
+        }
 }
 
 /*
@@ -248,58 +226,50 @@ sphboom ( int x, int y )
 void
 movsphere ( void )
 {
-	int x, y;
-	struct sphere *sp, *sp2;
-	struct sphere sph[SPHMAX];
+    int x, y;
+    struct sphere *sp, *sp2;
+    struct sphere sph[SPHMAX];
 
-	/* first duplicate sphere list */
-	for ( sp = 0, x = 0, sp2 = spheres; sp2;
-	      sp2 = sp2->p )	/* look through sphere list */
-		if ( sp2->lev == level )  	/* only if this level */
-		{
-			sph[x] = *sp2;
-			sph[x++].p = 0;		/* copy the struct */
+    /* first duplicate sphere list */
+    for ( sp = 0, x = 0, sp2 = spheres; sp2;
+            sp2 = sp2->p )	/* look through sphere list */
+        if ( sp2->lev == level ) {	/* only if this level */
+            sph[x] = *sp2;
+            sph[x++].p = 0;		/* copy the struct */
 
-			if ( x > 1 )
-			{
-				sph[x - 2].p = &sph[x - 1];  /* link pointers */
-			}
-		}
-
-	if ( x )
-	{
-		sp = sph;  /* if any spheres, point to them */
-	}
-
-	else
-	{
-		return;  /* no spheres */
-	}
-
-	for ( sp = sph; sp;
-	      sp = sp->p )  	/* look through sphere list */
-	{
-		x = sp->x;
-		y = sp->y;
-
-		if ( item[x][y] != OANNIHILATION )
-		{
-			continue;  /* not really there */
-		}
-
-		if ( -- ( sp->lifetime ) < 0 )  	/* has sphere run out of gas? */
-		{
-			rmsphere ( x, y );	/* delete sphere */
-			continue;
-		}
-		/* Nothing special and then advance the sphere.
-		 * ~Gibbon
-		 */
-        if (TRnd(TMathMax(7, 5)))
-        {
-          /* sphere changes direction */
-          sp->dir = TRnd(8);
+            if ( x > 1 ) {
+                sph[x - 2].p = &sph[x - 1];  /* link pointers */
+            }
         }
-    sp = sp2;
-  }
+
+    if ( x ) {
+        sp = sph;  /* if any spheres, point to them */
+    }
+
+    else {
+        return;  /* no spheres */
+    }
+
+    for ( sp = sph; sp;
+            sp = sp->p ) {	/* look through sphere list */
+        x = sp->x;
+        y = sp->y;
+
+        if ( item[x][y] != OANNIHILATION ) {
+            continue;  /* not really there */
+        }
+
+        if ( -- ( sp->lifetime ) < 0 ) {	/* has sphere run out of gas? */
+            rmsphere ( x, y );	/* delete sphere */
+            continue;
+        }
+        /* Nothing special and then advance the sphere.
+         * ~Gibbon
+         */
+        if (TRnd(TMathMax(7, 5))) {
+            /* sphere changes direction */
+            sp->dir = TRnd(8);
+        }
+        sp = sp2;
+    }
 }

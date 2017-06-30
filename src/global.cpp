@@ -57,10 +57,9 @@
 void
 raiselevel ( void )
 {
-	if ( cdesc[LEVEL] < MAXPLEVEL )
-	{
-		raiseexperience ( ( skill[cdesc[LEVEL]] - cdesc[EXPERIENCE] ) );
-	}
+    if ( cdesc[LEVEL] < MAXPLEVEL ) {
+        raiseexperience ( ( skill[cdesc[LEVEL]] - cdesc[EXPERIENCE] ) );
+    }
 }
 
 
@@ -73,9 +72,9 @@ raiselevel ( void )
 void
 loselevel ( void )
 {
-	if ( cdesc[LEVEL] > 1 )
-		loseexperience ( ( cdesc[EXPERIENCE] - skill[cdesc[LEVEL] - 1]
-		                   + 1 ) );
+    if ( cdesc[LEVEL] > 1 )
+        loseexperience ( ( cdesc[EXPERIENCE] - skill[cdesc[LEVEL] - 1]
+                           + 1 ) );
 }
 
 
@@ -88,31 +87,28 @@ loselevel ( void )
 void
 raiseexperience ( long x )
 {
-	int i, tmp;
-	i = cdesc[LEVEL];
-	cdesc[EXPERIENCE] += x;
+    int i, tmp;
+    i = cdesc[LEVEL];
+    cdesc[EXPERIENCE] += x;
 
-	while ( cdesc[EXPERIENCE] >= skill[cdesc[LEVEL]]
-	        && ( cdesc[LEVEL] < MAXPLEVEL ) )
-	{
-		tmp = ( cdesc[CONSTITUTION] - cdesc[HARDGAME] ) >> 1;
-		cdesc[LEVEL]++;
-		raisemhp ( ( int ) ( TRnd ( 3 ) + TRnd ( ( tmp > 0 ) ? tmp : 1 ) ) );
-		raisemspells ( ( int ) TRund ( 3 ) );
+    while ( cdesc[EXPERIENCE] >= skill[cdesc[LEVEL]]
+            && ( cdesc[LEVEL] < MAXPLEVEL ) ) {
+        tmp = ( cdesc[CONSTITUTION] - cdesc[HARDGAME] ) >> 1;
+        cdesc[LEVEL]++;
+        raisemhp ( ( int ) ( TRnd ( 3 ) + TRnd ( ( tmp > 0 ) ? tmp : 1 ) ) );
+        raisemspells ( ( int ) TRund ( 3 ) );
 
-		if ( cdesc[LEVEL] < 7 - cdesc[HARDGAME] )
-		{
-			raisemhp ( ( int ) ( cdesc[CONSTITUTION] >> 2 ) );
-		}
-	}
+        if ( cdesc[LEVEL] < 7 - cdesc[HARDGAME] ) {
+            raisemhp ( ( int ) ( cdesc[CONSTITUTION] >> 2 ) );
+        }
+    }
 
-	if ( cdesc[LEVEL] != i )
-	{
-		cursors();
-		fl_display_message("\nWelcome to level %d",(int) cdesc[LEVEL]);	/* if we changed levels */
-	}
+    if ( cdesc[LEVEL] != i ) {
+        cursors();
+        fl_display_message("\nWelcome to level %d",(int) cdesc[LEVEL]);	/* if we changed levels */
+    }
 
-	bottomline ();
+    bottomline ();
 }
 
 
@@ -125,43 +121,38 @@ raiseexperience ( long x )
 void
 loseexperience ( long x )
 {
-	int i, tmp;
-	i = cdesc[LEVEL];
-	cdesc[EXPERIENCE] -= x;
+    int i, tmp;
+    i = cdesc[LEVEL];
+    cdesc[EXPERIENCE] -= x;
 
-	if ( cdesc[EXPERIENCE] < 0 )
-	{
-		cdesc[EXPERIENCE] = 0;
-	}
+    if ( cdesc[EXPERIENCE] < 0 ) {
+        cdesc[EXPERIENCE] = 0;
+    }
 
-	while ( cdesc[EXPERIENCE] < skill[cdesc[LEVEL] - 1] )
-	{
-		if ( --cdesc[LEVEL] <= 1 )
-		{
-			cdesc[LEVEL] = 1;  /*  down one level      */
-		}
+    while ( cdesc[EXPERIENCE] < skill[cdesc[LEVEL] - 1] ) {
+        if ( --cdesc[LEVEL] <= 1 ) {
+            cdesc[LEVEL] = 1;  /*  down one level      */
+        }
 
-		tmp = ( cdesc[CONSTITUTION] - cdesc[HARDGAME] ) >>
-		      1;	/* lose hpoints */
-		losemhp ( ( int ) TRnd ( ( tmp > 0 ) ? tmp :
-		                        1 ) );	/* lose hpoints */
+        tmp = ( cdesc[CONSTITUTION] - cdesc[HARDGAME] ) >>
+              1;	/* lose hpoints */
+        losemhp ( ( int ) TRnd ( ( tmp > 0 ) ? tmp :
+                                 1 ) );	/* lose hpoints */
 
-		if ( cdesc[LEVEL] < 7 - cdesc[HARDGAME] )
-		{
-			losemhp ( ( int ) ( cdesc[CONSTITUTION] >> 2 ) );
-		}
+        if ( cdesc[LEVEL] < 7 - cdesc[HARDGAME] ) {
+            losemhp ( ( int ) ( cdesc[CONSTITUTION] >> 2 ) );
+        }
 
-		losemspells ( ( int ) TRund ( 3 ) );	/*  lose spells     */
-	}
+        losemspells ( ( int ) TRund ( 3 ) );	/*  lose spells     */
+    }
 
-	if ( i != cdesc[LEVEL] )
-	{
-		cursors ();
-		lprintf ( "\nYou went down to level %d!",
-		          ( int ) cdesc[LEVEL] );
-	}
+    if ( i != cdesc[LEVEL] ) {
+        cursors ();
+        lprintf ( "\nYou went down to level %d!",
+                  ( int ) cdesc[LEVEL] );
+    }
 
-	bottomline ();
+    bottomline ();
 }
 
 
@@ -176,30 +167,27 @@ loseexperience ( long x )
 void
 losehp ( int x )
 {
-	if ( ( cdesc[HP] -= x ) <= 0 )
-	{
-		fl_display_message ( "\nYou have been slain." );
-		nap ( NAPTIME );
-		died ( lastnum );
-	}
+    if ( ( cdesc[HP] -= x ) <= 0 ) {
+        fl_display_message ( "\nYou have been slain." );
+        nap ( NAPTIME );
+        died ( lastnum );
+    }
 }
 
 void
 losemhp ( int x )
 {
-	cdesc[HP] -= x;
+    cdesc[HP] -= x;
 
-	if ( cdesc[HP] < 1 )
-	{
-		cdesc[HP] = 1;
-	}
+    if ( cdesc[HP] < 1 ) {
+        cdesc[HP] = 1;
+    }
 
-	cdesc[HPMAX] -= x;
+    cdesc[HPMAX] -= x;
 
-	if ( cdesc[HPMAX] < 1 )
-	{
-		cdesc[HPMAX] = 1;
-	}
+    if ( cdesc[HPMAX] < 1 ) {
+        cdesc[HPMAX] = 1;
+    }
 }
 
 
@@ -213,17 +201,16 @@ losemhp ( int x )
 void
 raisehp ( int x )
 {
-	if ( ( cdesc[HP] += x ) > cdesc[HPMAX] )
-	{
-		cdesc[HP] = cdesc[HPMAX];
-	}
+    if ( ( cdesc[HP] += x ) > cdesc[HPMAX] ) {
+        cdesc[HP] = cdesc[HPMAX];
+    }
 }
 
 void
 raisemhp ( int x )
 {
-	cdesc[HPMAX] += x;
-	cdesc[HP] += x;
+    cdesc[HPMAX] += x;
+    cdesc[HP] += x;
 }
 
 
@@ -235,8 +222,8 @@ raisemhp ( int x )
 void
 raisemspells ( int x )
 {
-	cdesc[SPELLMAX] += x;
-	cdesc[SPELLS] += x;
+    cdesc[SPELLMAX] += x;
+    cdesc[SPELLS] += x;
 }
 
 
@@ -248,15 +235,13 @@ raisemspells ( int x )
 void
 losemspells ( int x )
 {
-	if ( ( cdesc[SPELLMAX] -= x ) < 0 )
-	{
-		cdesc[SPELLMAX] = 0;
-	}
+    if ( ( cdesc[SPELLMAX] -= x ) < 0 ) {
+        cdesc[SPELLMAX] = 0;
+    }
 
-	if ( ( cdesc[SPELLS] -= x ) < 0 )
-	{
-		cdesc[SPELLS] = 0;
-	}
+    if ( ( cdesc[SPELLS] -= x ) < 0 ) {
+        cdesc[SPELLS] = 0;
+    }
 }
 
 
@@ -276,38 +261,32 @@ losemspells ( int x )
 int
 makemonst ( int lev )
 {
-	int x, tmp;
+    int x, tmp;
 
-	if ( lev < 1 )
-	{
-		lev = 1;
-	}
+    if ( lev < 1 ) {
+        lev = 1;
+    }
 
-	else
-		if ( lev > 12 )
-		{
-			lev = 12;
-		}
+    else if ( lev > 12 ) {
+        lev = 12;
+    }
 
-	if ( lev < 5 )
-	{
-		tmp = TRnd ( ( x = monstlevel[lev - 1] ) ? x : 1 );
-	}
+    if ( lev < 5 ) {
+        tmp = TRnd ( ( x = monstlevel[lev - 1] ) ? x : 1 );
+    }
 
-	else
-	{
-		tmp =
-		  TRnd ( ( x =
-		            monstlevel[lev - 1] - monstlevel[lev - 4] ) ? x : 1 ) +
-		  monstlevel[lev - 4];
-	}
+    else {
+        tmp =
+            TRnd ( ( x =
+                         monstlevel[lev - 1] - monstlevel[lev - 4] ) ? x : 1 ) +
+            monstlevel[lev - 4];
+    }
 
-	while ( monster[tmp].genocided && tmp < MAXMONST )
-	{
-		tmp++;			/* genocided? */
-	}
+    while ( monster[tmp].genocided && tmp < MAXMONST ) {
+        tmp++;			/* genocided? */
+    }
 
-	return tmp;
+    return tmp;
 }
 
 /*
@@ -319,24 +298,22 @@ makemonst ( int lev )
 void
 positionplayer ( void )
 {
-	/* The previous code was conflicting with changes I made
-	 * to maze generation and it caused a crash every time
-	 * LV10 was reached. ~Gibbon
-	 */
-	int pp_try = 2;
+    /* The previous code was conflicting with changes I made
+     * to maze generation and it caused a crash every time
+     * LV10 was reached. ~Gibbon
+     */
+    int pp_try = 2;
 
-	while ((item[playerx][playery] || mitem[playerx][playery]) && (pp_try))
-		if (++playerx >= MAXX - 1)
-		{
-			playerx = 1;
-			if (++playery >= MAXY - 1)
-			{	
-				playery = 1;	
-				--pp_try;	
-			}
-		}
-	if (pp_try == 0)	 
-		fl_display_message("Failure in positionplayer()\n");
+    while ((item[playerx][playery] || mitem[playerx][playery]) && (pp_try))
+        if (++playerx >= MAXX - 1) {
+            playerx = 1;
+            if (++playery >= MAXY - 1) {
+                playery = 1;
+                --pp_try;
+            }
+        }
+    if (pp_try == 0)
+        fl_display_message("Failure in positionplayer()\n");
 }
 
 
@@ -347,162 +324,154 @@ positionplayer ( void )
 void
 recalc ( void )
 {
-	int i, j, k;
-	cdesc[AC] = cdesc[MOREDEFENSES];
+    int i, j, k;
+    cdesc[AC] = cdesc[MOREDEFENSES];
 
-	if ( cdesc[WEAR] >= 0 )
-		switch ( iven[cdesc[WEAR]] )
-		{
-			case OSHIELD:
-				cdesc[AC] += 2 + ivenarg[cdesc[WEAR]];
-				break;
+    if ( cdesc[WEAR] >= 0 )
+        switch ( iven[cdesc[WEAR]] ) {
+        case OSHIELD:
+            cdesc[AC] += 2 + ivenarg[cdesc[WEAR]];
+            break;
 
-			case OLEATHER:
-				cdesc[AC] += 2 + ivenarg[cdesc[WEAR]];
-				break;
+        case OLEATHER:
+            cdesc[AC] += 2 + ivenarg[cdesc[WEAR]];
+            break;
 
-			case OSTUDLEATHER:
-				cdesc[AC] += 3 + ivenarg[cdesc[WEAR]];
-				break;
+        case OSTUDLEATHER:
+            cdesc[AC] += 3 + ivenarg[cdesc[WEAR]];
+            break;
 
-			case ORING:
-				cdesc[AC] += 5 + ivenarg[cdesc[WEAR]];
-				break;
+        case ORING:
+            cdesc[AC] += 5 + ivenarg[cdesc[WEAR]];
+            break;
 
-			case OCHAIN:
-				cdesc[AC] += 6 + ivenarg[cdesc[WEAR]];
-				break;
+        case OCHAIN:
+            cdesc[AC] += 6 + ivenarg[cdesc[WEAR]];
+            break;
 
-			case OSPLINT:
-				cdesc[AC] += 7 + ivenarg[cdesc[WEAR]];
-				break;
+        case OSPLINT:
+            cdesc[AC] += 7 + ivenarg[cdesc[WEAR]];
+            break;
 
-			case OPLATE:
-				cdesc[AC] += 9 + ivenarg[cdesc[WEAR]];
-				break;
+        case OPLATE:
+            cdesc[AC] += 9 + ivenarg[cdesc[WEAR]];
+            break;
 
-			case OPLATEARMOR:
-				cdesc[AC] += 10 + ivenarg[cdesc[WEAR]];
-				break;
+        case OPLATEARMOR:
+            cdesc[AC] += 10 + ivenarg[cdesc[WEAR]];
+            break;
 
-			case OSSPLATE:
-				cdesc[AC] += 12 + ivenarg[cdesc[WEAR]];
-				break;
-		}
+        case OSSPLATE:
+            cdesc[AC] += 12 + ivenarg[cdesc[WEAR]];
+            break;
+        }
 
-	if ( cdesc[SHIELD] >= 0 )
-		if ( iven[cdesc[SHIELD]] == OSHIELD )
-		{
-			cdesc[AC] += 2 + ivenarg[cdesc[SHIELD]];
-		}
+    if ( cdesc[SHIELD] >= 0 )
+        if ( iven[cdesc[SHIELD]] == OSHIELD ) {
+            cdesc[AC] += 2 + ivenarg[cdesc[SHIELD]];
+        }
 
-	if ( cdesc[WIELD] < 0 )
-	{
-		cdesc[WCLASS] = 0;
-	}
+    if ( cdesc[WIELD] < 0 ) {
+        cdesc[WCLASS] = 0;
+    }
 
-	else
-	{
-		i = ivenarg[cdesc[WIELD]];
+    else {
+        i = ivenarg[cdesc[WIELD]];
 
-		switch ( iven[cdesc[WIELD]] )
-		{
-			case ODAGGER:
-				cdesc[WCLASS] = 3 + i;
-				break;
+        switch ( iven[cdesc[WIELD]] ) {
+        case ODAGGER:
+            cdesc[WCLASS] = 3 + i;
+            break;
 
-			case OBELT:
-				cdesc[WCLASS] = 7 + i;
-				break;
+        case OBELT:
+            cdesc[WCLASS] = 7 + i;
+            break;
 
-			case OSHIELD:
-				cdesc[WCLASS] = 8 + i;
-				break;
+        case OSHIELD:
+            cdesc[WCLASS] = 8 + i;
+            break;
 
-			case OSPEAR:
-				cdesc[WCLASS] = 10 + i;
-				break;
+        case OSPEAR:
+            cdesc[WCLASS] = 10 + i;
+            break;
 
-			case OBATTLEAXE:
-				cdesc[WCLASS] = 17 + i;
-				break;
+        case OBATTLEAXE:
+            cdesc[WCLASS] = 17 + i;
+            break;
 
-			case OGREATSWORD:
-				cdesc[WCLASS] = 19 + i;
-				break;
+        case OGREATSWORD:
+            cdesc[WCLASS] = 19 + i;
+            break;
 
-			case OLONGSWORD:
-				cdesc[WCLASS] = 22 + i;
-				break;
+        case OLONGSWORD:
+            cdesc[WCLASS] = 22 + i;
+            break;
 
-			case O2SWORD:
-				cdesc[WCLASS] = 26 + i;
-				break;
+        case O2SWORD:
+            cdesc[WCLASS] = 26 + i;
+            break;
 
-			case OHSWORD:
-				cdesc[WCLASS] = 25 + i;
-				cdesc[AWARENESS] += 160;
-				break;
+        case OHSWORD:
+            cdesc[WCLASS] = 25 + i;
+            cdesc[AWARENESS] += 160;
+            break;
 
-			case OSWORD:
-				cdesc[WCLASS] = 32 + i;
-				break;
+        case OSWORD:
+            cdesc[WCLASS] = 32 + i;
+            break;
 
-			case OSWORDofSLASHING:
-				cdesc[WCLASS] = 30 + i;
-				break;
+        case OSWORDofSLASHING:
+            cdesc[WCLASS] = 30 + i;
+            break;
 
-			case OHAMMER:
-				cdesc[WCLASS] = 35 + i;
-				break;
+        case OHAMMER:
+            cdesc[WCLASS] = 35 + i;
+            break;
 
-			default:
-				cdesc[WCLASS] = 0;
-		}
-	}
+        default:
+            cdesc[WCLASS] = 0;
+        }
+    }
 
-	cdesc[WCLASS] += cdesc[MOREDAM];
-	/*  now for regeneration abilities based on rings   */
-	cdesc[REGEN] = 1;
-	cdesc[ENERGY] = 0;
-	j = 0;
+    cdesc[WCLASS] += cdesc[MOREDAM];
+    /*  now for regeneration abilities based on rings   */
+    cdesc[REGEN] = 1;
+    cdesc[ENERGY] = 0;
+    j = 0;
 
-	for ( k = 25; k > 0; k-- )
-		if ( iven[k] )
-		{
-			j = k;
-			k = 0;
-		}
+    for ( k = 25; k > 0; k-- )
+        if ( iven[k] ) {
+            j = k;
+            k = 0;
+        }
 
-	for ( i = 0; i <= j; i++ )
-	{
-		switch ( iven[i] )
-		{
-			case OPROTRING:
-				cdesc[AC] += ivenarg[i] + 1;
-				break;
+    for ( i = 0; i <= j; i++ ) {
+        switch ( iven[i] ) {
+        case OPROTRING:
+            cdesc[AC] += ivenarg[i] + 1;
+            break;
 
-			case ODAMRING:
-				cdesc[WCLASS] += ivenarg[i] + 1;
-				break;
+        case ODAMRING:
+            cdesc[WCLASS] += ivenarg[i] + 1;
+            break;
 
-			case OBELT:
-				cdesc[WCLASS] += ( ( ivenarg[i] << 1 ) ) + 2;
-				break;
+        case OBELT:
+            cdesc[WCLASS] += ( ( ivenarg[i] << 1 ) ) + 2;
+            break;
 
-			case OREGENRING:
-				cdesc[REGEN] += ivenarg[i] + 1;
-				break;
+        case OREGENRING:
+            cdesc[REGEN] += ivenarg[i] + 1;
+            break;
 
-			case ORINGOFEXTRA:
-				cdesc[REGEN] += 5 * ( ivenarg[i] + 1 );
-				break;
+        case ORINGOFEXTRA:
+            cdesc[REGEN] += 5 * ( ivenarg[i] + 1 );
+            break;
 
-			case OENERGYRING:
-				cdesc[ENERGY] += ivenarg[i] + 1;
-				break;
-		}
-	}
+        case OENERGYRING:
+            cdesc[ENERGY] += ivenarg[i] + 1;
+            break;
+        }
+    }
 }
 
 
@@ -514,28 +483,25 @@ recalc ( void )
 void
 quit ( void )
 {
-	int i;
-	cursors ();
-	strcpy ( lastmonst, "" );
-	fl_display_message ( "\nDo you really want to quit (all progress will be lost)?" );
+    int i;
+    cursors ();
+    strcpy ( lastmonst, "" );
+    fl_display_message ( "\nDo you really want to quit (all progress will be lost)?" );
 
-	for ( ;; )
-	{
-		i = ttgetch ();
+    for ( ;; ) {
+        i = ttgetch ();
 
-		if ( ( i == 'y' ) || ( i == 'Y' ) )
-		{
-			died ( 300 );
-			return;
-		}
+        if ( ( i == 'y' ) || ( i == 'Y' ) ) {
+            died ( 300 );
+            return;
+        }
 
-		if ( ( i == 'n' ) || ( i == 'N' ) || ( i == '\33' ) )
-		{
-			fl_display_message ( " no" );
-			lflush ();
-			return;
-		}
-	}
+        if ( ( i == 'n' ) || ( i == 'N' ) || ( i == '\33' ) ) {
+            fl_display_message ( " no" );
+            lflush ();
+            return;
+        }
+    }
 }
 
 
@@ -548,41 +514,34 @@ quit ( void )
 int
 more ( char select_allowed )
 {
-	int i;
-	fl_display_message ( "\n  --- press " );
-	lstandout ( "space" );
-	fl_display_message ( " to continue --- " );
+    int i;
+    fl_display_message ( "\n  --- press " );
+    lstandout ( "space" );
+    fl_display_message ( " to continue --- " );
 
-	if ( select_allowed )
-	{
-		fl_display_message ( "letter to select --- " );
-	}
+    if ( select_allowed ) {
+        fl_display_message ( "letter to select --- " );
+    }
 
-	for ( ;; )
-	{
-		if ( ( i = ttgetch () ) == ' ' || i == '\n' )
-		{
-			return 0;
-		}
+    for ( ;; ) {
+        if ( ( i = ttgetch () ) == ' ' || i == '\n' ) {
+            return 0;
+        }
 
-		if ( i == '\x1B' )
-		{
-			return 1;
-		}
+        if ( i == '\x1B' ) {
+            return 1;
+        }
 
-		if ( select_allowed )
-		{
-			if ( isupper ( i ) )
-			{
-				i = tolower ( i );
-			}
+        if ( select_allowed ) {
+            if ( isupper ( i ) ) {
+                i = tolower ( i );
+            }
 
-			if ( ( i >= 'a' && i <= 'z' ) || i == '.' )
-			{
-				return i;
-			}
-		}
-	}
+            if ( ( i >= 'a' && i <= 'z' ) || i == '.' ) {
+                return i;
+            }
+        }
+    }
 }
 
 
@@ -593,38 +552,33 @@ more ( char select_allowed )
 void
 enchantarmor ( void )
 {
-	int tmp;
+    int tmp;
 
-	if ( cdesc[WEAR] < 0 )
-	{
-		if ( cdesc[SHIELD] < 0 )
-		{
-			cursors ();
-			fl_display_message ( "\nYou feel a sense of loss" );
-			return;
-		}
+    if ( cdesc[WEAR] < 0 ) {
+        if ( cdesc[SHIELD] < 0 ) {
+            cursors ();
+            fl_display_message ( "\nYou feel a sense of loss" );
+            return;
+        }
 
-		else
-		{
-			tmp = iven[cdesc[SHIELD]];
+        else {
+            tmp = iven[cdesc[SHIELD]];
 
-			if ( tmp != OSCROLL )
-				if ( tmp != OPOTION )
-				{
-					ivenarg[cdesc[SHIELD]]++;
-					bottomline ();
-				}
-		}
-	}
+            if ( tmp != OSCROLL )
+                if ( tmp != OPOTION ) {
+                    ivenarg[cdesc[SHIELD]]++;
+                    bottomline ();
+                }
+        }
+    }
 
-	tmp = iven[cdesc[WEAR]];
+    tmp = iven[cdesc[WEAR]];
 
-	if ( tmp != OSCROLL )
-		if ( tmp != OPOTION )
-		{
-			ivenarg[cdesc[WEAR]]++;
-			bottomline ();
-		}
+    if ( tmp != OSCROLL )
+        if ( tmp != OPOTION ) {
+            ivenarg[cdesc[WEAR]]++;
+            bottomline ();
+        }
 }
 
 
@@ -635,41 +589,34 @@ enchantarmor ( void )
 void
 enchweapon ( void )
 {
-	int tmp;
+    int tmp;
 
-	if ( cdesc[WIELD] < 0 )
-	{
-		cursors ();
-		fl_display_message ( "\nYou feel a sense of loss" );
-		return;
-	}
+    if ( cdesc[WIELD] < 0 ) {
+        cursors ();
+        fl_display_message ( "\nYou feel a sense of loss" );
+        return;
+    }
 
-	tmp = iven[cdesc[WIELD]];
+    tmp = iven[cdesc[WIELD]];
 
-	if ( tmp != OSCROLL )
-		if ( tmp != OPOTION )
-		{
-			ivenarg[cdesc[WIELD]]++;
+    if ( tmp != OSCROLL )
+        if ( tmp != OPOTION ) {
+            ivenarg[cdesc[WIELD]]++;
 
-			if ( tmp == OCLEVERRING )
-			{
-				cdesc[INTELLIGENCE]++;
-			}
+            if ( tmp == OCLEVERRING ) {
+                cdesc[INTELLIGENCE]++;
+            }
 
-			else
-				if ( tmp == OSTRRING )
-				{
-					cdesc[STREXTRA]++;
-				}
+            else if ( tmp == OSTRRING ) {
+                cdesc[STREXTRA]++;
+            }
 
-				else
-					if ( tmp == ODEXRING )
-					{
-						cdesc[DEXTERITY]++;
-					}
+            else if ( tmp == ODEXRING ) {
+                cdesc[DEXTERITY]++;
+            }
 
-			bottomline ();
-		}
+            bottomline ();
+        }
 }
 
 
@@ -680,16 +627,15 @@ enchweapon ( void )
 int
 nearbymonst ( void )
 {
-	int tmp, tmp2;
+    int tmp, tmp2;
 
-	for ( tmp = playerx - 1; tmp < playerx + 2; tmp++ )
-		for ( tmp2 = playery - 1; tmp2 < playery + 2; tmp2++ )
-			if ( mitem[tmp][tmp2] )
-			{
-				return ( 1 );  /* if monster nearby */
-			}
+    for ( tmp = playerx - 1; tmp < playerx + 2; tmp++ )
+        for ( tmp2 = playery - 1; tmp2 < playery + 2; tmp2++ )
+            if ( mitem[tmp][tmp2] ) {
+                return ( 1 );  /* if monster nearby */
+            }
 
-	return 0;
+    return 0;
 }
 
 
@@ -701,27 +647,24 @@ nearbymonst ( void )
 int
 stealsomething ( void )
 {
-	int i, j;
-	j = 100;
+    int i, j;
+    j = 100;
 
-	for ( ;; )
-	{
-		i = TRund (MAXINVEN);
+    for ( ;; ) {
+        i = TRund (MAXINVEN);
 
-		if ( iven[i] && cdesc[WEAR] != i &&
-		     cdesc[WIELD] != i && cdesc[SHIELD] != i )
-		{
-			fl_display_inventory(i,0);
-			adjustcvalues ( iven[i], ivenarg[i] );
-			iven[i] = 0;
-			return 1;
-		}
+        if ( iven[i] && cdesc[WEAR] != i &&
+                cdesc[WIELD] != i && cdesc[SHIELD] != i ) {
+            fl_display_inventory(i,0);
+            adjustcvalues ( iven[i], ivenarg[i] );
+            iven[i] = 0;
+            return 1;
+        }
 
-		if ( --j <= 0 )
-		{
-			return 0;
-		}
-	}
+        if ( --j <= 0 ) {
+            return 0;
+        }
+    }
 }
 
 
@@ -732,18 +675,16 @@ stealsomething ( void )
 int
 emptyhanded ( void )
 {
-	int i;
+    int i;
 
-	for ( i = 0; i < 26; i++ )
-	{
-		if ( iven[i] && i != cdesc[WIELD] &&
-		     i != cdesc[WEAR] && i != cdesc[SHIELD] )
-		{
-			return 0;
-		}
-	}
+    for ( i = 0; i < 26; i++ ) {
+        if ( iven[i] && i != cdesc[WIELD] &&
+                i != cdesc[WEAR] && i != cdesc[SHIELD] ) {
+            return 0;
+        }
+    }
 
-	return 1;
+    return 1;
 }
 
 
@@ -754,32 +695,31 @@ emptyhanded ( void )
 void
 creategem ( void )
 {
-	int i, j;
+    int i, j;
 
-	switch ( TRnd ( 4 ) )
-	{
-		case 1:
-			i = ODIAMOND;
-			j = 50;
-			break;
+    switch ( TRnd ( 4 ) ) {
+    case 1:
+        i = ODIAMOND;
+        j = 50;
+        break;
 
-		case 2:
-			i = ORUBY;
-			j = 40;
-			break;
+    case 2:
+        i = ORUBY;
+        j = 40;
+        break;
 
-		case 3:
-			i = OEMERALD;
-			j = 30;
-			break;
+    case 3:
+        i = OEMERALD;
+        j = 30;
+        break;
 
-		default:
-			i = OSAPPHIRE;
-			j = 20;
-			break;
-	};
+    default:
+        i = OSAPPHIRE;
+        j = 20;
+        break;
+    };
 
-	createitem ( i, TRnd ( j ) + j / 10 );
+    createitem ( i, TRnd ( j ) + j / 10 );
 }
 
 
@@ -791,70 +731,68 @@ creategem ( void )
 void
 adjustcvalues ( int itm, int arg )
 {
-	int flag;
-	flag = 0;
+    int flag;
+    flag = 0;
 
-	switch ( itm )
-	{
-		case ODEXRING:
-			cdesc[DEXTERITY] -= arg + 1;
-			flag = 1;
-			break;
+    switch ( itm ) {
+    case ODEXRING:
+        cdesc[DEXTERITY] -= arg + 1;
+        flag = 1;
+        break;
 
-		case OSTRRING:
-			cdesc[STREXTRA] -= arg + 1;
-			flag = 1;
-			break;
+    case OSTRRING:
+        cdesc[STREXTRA] -= arg + 1;
+        flag = 1;
+        break;
 
-		case OCLEVERRING:
-			cdesc[INTELLIGENCE] -= arg + 1;
-			flag = 1;
-			break;
+    case OCLEVERRING:
+        cdesc[INTELLIGENCE] -= arg + 1;
+        flag = 1;
+        break;
 
-		case OHAMMER:
-			cdesc[DEXTERITY] -= 10;
-			cdesc[STREXTRA] -= 10;
-			cdesc[INTELLIGENCE] += 10;
-			flag = 1;
-			break;
+    case OHAMMER:
+        cdesc[DEXTERITY] -= 10;
+        cdesc[STREXTRA] -= 10;
+        cdesc[INTELLIGENCE] += 10;
+        flag = 1;
+        break;
 
-		case OSWORDofSLASHING:
-			cdesc[DEXTERITY] -= 5;
-			flag = 1;
-			break;
+    case OSWORDofSLASHING:
+        cdesc[DEXTERITY] -= 5;
+        flag = 1;
+        break;
 
-		case OORBOFDRAGON:
-			--cdesc[SLAYING];
-			return;
+    case OORBOFDRAGON:
+        --cdesc[SLAYING];
+        return;
 
-		case OSPIRITSCARAB:
-			--cdesc[NEGATESPIRIT];
-			return;
+    case OSPIRITSCARAB:
+        --cdesc[NEGATESPIRIT];
+        return;
 
-		case OCUBEofUNDEAD:
-			--cdesc[CUBEofUNDEAD];
-			return;
+    case OCUBEofUNDEAD:
+        --cdesc[CUBEofUNDEAD];
+        return;
 
-		case ONOTHEFT:
-			--cdesc[NOTHEFT];
-			return;
+    case ONOTHEFT:
+        --cdesc[NOTHEFT];
+        return;
 
-		case OGREATSWORD:
-			cdesc[GREATSWORDDEATH] = 0;
-			return;
+    case OGREATSWORD:
+        cdesc[GREATSWORDDEATH] = 0;
+        return;
 
-		case OPOTION:
-		case OSCROLL:
-			return;
+    case OPOTION:
+    case OSCROLL:
+        return;
 
-		default:
-			flag = 1;
-	};
+    default:
+        flag = 1;
+    };
 
-	if ( flag )
-	{
-		bottomline ();
-	}
+    if ( flag ) {
+        bottomline ();
+    }
 }
 
 /*
@@ -864,14 +802,13 @@ adjustcvalues ( int itm, int arg )
 char
 getyn ( void )
 {
-	int i = 0;
+    int i = 0;
 
-	while ( i != 'y' && i != 'n' && i != '\33' )
-	{
-		i = ttgetch ();
-	}
+    while ( i != 'y' && i != 'n' && i != '\33' ) {
+        i = ttgetch ();
+    }
 
-	return ( char ) i;
+    return ( char ) i;
 }
 
 
@@ -883,78 +820,76 @@ getyn ( void )
 int
 packweight ( void )
 {
-	int i, j = 25, k;
-	k = cdesc[GOLD] / 1000;
+    int i, j = 25, k;
+    k = cdesc[GOLD] / 1000;
 
-	while ( ( iven[j] == 0 ) && ( j > 0 ) )
-	{
-		--j;
-	}
+    while ( ( iven[j] == 0 ) && ( j > 0 ) ) {
+        --j;
+    }
 
-	for ( i = 0; i <= j; i++ )
-		switch ( iven[i] )
-		{
-			case 0:
-				break;
+    for ( i = 0; i <= j; i++ )
+        switch ( iven[i] ) {
+        case 0:
+            break;
 
-			case OSSPLATE:
-			case OPLATEARMOR:
-				k += 40;
-				break;
+        case OSSPLATE:
+        case OPLATEARMOR:
+            k += 40;
+            break;
 
-			case OPLATE:
-				k += 35;
-				break;
+        case OPLATE:
+            k += 35;
+            break;
 
-			case OHAMMER:
-				k += 30;
-				break;
+        case OHAMMER:
+            k += 30;
+            break;
 
-			case OSPLINT:
-				k += 26;
-				break;
+        case OSPLINT:
+            k += 26;
+            break;
 
-			case OSWORDofSLASHING:
-			case OCHAIN:
-			case OBATTLEAXE:
-			case O2SWORD:
-			case OHSWORD:
-				k += 23;
-				break;
+        case OSWORDofSLASHING:
+        case OCHAIN:
+        case OBATTLEAXE:
+        case O2SWORD:
+        case OHSWORD:
+            k += 23;
+            break;
 
-			case OLONGSWORD:
-			case OSWORD:
-			case ORING:
-				k += 20;
-				break;
+        case OLONGSWORD:
+        case OSWORD:
+        case ORING:
+            k += 20;
+            break;
 
-			case OGREATSWORD:
-			case OSTUDLEATHER:
-				k += 15;
-				break;
+        case OGREATSWORD:
+        case OSTUDLEATHER:
+            k += 15;
+            break;
 
-			case OLEATHER:
-			case OSPEAR:
-				k += 8;
-				break;
+        case OLEATHER:
+        case OSPEAR:
+            k += 8;
+            break;
 
-			case OORBOFDRAGON:
-			case OBELT:
-				k += 4;
-				break;
+        case OORBOFDRAGON:
+        case OBELT:
+            k += 4;
+            break;
 
-			case OSHIELD:
-				k += 7;
-				break;
+        case OSHIELD:
+            k += 7;
+            break;
 
-			case OCHEST:
-				k += 30 + ivenarg[i];
-				break;
+        case OCHEST:
+            k += 30 + ivenarg[i];
+            break;
 
-			default:
-				k++;
-				break;
-		};
+        default:
+            k++;
+            break;
+        };
 
-	return ( k );
+    return ( k );
 }

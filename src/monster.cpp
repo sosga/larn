@@ -75,51 +75,45 @@ static int spattack ( int, int, int );
 void
 createmonster ( int mon )
 {
-	int x, y, k, i;
+    int x, y, k, i;
 
-	if ( mon < 1 || mon > MAXMONST + 8 )
-	{
-		/* check for monster number out of bounds */
-		lprintf ( "\ncan't createmonst(%d)\n", mon );
-		nap ( 3000 );
-		return;
-	}
+    if ( mon < 1 || mon > MAXMONST + 8 ) {
+        /* check for monster number out of bounds */
+        lprintf ( "\ncan't createmonst(%d)\n", mon );
+        nap ( 3000 );
+        return;
+    }
 
-	while ( monster[mon].genocided && mon < MAXMONST )
-	{
-		mon++;  /* skip genocided */
-	}
+    while ( monster[mon].genocided && mon < MAXMONST ) {
+        mon++;  /* skip genocided */
+    }
 
-	for ( k = TRnd ( 8 ), i = -8; i < 0; i++, k++ )
-	{
-		/* choose TRnd direction, then try all */
-		if ( k > 8 )
-		{
-			k = 1;  /* wraparound the diroff arrays */
-		}
+    for ( k = TRnd ( 8 ), i = -8; i < 0; i++, k++ ) {
+        /* choose TRnd direction, then try all */
+        if ( k > 8 ) {
+            k = 1;  /* wraparound the diroff arrays */
+        }
 
-		x = playerx + diroffx[k];
-		y = playery + diroffy[k];
+        x = playerx + diroffx[k];
+        y = playery + diroffy[k];
 
-		if ( cgood ( x, y, 0, 1 ) )
-		{
-			/* if we can create here */
-			mitem[x][y] = mon;
-			hitp[x][y] = monster[mon].hitpoints;
-			stealth[x][y] = 0;
-			know[x][y] &= ~KNOWHERE;
+        if ( cgood ( x, y, 0, 1 ) ) {
+            /* if we can create here */
+            mitem[x][y] = mon;
+            hitp[x][y] = monster[mon].hitpoints;
+            stealth[x][y] = 0;
+            know[x][y] &= ~KNOWHERE;
 
-			switch ( mon )
-			{
-				case ROTHE:
-				case POLTERGEIST:
-				case VAMPIRE:
-					stealth[x][y] = 1;
-			};
+            switch ( mon ) {
+            case ROTHE:
+            case POLTERGEIST:
+            case VAMPIRE:
+                stealth[x][y] = 1;
+            };
 
-			return;
-		}
-	}
+            return;
+        }
+    }
 }
 
 
@@ -139,57 +133,52 @@ createmonster ( int mon )
 static int
 cgood ( int x, int y, int itm, int monst )
 {
-	/*
-	 * cannot create either monster or item if:
-	 * - out of bounds
-	 * - wall
-	 * - closed door
-	 * - dungeon entrance
-	 */
-	if ( ( ( y < 0 ) || ( y > MAXY - 1 ) || ( x < 0 )
-	       || ( x > MAXX - 1 ) ) ||
-	     ( item[x][y] == OWALL ) ||
-	     ( item[x][y] == OCLOSEDDOOR ) ||
-	     ( ( level == 1 ) && ( x == 33 ) && ( y == MAXY - 1 ) ) )
-	{
-		return 0;
-	}
+    /*
+     * cannot create either monster or item if:
+     * - out of bounds
+     * - wall
+     * - closed door
+     * - dungeon entrance
+     */
+    if ( ( ( y < 0 ) || ( y > MAXY - 1 ) || ( x < 0 )
+            || ( x > MAXX - 1 ) ) ||
+            ( item[x][y] == OWALL ) ||
+            ( item[x][y] == OCLOSEDDOOR ) ||
+            ( ( level == 1 ) && ( x == 33 ) && ( y == MAXY - 1 ) ) ) {
+        return 0;
+    }
 
-	/* if checking for an item, return False if one there already */
-	if ( itm && item[x][y] )
-	{
-		return 0;
-	}
+    /* if checking for an item, return False if one there already */
+    if ( itm && item[x][y] ) {
+        return 0;
+    }
 
-	/*
-	 * if checking for a monster, return False if one there already _or_
-	 * there is a pit/trap there.
-	 */
-	if ( monst )
-	{
-		if ( mitem[x][y] )
-		{
-			return 0;
-		}
+    /*
+     * if checking for a monster, return False if one there already _or_
+     * there is a pit/trap there.
+     */
+    if ( monst ) {
+        if ( mitem[x][y] ) {
+            return 0;
+        }
 
-		/*
-		 * note: not invisible traps, since monsters are
-		 * not affected by them.
-		 */
-		switch ( item[x][y] )
-		{
-			case OPIT:
-			case OANNIHILATION:
-			case OTELEPORTER:
-			case OTRAPARROW:
-			case ODARTRAP:
-			case OTRAPDOOR:
-				return 0;
-		}
-	}
+        /*
+         * note: not invisible traps, since monsters are
+         * not affected by them.
+         */
+        switch ( item[x][y] ) {
+        case OPIT:
+        case OANNIHILATION:
+        case OTELEPORTER:
+        case OTRAPARROW:
+        case ODARTRAP:
+        case OTRAPDOOR:
+            return 0;
+        }
+    }
 
-	/* cgood! */
-	return 1;
+    /* cgood! */
+    return 1;
 }
 
 
@@ -204,33 +193,29 @@ cgood ( int x, int y, int itm, int monst )
 void
 createitem ( int it, int arg )
 {
-	int x, y, k, i;
+    int x, y, k, i;
 
-	if ( it >= MAXOBJ )
-	{
-		return;  /* no such object */
-	}
+    if ( it >= MAXOBJ ) {
+        return;  /* no such object */
+    }
 
-	for ( k = TRnd ( 8 ), i = -8; i < 0; i++, k++ )
-	{
-		/* choose TRnd direction, then try all */
-		if ( k > 8 )
-		{
-			k = 1;  /* wraparound the diroff arrays */
-		}
+    for ( k = TRnd ( 8 ), i = -8; i < 0; i++, k++ ) {
+        /* choose TRnd direction, then try all */
+        if ( k > 8 ) {
+            k = 1;  /* wraparound the diroff arrays */
+        }
 
-		x = playerx + diroffx[k];
-		y = playery + diroffy[k];
+        x = playerx + diroffx[k];
+        y = playery + diroffy[k];
 
-		if ( cgood ( x, y, 1, 0 ) )
-		{
-			/* if we can create here */
-			item[x][y] = it;
-			know[x][y] = 0;
-			iarg[x][y] = arg;
-			return;
-		}
-	}
+        if ( cgood ( x, y, 1, 0 ) ) {
+            /* if we can create here */
+            item[x][y] = it;
+            know[x][y] = 0;
+            iarg[x][y] = arg;
+            return;
+        }
+    }
 }
 
 
@@ -248,33 +233,29 @@ createitem ( int it, int arg )
 int
 vxy ( int *x, int *y )
 {
-	int flag = 0;
+    int flag = 0;
 
-	if ( *x < 0 )
-	{
-		*x = 0;
-		flag++;
-	}
+    if ( *x < 0 ) {
+        *x = 0;
+        flag++;
+    }
 
-	if ( *y < 0 )
-	{
-		*y = 0;
-		flag++;
-	}
+    if ( *y < 0 ) {
+        *y = 0;
+        flag++;
+    }
 
-	if ( *x >= MAXX )
-	{
-		*x = MAXX - 1;
-		flag++;
-	}
+    if ( *x >= MAXX ) {
+        *x = MAXX - 1;
+        flag++;
+    }
 
-	if ( *y >= MAXY )
-	{
-		*y = MAXY - 1;
-		flag++;
-	}
+    if ( *y >= MAXY ) {
+        *y = MAXY - 1;
+        flag++;
+    }
 
-	return ( flag );
+    return ( flag );
 }
 
 
@@ -290,90 +271,81 @@ vxy ( int *x, int *y )
 void
 hitmonster ( int x, int y )
 {
-	int tmp, monst, flag, damag = 0;
-	HitMonster hitpoints;
+    int tmp, monst, flag, damag = 0;
+    HitMonster hitpoints;
 
-	if ( cdesc[TIMESTOP] )
-	{
-		return;  /* not if time stopped */
-	}
+    if ( cdesc[TIMESTOP] ) {
+        return;  /* not if time stopped */
+    }
 
-	vxy ( &x, &y );			/* verify coordinates are within range */
+    vxy ( &x, &y );			/* verify coordinates are within range */
 
-	if ( ( monst = mitem[x][y] ) == 0 )
-	{
-		return;
-	}
+    if ( ( monst = mitem[x][y] ) == 0 ) {
+        return;
+    }
 
-	hit3flag = 1;
-	ifblind ( x, y );
-	tmp = monster[monst].armorclass + cdesc[LEVEL] +
-	      cdesc[DEXTERITY] + cdesc[WCLASS] / 4 - 12;
-	cursors ();
+    hit3flag = 1;
+    ifblind ( x, y );
+    tmp = monster[monst].armorclass + cdesc[LEVEL] +
+          cdesc[DEXTERITY] + cdesc[WCLASS] / 4 - 12;
+    cursors ();
 
-	if ( ( TRnd ( 20 ) < tmp - cdesc[HARDGAME] )
-	     || ( TRnd ( 71 ) <
-	          5 ) )  	/* need at least random chance to hit */
-	{
-		fl_display_message ( "\nYou hit" );
-		flag = 1;
-		damag = fullhit ( 1 );
+    if ( ( TRnd ( 20 ) < tmp - cdesc[HARDGAME] )
+            || ( TRnd ( 71 ) <
+                 5 ) ) {	/* need at least random chance to hit */
+        fl_display_message ( "\nYou hit" );
+        flag = 1;
+        damag = fullhit ( 1 );
 
-		if ( damag < 9999 )
-		{
-			damag = TRnd ( damag ) + 1;
-		}
-	}
+        if ( damag < 9999 ) {
+            damag = TRnd ( damag ) + 1;
+        }
+    }
 
-	else
-	{
-		fl_display_message ( "\nYou missed" );
-		flag = 0;
-	}
+    else {
+        fl_display_message ( "\nYou missed" );
+        flag = 0;
+    }
 
-	fl_display_message ( " the " );
-	fl_display_message ( lastmonst );
+    fl_display_message ( " the " );
+    fl_display_message ( lastmonst );
 
-	if ( flag )			/* if the monster was hit */
-		if ( ( monst == RUSTMONSTER ) || ( monst == DISENCHANTRESS )
-		     || ( monst == CUBE ) )
-			if ( cdesc[WIELD] >= 0 )
-				if ( ivenarg[cdesc[WIELD]] > -10 )
-				{
-					lprintf ( "\nYour weapon is dulled by the %s", lastmonst );
-					--ivenarg[cdesc[WIELD]];
+    if ( flag )			/* if the monster was hit */
+        if ( ( monst == RUSTMONSTER ) || ( monst == DISENCHANTRESS )
+                || ( monst == CUBE ) )
+            if ( cdesc[WIELD] >= 0 )
+                if ( ivenarg[cdesc[WIELD]] > -10 ) {
+                    lprintf ( "\nYour weapon is dulled by the %s", lastmonst );
+                    --ivenarg[cdesc[WIELD]];
 
-					/* fix for dulled rings of strength, cleverness, dexterity bug. */
-					switch ( iven[cdesc[WIELD]] )
-					{
-						case ODEXRING:
-							cdesc[DEXTERITY]--;
-							break;
+                    /* fix for dulled rings of strength, cleverness, dexterity bug. */
+                    switch ( iven[cdesc[WIELD]] ) {
+                    case ODEXRING:
+                        cdesc[DEXTERITY]--;
+                        break;
 
-						case OSTRRING:
-							cdesc[STREXTRA]--;
-							break;
+                    case OSTRRING:
+                        cdesc[STREXTRA]--;
+                        break;
 
-						case OCLEVERRING:
-							cdesc[INTELLIGENCE]--;
-							break;
-					}
+                    case OCLEVERRING:
+                        cdesc[INTELLIGENCE]--;
+                        break;
+                    }
 
-					/* */
-				}
+                    /* */
+                }
 
-	if ( flag )
-	{
-		hitpoints.hitm ( x, y, damag );
-	}
+    if ( flag ) {
+        hitpoints.hitm ( x, y, damag );
+    }
 
-	if ( monst == VAMPIRE )
-		if ( hitp[x][y] < 25 )
-		{
-			/* vampire turns into bat */
-			mitem[x][y] = BAT;
-			know[x][y] = 0;
-		}
+    if ( monst == VAMPIRE )
+        if ( hitp[x][y] < 25 ) {
+            /* vampire turns into bat */
+            mitem[x][y] = BAT;
+            know[x][y] = 0;
+        }
 }
 
 /*
@@ -387,69 +359,63 @@ hitmonster ( int x, int y )
 int
 HitMonster::hitm(int x, int y, int amt)
 {
-	int monst;
-	vxy ( &x, &y );			/* verify coordinates are within range */
-	amt2 = amt;			/* save initial damage so we can return it */
-	monst = mitem[x][y];
+    int monst;
+    vxy ( &x, &y );			/* verify coordinates are within range */
+    amt2 = amt;			/* save initial damage so we can return it */
+    monst = mitem[x][y];
 
-	if ( cdesc[HALFDAM] )
-	{
-		amt >>= 1;  /* if half damage curse adjust damage points */
-	}
+    if ( cdesc[HALFDAM] ) {
+        amt >>= 1;  /* if half damage curse adjust damage points */
+    }
 
-	if ( amt <= 0 )
-	{
-		amt2 = amt = 1;
-	}
+    if ( amt <= 0 ) {
+        amt2 = amt = 1;
+    }
 
-	lasthx = x;
-	lasthy = y;
-	stealth[x][y] =
-	  1;		/* make sure hitting monst breaks stealth condition */
-	cdesc[HOLDMONST] =
-	  0;		/* hit a monster breaks hold monster spell  */
+    lasthx = x;
+    lasthy = y;
+    stealth[x][y] =
+        1;		/* make sure hitting monst breaks stealth condition */
+    cdesc[HOLDMONST] =
+        0;		/* hit a monster breaks hold monster spell  */
 
-	switch ( monst )
-	{
-		/* if a dragon and orb(s) of dragon slaying   */
-		case WHITEDRAGON:
-		case REDDRAGON:
-		case GREENDRAGON:
-		case BRONZEDRAGON:
-		case PLATINUMDRAGON:
-		case SILVERDRAGON:
-			amt *= 1 + ( cdesc[SLAYING] << 1 );
-			break;
-	}
+    switch ( monst ) {
+    /* if a dragon and orb(s) of dragon slaying   */
+    case WHITEDRAGON:
+    case REDDRAGON:
+    case GREENDRAGON:
+    case BRONZEDRAGON:
+    case PLATINUMDRAGON:
+    case SILVERDRAGON:
+        amt *= 1 + ( cdesc[SLAYING] << 1 );
+        break;
+    }
 
-	/* invincible monster fix is here */
-	if ( hitp[x][y] > monster[monst].hitpoints )
-	{
-		hitp[x][y] = monster[monst].hitpoints;
-	}
+    /* invincible monster fix is here */
+    if ( hitp[x][y] > monster[monst].hitpoints ) {
+        hitp[x][y] = monster[monst].hitpoints;
+    }
 
-	if ( ( hpoints = hitp[x][y] ) <= amt )
-	{
-		cdesc[MONSTKILLED]++;
-		lprintf ( "\nThe" );
-		lprintf ( " %s ", lastmonst );
-		lprintf ( "died!\n" );
-		raiseexperience ( monster[monst].experience );
-		amt = monster[monst].gold;
+    if ( ( hpoints = hitp[x][y] ) <= amt ) {
+        cdesc[MONSTKILLED]++;
+        lprintf ( "\nThe" );
+        lprintf ( " %s ", lastmonst );
+        lprintf ( "died!\n" );
+        raiseexperience ( monster[monst].experience );
+        amt = monster[monst].gold;
 
-		if ( amt > 0 )
-		{
-			dropgold ( TRnd ( amt ) + amt );
-		}
+        if ( amt > 0 ) {
+            dropgold ( TRnd ( amt ) + amt );
+        }
 
-		dropsomething ( monst );
-		disappear ( x, y );
-		bottomline ();
-		return 0;
-	}
+        dropsomething ( monst );
+        disappear ( x, y );
+        bottomline ();
+        return 0;
+    }
 
-	hitp[x][y] = hpoints - amt;
-	return 0;
+    hitp[x][y] = hpoints - amt;
+    return 0;
 }
 
 
@@ -463,121 +429,108 @@ HitMonster::hitm(int x, int y, int amt)
 void
 hitplayer ( int x, int y )
 {
-	int dam, tmp, mster, bias;
-	vxy ( &x, &y );			/* verify coordinates are within range */
-	lastnum = mster = mitem[x][y];
+    int dam, tmp, mster, bias;
+    vxy ( &x, &y );			/* verify coordinates are within range */
+    lastnum = mster = mitem[x][y];
 
-	/*  spirit naga's and poltergeist's do nothing if scarab of negate spirit   */
-	if ( cdesc[NEGATESPIRIT] || cdesc[SPIRITPRO] )
-		if ( ( mster == POLTERGEIST ) || ( mster == SPIRITNAGA ) )
-		{
-			return;
-		}
+    /*  spirit naga's and poltergeist's do nothing if scarab of negate spirit   */
+    if ( cdesc[NEGATESPIRIT] || cdesc[SPIRITPRO] )
+        if ( ( mster == POLTERGEIST ) || ( mster == SPIRITNAGA ) ) {
+            return;
+        }
 
-	/*  if undead and cube of undead control    */
-	if ( cdesc[CUBEofUNDEAD] || cdesc[UNDEADPRO] )
-		if ( ( mster == VAMPIRE ) || ( mster == WRAITH )
-		     || ( mster == ZOMBIE ) )
-		{
-			return;
-		}
+    /*  if undead and cube of undead control    */
+    if ( cdesc[CUBEofUNDEAD] || cdesc[UNDEADPRO] )
+        if ( ( mster == VAMPIRE ) || ( mster == WRAITH )
+                || ( mster == ZOMBIE ) ) {
+            return;
+        }
 
-	if ( ( know[x][y] & KNOWHERE ) == 0 )
-	{
-		show1cell ( x, y );
-	}
+    if ( ( know[x][y] & KNOWHERE ) == 0 ) {
+        show1cell ( x, y );
+    }
 
-	bias = ( cdesc[HARDGAME] ) + 1;
-	hitflag = hit2flag = hit3flag = 1;
-	y_larn_rep = 0;
-	cursors ();
-	ifblind ( x, y );
+    bias = ( cdesc[HARDGAME] ) + 1;
+    hitflag = hit2flag = hit3flag = 1;
+    y_larn_rep = 0;
+    cursors ();
+    ifblind ( x, y );
 
-	if ( cdesc[INVISIBILITY] )
-		if ( TRnd ( 33 ) < 20 )
-		{
-			lprintf ( "\nThe" );
-			lprintf ( " %s ", lastmonst );
-			lprintf ( "misses wildly\n" );
-			return;
-		}
+    if ( cdesc[INVISIBILITY] )
+        if ( TRnd ( 33 ) < 20 ) {
+            lprintf ( "\nThe" );
+            lprintf ( " %s ", lastmonst );
+            lprintf ( "misses wildly\n" );
+            return;
+        }
 
-	if ( cdesc[CHARMCOUNT] )
-		if ( TRnd ( 30 ) + 5 * monster[mster].level - cdesc[CHARISMA] <
-		     30 )
-		{
-			lprintf ( "\nThe" );
-			lprintf ( " %s ", lastmonst );
-			lprintf ( "is awestruck at your magnificence!\n" );
-			return;
-		}
+    if ( cdesc[CHARMCOUNT] )
+        if ( TRnd ( 30 ) + 5 * monster[mster].level - cdesc[CHARISMA] <
+                30 ) {
+            lprintf ( "\nThe" );
+            lprintf ( " %s ", lastmonst );
+            lprintf ( "is awestruck at your magnificence!\n" );
+            return;
+        }
 
-	if ( mster == BAT )
-	{
-		dam = 1;
-	}
+    if ( mster == BAT ) {
+        dam = 1;
+    }
 
-	else
-	{
-		dam = monster[mster].damage;
-		dam += TRnd ( ( int ) ( ( dam < 1 ) ? 1 : dam ) ) +
-		       monster[mster].level;
-	}
+    else {
+        dam = monster[mster].damage;
+        dam += TRnd ( ( int ) ( ( dam < 1 ) ? 1 : dam ) ) +
+               monster[mster].level;
+    }
 
-	tmp = 0;
+    tmp = 0;
 
-	if ( monster[mster].attack > 0 )
-		if ( ( ( dam + bias + 8 ) > cdesc[AC] )
-		     || ( TRnd ( ( int ) ( ( cdesc[AC] > 0 ) ? cdesc[AC] : 1 ) ) == 1 ) )
-		{
-			if ( spattack ( monster[mster].attack, x, y ) )
-			{
+    if ( monster[mster].attack > 0 )
+        if ( ( ( dam + bias + 8 ) > cdesc[AC] )
+                || ( TRnd ( ( int ) ( ( cdesc[AC] > 0 ) ? cdesc[AC] : 1 ) ) == 1 ) ) {
+            if ( spattack ( monster[mster].attack, x, y ) ) {
 #if defined WINDOWS || WINDOWS_VS
-				lflushall();
+                lflushall();
 #endif
 #if defined NIX
-				fflush ( NULL );
+                fflush ( NULL );
 #endif
-				return;
-			}
+                return;
+            }
 
-			tmp = 1;
-			bias -= 2;
-			cursors ();
-		}
+            tmp = 1;
+            bias -= 2;
+            cursors ();
+        }
 
-	if ( ( ( dam + bias ) > cdesc[AC] )
-	     || ( TRnd ( ( int ) ( ( cdesc[AC] > 0 ) ? cdesc[AC] : 1 ) ) == 1 ) )
-	{
-		lprintf ( "\nThe" );
-		lprintf ( " %s ", lastmonst );
-		lprintf ( "hit you" );
-		tmp = 1;
+    if ( ( ( dam + bias ) > cdesc[AC] )
+            || ( TRnd ( ( int ) ( ( cdesc[AC] > 0 ) ? cdesc[AC] : 1 ) ) == 1 ) ) {
+        lprintf ( "\nThe" );
+        lprintf ( " %s ", lastmonst );
+        lprintf ( "hit you" );
+        tmp = 1;
 
-		if ( ( dam -= cdesc[AC] ) < 0 )
-		{
-			dam = 0;
-		}
+        if ( ( dam -= cdesc[AC] ) < 0 ) {
+            dam = 0;
+        }
 
-		if ( dam > 0 )
-		{
-			losehp ( dam );
-			bottomhp ();
+        if ( dam > 0 ) {
+            losehp ( dam );
+            bottomhp ();
 #if defined WINDOWS || WINDOWS_VS
-			lflushall();
+            lflushall();
 #endif
 #if defined NIX
-			fflush ( NULL );
+            fflush ( NULL );
 #endif
-		}
-	}
+        }
+    }
 
-	if ( tmp == 0 )
-	{
-		lprintf ( "\nThe" );
-		lprintf ( " %s ", lastmonst );
-		lprintf ( "missed" );
-	}
+    if ( tmp == 0 ) {
+        lprintf ( "\nThe" );
+        lprintf ( " %s ", lastmonst );
+        lprintf ( "missed" );
+    }
 }
 
 /*
@@ -591,34 +544,31 @@ hitplayer ( int x, int y )
 static void
 dropsomething ( int monst )
 {
-	switch ( monst )
-	{
-		case ORC:
-		case NYMPH:
-		case ELF:
-		case TROGLODYTE:
-		case TROLL:
-		case ROTHE:
-		case VIOLETFUNGI:
-		case PLATINUMDRAGON:
-		case GNOMEKING:
-		case REDDRAGON:
-			something ( level );
-			return;
+    switch ( monst ) {
+    case ORC:
+    case NYMPH:
+    case ELF:
+    case TROGLODYTE:
+    case TROLL:
+    case ROTHE:
+    case VIOLETFUNGI:
+    case PLATINUMDRAGON:
+    case GNOMEKING:
+    case REDDRAGON:
+        something ( level );
+        return;
 
-		case LEPRECHAUN:
-			if ( TRnd ( 101 ) >= 75 )
-			{
-				creategem ();
-			}
+    case LEPRECHAUN:
+        if ( TRnd ( 101 ) >= 75 ) {
+            creategem ();
+        }
 
-			if ( TRnd ( 5 ) == 1 )
-			{
-				dropsomething ( LEPRECHAUN );
-			}
+        if ( TRnd ( 5 ) == 1 ) {
+            dropsomething ( LEPRECHAUN );
+        }
 
-			return;
-	}
+        return;
+    }
 }
 
 
@@ -634,15 +584,13 @@ dropsomething ( int monst )
 void
 dropgold ( int amount )
 {
-	if ( amount > 250 )
-	{
-		createitem ( OMAXGOLD, amount / 100 );
-	}
+    if ( amount > 250 ) {
+        createitem ( OMAXGOLD, amount / 100 );
+    }
 
-	else
-	{
-		createitem ( OGOLDPILE, amount );
-	}
+    else {
+        createitem ( OGOLDPILE, amount );
+    }
 }
 
 
@@ -658,20 +606,18 @@ dropgold ( int amount )
 void
 something ( int lv )
 {
-	int j, i;
+    int j, i;
 
-	if ( lv < 0 || lv > MAXLEVEL + MAXVLEVEL )
-	{
-		return;  /* correct level? */
-	}
+    if ( lv < 0 || lv > MAXLEVEL + MAXVLEVEL ) {
+        return;  /* correct level? */
+    }
 
-	if ( TRnd ( 101 ) < 8 )
-	{
-		something ( lv );  /* possibly more than one item */
-	}
+    if ( TRnd ( 101 ) < 8 ) {
+        something ( lv );  /* possibly more than one item */
+    }
 
-	j = newobject ( lv, &i );
-	createitem ( j, i );
+    j = newobject ( lv, &i );
+    createitem ( j, i );
 }
 
 
@@ -697,151 +643,142 @@ static int nobjtab[] = { 0, OSCROLL, OSCROLL, OSCROLL, OSCROLL, OPOTION,
 int
 newobject ( int lev, int *i )
 {
-	int tmp = 33, j, hacktmp = 0;
+    int tmp = 33, j, hacktmp = 0;
 
-	if ( level < 0 || level > MAXLEVEL + MAXVLEVEL )
-	{
-		return ( 0 );  /* correct level? */
-	}
+    if ( level < 0 || level > MAXLEVEL + MAXVLEVEL ) {
+        return ( 0 );  /* correct level? */
+    }
 
-	if ( lev > 6 )
-	{
-		tmp = 41;
-	}
+    if ( lev > 6 ) {
+        tmp = 41;
+    }
 
-	else
-		if ( lev > 4 )
-		{
-			tmp = 39;
-		}
+    else if ( lev > 4 ) {
+        tmp = 39;
+    }
 
-	j = nobjtab[tmp = TRnd ( tmp )];	/* the object type */
+    j = nobjtab[tmp = TRnd ( tmp )];	/* the object type */
 
-	switch ( tmp )
-	{
-		case 1:
-		case 2:
-		case 3:
-		case 4:			/* scroll */
-			*i = scroll_probability[TRund(81)];
-			break;
+    switch ( tmp ) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:			/* scroll */
+        *i = scroll_probability[TRund(81)];
+        break;
 
-		case 5:
-		case 6:
-		case 7:
-		case 8:			/* potion */
-			*i = potion_probability[TRund(41)];
-			break;
+    case 5:
+    case 6:
+    case 7:
+    case 8:			/* potion */
+        *i = potion_probability[TRund(41)];
+        break;
 
-		case 9:
-		case 10:
-		case 11:
-		case 12:			/* gold */
-			*i = TRnd ( ( lev + 1 ) * 10 ) + lev * 10 + 10;
-			break;
+    case 9:
+    case 10:
+    case 11:
+    case 12:			/* gold */
+        *i = TRnd ( ( lev + 1 ) * 10 ) + lev * 10 + 10;
+        break;
 
-		case 13:
-		case 14:
-		case 15:
-		case 16:			/* book */
-			*i = lev;
-			break;
+    case 13:
+    case 14:
+    case 15:
+    case 16:			/* book */
+        *i = lev;
+        break;
 
-		case 17:
-		case 18:
-		case 19:
-		/* Return + points on new daggers */
-			hacktmp = (*i = ndgg[TRund(13)]);
+    case 17:
+    case 18:
+    case 19:
+        /* Return + points on new daggers */
+        hacktmp = (*i = ndgg[TRund(13)]);
 
-			if ( !hacktmp )
-			{
-				return ( 0 );
-			}
+        if ( !hacktmp ) {
+            return ( 0 );
+        }
 
-			break;
+        break;
 
-		case 20:
-		case 21:
-		case 22:
-		/* Return the + points on created leather armor */
-			hacktmp = (*i = nlpts[TRund(cdesc[HARDGAME]?13:15)]);
+    case 20:
+    case 21:
+    case 22:
+        /* Return the + points on created leather armor */
+        hacktmp = (*i = nlpts[TRund(cdesc[HARDGAME]?13:15)]);
 
-			if ( !hacktmp )
-			{
-				return ( 0 );
-			}
+        if ( !hacktmp ) {
+            return ( 0 );
+        }
 
-			break;
+        break;
 
-		case 23:
-		case 32:
-		case 38:			/* regen ring, shield, 2-hand sword */
-			*i = TRund ( lev / 3 + 1 );
-			break;
+    case 23:
+    case 32:
+    case 38:			/* regen ring, shield, 2-hand sword */
+        *i = TRund ( lev / 3 + 1 );
+        break;
 
-		case 24:
-		case 26:			/* prot ring, dexterity ring */
-			*i = TRnd ( lev / 4 + 1 );
-			break;
+    case 24:
+    case 26:			/* prot ring, dexterity ring */
+        *i = TRnd ( lev / 4 + 1 );
+        break;
 
-		case 25:			/* energy ring */
-			*i = TRund ( lev / 4 + 1 );
-			break;
+    case 25:			/* energy ring */
+        *i = TRund ( lev / 4 + 1 );
+        break;
 
-		case 27:
-		case 39:			/* strength ring, cleverness ring */
-			*i = TRnd ( lev / 2 + 1 );
-			break;
+    case 27:
+    case 39:			/* strength ring, cleverness ring */
+        *i = TRnd ( lev / 2 + 1 );
+        break;
 
-		case 30:
-		case 34:			/* ring mail, flail */
-			*i = TRund ( lev / 2 + 1 );
-			break;
+    case 30:
+    case 34:			/* ring mail, flail */
+        *i = TRund ( lev / 2 + 1 );
+        break;
 
-		case 28:
-		case 36:			/* spear, battleaxe */
-			*i = TRund ( lev / 3 + 1 );
+    case 28:
+    case 36:			/* spear, battleaxe */
+        *i = TRund ( lev / 3 + 1 );
 
-			if ( *i == 0 )
-			{
-				return ( 0 );
-			}
+        if ( *i == 0 ) {
+            return ( 0 );
+        }
 
-			break;
+        break;
 
-		case 29:
-		case 31:
-		case 37:			/* belt, studded leather, splint */
-			*i = TRund ( lev / 2 + 1 );
+    case 29:
+    case 31:
+    case 37:			/* belt, studded leather, splint */
+        *i = TRund ( lev / 2 + 1 );
 
-			if ( *i == 0 )
-			{
-				return ( 0 );
-			}
+        if ( *i == 0 ) {
+            return ( 0 );
+        }
 
-			break;
+        break;
 
-		case 33:			/* fortune cookie */
-			*i = 0;
-			break;
+    case 33:			/* fortune cookie */
+        *i = 0;
+        break;
 
-		case 35:
-		/* Return the + points on chain armor */
-			*i = nch[TRund(10)];
-			break;
+    case 35:
+        /* Return the + points on chain armor */
+        *i = nch[TRund(10)];
+        break;
 
-		case 40:
-		/* Return + points on plate armor */
-			*i = nplt[TRund(cdesc[HARDGAME]?4:12)];
-			break;
+    case 40:
+        /* Return + points on plate armor */
+        *i = nplt[TRund(cdesc[HARDGAME]?4:12)];
+        break;
 
-		case 41:
-		/* Return + points on new swords */
-			*i = nsw[TRund(cdesc[HARDGAME]?6:13)];
-			break;
-	}
+    case 41:
+        /* Return + points on new swords */
+        *i = nsw[TRund(cdesc[HARDGAME]?6:13)];
+        break;
+    }
 
-	return ( j );
+    return ( j );
 }
 
 
@@ -879,15 +816,14 @@ newobject ( int lev, int *i )
 *  format is: { armor type , minimum attribute
 */
 
-static int rustarm[ARMORTYPES][2] =
-{
+static int rustarm[ARMORTYPES][2] = {
 
-	{OSTUDLEATHER, -2},
-	{ORING, -4},
-	{OCHAIN, -5},
-	{OSPLINT, -6},
-	{OPLATE, -8},
-	{OPLATEARMOR, -9}
+    {OSTUDLEATHER, -2},
+    {ORING, -4},
+    {OCHAIN, -5},
+    {OSPLINT, -6},
+    {OPLATE, -8},
+    {OPLATEARMOR, -9}
 
 };
 
@@ -898,261 +834,232 @@ static char spsel[] = { 1, 2, 3, 5, 6, 8, 9, 11, 13, 14 };
 static int
 spattack ( int x, int xx, int yy )
 {
-	int i, j = 0, k, m;
-	const char *p = 0;
+    int i, j = 0, k, m;
+    const char *p = 0;
 
-	if ( cdesc[CANCELLATION] )
-	{
-		return ( 0 );
-	}
+    if ( cdesc[CANCELLATION] ) {
+        return ( 0 );
+    }
 
-	vxy ( &xx, &yy );		/* verify x & y coordinates */
+    vxy ( &xx, &yy );		/* verify x & y coordinates */
 
-	switch ( x )
-	{
-		case 1:			/* rust your armor, j=1 when rusting has occurred */
-			m = k = cdesc[WEAR];
-			i = cdesc[SHIELD];
+    switch ( x ) {
+    case 1:			/* rust your armor, j=1 when rusting has occurred */
+        m = k = cdesc[WEAR];
+        i = cdesc[SHIELD];
 
-			if ( i != -1 )
-			{
-				if ( --ivenarg[i] < -1 )
-				{
-					ivenarg[i] = -1;
-				}
+        if ( i != -1 ) {
+            if ( --ivenarg[i] < -1 ) {
+                ivenarg[i] = -1;
+            }
 
-				else
-				{
-					j = 1;
-				}
-			}
+            else {
+                j = 1;
+            }
+        }
 
-			if ( ( j == 0 ) && ( k != -1 ) )
-			{
-				m = iven[k];
+        if ( ( j == 0 ) && ( k != -1 ) ) {
+            m = iven[k];
 
-				for ( i = 0; i < ARMORTYPES; i++ )
-					if ( m == rustarm[i][0] )  	/* find his armor in table */
-					{
-						if ( --ivenarg[k] < rustarm[i][1] )
-						{
-							ivenarg[k] = rustarm[i][1];
-						}
+            for ( i = 0; i < ARMORTYPES; i++ )
+                if ( m == rustarm[i][0] ) {	/* find his armor in table */
+                    if ( --ivenarg[k] < rustarm[i][1] ) {
+                        ivenarg[k] = rustarm[i][1];
+                    }
 
-						else
-						{
-							j = 1;
-						}
+                    else {
+                        j = 1;
+                    }
 
-						break;
-					}
-			}
+                    break;
+                }
+        }
 
-			if ( j == 0 )		/* if rusting did not occur */
-				switch ( m )
-				{
-					case OLEATHER:
-						p = "\nThe %s hit you -- Your lucky you have leather on";
-						break;
+        if ( j == 0 )		/* if rusting did not occur */
+            switch ( m ) {
+            case OLEATHER:
+                p = "\nThe %s hit you -- Your lucky you have leather on";
+                break;
 
-					case OSSPLATE:
-						p =
-						  "\nThe %s hit you -- Your fortunate to have stainless steel armor!";
-						break;
-				}
+            case OSSPLATE:
+                p =
+                    "\nThe %s hit you -- Your fortunate to have stainless steel armor!";
+                break;
+            }
 
-			else
-			{
-				p = "\nThe %s hit you -- your armor feels weaker";
-			}
+        else {
+            p = "\nThe %s hit you -- your armor feels weaker";
+        }
 
-			break;
+        break;
 
-		case 2:
-			i = TRnd ( 15 ) + 8 - cdesc[AC];
-		spout:
-			p = "\nThe %s breathes fire at you!";
+    case 2:
+        i = TRnd ( 15 ) + 8 - cdesc[AC];
+spout:
+        p = "\nThe %s breathes fire at you!";
 
-			if ( cdesc[FIRERESISTANCE] )
-			{
-				p = "\nThe %s's flame doesn't phase you!";
-			}
+        if ( cdesc[FIRERESISTANCE] ) {
+            p = "\nThe %s's flame doesn't phase you!";
+        }
 
-			else
-			spout2:
-				if ( p )
-				{
-					lprintf ( p, lastmonst );
-				}
+        else
+spout2:
+            if ( p ) {
+                lprintf ( p, lastmonst );
+            }
 
-			checkloss ( i );
-			return ( 0 );
+        checkloss ( i );
+        return ( 0 );
 
-		case 3:
-			i = TRnd ( 20 ) + 25 - cdesc[AC];
-			goto spout;
+    case 3:
+        i = TRnd ( 20 ) + 25 - cdesc[AC];
+        goto spout;
 
-		case 4:
-			if ( cdesc[STRENGTH] > 3 )
-			{
-				p = "\nThe %s stung you!  You feel weaker";
-				--cdesc[STRENGTH];
-			}
+    case 4:
+        if ( cdesc[STRENGTH] > 3 ) {
+            p = "\nThe %s stung you!  You feel weaker";
+            --cdesc[STRENGTH];
+        }
 
-			else
-			{
-				p = "\nThe %s stung you!";
-			}
+        else {
+            p = "\nThe %s stung you!";
+        }
 
-			break;
+        break;
 
-		case 5:
-			p = "\nThe %s blasts you with his cold breath";
-			i = TRnd ( 15 ) + 18 - cdesc[AC];
-			goto spout2;
+    case 5:
+        p = "\nThe %s blasts you with his cold breath";
+        i = TRnd ( 15 ) + 18 - cdesc[AC];
+        goto spout2;
 
-		case 6:
-			lprintf ( "\nThe " );
-			lprintf ( "%s", lastmonst );
-			lprintf ( " drains you of your life energy!" );
-			loselevel ();
-			return ( 0 );
+    case 6:
+        lprintf ( "\nThe " );
+        lprintf ( "%s", lastmonst );
+        lprintf ( " drains you of your life energy!" );
+        loselevel ();
+        return ( 0 );
 
-		case 7:
-			p = "\nThe %s got you with a gusher!";
-			i = TRnd ( 15 ) + 25 - cdesc[AC];
-			goto spout2;
+    case 7:
+        p = "\nThe %s got you with a gusher!";
+        i = TRnd ( 15 ) + 25 - cdesc[AC];
+        goto spout2;
 
-		case 8:
-			if ( cdesc[NOTHEFT] )
-			{
-				return ( 0 );  /* he has a device of no theft */
-			}
+    case 8:
+        if ( cdesc[NOTHEFT] ) {
+            return ( 0 );  /* he has a device of no theft */
+        }
 
-			if ( cdesc[GOLD] )
-			{
-				p = "\nThe %s hit you -- Your purse feels lighter";
+        if ( cdesc[GOLD] ) {
+            p = "\nThe %s hit you -- Your purse feels lighter";
 
-				if ( cdesc[GOLD] > 32767 )
-				{
-					cdesc[GOLD] >>= 1;
-				}
+            if ( cdesc[GOLD] > 32767 ) {
+                cdesc[GOLD] >>= 1;
+            }
 
-				else
-				{
-					cdesc[GOLD] -= TRnd ( ( int ) ( 1 + ( cdesc[GOLD] >> 1 ) ) );
-				}
+            else {
+                cdesc[GOLD] -= TRnd ( ( int ) ( 1 + ( cdesc[GOLD] >> 1 ) ) );
+            }
 
-				if ( cdesc[GOLD] < 0 )
-				{
-					cdesc[GOLD] = 0;
-				}
-			}
+            if ( cdesc[GOLD] < 0 ) {
+                cdesc[GOLD] = 0;
+            }
+        }
 
-			else
-			{
-				p = "\nThe %s couldn't find any gold to steal";
-			}
+        else {
+            p = "\nThe %s couldn't find any gold to steal";
+        }
 
-			lprintf ( p, lastmonst );
-			disappear ( xx, yy );
-			bottomgold ();
-			return ( 1 );
+        lprintf ( p, lastmonst );
+        disappear ( xx, yy );
+        bottomgold ();
+        return ( 1 );
 
-		case 9:
-			for ( j = 50;; )  	/* disenchant */
-			{
-				i = TRund ( 26 );
-				m = iven[i];		/* randomly select item */
+    case 9:
+        for ( j = 50;; ) {	/* disenchant */
+            i = TRund ( 26 );
+            m = iven[i];		/* randomly select item */
 
-				if ( m > 0 && ivenarg[i] > 0 && m != OSCROLL
-				     && m != OPOTION )
-				{
-					if ( ( ivenarg[i] -= 3 ) < 0 )
-					{
-						ivenarg[i] = 0;
-					}
+            if ( m > 0 && ivenarg[i] > 0 && m != OSCROLL
+                    && m != OPOTION ) {
+                if ( ( ivenarg[i] -= 3 ) < 0 ) {
+                    ivenarg[i] = 0;
+                }
 
-					lprintf ( "\nThe " );
-					lprintf ( "%s ", lastmonst );
-					lprintf ( "hits you -- you feel a sense of loss" );
-					fl_display_inventory(i,0);
-					bottomline ();
-					return ( 0 );
-				}
+                lprintf ( "\nThe " );
+                lprintf ( "%s ", lastmonst );
+                lprintf ( "hits you -- you feel a sense of loss" );
+                fl_display_inventory(i,0);
+                bottomline ();
+                return ( 0 );
+            }
 
-				if ( --j <= 0 )
-				{
-					p = "\nThe %s nearly misses";
-					break;
-				}
+            if ( --j <= 0 ) {
+                p = "\nThe %s nearly misses";
+                break;
+            }
 
-				break;
-			}
+            break;
+        }
 
-			break;
+        break;
 
-		case 10:
-			p = "\nThe %s hit you with his barbed tail";
-			i = TRnd ( 25 ) - cdesc[AC];
-			goto spout2;
+    case 10:
+        p = "\nThe %s hit you with his barbed tail";
+        i = TRnd ( 25 ) - cdesc[AC];
+        goto spout2;
 
-		case 11:
-			p = "\nThe %s has confused you";
-			cdesc[CONFUSE] += 10 + TRnd ( 10 );
-			break;
+    case 11:
+        p = "\nThe %s has confused you";
+        cdesc[CONFUSE] += 10 + TRnd ( 10 );
+        break;
 
-		case 12:			/*  performs any number of other special attacks    */
-			return ( spattack ( spsel[TRund ( 10 )], xx, yy ) );
+    case 12:			/*  performs any number of other special attacks    */
+        return ( spattack ( spsel[TRund ( 10 )], xx, yy ) );
 
-		case 13:
-			p = "\nThe %s flattens you with his psionics!";
-			i = TRnd ( 15 ) + 30 - cdesc[AC];
-			goto spout2;
+    case 13:
+        p = "\nThe %s flattens you with his psionics!";
+        i = TRnd ( 15 ) + 30 - cdesc[AC];
+        goto spout2;
 
-		case 14:
-			if ( cdesc[NOTHEFT] )
-			{
-				return ( 0 );  /* he has device of no theft */
-			}
+    case 14:
+        if ( cdesc[NOTHEFT] ) {
+            return ( 0 );  /* he has device of no theft */
+        }
 
-			if ( emptyhanded () == 1 )
-			{
-				p = "\nThe %s couldn't find anything to steal";
-				break;
-			}
+        if ( emptyhanded () == 1 ) {
+            p = "\nThe %s couldn't find anything to steal";
+            break;
+        }
 
-			lprintf ( "\nThe" );
-			lprintf ( " %s ", lastmonst );
-			lprintf ( "picks your pocket and takes:" );
+        lprintf ( "\nThe" );
+        lprintf ( " %s ", lastmonst );
+        lprintf ( "picks your pocket and takes:" );
 
-			if ( stealsomething () == 0 )
-			{
-				fl_display_message ( " nothing" );
-			}
+        if ( stealsomething () == 0 ) {
+            fl_display_message ( " nothing" );
+        }
 
-			disappear ( xx, yy );
-			bottomline ();
-			return ( 1 );
+        disappear ( xx, yy );
+        bottomline ();
+        return ( 1 );
 
-		case 15:
-			i = TRnd ( 10 ) + 5 - cdesc[AC];
-		spout3:
-			p = "\nThe %s bit you!";
-			goto spout2;
+    case 15:
+        i = TRnd ( 10 ) + 5 - cdesc[AC];
+spout3:
+        p = "\nThe %s bit you!";
+        goto spout2;
 
-		case 16:
-			i = TRnd ( 15 ) + 10 - cdesc[AC];
-			goto spout3;
-	};
+    case 16:
+        i = TRnd ( 15 ) + 10 - cdesc[AC];
+        goto spout3;
+    };
 
-	if ( p )
-	{
-		lprintf ( p, lastmonst );
-		bottomline ();
-	}
+    if ( p ) {
+        lprintf ( p, lastmonst );
+        bottomline ();
+    }
 
-	return ( 0 );
+    return ( 0 );
 }
 
 
@@ -1168,9 +1075,8 @@ spattack ( int x, int xx, int yy )
 void
 checkloss ( int x )
 {
-	if ( x > 0 )
-	{
-		losehp ( x );
-		bottomhp ();
-	}
+    if ( x > 0 ) {
+        losehp ( x );
+        bottomhp ();
+    }
 }

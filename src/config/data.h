@@ -11,46 +11,46 @@ inline const int MEG = 1000000;
 /*  this is the structure that holds the entire dungeon specifications  */
 struct cel
 {
-	int hitp;			/*  monster's hit points    */
-	int mitem;			/*  the monster ID          */
-	int item;			/*  the object's ID         */
-	int iarg;			/*  the object's argument   */
-	int know;			/*  have we been here before */
+    int hitp;			/*  monster's hit points    */
+    int mitem;			/*  the monster ID          */
+    int item;			/*  the object's ID         */
+    int iarg;			/*  the object's argument   */
+    int know;			/*  have we been here before */
 };
 
 /* this is the structure for maintaining & moving the spheres of annihilation */
 struct sphere
 {
-	struct sphere *p;		/* pointer to next structure */
-	int x, y, lev;		/* location of the sphere */
-	int dir;			/* direction sphere is going in */
-	int lifetime;			/* duration of the sphere */
+    struct sphere *p;		/* pointer to next structure */
+    int x, y, lev;		/* location of the sphere */
+    int dir;			/* direction sphere is going in */
+    int lifetime;			/* duration of the sphere */
 };
 
 /*  this is the structure definition of the monster data
 */
 struct monst
 {
-	const char *name;
-	int level;
-	int armorclass;
-	int damage;
-	int attack;
-	int defense;
-	int genocided;
-	int intelligence;		/* monsters intelligence -- used to choose movement */
-	int gold;
-	int hitpoints;
-	unsigned long experience;
+    const char *name;
+    int level;
+    int armorclass;
+    int damage;
+    int attack;
+    int defense;
+    int genocided;
+    int intelligence;		/* monsters intelligence -- used to choose movement */
+    int gold;
+    int hitpoints;
+    unsigned long experience;
 };
 
 /*  this is the structure definition for the items in the dnd store */
 struct _itm
 {
-	int price;
-	int obj;
-	int arg;
-	int qty;
+    int price;
+    int obj;
+    int arg;
+    int qty;
 };
 
 /*
@@ -75,9 +75,9 @@ extern int mitem[MAXX][MAXY], monstlevel[];
 extern int nch[], ndgg[], nlpts[], nomove;
 extern int nplt[], nsw[];
 extern int potion_probability[];
-extern char monstnamelist[];
+extern int monstnamelist[];
 extern const char *levelname[];
-extern const char objnamelist[];
+extern int objnamelist[];
 extern char logname[];
 extern char mazefile[];
 extern char helpfile[];
@@ -100,7 +100,8 @@ extern int iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
        lastpy;
 extern int oldx, oldy, playerx, playery;
 extern int enable_scroll, y_larn_rep, wisid, lfd, fd;
-extern long outstanding_taxes, skill[], gtime;
+extern long outstanding_taxes, gtime;
+extern int skill[];
 extern long cdesc[], cbak[];
 extern time_t initialtime;
 extern unsigned long lrandx;
@@ -143,5 +144,5 @@ extern int move_no_pickup;
 template<class T>
 T disappear(T x, T y)
 {
-	return (mitem[x][y]=know[x][y]=0);
+    return (mitem[x][y]=know[x][y]=0);
 }

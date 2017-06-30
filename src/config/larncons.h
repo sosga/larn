@@ -41,49 +41,49 @@ extern int playery;
 extern int know[MAXX][MAXY];
 inline int forget(void)
 {
-	return item[playerx][playery]=know[playerx][playery] = 0;
+    return item[playerx][playery]=know[playerx][playery] = 0;
 }
 
 /* Turn on bold display for the terminal */
 extern char *lpnt;
 inline int setbold(void)
 {
-	return *lpnt++ = ST_START;
+    return *lpnt++ = ST_START;
 }
 
 /* Turn off bold display for the terminal */
 inline int resetbold(void)
 {
-	return *lpnt++ = ST_END;
+    return *lpnt++ = ST_END;
 }
 
 /* macro to clear the screen and home the cursor */
 inline int screen_clear(void)
 {
-	int regen_bottom = 1;
-	return *lpnt++ = CLEAR, regen_bottom;
+    int regen_bottom = 1;
+    return *lpnt++ = CLEAR, regen_bottom;
 }
 inline int BOLD(void)
 {
-	const int bold = 3;
-	return bold;
+    const int bold = 3;
+    return bold;
 }
 inline int END_BOLD(void)
 {
-	const int end_bold = 4;
-	return end_bold;
+    const int end_bold = 4;
+    return end_bold;
 }
 inline int TIMELIMIT(void)
 {
-	const int timelimit = 70000;
-	return timelimit;
+    const int timelimit = 70000;
+    return timelimit;
 }
 inline const char* VERSION = "Xvart";
 
 extern char *lpnt;
 inline int CLEAR_EOL(void)
 {
-	return *lpnt++ = CL_LINE;
+    return *lpnt++ = CL_LINE;
 }
 
 inline const int MAXLEVEL = 11;
@@ -93,7 +93,7 @@ inline const int PATHLEN = 80;
 inline bool WIZID = false;
 
 /* this is the number of people on a scoreboard max */
-inline const int SCORESIZE = 10;
+inline const int SCORESIZE = 4;
 /* maximum player level allowed */
 inline const int MAXPLEVEL = 100;
 /* maximum number of spells in existance */
@@ -110,6 +110,8 @@ inline const int STRING_BUFFER_SIZE = 256;
 
 /* maximum # monsters in the dungeon */
 inline const int MAXMONST = 56;
+/* Maximum number of mazes */
+inline const int FL_MAZES = 24;
 
 /*  defines for the monsters as objects  */
 inline const int BAT = 1;
@@ -265,7 +267,7 @@ inline const int MAXPOTION = 35;		/* maximum number of potions that are possible
 inline const int MAXPOTIONNAME = 32;
 inline const int MAXOBJ = 100;		/* the maximum number of objects   n < MAXOBJ */
 /*  defines for the objects in the game     */
-inline const int MAXOBJECT = 100;
+inline const int MAXOBJECT = 87;
 inline const int OALTAR = 1;
 inline const int OTHRONE = 2;
 inline const int OORB = 3;
