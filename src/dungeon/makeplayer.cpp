@@ -29,7 +29,11 @@
 #include "../../includes/scores.h"
 #include "../../includes/inventory.h"
 #include "../save/save.hpp"
+#include "../lexical/tok.hpp"
 #include "dungeon.hpp"
+#include "../json/flconfig.hpp"
+
+using namespace std;
 
 /*
 makeplayer()
@@ -37,21 +41,26 @@ makeplayer()
 subroutine to create the player and the players attributes
 this is called at the beginning of a game and at no other time
 */
+
+int hard = fl_json_config_value["DIFFICULTY"].asInt();
+
 void
 makeplayer(void)
 {
     int i;
+    fl_display_message("Difficulty: %d",hard);
     scbr();
     screen_clear();
+    fl_json_config_reader.parse(fl_json_file, fl_json_config_value);
     /*  start player off with 15 hit points */
-    cdesc[HPMAX] = cdesc[HP] = 25;
+    cdesc[HPMAX] = cdesc[HP] = fl_json_config_value["HP"].asUInt();
     /*  player starts at level one          */
-    cdesc[LEVEL] = 1;
+    cdesc[LEVEL] = fl_json_config_value["LEVEL"].asUInt();
     /*  total # spells starts off as 3  */
-    cdesc[SPELLMAX] = cdesc[SPELLS] = 1;
+    cdesc[SPELLMAX] = cdesc[SPELLS] = fl_json_config_value["SPELLS"].asUInt();
     /* start regeneration correctly */
-    cdesc[REGENCOUNTER] = 16;
-    cdesc[ECOUNTER] = 96;
+    cdesc[REGENCOUNTER] = fl_json_config_value["REGENCOUNTER"].asUInt();
+    cdesc[ECOUNTER] = fl_json_config_value["ECOUNTER"].asUInt();
     cdesc[SHIELD] = cdesc[WEAR] = cdesc[WIELD] = -1;
 
     for(i = 0; i < MAXINVEN; i++) {
@@ -62,8 +71,8 @@ makeplayer(void)
     spelknow[0] = spelknow[1] = 1;
 
     if(cdesc[HARDGAME] <= 0) {
-        iven[0] = OLEATHER;
-        iven[1] = ODAGGER;
+        iven[0] = fl_json_config_value["STARTING-ARMOR"].asInt();
+        iven[1] = fl_json_config_value["STARTING-WEAPON"].asInt();
         iven[2] = 0;
         ivenarg[1] = ivenarg[0] = cdesc[WEAR] = 0;
         cdesc[WIELD] = 1;

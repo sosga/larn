@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -50,13 +51,6 @@ static char viewflag =
     0;	/* if viewflag then we have done a 99 stay here
 				   and don't showcell in the main loop */
 
-static char cmdhelp[] = "\
-Cmd line format: larn [-sih] [-##]\n\
--s   show the scoreboard\n\
--i   show scoreboard with inventories of dead characters\n\
--##  specify level of difficulty (example: -5)\n\
--h   print this help text\n\
-";
 
 signed int save_mode = 0;	/* 1 if doing a save game */
 int restorflag = 0;
@@ -66,12 +60,13 @@ int restorflag = 0;
 MAIN PROGRAM
 ************
 */
-int main(int argc, char *argv[])
+int main()
 {
-    int i;
-    int hard = -1;
     FILE *pFile;
     Load load;
+
+    extern int hard;
+    
     /*
      *  first task is to identify the player
      */
@@ -113,39 +108,6 @@ int main(int argc, char *argv[])
     }
 
     /*
-     *  now process the command line arguments
-     */
-    for(i = 1; i < argc; i++) {
-        if(argv[i][0] == '-')
-            switch(argv[i][1]) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':		/* for hardness */
-                hard = atoi(&argv[i][1]);
-                break;
-
-            case 'h':		/* print out command line arguments */
-            case '?':
-                ansiterm_clean_up();
-                puts(cmdhelp);
-                exit(EXIT_SUCCESS);
-
-            default:
-                ansiterm_clean_up();
-                printf("Unknown option <%s>\n", argv[i]);
-                puts(cmdhelp);
-                exit(EXIT_SUCCESS);
-            };
-    }
-
-    /*
      *  He really wants to play, so malloc the memory for the dungeon.
      */
     const char *cell = (const char*) operator new((sizeof * cell) * (MAXLEVEL + MAXVLEVEL) *
@@ -176,9 +138,8 @@ int main(int argc, char *argv[])
             1;		/* tell signals that we are in the welcome screen */
         welcome();		/* welcome the player to the game */
         makeplayer();		/*  make the character that will play           */
-        sethard(hard);		/* set up the desired difficulty                */
-        newcavelevel(
-            0);		/*  make the dungeon                            */
+        sethard(hard);
+        newcavelevel(0);		/*  make the dungeon                            */
         /* Display their mail if they've just won the previous game
          */
         checkmail();

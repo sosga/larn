@@ -34,6 +34,13 @@ inline const int T_END = 8;
 inline const int CL_DOWN = 14;
 inline const int CURSOR = 15;
 
+inline const char* SCORENAME = "data/scorefile.dat";
+inline const char* LOGFNAME = "data/logfile.log";
+inline const char* PLAYERIDS = "data/playerid.txt";
+inline const char* LEVELSNAME = "data/mazefile.txt";
+inline const char* SAVEFILE = "data/savefile.dat";
+inline const char* CONFIGFILE = "data/flconfig.json";
+
 /* Destroy object at present location */
 extern int item[MAXX][MAXY];
 extern int playerx;
@@ -57,7 +64,7 @@ inline int resetbold(void)
     return *lpnt++ = ST_END;
 }
 
-/* macro to clear the screen and home the cursor */
+/* Clear the screen and home the cursor */
 inline int screen_clear(void)
 {
     int regen_bottom = 1;

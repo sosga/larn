@@ -844,7 +844,7 @@ seemagic(int arg)
     count = 0;
 
     for(i = 0; i < number; i++) {
-        lprintf("%-26s", &scrollname[sort[i]][1]);
+        lprintf("a magic scroll %-26s", &scrollname[sort[i]][1]);
         seepage();
     }
 
@@ -884,7 +884,7 @@ seemagic(int arg)
     count = 0;
 
     for(i = 0; i < number; i++) {
-        lprintf("%-26s", &potionname[sort[i]][1]);
+        lprintf("a magic potion %-26s", &potionname[sort[i]][1]);
         seepage();
     }
 

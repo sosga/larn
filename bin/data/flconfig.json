@@ -1,0 +1,10 @@
+{
+    "HP":25,
+    "LEVEL":1,
+    "SPELLS":3,
+    "REGENCOUNTER":16,
+    "ECOUNTER":96,
+    "STARTING-ARMOR":25,
+    "STARTING-WEAPON":31,
+    "DIFFICULTY":2
+}
