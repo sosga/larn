@@ -527,13 +527,12 @@ parse(void)
             ~Gibbon
              */
             cursors();
-            lprintf("\nSaving file '%s' . . . ", savefilename);
             lflush();
             save_mode = 1;
             save.savegame(savefilename);
             screen_clear();
             lflush();
-            exit(EXIT_SUCCESS);
+            exit(0);
             break;
 
         case 'T':

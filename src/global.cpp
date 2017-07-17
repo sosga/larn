@@ -492,19 +492,17 @@ quit ( void )
         i = ttgetch ();
 
         if ( ( i == 'y' ) || ( i == 'Y' ) ) {
-            died ( 300 );
+            exit(0);
             return;
         }
 
         if ( ( i == 'n' ) || ( i == 'N' ) || ( i == '\33' ) ) {
             fl_display_message ( " no" );
-            lflush ();
+            lflush();
             return;
         }
     }
 }
-
-
 
 /*
 * function to ask --more--. If the user enters a space, returns 0.  If user

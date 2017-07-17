@@ -438,6 +438,7 @@ lookforobject ( char do_ident, char do_pickup,
             nap(NAPTIME);
             oteleport(0);
             know[playerx][playery] = KNOWALL;
+			cdesc[TELEFLAG]=0;
             fl_display_message("\n\nThe teleporter has miraculously made this maze known!");
         } else {
             fl_display_message("\nYou have been teleported!\n");
