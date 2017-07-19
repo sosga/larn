@@ -122,8 +122,7 @@ movemonst ( void )
        Also count # of smart monsters.
      */
     smart_count = 0;
-    min_int = 10 -
-              cdesc[HARDGAME];	/* minimum monster intelligence to move smart */
+    min_int = 10; /* minimum monster intelligence to move smart */
 
     if ( cdesc[AGGRAVATE] || !cdesc[STEALTH] ) {
         for ( j = tmp1; j < tmp2; j++ )
@@ -144,27 +143,8 @@ movemonst ( void )
                     movecnt++;
                 }
     }
-
-    else {
-        for ( j = tmp1; j < tmp2; j++ )
-            for ( i = tmp3; i < tmp4; i++ )
-                if ( mitem[i][j]
-                        && stealth[i][j] ) {	/* stealth[x][y] = 1 when AWAKE! */
-                    movelist[movecnt].x = i;
-                    movelist[movecnt].y = j;
-
-                    if ( monster[mitem[i][j]].intelligence > min_int ) {
-                        movelist[movecnt].smart = 1;
-                        smart_count++;
-                    }
-
-                    else {
-                        movelist[movecnt].smart = 0;
-                    }
-
-                    movecnt++;
-                }
-    }
+    
+    
 
     /* now move the monsters in the movelist.  If we have at least one
        smart monster, build a proximity ripple and use it for all smart

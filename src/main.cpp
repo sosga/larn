@@ -12,6 +12,7 @@
 #include "../src/terminal/term.hpp"
 #include "lexical/tok.hpp"
 #include "dungeon/dungeon.hpp"
+#include "logging/message_log.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/help.h"
@@ -26,6 +27,7 @@
 #include "../includes/spells.h"
 #include "../includes/spheres.h"
 #include "save/save.hpp"
+#include "strings/utf8.h"
 
 using std::cout;
 
@@ -64,8 +66,6 @@ int main()
 {
     FILE *pFile;
     Load load;
-
-    extern int hard;
     
     /*
      *  first task is to identify the player
@@ -87,13 +87,10 @@ int main()
         died(-285);     /* malloc() failure */
     }
 
-    std::strncpy(scorefile,
-                 SCORENAME, 50);	/* the larn scoreboard filename */
-    std::strncpy(logfile,
-                 LOGFNAME, 50);	/* larn activity logging filename */
-    std::strncpy(playerids,
-                 PLAYERIDS, 50);	/* the playerid data file name */
-    std::strncpy(savefilename, SAVEFILE, 50);
+    utf8ncpy(scorefile,SCORENAME, 50);	/* the larn scoreboard filename */
+    utf8ncpy(logfile,LOGFNAME, 50);	/* larn activity logging filename */
+    utf8ncpy(playerids,PLAYERIDS, 50);	/* the playerid data file name */
+    utf8ncpy(savefilename, SAVEFILE, 50);
     /*
      *  now make scoreboard if it is not there (don't clear)
      */
@@ -138,7 +135,6 @@ int main()
             1;		/* tell signals that we are in the welcome screen */
         welcome();		/* welcome the player to the game */
         makeplayer();		/*  make the character that will play           */
-        sethard(hard);
         newcavelevel(0);		/*  make the dungeon                            */
         /* Display their mail if they've just won the previous game
          */
@@ -439,8 +435,7 @@ parse(void)
             y_larn_rep = 0;
             nomove = 1;
             cursors();
-            lprintf("\nLarn-Next, Version: %s, Difficulty: %d",
-                    VERSION, cdesc[HARDGAME]);
+            lprintf("\nLarn-Next, Version: %s",VERSION);
 
             if(wizard) {
                 fl_display_message(" Wizard");
@@ -477,6 +472,12 @@ parse(void)
             display_help_text();
             nomove = 1;
             return;	/*give the help screen*/
+
+        case '#':
+            y_larn_rep = 0;
+            display_message_log();
+            nomove = 1;
+            return; /*give the message screen*/
 
         case 'E':		/* Enter a building */
             y_larn_rep = 0;
@@ -700,7 +701,7 @@ parse(void)
                 for(i = 0; i < MAXSCROLL; i++)
 
                     /* no null items */
-                    if(strlen(scrollname[i]) > 2) {
+                    if(utf8len(scrollname[i]) > 2) {
                         item[i][0] = OSCROLL;
                         iarg[i][0] = i;
                     }
@@ -708,7 +709,7 @@ parse(void)
                 for(i = MAXX - 1; i > MAXX - 1 - MAXPOTION; i--)
 
                     /* no null items */
-                    if(strlen(potionname[i - MAXX + MAXPOTION]) > 2) {
+                    if(utf8len(potionname[i - MAXX + MAXPOTION]) > 2) {
                         item[i][0] = OPOTION;
                         iarg[i][0] = i - MAXX + MAXPOTION;
                     }

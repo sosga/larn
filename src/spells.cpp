@@ -25,6 +25,7 @@ genmonst()         Function to ask for monster and genocide from game
 #include "config/larncons.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
+#include "strings/utf8.h"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/io.h"
@@ -331,12 +332,9 @@ speldamage ( int x )
                     break;
 
                 case OSTATUE:
-                    if ( cdesc[HARDGAME] < 3 ) {
-                        *p = OBOOK;
-                        iarg[i][j] = level;
-                        *kn = 0;
-                    }
-
+                    *p = OBOOK;
+                    iarg[i][j] = level;
+                    *kn = 0;
                     break;
 
                 case OTHRONE:
@@ -700,8 +698,7 @@ fullhit ( int xx )
     }
 
     i = xx * ( ( cdesc[WCLASS] >> 1 ) + cdesc[STRENGTH] +
-               cdesc[STREXTRA] -
-               cdesc[HARDGAME] - 12 + cdesc[MOREDAM] );
+               cdesc[STREXTRA] + cdesc[MOREDAM] );
     return ( ( i >= 1 ) ? i : xx );
 }
 
@@ -880,7 +877,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
 
                 if (
                     /* enough damage? */
-                    dam >= 50 + cdesc[HARDGAME] &&
+                    dam >= 50 &&
                     /* not on V3 */
                     level < MAXLEVEL + MAXVLEVEL - 1 &&
                     x < MAXX - 1 && y < MAXY - 1 && x != 0 && y != 0 ) {
@@ -913,7 +910,6 @@ godirect ( int spnum, int dam, const char *str, int delay,
                 lprc ( '\n' );
                 lprintf ( str, "statue" );
 
-                if ( cdesc[HARDGAME] < 3 )
                     if ( dam > 44 ) {
                         fl_display_message ( "  The statue crumbles" );
                         *p = OPRAYERBOOK;
@@ -944,7 +940,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
                 lprc ( '\n' );
                 lprintf ( str, "altar" );
 
-                if ( dam > 75 - ( cdesc[HARDGAME] >> 2 ) ) {
+                if ( dam > 75 ) {
                     create_guardian ( DEMONPRINCE, x, y );
                     show1cell ( x, y );
                 }
@@ -988,7 +984,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
             break;
             };
 
-        dam -= 3 + ( cdesc[HARDGAME] >> 1 );
+        dam -= 3;
     }
 }
 
@@ -1019,7 +1015,7 @@ ifblind ( int x, int y )
         p = monster[lastnum].name;
     }
 
-    std::strncpy ( lastmonst, p, 50 );
+    utf8ncpy(lastmonst, p, 50);
 }
 
 

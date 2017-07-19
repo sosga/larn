@@ -290,7 +290,7 @@ hitmonster ( int x, int y )
           cdesc[DEXTERITY] + cdesc[WCLASS] / 4 - 12;
     cursors ();
 
-    if ( ( TRnd ( 20 ) < tmp - cdesc[HARDGAME] )
+    if ( ( TRnd ( 20 ) < tmp)
             || ( TRnd ( 71 ) <
                  5 ) ) {	/* need at least random chance to hit */
         fl_display_message ( "\nYou hit" );
@@ -450,7 +450,7 @@ hitplayer ( int x, int y )
         show1cell ( x, y );
     }
 
-    bias = ( cdesc[HARDGAME] ) + 1;
+    bias = + 1;
     hitflag = hit2flag = hit3flag = 1;
     y_larn_rep = 0;
     cursors ();
@@ -704,7 +704,7 @@ newobject ( int lev, int *i )
     case 21:
     case 22:
         /* Return the + points on created leather armor */
-        hacktmp = (*i = nlpts[TRund(cdesc[HARDGAME]?13:15)]);
+        hacktmp = (*i = nlpts[TRund(15)]);
 
         if ( !hacktmp ) {
             return ( 0 );
@@ -769,12 +769,12 @@ newobject ( int lev, int *i )
 
     case 40:
         /* Return + points on plate armor */
-        *i = nplt[TRund(cdesc[HARDGAME]?4:12)];
+        *i = nplt[TRund(12)];
         break;
 
     case 41:
         /* Return + points on new swords */
-        *i = nsw[TRund(cdesc[HARDGAME]?6:13)];
+        *i = nsw[TRund(13)];
         break;
     }
 

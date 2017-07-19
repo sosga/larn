@@ -14,6 +14,7 @@
 #include "../includes/global.h"
 #include "../includes/io.h"
 #include "../includes/monster.h"
+#include "strings/utf8.h"
 
 using std::cout;
 
@@ -770,7 +771,7 @@ seemagic(int arg)
             number++;
             j = 0;
 
-            while(strncmp(spelcode[sort[j]], spelcode[i], 3) < 0) {
+            while(utf8ncmp(spelcode[sort[j]], spelcode[i], 3) < 0) {
                 j++;
             }
 
@@ -826,7 +827,7 @@ seemagic(int arg)
             number++;
             j = 0;
 
-            while(strcmp(&scrollname[sort[j]][1],
+            while(utf8cmp(&scrollname[sort[j]][1],
                          &scrollname[i][1]) < 0) {
                 j++;
             }
@@ -866,7 +867,7 @@ seemagic(int arg)
             number++;
             j = 0;
 
-            while(strcmp(&potionname[sort[j]][1],
+            while(utf8cmp(&potionname[sort[j]][1],
                          &potionname[i][1]) < 0) {
                 j++;
             }

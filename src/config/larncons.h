@@ -236,7 +236,6 @@ inline const int GIANTSTR = 49;
 inline const int FIRERESISTANCE = 50;
 inline const int BESSMANN = 51;
 inline const int NOTHEFT = 52;
-inline const int HARDGAME = 53;
 inline const int CPUTIME = 54;
 inline const int BYTESIN = 55;
 inline const int BYTESOUT = 56;

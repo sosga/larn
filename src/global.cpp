@@ -46,6 +46,7 @@
 #include "../includes/monster.h"
 #include "../includes/scores.h"
 #include "../includes/sysdep.h"
+#include "strings/utf8.h"
 
 /*
 * raiselevel()
@@ -93,12 +94,12 @@ raiseexperience ( long x )
 
     while ( cdesc[EXPERIENCE] >= skill[cdesc[LEVEL]]
             && ( cdesc[LEVEL] < MAXPLEVEL ) ) {
-        tmp = ( cdesc[CONSTITUTION] - cdesc[HARDGAME] ) >> 1;
+        tmp = ( cdesc[CONSTITUTION] ) >> 1;
         cdesc[LEVEL]++;
         raisemhp ( ( int ) ( TRnd ( 3 ) + TRnd ( ( tmp > 0 ) ? tmp : 1 ) ) );
         raisemspells ( ( int ) TRund ( 3 ) );
 
-        if ( cdesc[LEVEL] < 7 - cdesc[HARDGAME] ) {
+        if ( cdesc[LEVEL] < 7 ) {
             raisemhp ( ( int ) ( cdesc[CONSTITUTION] >> 2 ) );
         }
     }
@@ -134,12 +135,12 @@ loseexperience ( long x )
             cdesc[LEVEL] = 1;  /*  down one level      */
         }
 
-        tmp = ( cdesc[CONSTITUTION] - cdesc[HARDGAME] ) >>
+        tmp = ( cdesc[CONSTITUTION]) >>
               1;	/* lose hpoints */
         losemhp ( ( int ) TRnd ( ( tmp > 0 ) ? tmp :
                                  1 ) );	/* lose hpoints */
 
-        if ( cdesc[LEVEL] < 7 - cdesc[HARDGAME] ) {
+        if ( cdesc[LEVEL] < 7) {
             losemhp ( ( int ) ( cdesc[CONSTITUTION] >> 2 ) );
         }
 
@@ -485,7 +486,7 @@ quit ( void )
 {
     int i;
     cursors ();
-    strcpy ( lastmonst, "" );
+    utf8cpy ( lastmonst, "" );
     fl_display_message ( "\nDo you really want to quit (all progress will be lost)?" );
 
     for ( ;; ) {

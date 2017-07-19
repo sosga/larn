@@ -5,12 +5,12 @@ void dropgold ( int );
 
 class HitMonster
 {
-    int lastx;
-    int lasty;
 public:
     int hitm(int,int,int);
     int hpoints;
     int amt2;
+    int lastx;
+    int lasty;
 };
 
 void hitmonster ( int, int );

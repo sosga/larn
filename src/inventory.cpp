@@ -51,12 +51,10 @@ fl_init_inventory ( void )
         ivensort[i] = END_SENTINEL;
     }
     ivensort[MAXINVEN] = END_SENTINEL;
-    if ( cdesc[HARDGAME] <= 0 ) {
-        iven[0] = OLEATHER;
-        iven[1] = ODAGGER;
-        ivenarg[0] = ivenarg[1] = cdesc[WEAR] = ivensort[0] = 0;
-        ivensort[1] = cdesc[WIELD] = 1;
-    }
+    iven[0] = OLEATHER;
+    iven[1] = ODAGGER;
+    ivenarg[0] = ivenarg[1] = cdesc[WEAR] = ivensort[0] = 0;
+    ivensort[1] = cdesc[WIELD] = 1;
 }
 
 /*

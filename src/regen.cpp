@@ -55,9 +55,7 @@ regen(void)
     if (larn_cdesc_id[HP] != larn_cdesc_id[HPMAX])
 
         if (larn_cdesc_id[REGENCOUNTER]-- <= 0) {	/* regenerate hit points */
-            larn_cdesc_id[REGENCOUNTER] = 20 +
-                                          (larn_cdesc_id[HARDGAME] << 1) -
-                                          larn_cdesc_id[LEVEL];
+            larn_cdesc_id[REGENCOUNTER] = 20 + larn_cdesc_id[LEVEL];
 
             if ((larn_cdesc_id[HP] += larn_cdesc_id[REGEN]) > larn_cdesc_id[HPMAX]) {
                 larn_cdesc_id[HP] = larn_cdesc_id[HPMAX];
@@ -67,11 +65,7 @@ regen(void)
     /* regenerate spells */
     if (larn_cdesc_id[SPELLS] < larn_cdesc_id[SPELLMAX])
         if (larn_cdesc_id[ECOUNTER]-- <= 0) {
-            larn_cdesc_id[ECOUNTER] = 100 + 4 *
-                                      (larn_cdesc_id[HARDGAME] -
-                                       larn_cdesc_id[LEVEL] -
-                                       larn_cdesc_id[ENERGY]
-                                      );
+            larn_cdesc_id[ECOUNTER] = 100 + 4 * larn_cdesc_id[LEVEL] - larn_cdesc_id[ENERGY];
             larn_cdesc_id[SPELLS]++;
             bottomspell();
         }

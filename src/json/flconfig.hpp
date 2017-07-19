@@ -15,7 +15,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "json.h"
+#include <json/json.h>
 
 ifstream fl_json_file(CONFIGFILE);
 Json::Reader fl_json_config_reader;

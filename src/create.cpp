@@ -221,23 +221,14 @@ troom (int lv, int xsize, int ysize, int tx, int ty, int glyph)
     tp1 = playerx;
     tp2 = playery;
     playery = ty + (ysize >> 1);
-    if (cdesc[HARDGAME] < 2) {
         for (playerx = tx + 1; playerx <= tx + xsize - 2; playerx += 2) {
             for (i = 0, j = TRnd (6); i <= j; i++) {
                 something (lv + 2);
                 createmonster (makemonst (lv + 1));
             }
         }
-    } else {
-        for (playerx = tx + 1; playerx <= tx + xsize - 2; playerx += 2) {
-            for (i = 0, j = TRnd (4); i <= j; i++) {
-                something (lv + 2);
-                createmonster (makemonst (lv + 3));
-            }
             playerx = tp1;
             playery = tp2;
-        }
-    }
 }
 
 /*
@@ -346,7 +337,7 @@ makeobject(int j)
         cdesc[BESSMANN] = 1;
     }
 
-    if(cdesc[HARDGAME] < 3 || (TRnd(4) == 3)) {
+    if((TRnd(4) == 3)) {
         if(j > 3) {
             froom(3, OSWORD, 3);	/* sunsword + 3         */
             froom(5, O2SWORD, TRnd(4));	/* a two handed sword */

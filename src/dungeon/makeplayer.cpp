@@ -42,13 +42,10 @@ subroutine to create the player and the players attributes
 this is called at the beginning of a game and at no other time
 */
 
-int hard = fl_json_config_value["DIFFICULTY"].asInt();
-
 void
 makeplayer(void)
 {
     int i;
-    fl_display_message("Difficulty: %d",hard);
     scbr();
     screen_clear();
     fl_json_config_reader.parse(fl_json_file, fl_json_config_value);
@@ -70,13 +67,11 @@ makeplayer(void)
     /* he knows protection, magic missile */
     spelknow[0] = spelknow[1] = 1;
 
-    if(cdesc[HARDGAME] <= 0) {
-        iven[0] = fl_json_config_value["STARTING-ARMOR"].asInt();
-        iven[1] = fl_json_config_value["STARTING-WEAPON"].asInt();
-        iven[2] = 0;
-        ivenarg[1] = ivenarg[0] = cdesc[WEAR] = 0;
-        cdesc[WIELD] = 1;
-    }
+    iven[0] = fl_json_config_value["STARTING-ARMOR"].asInt();
+    iven[1] = fl_json_config_value["STARTING-WEAPON"].asInt();
+    iven[2] = 0;
+    ivenarg[1] = ivenarg[0] = cdesc[WEAR] = 0;
+    cdesc[WIELD] = 1;
 
     playerx = TRnd(MAXX - 2);
     playery = TRnd(MAXY - 2);

@@ -43,6 +43,7 @@
 #include "../includes/scores.h"
 #include "../includes/sysdep.h"
 #include "../includes/io.h"
+#include "strings/utf8.h"
 
 using std::cout;
 
@@ -51,7 +52,6 @@ struct scofmt  		/*  This is the structure for the scoreboard        */
     int score;			/* the score of the player                          */
     int what;			/* the number of the monster that killed player     */
     int level;			/* the level player was on when he died             */
-    int hardlev;			/* the level of difficulty player played at         */
     int order;			/* the relative ordering place of this entry        */
     char who[LOGNAMESIZE];	/* the name of the character                        */
     int sciv[26][2];		/* this is the inventory list of the character      */
@@ -62,7 +62,6 @@ struct wscofmt  		/* This is the structure for the winning scoreboard */
     int score;			/* the score of the player                          */
     int timeused;			/* the time used in mobuls to win the game          */
     long taxes;			/* taxes he owes to LRS                             */
-    int hardlev;			/* the level of difficulty player played at         */
     int order;			/* the relative ordering place of this entry        */
     int hasmail;			/* 1 if mail is to be read, 0 otherwise */
     char who[LOGNAMESIZE];	/* the name of the character                        */
@@ -249,7 +248,7 @@ checkmail ( void )
     /* search through winners scoreboard */
     for ( i = 0; i < SCORESIZE;
             i++ ) /* search through winners scoreboard */
-        if ( strcmp ( winr[i].who, logname ) == 0 && winr[i].score > 0
+        if ( utf8cmp ( winr[i].who, logname ) == 0 && winr[i].score > 0
                 && winr[i].hasmail ) {
             winr[i].hasmail = 0;
             gold = taxes = winr[i].taxes;
@@ -288,7 +287,7 @@ paytaxes ( int x )
 
     /* search for a winning entry for the player */
     for (i=0; i<SCORESIZE; i++)
-        if (strcmp(winr[i].who, logname) == 0)
+        if (utf8cmp(winr[i].who, logname) == 0)
             if (winr[i].score > 0) {
                 amt = winr[i].taxes;
                 if (amt > x) amt = x;
@@ -310,21 +309,21 @@ showscores (int scoreflag)
 {
     int count, i, j;
 
-    lstandout("Score  Difficulty   Time   Winners\n");
+    lstandout("Score  Time   Winners\n");
 
     count = 0;
 
     for (i=0; i<SCORESIZE; i++) for (j=0; j<SCORESIZE; j++) if (winr[j].order == i) {
                 if (winr[j].score) {
                     count++;
-                    lprintf("%-10d     %2d  %5d Mobuls  %s\n", winr[j].score, winr[j].hardlev, winr[j].timeused, winr[j].who);
+                    lprintf("%-10d      %5d Mobuls     %s\n", winr[j].score, winr[j].timeused, winr[j].who);
                 }
                 break;
             }
 
     lprc('\n');
 
-    lstandout("Score  Difficulty   Died\n");
+    lstandout("Score    Died\n");
 
     count = 0;
 
@@ -332,13 +331,12 @@ showscores (int scoreflag)
                 if (sco[j].score) {
                     count++;
 
-                    lprintf("%-10d     %2d   %s ", sco[j].score, sco[j].hardlev, sco[j].who);
+                    lprintf("%-10d  %s", sco[j].score, sco[j].who);
 
                     if (sco[j].what < 256) {
                         const char *p = monster[sco[j].what].name;
 
-                        lprintf("killed by %s %s",
-                                ((*p == 'a' || *p == 'e' || *p == 'i' || *p == 'o' || *p == 'u') ? "an" : "a"), p);
+                        lprintf("killed by %s %s",((*p == 'a' || *p == 'e' || *p == 'i' || *p == 'o' || *p == 'u') ? "an" : "a"), p);
                     } else lprintf("%s", whydead[sco[j].what - 256]);
 
                     lprintf(" on level %s\n", levelname[sco[j].level]);
@@ -434,13 +432,13 @@ newscore ( int score, char *whoo, int whyded, int winner )
 
     /* if a winner then delete all non-winning scores */
     if (winner) {
-        for (i=0; i<SCORESIZE; i++) if (strcmp(sco[i].who, logname) == 0) sco[i].score = 0;
+        for (i=0; i<SCORESIZE; i++) if (utf8cmp(sco[i].who, logname) == 0) sco[i].score = 0;
 
         taxes = score*TAXRATE;
-        score += 100000*cdesc[HARDGAME]; /* bonus for winning */
+        score += 100000; /* bonus for winning */
 
         /* if he has a slot on the winning scoreboard update it if greater score */
-        for (i=0; i<SCORESIZE; i++) if (strcmp(winr[i].who, logname) == 0) {
+        for (i=0; i<SCORESIZE; i++) if (utf8cmp(winr[i].who, logname) == 0) {
                 new1sub(score, i, whoo, taxes);
                 return;
             }
@@ -452,7 +450,7 @@ newscore ( int score, char *whoo, int whyded, int winner )
             }
     } else { /* for not winning scoreboard */
         /* if he has a slot on the scoreboard update it if greater score */
-        for (i=0; i<SCORESIZE; i++) if (strcmp(sco[i].who, logname) == 0) {
+        for (i=0; i<SCORESIZE; i++) if (utf8cmp(sco[i].who, logname) == 0) {
                 new2sub(score, i, whoo, whyded);
                 return;
             }
@@ -483,10 +481,9 @@ new1sub ( int score, int i, char *whoo, int taxes )
     p = &winr[i];
     p->taxes += taxes;
 
-    if ((score >= p->score) || (cdesc[HARDGAME] > p->hardlev)) {
-        strcpy(p->who, whoo);
+    if ((score >= p->score)) {
+        utf8cpy(p->who, whoo);
         p->score = score;
-        p->hardlev = cdesc[HARDGAME];
         p->timeused = gtime/100;
         p->hasmail = 1;
     }
@@ -509,11 +506,10 @@ new2sub ( int score, int i, char *whoo, int whyded )
 
     p = &sco[i];
 
-    if ((score >= p->score) || (cdesc[HARDGAME] > p->hardlev)) {
-        strcpy(p->who, whoo);
+    if ((score >= p->score)) {
+        utf8cpy(p->who, whoo);
         p->score = score;
         p->what = whyded;
-        p->hardlev = cdesc[HARDGAME];
         p->level = level;
 
         for (j=0; j<26; j++) {
