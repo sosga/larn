@@ -79,10 +79,10 @@ lookforobject ( char do_ident, char do_pickup,
 
     case OPOTION:
         if ( do_ident ) {
-            fl_display_message ( "\nYou have found a magic potion" );
+            fl_display_message ( "\nYou have found a magic potion " );
 
             if ( potionname[j][0] ) {
-                lprintf ( " of %s", &potionname[j][1] );
+                lprintf ( "%s", &potionname[j][1] );
             }
         }
 
@@ -99,10 +99,10 @@ lookforobject ( char do_ident, char do_pickup,
 
     case OSCROLL:
         if ( do_ident ) {
-            fl_display_message ( "\nYou have found a magic scroll" );
+            fl_display_message ( "\nYou have found a magic scroll " );
 
             if ( scrollname[j][0] ) {
-                lprintf ( " of %s", &scrollname[j][1] );
+                lprintf ("%s", &scrollname[j][1] );
             }
         }
 

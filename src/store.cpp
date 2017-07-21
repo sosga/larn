@@ -397,12 +397,12 @@ dnditem ( int i )
     lprintf ( "%c) ", ( i % MAXDNDSIZE ) + 'a' );
 
     if ( dnd_item[i].obj == OPOTION ) {
-        fl_display_message ( "potion of " );
+        fl_display_message ( "potion " );
         lprintf ( "%s", &potionname[dnd_item[i].arg][1] );
     }
 
     else if ( dnd_item[i].obj == OSCROLL ) {
-        fl_display_message ( "scroll of " );
+        fl_display_message ( "scroll " );
         lprintf ( "%s", &scrollname[dnd_item[i].arg][1] );
     }
 
@@ -939,7 +939,7 @@ otradiven ( void )
                 if ( potionname[ivenarg[i]][0] != 0 ) {
                     tradorder[i] = j++;	/* will display only if identified */
                     lprintf ( "%c) %s", i + 'a', objectname[iven[i]] );
-                    lprintf ( " of%s", potionname[ivenarg[i]] );
+                    lprintf ( "%s", potionname[ivenarg[i]] );
                 }
 
                 break;
@@ -948,7 +948,7 @@ otradiven ( void )
                 if ( scrollname[ivenarg[i]][0] != 0 ) {
                     tradorder[i] = j++;	/* will display only if identified */
                     lprintf ( "%c) %s", i + 'a', objectname[iven[i]] );
-                    lprintf ( " of%s", scrollname[ivenarg[i]] );
+                    lprintf ( "%s", scrollname[ivenarg[i]] );
                 }
 
                 break;
