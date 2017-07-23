@@ -34,12 +34,21 @@ inline const int T_END = 8;
 inline const int CL_DOWN = 14;
 inline const int CURSOR = 15;
 
-inline const char* SCORENAME = "data/scorefile.dat";
-inline const char* LOGFNAME = "data/logfile.log";
-inline const char* PLAYERIDS = "data/playerid.txt";
-inline const char* LEVELSNAME = "data/mazefile.txt";
-inline const char* SAVEFILE = "data/savefile.dat";
-inline const char* CONFIGFILE = "data/flconfig.json";
+#ifdef NIX
+	inline const char* SCORENAME =	"/var/tmp/fl_scorefile";
+	inline const char* LOGFNAME = 	"/var/tmp/fl_logfile";
+	inline const char* PLAYERIDS = 	"/var/tmp/fl_playerid";
+	inline const char* SAVEFILE = 	"/var/tmp/fl_savefile";
+	inline const char* MESSAGELOG = "/var/tmp/fl_messages";
+	inline const char* CONFIGFILE = "fl_config.json";
+#else
+	inline const char* SCORENAME =	"fl_scorefile.txt";
+	inline const char* LOGFNAME = 	"fl_logfile.log";
+	inline const char* PLAYERIDS = 	"fl_playerid.txt";
+	inline const char* SAVEFILE = 	"fl_savefile.dat";
+	inline const char* MESSAGELOG = "fl_messages.log";
+	inline const char* CONFIGFILE = "fl_config.json";
+#endif
 
 /* Destroy object at present location */
 extern int item[MAXX][MAXY];

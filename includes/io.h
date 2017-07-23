@@ -34,5 +34,3 @@ void enter_name ( void );
 
 /* size of the lgetw() and lgetl() buffer */
 inline const int LINBUFSIZE = 128;
-/* The messagelog file. ~Gibbon */
-inline const char* MESSAGELOG = "data/messages.log";

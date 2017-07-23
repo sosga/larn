@@ -3,6 +3,10 @@ July 2017
 1. Using utf8.h to utf8-ify the strings like strcmp etc..
 2. Removed HARDLEVEL and everything about difficulty
 3. More Apache 2.0 files and cleaning of the codebase
+4. Made some changes for file storage (now in /var/tmp)
+	for unix-like systems
+5. Changed name to FreeLarn in preparation for the Apache 2.0 code
+	(it's not done yet though!).
 
 ~Gibbon
 

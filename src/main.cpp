@@ -12,7 +12,6 @@
 #include "../src/terminal/term.hpp"
 #include "lexical/tok.hpp"
 #include "dungeon/dungeon.hpp"
-#include "logging/message_log.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/help.h"
@@ -87,9 +86,9 @@ int main()
         died(-285);     /* malloc() failure */
     }
 
-    utf8ncpy(scorefile,SCORENAME, 50);	/* the larn scoreboard filename */
-    utf8ncpy(logfile,LOGFNAME, 50);	/* larn activity logging filename */
-    utf8ncpy(playerids,PLAYERIDS, 50);	/* the playerid data file name */
+    utf8ncpy(scorefile, SCORENAME, 50);	/* the larn scoreboard filename */
+    utf8ncpy(logfile, LOGFNAME, 50);	/* larn activity logging filename */
+    utf8ncpy(playerids, PLAYERIDS, 50);	/* the playerid data file name */
     utf8ncpy(savefilename, SAVEFILE, 50);
     /*
      *  now make scoreboard if it is not there (don't clear)
@@ -435,7 +434,7 @@ parse(void)
             y_larn_rep = 0;
             nomove = 1;
             cursors();
-            lprintf("\nLarn-Next, Version: %s",VERSION);
+            lprintf("\nFreelarn, Version: %s",VERSION);
 
             if(wizard) {
                 fl_display_message(" Wizard");
@@ -472,12 +471,6 @@ parse(void)
             display_help_text();
             nomove = 1;
             return;	/*give the help screen*/
-
-        case '#':
-            y_larn_rep = 0;
-            display_message_log();
-            nomove = 1;
-            return; /*give the message screen*/
 
         case 'E':		/* Enter a building */
             y_larn_rep = 0;
@@ -531,9 +524,9 @@ parse(void)
             lflush();
             save_mode = 1;
             save.savegame(savefilename);
-            screen_clear();
-            lflush();
-            exit(0);
+            clearvt100();
+            scbr();
+    		exit(EXIT_SUCCESS);
             break;
 
         case 'T':
