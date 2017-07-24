@@ -277,13 +277,13 @@ void
 act_down_shaft ( void )
 {
     if ( level != 0 ) {
-        fl_display_message ( "\nThe hobbit hole only extends 5 feet downward!" );
+        fl_display_message ( "\nThe hole only extends 5 feet downward!" );
         return;
     }
 
     if ( packweight () > 45 + 3 * ( cdesc[STRENGTH] +
                                     cdesc[STREXTRA] ) ) {
-        fl_display_message ( "\nYou slip down the hobbit hole" );
+        fl_display_message ( "\nYou slip down the hole" );
         lastnum = 275;
         losehp ( 30 + TRnd ( 20 ) );
         bottomhp ();
@@ -308,13 +308,13 @@ act_up_shaft ( void )
 {
     if ( level != 11 ) {
         fl_display_message
-        ( "\nThe hobbit hole only extends 8 feet upwards before you find a blockage!" );
+        ( "\nThe hole only extends 8 feet upwards before you find a blockage!" );
         return;
     }
 
     if ( packweight () > 45 + 5 * ( cdesc[STRENGTH] +
                                     cdesc[STREXTRA] ) ) {
-        fl_display_message ( "\nDown the hobbit hole!" );
+        fl_display_message ( "\nDown the hatch!" );
         lastnum = 275;
         losehp ( 15 + TRnd ( 20 ) );
         bottomhp ();
