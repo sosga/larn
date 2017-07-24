@@ -202,8 +202,6 @@ inline const int DEXTERITY = 4;
 inline const int CHARISMA = 5;
 inline const int HPMAX = 6;
 inline const int HP = 7;
-inline const int HUNGER = 100;
-inline const int HUNGERMAX = 101;
 inline const int GOLD = 8;
 inline const int EXPERIENCE = 9;
 inline const int LEVEL = 10;
@@ -274,6 +272,8 @@ inline const int WTW = 75;		/* walk through walls */
 inline const int STREXTRA = 76;		/* character strength due to objects or enchantments */
 inline const int TMP = 77;			/* misc scratch space */
 inline const int LIFEPROT = 78;		/* life protection counter */
+inline const int HUNGER = 79;
+inline const int HUNGERMAX = 80;
 /* nap related */
 inline const int NAPTIME = 1000;
 

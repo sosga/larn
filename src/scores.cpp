@@ -98,7 +98,7 @@ static struct scofmt
 static struct wscofmt
     winr[SCORESIZE];	/* struct for the winning scoreboard */
 
-const char *whydead[30] = {
+const char *whydead[31] = {
     "",
     "",
     "self - annihilated",
@@ -127,6 +127,7 @@ const char *whydead[30] = {
     "killed by an exploding chest",
     "",
     "annihilated in a sphere",
+	"starved to death",
     "",
     ""
 };

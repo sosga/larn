@@ -29,6 +29,10 @@ void FLGame::NewGame(void) {
         *p = 0;
     }
     time(&initialtime);
-    srand(reinterpret_cast<long long>(initialtime));
+#if defined NIX || NIX_LOCAL
+    srand(reinterpret_cast<long>(initialtime));
+#else
+	srand(reinterpret_cast<long long>(initialtime));
+#endif
     lcreat(reinterpret_cast<char *>(0));		/* open buffering for output to terminal */
 }

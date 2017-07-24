@@ -21,10 +21,11 @@
 #include "../../includes/io.h"
 #include "../templates/hunger.t.hpp"
 #include "hunger.hpp"
+#include "../../includes/scores.h"
 
 void FLHunger::HungerLose(void) {
     if (THungerTime(69000)) {
-		cdesc[HUNGER] -= 20;
+		cdesc[HUNGER] -= 100;
 		}
 	if (THungerTime(60000)) {
 		cdesc[HUNGER] -= 20;
@@ -53,5 +54,6 @@ void FLHunger::HungerLose(void) {
     if (cdesc[HUNGER] == 0) {
         cdesc[HP] = 0;
 		fl_display_message("You have died of starvation!");
+		died(-301);
         }
 }
