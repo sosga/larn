@@ -25,11 +25,11 @@
 #include <sys/stat.h>
 #include <time.h>
 
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
 #include <io.h>
 #endif
 
-#ifdef NIX
+#if defined NIX || NIX_LOCAL
 #include <unistd.h>
 #include <fcntl.h>
 #endif
@@ -232,7 +232,7 @@ makeboard ( void )
     	and be done with it. Windows won't even need to set permissions anyway
     	so no need for 'cross platform' here. Sheesh.. ~Gibbon
     */
-#if defined NIX
+#if defined NIX || NIX_LOCAL
     chmod ( scorefile, 0666 );
 #endif
     return ( 0 );

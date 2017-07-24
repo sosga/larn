@@ -1,6 +1,3 @@
-#include <iostream>
-#include <fstream>
-
 /* io.c
 *
 *  setupvt100()    Subroutine to set up terminal in correct mode for game
@@ -8,7 +5,6 @@
 *  ttgetch()       Routine to read in one character from the terminal
 *  scbr()          Function to set cbreak -echo for the terminal
 *  sncbr()         Function to set -cbreak echo for the terminal
-*  newgame()       Subroutine to save the initial time and seed TRnd()
 *
 *  FILE OUTPUT ROUTINES
 *
@@ -54,6 +50,9 @@
 *
 * Note: ** entries are available only in termcap mode.
 */
+
+#include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <cstdio>
 #include <stdarg.h>
@@ -63,15 +62,13 @@
 #include <setjmp.h>
 #include <fcntl.h>		/* For O_BINARY */
 #include <string>
-#include <iostream>
-#include <fstream>
 
 #if defined WINDOWS || WINDOWS_VS
 #include <io.h>
 #include <conio.h>
 #endif
 
-#if defined NIX
+#if defined NIX || NIX_LOCAL
 #include <unistd.h>
 #include <sys/ioctl.h>
 #ifndef FIONREAD
@@ -190,28 +187,6 @@ sncbr ( void )
      */
     getchfn = ansiterm_getche;
 }
-
-
-
-/*
-* newgame()       Subroutine to save the initial time and seed TRnd()
-*/
-void
-newgame ( void )
-{
-    long *p, *pe;
-
-    for ( p = cdesc, pe = cdesc + 100; p < pe; p++ ) {
-        *p = 0;
-    }
-
-    time ( &initialtime );
-    srand ( ( unsigned ) initialtime );
-    lcreat ( ( char * )
-             0 );		/* open buffering for output to terminal */
-}
-
-
 
 /*
 *  lprintf(format,args . . .)      printf to the output buffer
@@ -383,11 +358,11 @@ lgetc ( void )
         return ( 0 );
     }
 
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
 
     if ( ( i = _read ( fd, inbuffer, MAXIBUF ) ) <= 0 )
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
         if ( ( i = read ( fd, inbuffer, MAXIBUF ) ) <= 0 )
 #endif
         {
@@ -403,7 +378,6 @@ lgetc ( void )
     iepoint = i;
     return ( *inbuffer );
 }
-
 
 /*
 *  int larint()            Read one integer from input buffer
@@ -448,11 +422,11 @@ lrfill ( char *adr, int num )
     while ( num ) {
         if ( iepoint == ipoint ) {
             if ( num > 5 ) {	/* fast way */
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
 
                 if ( _read ( fd, adr, num ) != num )
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
                     if ( read ( fd, adr, num ) != num )
 #endif
                         fprintf ( stderr, "error reading from input file\n" );
@@ -585,9 +559,7 @@ lcreat ( char *str )
 
     if ( ( lfd = _creat ( str, _S_IWRITE ) ) < 0 )
 #endif
-#if defined WINDOWS_VS
-        if ( ( lfd = _creat ( str, S_IWRITE ) ) < 0 )
-#endif
+
 #if defined NIX
             if ( ( lfd = open ( str, O_RDWR | O_CREAT, 0666 ) ) < 0 )
 #endif
@@ -598,7 +570,7 @@ lcreat ( char *str )
                 return ( -1 );
             }
 
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
     _setmode ( lfd, O_BINARY );
 #endif
     return lfd;
@@ -622,11 +594,11 @@ lopen ( char *str )
         return ( fd = 0 );
     }
 
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
 
     if ( ( fd = _open ( str, 0 ) ) < 0 )
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
         if ( ( fd = open ( str, 0 ) ) < 0 )
 #endif
         {
@@ -636,7 +608,7 @@ lopen ( char *str )
             return ( -1 );
         }
 
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
     _setmode ( fd, O_BINARY );
 #endif
     return fd;
@@ -661,11 +633,11 @@ lappend ( char *str )
         return ( lfd = 1 );
     }
 
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
 
     if ( ( lfd = _open ( str, 2 ) ) < 0 )
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
         if ( ( lfd = open ( str, 2 ) ) < 0 )
 #endif
         {
@@ -673,11 +645,11 @@ lappend ( char *str )
             return ( -1 );
         }
 
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
     _setmode ( lfd, O_BINARY );
     _lseek ( lfd, 0L, 2 );		/* seek to end of file */
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
     lseek ( lfd, 0L, 2 );		/* seek to end of file */
 #endif
     return lfd;
@@ -692,10 +664,10 @@ void
 lrclose ( void )
 {
     if ( fd > 0 ) {
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
         _close ( fd );
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
         close ( fd );
 #endif
     }
@@ -714,10 +686,10 @@ lwclose ( void )
     lflush();
 
     if ( lfd > 2 ) {
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
         _close ( lfd );
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
         close ( lfd );
 #endif
     }
@@ -915,11 +887,11 @@ lflush ( void )
             flush_buf();
             /* Catch write errors on save files
              */
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
 
             if ( _write ( lfd, lpbuf, lpoint ) != lpoint )
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
                 if ( write ( lfd, lpbuf, lpoint ) != lpoint )
 #endif
                 {

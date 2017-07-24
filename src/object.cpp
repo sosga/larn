@@ -19,6 +19,7 @@
 #include "../includes/scores.h"
 #include "../includes/spells.h"
 #include "../includes/sysdep.h"
+#include "player/hunger.hpp"
 
 using std::cout;
 
@@ -1127,6 +1128,7 @@ static int time_change[] = {
 void
 adjtimel ( int tim )
 {
+	FLHunger FLHunger;
     int j;
 
     for ( j = 0; j < 26;
@@ -1136,7 +1138,8 @@ adjtimel ( int tim )
                 cdesc[time_change[j]] = 1;
             }
 
-    regen ();
+    regen();
+	FLHunger.HungerLose();
 }
 
 

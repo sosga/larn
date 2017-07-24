@@ -3,7 +3,6 @@ void clearvt100 ( void );
 char ttgetch ( void );
 void scbr ( void );
 void sncbr ( void );
-void newgame ( void );
 void lprintf ( const char *, ... );
 void fl_display_message ( const char *, ... );
 void lprint ( int );

@@ -49,8 +49,8 @@ makeplayer(void)
     scbr();
     screen_clear();
     fl_json_config_reader.parse(fl_json_file, fl_json_config_value);
-    /*  start player off with 15 hit points */
     cdesc[HPMAX] = cdesc[HP] = fl_json_config_value["HP"].asUInt();
+    cdesc[HUNGERMAX] = cdesc[HUNGER] = fl_json_config_value["HGR"].asUInt();
     /*  player starts at level one          */
     cdesc[LEVEL] = fl_json_config_value["LEVEL"].asUInt();
     /*  total # spells starts off as 3  */

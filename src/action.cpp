@@ -221,11 +221,18 @@ act_drink_fountain ( void )
         item[playerx][playery] = ODEADFOUNTAIN;	/* dead fountain */
         know[playerx][playery] = 0;
     }
-
+	
+	if (TRnd(10) < (6)) {
+		if (cdesc[HUNGER] < 100) {
+			fl_display_message("\nThe refreshing water makes you a little less hungry");
+			cdesc[HUNGER] += 5;
+		} else {
+			fl_display_message("\nThe refreshing water gives you strength!");
+			cdesc[STRENGTH] += 1;
+		}
+	}
     return;
 }
-
-
 
 /*
 Code to perform the action of washing at a fountain.  Assumes that

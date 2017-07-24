@@ -17,7 +17,7 @@
 yylex()
 sethard()
 */
-#if defined NIX
+#if defined NIX || NIX_LOCAL
 #include <fcntl.h>
 #endif
 

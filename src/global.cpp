@@ -191,8 +191,6 @@ losemhp ( int x )
     }
 }
 
-
-
 /*
 *  raisehp(x)
 *  raisemhp(x)

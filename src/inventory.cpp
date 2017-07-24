@@ -141,15 +141,19 @@ fl_display_inventory(int index, char select_allowed)
         lprc('\n');
         CLEAR_EOL();
         lprintf("%c) %s", index + 'a', objectname[iven[index]]);
-        if (iven[index] == OPOTION && potionname[ivenarg[index]]) lprintf("%s", potionname[ivenarg[index]]);
-        else if (iven[index] == OSCROLL && scrollname[ivenarg[index]]) lprintf("%s", scrollname[ivenarg[index]]);
+        if (iven[index] == OPOTION && potionname[ivenarg[index]])
+			lprintf("%s", potionname[ivenarg[index]]);
+        else if (iven[index] == OSCROLL && scrollname[ivenarg[index]])
+			lprintf("%s", scrollname[ivenarg[index]]);
         break;
     default:
         lprc('\n');
         CLEAR_EOL();
         lprintf("%c) %s", index + 'a', objectname[iven[index]]);
-        if (ivenarg[index] > 0) lprintf(" +%d", ivenarg[index]);
-        else if (ivenarg[index] < 0) lprintf( " %d", ivenarg[index]);
+        if (ivenarg[index] > 0)
+			lprintf(" +%d", ivenarg[index]);
+        else if (ivenarg[index] < 0)
+			lprintf( " %d", ivenarg[index]);
         break;
     }
     if (cdesc[WIELD] == index)
@@ -164,7 +168,6 @@ fl_display_inventory(int index, char select_allowed)
     return itemselect;
 }
 
-
 /*
 * function to put something in the players inventory
 * returns 0 if success, 1 if a failure
@@ -178,80 +181,63 @@ take ( int itm, int arg )
     if ( ( limit = 15 + ( cdesc[LEVEL] >> 1 ) ) > MAXINVEN ) {
         limit = MAXINVEN;
     }
-
     for ( i = 0; i < limit; i++ )
         if ( iven[i] == 0 ) {
             iven[i] = itm;
             ivenarg[i] = arg;
             limit = 0;
-
             switch ( itm ) {
             case OPROTRING:
             case ODAMRING:
             case OBELT:
                 limit = 1;
                 break;
-
             case ODEXRING:
                 cdesc[DEXTERITY] += ivenarg[i] + 1;
                 limit = 1;
                 break;
-
             case OSTRRING:
                 cdesc[STREXTRA] += ivenarg[i] + 1;
                 limit = 1;
                 break;
-
             case OCLEVERRING:
                 cdesc[INTELLIGENCE] += ivenarg[i] + 1;
                 limit = 1;
                 break;
-
             case OHAMMER:
                 cdesc[DEXTERITY] += 10;
                 cdesc[STREXTRA] += 10;
                 cdesc[INTELLIGENCE] -= 10;
                 limit = 1;
                 break;
-
             case OORBOFDRAGON:
                 cdesc[SLAYING]++;
                 break;
-
             case OSPIRITSCARAB:
                 cdesc[NEGATESPIRIT]++;
                 break;
-
             case OCUBEofUNDEAD:
                 cdesc[CUBEofUNDEAD]++;
                 break;
-
             case ONOTHEFT:
                 cdesc[NOTHEFT]++;
                 break;
-
             case OSWORDofSLASHING:
                 cdesc[DEXTERITY] += 5;
                 limit = 1;
                 break;
             };
-
             fl_display_message ( "\nYou pick up:" );
-
             fl_display_inventory ( i,0);
-
-            if ( limit ) {
+            
+			if ( limit ) {
                 bottomline ();
             }
-
             return ( 0 );
         }
-
     fl_display_message ( "\nYou can't carry anything else" );
     return ( 1 );
 }
-
-
 
 /*
 * subroutine to drop an object  returns 1 if something there already else 0
@@ -264,7 +250,6 @@ drop_object ( int k )
     if ( ( k < 0 ) || ( k >= MAXINVEN ) ) {
         return ( 0 );
     }
-
     itm = iven[k];
     cursors ();
 
@@ -272,37 +257,31 @@ drop_object ( int k )
         lprintf ( "\nYou don't have item %c! ", k + 'a' );
         return ( 1 );
     }
-
     if ( item[playerx][playery] ) {
         lprintf ( "\nThere's something here already: %s",
                   objectname[item[playerx][playery]] );
         dropflag = 1;
         return ( 1 );
     }
-
     if ( playery == MAXY - 1 && playerx == 33 ) {
         return ( 1 );  /* not in entrance */
     }
-
     item[playerx][playery] = itm;
     iarg[playerx][playery] = ivenarg[k];
     fl_display_message ( "\n  You drop:" );
     fl_display_inventory ( k,0);			/* show what item you dropped */
     know[playerx][playery] = 0;
     iven[k] = 0;
-
+	
     if ( cdesc[WIELD] == k ) {
         cdesc[WIELD] = -1;
     }
-
     if ( cdesc[WEAR] == k ) {
         cdesc[WEAR] = -1;
     }
-
     if ( cdesc[SHIELD] == k ) {
         cdesc[SHIELD] = -1;
     }
-
     adjustcvalues ( itm, ivenarg[k] );
     dropflag =
         1;			/* say dropped an item so wont ask to pick it up right away */

@@ -489,10 +489,10 @@ hitplayer ( int x, int y )
         if ( ( ( dam + bias + 8 ) > cdesc[AC] )
                 || ( TRnd ( ( int ) ( ( cdesc[AC] > 0 ) ? cdesc[AC] : 1 ) ) == 1 ) ) {
             if ( spattack ( monster[mster].attack, x, y ) ) {
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
                 lflushall();
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
                 fflush ( NULL );
 #endif
                 return;
@@ -517,10 +517,10 @@ hitplayer ( int x, int y )
         if ( dam > 0 ) {
             losehp ( dam );
             bottomhp ();
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
             lflushall();
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
             fflush ( NULL );
 #endif
         }

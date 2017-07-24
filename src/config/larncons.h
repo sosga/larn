@@ -34,19 +34,21 @@ inline const int T_END = 8;
 inline const int CL_DOWN = 14;
 inline const int CURSOR = 15;
 
-#ifdef NIX
+#if defined NIX
 	inline const char* SCORENAME =	"/var/tmp/fl_scorefile";
 	inline const char* LOGFNAME = 	"/var/tmp/fl_logfile";
 	inline const char* PLAYERIDS = 	"/var/tmp/fl_playerid";
 	inline const char* SAVEFILE = 	"/var/tmp/fl_savefile";
 	inline const char* MESSAGELOG = "/var/tmp/fl_messages";
-	inline const char* CONFIGFILE = "fl_config.json";
-#else
-	inline const char* SCORENAME =	"fl_scorefile.txt";
-	inline const char* LOGFNAME = 	"fl_logfile.log";
-	inline const char* PLAYERIDS = 	"fl_playerid.txt";
-	inline const char* SAVEFILE = 	"fl_savefile.dat";
-	inline const char* MESSAGELOG = "fl_messages.log";
+	inline const char* CONFIGFILE = "/usr/share/freelarn/fl_config.json";
+#endif
+
+#if defined WINDOWS || NIX_LOCAL
+	inline const char* SCORENAME =	"fl_scorefile";
+	inline const char* LOGFNAME = 	"fl_logfile";
+	inline const char* PLAYERIDS = 	"fl_playerid";
+	inline const char* SAVEFILE = 	"fl_savefile";
+	inline const char* MESSAGELOG = "fl_messages";
 	inline const char* CONFIGFILE = "fl_config.json";
 #endif
 
@@ -200,6 +202,8 @@ inline const int DEXTERITY = 4;
 inline const int CHARISMA = 5;
 inline const int HPMAX = 6;
 inline const int HP = 7;
+inline const int HUNGER = 100;
+inline const int HUNGERMAX = 101;
 inline const int GOLD = 8;
 inline const int EXPERIENCE = 9;
 inline const int LEVEL = 10;

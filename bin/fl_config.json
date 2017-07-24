@@ -1,5 +1,6 @@
 {
     "HP":25,
+	"HGR":100,
     "LEVEL":1,
     "SPELLS":3,
     "REGENCOUNTER":16,

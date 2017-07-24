@@ -16,20 +16,20 @@
 #include "../includes/io.h"
 #include "../includes/sysdep.h"
 
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
 #include <windows.h>
 #endif
 
-#if defined NIX
+#if defined NIX || NIX_LOCAL
 #include <time.h>
 #endif
 
 void nap (int milliseconds)
 {
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
     Sleep ( milliseconds );
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
     struct timespec tc;
     tc.tv_sec = milliseconds / 1000;
     tc.tv_nsec = ( milliseconds % 1000 ) * 1000000;

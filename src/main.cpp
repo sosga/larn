@@ -27,6 +27,8 @@
 #include "../includes/spheres.h"
 #include "save/save.hpp"
 #include "strings/utf8.h"
+#include "player/hunger.hpp"
+#include "newgame.hpp"
 
 using std::cout;
 
@@ -65,6 +67,10 @@ int main()
 {
     FILE *pFile;
     Load load;
+	
+	//Classes
+	FLHunger FLHunger;
+	FLGame FLGame;
     
     /*
      *  first task is to identify the player
@@ -115,7 +121,7 @@ int main()
     }
 
     lcreat((char *) 0);
-    newgame();			/*  set the initial clock  */
+    FLGame.NewGame();			/*  set the initial clock  */
 
     pFile = fopen(savefilename, "r");
     if(pFile != 0) {	/* restore game if need to */
@@ -200,11 +206,11 @@ int main()
         }
 
         if(hit3flag)
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
             lflushall();
 
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
         fflush(NULL);
 #endif
         hitflag = hit3flag = 0;
@@ -215,11 +221,11 @@ int main()
 
         while(nomove) {
             if(hit3flag)
-#if defined WINDOWS || WINDOWS_VS
+#if defined WINDOWS
                 lflushall();
 
 #endif
-#if defined NIX
+#if defined NIX || NIX_LOCAL
             fflush(NULL);
 #endif
             nomove = 0;
@@ -227,6 +233,7 @@ int main()
         }
 
         regen();			/*  regenerate hp and spells            */
+		FLHunger.HungerLose();
 
         if(cdesc[TIMESTOP] == 0)
             if(--rmst <= 0) {
@@ -360,6 +367,7 @@ parse(void)
             if(cdesc[TIMESTOP] == 0)
                 if(!floor_consume(OCOOKIE, "eat")) {
                     consume(OCOOKIE, "eat");
+					cdesc[HUNGER] += 10;
                 }
 
             return;
@@ -735,6 +743,7 @@ parse(void)
 void
 parse2(void)
 {
+	FLHunger FLHunger;
     /* move the monsters */
     if(cdesc[HASTEMONST]) {
         movemonst();
@@ -743,6 +752,7 @@ parse2(void)
     movemonst();
     randmonst();
     regen();
+	FLHunger.HungerLose();
 }
 
 
@@ -750,6 +760,7 @@ parse2(void)
 static void
 run(int dir)
 {
+	FLHunger FLHunger;
     int i;
     i = 1;
 
@@ -764,6 +775,7 @@ run(int dir)
             movemonst();
             randmonst();
             regen();
+			FLHunger.HungerLose();
         }
 
         if(hitflag) {
