@@ -157,7 +157,7 @@ bot_linex(void)
         lprintf("%-3d", (int) cdesc[WCLASS]);
 		cursor(69, 11);
 		lprintf("HGR:");
-        cursor(72, 11);
+        cursor(73, 11);
         lprintf("%3d/%3d",cdesc[HUNGER],cdesc[HUNGERMAX]);
         cursor(24, 18);
         lprintf("Cave Level:");
@@ -205,7 +205,7 @@ bot_linex(void)
     botsub(HP, 69, 1, "%3d");
     botsub(HPMAX, 69, 1, "%3d");
 	botsub(HUNGER, 69, 11, "%3d");
-    botsub(HUNGERMAX, 72, 11, "%3d");
+    botsub(HUNGERMAX, 73, 11, "%3d");
     botsub(AC, 73, 8, "%-3d");
     botsub(WCLASS, 73, 9, "%-3d");
     botsub(EXPERIENCE, 28, 19, "%-9d");

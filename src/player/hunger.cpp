@@ -25,7 +25,7 @@
 
 void FLHunger::HungerLose(void) {
     if (THungerTime(69000)) {
-		cdesc[HUNGER] -= 100;
+		cdesc[HUNGER] -= 20;
 		}
 	if (THungerTime(60000)) {
 		cdesc[HUNGER] -= 20;
@@ -54,6 +54,6 @@ void FLHunger::HungerLose(void) {
     if (cdesc[HUNGER] == 0) {
         cdesc[HP] = 0;
 		fl_display_message("You have died of starvation!");
-		died(-301);
+		died(-300); //it's not right but I'll fix it :)
         }
 }
