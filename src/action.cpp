@@ -50,8 +50,8 @@ act_open_door           open a door
 #include "../includes/monster.h"
 #include "../includes/moreobj.h"
 #include "../includes/object.h"
-#include "../includes/scores.h"
-#include "../includes/sysdep.h"
+#include "core/scores.hpp"
+#include "core/sysdep.hpp"
 
 using std::cout;
 

@@ -14,12 +14,12 @@
 */
 
 #include <curses.h>
-#include "../includes/bill.h"
-#include "config/larncons.h"
-#include "config/data.h"
-#include "templates/math.t.hpp"
-#include "../includes/help.h"
-#include "../includes/io.h"
+#include "bill.hpp"
+#include "help.hpp"
+#include "../config/larncons.h"
+#include "../config/data.h"
+#include "../templates/math.t.hpp"
+#include "../../includes/io.h"
 
 static int junk_mail1(int);
 static int junk_mail2(void);

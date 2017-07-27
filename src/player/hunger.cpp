@@ -21,7 +21,7 @@
 #include "../../includes/io.h"
 #include "../templates/hunger.t.hpp"
 #include "hunger.hpp"
-#include "../../includes/scores.h"
+#include "../core/scores.hpp"
 
 void FLHunger::HungerLose(void) {
     if (THungerTime(69000)) {

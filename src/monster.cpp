@@ -53,11 +53,11 @@
 #include <stdio.h>
 #include "../includes/display.h"
 #include "../includes/global.h"
-#include "../includes/inventory.h"
+#include "core/inventory.hpp"
 #include "../includes/io.h"
 #include "../includes/monster.h"
 #include "../includes/spells.h"
-#include "../includes/sysdep.h"
+#include "core/sysdep.hpp"
 
 static int cgood ( int, int, int, int );
 

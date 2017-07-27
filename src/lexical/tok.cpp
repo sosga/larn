@@ -33,7 +33,7 @@ sethard()
 #include "tok.hpp"
 #include "../../includes/display.h"
 #include "../../includes/io.h"
-#include "../../includes/scores.h"
+#include "../core/scores.hpp"
 
 static char larn_final_k = 0;
 int y_larn_rep = 0;

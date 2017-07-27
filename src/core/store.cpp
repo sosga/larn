@@ -23,18 +23,18 @@ cnsitm
 olrs          larn revenue service function
 */
 
-#include "config/larncons.h"
-#include "config/data.h"
-#include "templates/math.t.hpp"
-#include "../includes/display.h"
-#include "../includes/global.h"
-#include "../includes/inventory.h"
-#include "../includes/io.h"
-#include "../includes/main.h"
-#include "../includes/object.h"
-#include "../includes/scores.h"
-#include "../includes/store.h"
-#include "../includes/sysdep.h"
+#include "../config/larncons.h"
+#include "../config/data.h"
+#include "../templates/math.t.hpp"
+#include "../../includes/display.h"
+#include "../../includes/global.h"
+#include "inventory.hpp"
+#include "../../includes/io.h"
+#include "../../includes/main.h"
+#include "../../includes/object.h"
+#include "scores.hpp"
+#include "store.hpp"
+#include "sysdep.hpp"
 #include <curses.h>
 
 static void dnd_2hed ( void );
@@ -52,26 +52,6 @@ static void cleartradiven ( int );
 static void cnsitm ( void );
 
 static int dndcount = 0, dnditm = 0;
-
-/* new function for displaying gold in inventory inside trading posts.
- * part of feature request by hymie0. ~Gibbon */
-static int
-amtgoldtrad ( void )
-{
-    lprintf ( "You have" );
-    lprintf ( " %-6d ",cdesc[GOLD] );
-    lprintf ( "gold pieces." );
-    return ( 0 );
-}
-/*Fix for bug #23 ~Gibbon*/
-static int
-lrs_welcome_text ( void )
-{
-    screen_clear();
-    enable_scroll = 0;
-    lprintf ( "Welcome to the Larn Revenue Service\n" );
-    return ( 0 );
-}
 
 /*  this is the data for the stuff in the dnd store */
 struct _itm dnd_item[90] = {
@@ -206,11 +186,8 @@ function for the dnd store
 static void
 dnd_2hed ( void )
 {
-    fl_display_message
-    ( "Welcome to the Larn Thrift Shoppe.  We stock many items explorers find useful\n" );
-    fl_display_message
-    ( " in their adventures.  Feel free to browse to your hearts content.\n" );
-    fl_display_message ( "Also be advised, if you break 'em, you pay for 'em." );
+    fl_display_message("Welcome to the Larn Thrift Shoppe. We stock many items explorers find useful\n");
+    fl_display_message("in their adventures. Feel free to browse to your hearts content.\n");
 }
 
 
@@ -1014,6 +991,7 @@ otradepost ( void )
     dnditm = dndcount = 0;
     otradhead ();
     otradiven ();
+    FLStore Store;
 
     for ( ;; ) {
         cursor ( 1, 23 );
@@ -1022,7 +1000,7 @@ otradepost ( void )
         fl_display_message ( "] ? " );
         /* display gold in inventory ~Gibbon */
         cursor ( 1, 22 );
-        amtgoldtrad();
+        Store.AmountGoldTrad();
         i = 0;
 
         while ( ( i > 'z' || i < 'a' ) && i != MAXINVEN && i != '\33' ) {
@@ -1179,7 +1157,8 @@ olrs ( void )
 {
     int i, first;
     int amt;
-    lrs_welcome_text();
+    FLStore Store;
+    Store.LRSWelcomeText();
     /* disable signals */
     first = 1;
 
@@ -1216,7 +1195,7 @@ olrs ( void )
             else {
                 /*Fix for bug #23 ~Gibbon*/
                 cdesc[GOLD] -= paytaxes (amt);
-                lrs_welcome_text();
+                Store.LRSWelcomeText();
             }
 
             break;
@@ -1241,7 +1220,7 @@ nxt:
         cursor ( 1, 19 );
 
         if ( cdesc[GOLD] > 0 ) {
-            amtgoldtrad();
+            Store.AmountGoldTrad();
         }
 
         else {

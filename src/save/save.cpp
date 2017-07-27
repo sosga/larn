@@ -19,9 +19,9 @@
 #include "../templates/math.t.hpp"
 #include "../../includes/global.h"
 #include "../../includes/io.h"
-#include "../../includes/scores.h"
-#include "../../includes/store.h"
-#include "../../includes/sysdep.h"
+#include "../core/scores.hpp"
+#include "../core/store.hpp"
+#include "../core/sysdep.hpp"
 #include "../dungeon/dungeon.hpp"
 #include "save.hpp"
 /*

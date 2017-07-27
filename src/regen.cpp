@@ -20,7 +20,7 @@
 #include "templates/math.t.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
-#include "../includes/inventory.h"
+#include "core/inventory.hpp"
 #include "../includes/io.h"
 #include "../includes/regen.h"
 

@@ -11,12 +11,12 @@
 #include "templates/math.t.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
-#include "../includes/help.h"
+#include "core/help.hpp"
 #include "../includes/io.h"
 #include "../includes/monster.h"
-#include "../includes/scores.h"
+#include "core/scores.hpp"
 #include "../includes/spheres.h"
-#include "../includes/sysdep.h"
+#include "core/sysdep.hpp"
 
 static void sphboom ( int x, int y );
 
@@ -37,8 +37,7 @@ newsphere ( int x, int y, int dir, int life )
     int m;
     struct sphere *sp;
 
-    if ( ( ( sp = ( struct sphere * ) operator new ( sizeof (
-                      struct sphere ) ) ) ) == 0 ) {
+    if (((sp = (struct sphere *)operator new(sizeof(struct sphere)))) == 0) {
         return ( cdesc[SPHCAST] );  /* can't malloc, therefore failure */
     }
 
@@ -134,8 +133,6 @@ boom:
 
     return ( ++cdesc[SPHCAST] );	/* one more sphere in the world */
 }
-
-
 
 
 /*

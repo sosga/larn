@@ -17,14 +17,14 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
-#include "config/larncons.h"
-#include "config/data.h"
-#include "templates/math.t.hpp"
-#include "terminal/term.hpp"
-#include "../includes/display.h"
-#include "../includes/help.h"
-#include "../includes/io.h"
-#include "../includes/sysdep.h"
+#include "../config/larncons.h"
+#include "../config/data.h"
+#include "../templates/math.t.hpp"
+#include "../terminal/term.hpp"
+#include "../../includes/display.h"
+#include "../../includes/io.h"
+#include "help.hpp"
+#include "sysdep.hpp"
 
 /* I coded a nice line-reader for this.  Unfortunately it's very hard to get a good
  *  cursor and text position when reading a file from inside a curses program.

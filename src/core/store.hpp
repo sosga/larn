@@ -1,3 +1,10 @@
+class FLStore
+{
+public:
+	int AmountGoldTrad(void);
+	int LRSWelcomeText(void);
+};
+
 void dndstore(void);
 void oschool(void);
 void obank(void);

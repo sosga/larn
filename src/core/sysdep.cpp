@@ -13,8 +13,8 @@
    limitations under the License.
 */
 
-#include "../includes/io.h"
-#include "../includes/sysdep.h"
+#include "../../includes/io.h"
+#include "sysdep.hpp"
 
 #if defined WINDOWS
 #include <windows.h>
@@ -24,15 +24,14 @@
 #include <time.h>
 #endif
 
-void nap (int milliseconds)
-{
+void nap (int milliseconds) {
 #if defined WINDOWS
-    Sleep ( milliseconds );
+  Sleep (milliseconds);
 #endif
 #if defined NIX || NIX_LOCAL
-    struct timespec tc;
-    tc.tv_sec = milliseconds / 1000;
-    tc.tv_nsec = ( milliseconds % 1000 ) * 1000000;
-    nanosleep ( &tc, NULL );
+  struct timespec tc;
+  tc.tv_sec = milliseconds / 1000;
+  tc.tv_nsec = (milliseconds % 1000) * 1000000;
+  nanosleep (&tc, NULL);
 #endif
 }

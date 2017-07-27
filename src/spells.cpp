@@ -32,10 +32,10 @@ genmonst()         Function to ask for monster and genocide from game
 #include "../includes/main.h"
 #include "../includes/monster.h"
 #include "../includes/object.h"
-#include "../includes/scores.h"
+#include "core/scores.hpp"
 #include "../includes/spells.h"
 #include "../includes/spheres.h"
-#include "../includes/sysdep.h"
+#include "core/sysdep.hpp"
 
 using std::cout;
 

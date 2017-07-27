@@ -41,11 +41,11 @@
 #include "templates/math.t.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
-#include "../includes/inventory.h"
+#include "core/inventory.hpp"
 #include "../includes/io.h"
 #include "../includes/monster.h"
-#include "../includes/scores.h"
-#include "../includes/sysdep.h"
+#include "core/scores.hpp"
+#include "core/sysdep.hpp"
 #include "strings/utf8.h"
 
 /*

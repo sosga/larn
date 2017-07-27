@@ -34,16 +34,16 @@
 #include <fcntl.h>
 #endif
 
-#include "../includes/bill.h"
-#include "config/larncons.h"
-#include "config/data.h"
-#include "templates/math.t.hpp"
-#include "terminal/term.hpp"
-#include "../includes/inventory.h"
-#include "../includes/scores.h"
-#include "../includes/sysdep.h"
-#include "../includes/io.h"
-#include "strings/utf8.h"
+#include "bill.hpp"
+#include "../config/larncons.h"
+#include "../config/data.h"
+#include "../templates/math.t.hpp"
+#include "../terminal/term.hpp"
+#include "inventory.hpp"
+#include "scores.hpp"
+#include "sysdep.hpp"
+#include "../../includes/io.h"
+#include "../strings/utf8.h"
 
 using std::cout;
 

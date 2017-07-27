@@ -26,7 +26,7 @@
 #include "../../includes/global.h"
 #include "../../includes/io.h"
 #include "../../includes/monster.h"
-#include "../../includes/scores.h"
+#include "../core/scores.hpp"
 #include "../save/save.hpp"
 #include "dungeon.hpp"
 

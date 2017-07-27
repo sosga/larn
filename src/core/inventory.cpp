@@ -13,13 +13,13 @@
    limitations under the License.
 */
 
-#include "config/larncons.h"
-#include "config/data.h"
-#include "templates/math.t.hpp"
-#include "../includes/display.h"
-#include "../includes/global.h"
-#include "../includes/inventory.h"
-#include "../includes/io.h"
+#include "../config/larncons.h"
+#include "../config/data.h"
+#include "../templates/math.t.hpp"
+#include "../../includes/display.h"
+#include "../../includes/global.h"
+#include "inventory.hpp"
+#include "../../includes/io.h"
 #include <curses.h>
 
 static void fl_clear_for_inventory(void);

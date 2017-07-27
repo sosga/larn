@@ -15,24 +15,25 @@
 #include <cstdlib>
 #include <time.h>
 #include "newgame.hpp"
-#include "../includes/io.h"
-#include "config/larncons.h"
-#include "config/data.h"
+#include "../../includes/io.h"
+#include "../config/larncons.h"
+#include "../config/data.h"
 
 /*
 * Subroutine to save the initial time and seed TRnd()
 */
 void FLGame::NewGame(void) {
 
-    long *p, *pe;
-    for ( p = cdesc, pe = cdesc + 100; p < pe; p++ ) {
-        *p = 0;
-    }
-    time(&initialtime);
+  long *p, *pe;
+  for (p = cdesc, pe = cdesc + 100; p < pe; p++) {
+    *p = 0;
+  }
+  time(&initialtime);
 #if defined NIX || NIX_LOCAL
-    srand(reinterpret_cast<long>(initialtime));
+  srand(reinterpret_cast<long>(initialtime));
 #else
-	srand(reinterpret_cast<long long>(initialtime));
+  srand(reinterpret_cast<long long>(initialtime));
 #endif
-    lcreat(reinterpret_cast<char *>(0));		/* open buffering for output to terminal */
+//buffering for output
+  lcreat(reinterpret_cast<char *>(0));
 }

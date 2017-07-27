@@ -30,12 +30,12 @@ pray_at_altar()
 #include "dungeon/dungeon.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
-#include "../includes/inventory.h"
+#include "core/inventory.hpp"
 #include "../includes/io.h"
 #include "../includes/moreobj.h"
 #include "../includes/object.h"
 #include "../includes/spells.h"
-#include "../includes/store.h"
+#include "core/store.hpp"
 
 static void fch ( int, long * );
 static void specify_obj_nocurs ( void );
