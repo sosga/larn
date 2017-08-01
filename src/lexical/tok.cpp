@@ -77,7 +77,7 @@ yylex(void)
             /* show count to player for feedback
              */
             if (y_larn_rep >= 10) {
-                cursors();
+                cursor(1,24);
                 if (first_time) {
                     fl_display_message ("\n");
                 }

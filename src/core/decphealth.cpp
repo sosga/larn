@@ -12,10 +12,19 @@
    limitations under the License.
 */
 
-#include <cstdlib>
+#include "funcs.hpp"
+#include "sysdep.hpp"
+#include "scores.hpp"
+#include "../templates/math.t.hpp"
+#include "../config/larncons.h"
+#include "../config/data.h"
+#include "../../includes/display.h"
+#include "../../includes/io.h"
 
-template<typename T>
-inline T THungerTime(const T& x)
-{
-  return(TIMELIMIT() - gtime == x);
+void FLCoreFuncs::DecreasePHealth(int x) {
+	if ((cdesc[FL_HP] -= x) <= 0) {
+        fl_display_message("\nYou have died!");
+        nap(NAPTIME);
+        died(lastnum);
+    }
 }

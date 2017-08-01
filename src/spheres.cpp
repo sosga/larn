@@ -1,7 +1,7 @@
 /*
-  newsphere(x,y,dir,lifetime)  Function to create a new sphere of annihilation
-  rmsphere(x,y)      Function to delete a sphere of annihilation from list
-  sphboom(x,y)       Function to perform the effects of a sphere detonation
+  newsphere(x,y,sphere_direction,sphere_duration)  Function to create a new sphere of annihilation
+  fl_remove_sphere_of_annihilation(x,y)      Function to delete a sphere of annihilation from list
+  fl_effect_of_sphere_detonation(x,y)       Function to perform the effects of a sphere detonation
   movsphere()        Function to look for and move spheres of annihilation
 */
 #include <curses.h>
@@ -18,21 +18,21 @@
 #include "../includes/spheres.h"
 #include "core/sysdep.hpp"
 
-static void sphboom ( int x, int y );
+static void fl_effect_of_sphere_detonation ( int x, int y );
 
 
 
 /*
- *  newsphere(x,y,dir,lifetime)  Function to create a new sphere of annihilation
- *      int x,y,dir,lifetime;
+ *  newsphere(x,y,sphere_direction,sphere_duration)  Function to create a new sphere of annihilation
+ *      int x,y,sphere_direction,sphere_duration;
  *
  *  Enter with the coordinates of the sphere in x,y
- *    the direction (0-8 diroffx format) in dir, and the lifespan of the
- *    sphere in lifetime (in turns)
+ *    the direction (0-8 diroffx format) in sphere_direction, and the lifespan of the
+ *    sphere in sphere_duration (in turns)
  *  Returns the number of spheres currently in existence
  */
 int
-newsphere ( int x, int y, int dir, int life )
+newsphere ( int x, int y, int sphere_direction, int life )
 {
     int m;
     struct sphere *sp;
@@ -41,8 +41,8 @@ newsphere ( int x, int y, int dir, int life )
         return ( cdesc[SPHCAST] );  /* can't malloc, therefore failure */
     }
 
-    if ( dir >= 9 ) {
-        dir = 0;  /* no movement if direction not found */
+    if ( sphere_direction >= 9 ) {
+        sphere_direction = 0;  /* no movement if direction not found */
     }
 
     if ( level == 0 ) {
@@ -67,59 +67,57 @@ newsphere ( int x, int y, int dir, int life )
         }
     }
 
-    if ( ( m = mitem[x][y] ) >= DEMONLORD +
+    if ( ( m = monster_identification[x][y] ) >= DEMONLORD +
             4 ) {	/* demons dispel spheres */
-        show1cell ( x, y );		/* show the demon (ha ha) */
-        cursors ();
+        fl_show_designated_cell_only ( x, y );		/* show the demon (ha ha) */
+        cursor(1,24);
         lprintf ( "\nThe %s dispels the sphere!", monster[m].name );
-        rmsphere ( x, y );		/* remove any spheres that are here */
+        fl_remove_sphere_of_annihilation ( x, y );		/* remove any spheres that are here */
         return ( cdesc[SPHCAST] );
     }
 
     if ( m == DISENCHANTRESS ) {	/* disenchantress cancels spheres */
-        cursors ();
+        cursor(1,24);
         lprintf ( "\nThe %s causes cancellation of the sphere!",
                   monster[m].name );
 boom:
-        sphboom ( x, y );	/* blow up stuff around sphere */
-        rmsphere ( x, y );		/* remove any spheres that are here */
+        fl_effect_of_sphere_detonation ( x, y );	/* blow up stuff around sphere */
+        fl_remove_sphere_of_annihilation ( x, y );		/* remove any spheres that are here */
         return ( cdesc[SPHCAST] );
     }
 
-    if ( cdesc[CANCELLATION] ) {	/* cancellation cancels spheres */
-        cursors ();
+    if ( cdesc[FL_CANCELLATION] ) {	/* cancellation cancels spheres */
+        cursor(1,24);
         fl_display_message
         ( "\nAs the cancellation takes effect, you hear a great earth shaking blast!" );
         goto boom;
     }
 
-    if ( item[x][y] ==
-            OANNIHILATION ) {	/* collision of spheres detonates spheres */
-        cursors ();
+    if ( object_identification[x][y] == FL_OBJECT_SPHERE_OF_ANNIHILATION) {	/* collision of spheres detonates spheres */
+        cursor(1,24);
         fl_display_message
         ( "\nTwo spheres of annihilation collide! You hear a great earth shaking blast!" );
-        rmsphere ( x, y );
+        fl_remove_sphere_of_annihilation ( x, y );
         goto boom;
     }
 
-    if ( playerx == x
-            && playery == y ) {	/* collision of sphere and player! */
-        cursors ();
+    if ( playerx == x && playery == y ) {	/* collision of sphere and player! */
+        cursor(1,24);
         fl_display_message ( "\nYou have been enveloped by the zone of nothingness!\n" );
-        rmsphere ( x, y );		/* remove any spheres that are here */
+        fl_remove_sphere_of_annihilation ( x, y );		/* remove any spheres that are here */
         nap ( NAPTIME );
         died ( 258 );
     }
 
-    item[x][y] = OANNIHILATION;
-    mitem[x][y] = 0;
-    know[x][y] = 1;
-    show1cell ( x, y );		/* show the new sphere */
+    object_identification[x][y] = FL_OBJECT_SPHERE_OF_ANNIHILATION;
+    monster_identification[x][y] = 0;
+    been_here_before[x][y] = 1;
+    fl_show_designated_cell_only ( x, y );		/* show the new sphere */
     sp->x = x;
     sp->y = y;
     sp->lev = level;
-    sp->dir = dir;
-    sp->lifetime = life;
+    sp->sphere_direction = sphere_direction;
+    sp->sphere_duration = life;
     sp->p = 0;
 
     if ( spheres == 0 ) {
@@ -136,14 +134,14 @@ boom:
 
 
 /*
- *  rmsphere(x,y)       Function to delete a sphere of annihilation from list
+ *  fl_remove_sphere_of_annihilation(x,y)       Function to delete a sphere of annihilation from list
  *      int x,y;
  *
  *  Enter with the coordinates of the sphere (on current level)
  *  Returns the number of spheres currently in existence
  */
 int
-rmsphere ( int x, int y )
+fl_remove_sphere_of_annihilation ( int x, int y )
 {
     struct sphere *sp, *sp2 = 0;
 
@@ -151,9 +149,9 @@ rmsphere ( int x, int y )
         if ( level == sp->lev )	/* is sphere on this level? */
             if ( ( x == sp->x )
                     && ( y == sp->y ) ) {	/* locate sphere at this location */
-                item[x][y] = mitem[x][y] = 0;
-                know[x][y] = 1;
-                show1cell ( x, y );	/* show the now missing sphere */
+                object_identification[x][y] = monster_identification[x][y] = 0;
+                been_here_before[x][y] = 1;
+                fl_show_designated_cell_only ( x, y );	/* show the now missing sphere */
                 --cdesc[SPHCAST];
 
                 if ( sp == spheres ) {
@@ -177,31 +175,31 @@ rmsphere ( int x, int y )
 
 
 /*
- *  sphboom(x,y)    Function to perform the effects of a sphere detonation
+ *  fl_effect_of_sphere_detonation(x,y)    Function to perform the effects of a sphere detonation
  *      int x,y;
  *
  *  Enter with the coordinates of the blast, Returns no value
  */
 static void
-sphboom ( int x, int y )
+fl_effect_of_sphere_detonation ( int x, int y )
 {
     int i, j;
 
-    if ( cdesc[HOLDMONST] ) {
-        cdesc[HOLDMONST] = 1;
+    if ( cdesc[FL_HOLDMONST] ) {
+        cdesc[FL_HOLDMONST] = 1;
     }
 
-    if ( cdesc[CANCELLATION] ) {
-        cdesc[CANCELLATION] = 1;
+    if ( cdesc[FL_CANCELLATION] ) {
+        cdesc[FL_CANCELLATION] = 1;
     }
 
     for ( j = TMathMax ( 1, x - 2 ); j < TMathMin ( x + 3, MAXX - 1 ); j++ )
         for ( i = TMathMax ( 1, y - 2 ); i < TMathMin ( y + 3, MAXY - 1 ); i++ ) {
-            item[j][i] = mitem[j][i] = 0;
-            show1cell ( j, i );
+            object_identification[j][i] = monster_identification[j][i] = 0;
+            fl_show_designated_cell_only ( j, i );
 
             if ( playerx == j && playery == i ) {
-                cursors ();
+                cursor(1,24);
                 fl_display_message ( "\nYou were too close to the sphere!" );
                 nap ( NAPTIME );
                 died ( 283 );		/* player killed in explosion */
@@ -252,12 +250,12 @@ movsphere ( void )
         x = sp->x;
         y = sp->y;
 
-        if ( item[x][y] != OANNIHILATION ) {
+        if ( object_identification[x][y] != FL_OBJECT_SPHERE_OF_ANNIHILATION ) {
             continue;  /* not really there */
         }
 
-        if ( -- ( sp->lifetime ) < 0 ) {	/* has sphere run out of gas? */
-            rmsphere ( x, y );	/* delete sphere */
+        if ( -- ( sp->sphere_duration ) < 0 ) {	/* has sphere run out of gas? */
+            fl_remove_sphere_of_annihilation ( x, y );	/* delete sphere */
             continue;
         }
         /* Nothing special and then advance the sphere.
@@ -265,7 +263,7 @@ movsphere ( void )
          */
         if (TRnd(TMathMax(7, 5))) {
             /* sphere changes direction */
-            sp->dir = TRnd(8);
+            sp->sphere_direction = TRnd(8);
         }
         sp = sp2;
     }

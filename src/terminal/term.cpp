@@ -51,7 +51,7 @@ ansiterm_command ( int ansi_cmd, const char *param1,
         }
 
         else {
-            y = atoi ( param1 ) - 1;
+            y = std::stoi ( param1 ) - 1;
         }
 
         if ( *param2 == '\0' ) {
@@ -59,7 +59,7 @@ ansiterm_command ( int ansi_cmd, const char *param1,
         }
 
         else {
-            x = atoi ( param2 ) - 1;
+            x = std::stoi ( param2 ) - 1;
         }
 
         move ( y, x );
@@ -77,7 +77,7 @@ ansiterm_command ( int ansi_cmd, const char *param1,
         }
 
         else {
-            n_lines = atoi ( param1 );
+            n_lines = std::stoi ( param1 );
         }
 
         for ( i = 0; i < n_lines; i++ ) {
@@ -98,7 +98,7 @@ ansiterm_command ( int ansi_cmd, const char *param1,
         }
 
         else {
-            attribute = atoi ( param1 );
+            attribute = std::stoi ( param1 );
         }
 
         if ( attribute == 0 ) {
@@ -111,7 +111,7 @@ ansiterm_command ( int ansi_cmd, const char *param1,
     }
 
     else {
-        exit ( EXIT_FAILURE );
+        return;
     }
 }
 

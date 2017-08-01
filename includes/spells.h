@@ -4,8 +4,8 @@ int fullhit ( int );
 
 void godirect ( int, int, const char *, int, const char );
 
-void ifblind ( int, int );
+void fl_player_is_blind ( int, int );
 
-int dirsub ( int *, int * );
+int fl_direction ( int *, int * );
 
 void annihilate ( void );

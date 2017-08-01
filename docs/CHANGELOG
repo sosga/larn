@@ -1,3 +1,18 @@
+August 2017
+
+1. Created new folders (core and display) to hold classes that are either
+	for the display part of the game (display) or essential to gameplay (core).
+2. Cleaned up and rewrote many backend functions/functionality as inline functions.
+3. Split up huge files and rewrote the functions into individual files.
+4. Mass-renamed a whole bunch of stupidly named functions and variables
+	into useful names (self documenting).
+5. Removed the volcano and implemented a 'Temple of Larn'.
+	Much more fun..  who goes exploring underneath a volcano?
+
+~Gibbon
+
+=============================================================================
+
 July 2017
 
 1. Using utf8.h to utf8-ify the strings like strcmp etc..
@@ -97,7 +112,7 @@ September 18th - October 4th 2016
 
 1. Cleaned up the Windows build a little
 2. Increased color usage (inventory) and picking up items
-3. Nerfed OHSWORD and added AWARENESS trait to it
+3. Nerfed OHSWORD and added FL_AWARENESS trait to it
 4. Bug fixes
 5. Some functions cleaned up
 6. Mazefile has 30th anniversary map added
@@ -405,10 +420,10 @@ Larn 12.2.  SPOILER ALERT!
    possesses when praying at the altar.
 
 9. When performing an action and doing an inventory list, a character typed at
-   the "press space for more" prompt is taken as the inventory item to select.
+   the "press space for more" prompt is taken as the inventory object_identification to select.
    That is, if you say 'q' for quaff, '*' to see all the potions you can quaff,
    Larn used to require that you type a space before you could select a potion,
-   causing the list to disappear.  You can now select an item in the list while
+   causing the list to disappear.  You can now select an object_identification in the list while
    the list is displayed.  You can also use Escape and Return in place of a
    space.
 
@@ -456,7 +471,7 @@ Larn 12.2.  SPOILER ALERT!
 22. The 'm' command has been added to move onto an object without picking it
     up (a la Hack).
 
-23. Fixed a problem where the a) item in the inventory couldn't be dulled.
+23. Fixed a problem where the a) object_identification in the inventory couldn't be dulled.
 
 25. Allow a space between '-o' and the option filename.
 

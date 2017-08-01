@@ -49,8 +49,8 @@ newcavelevel(int x)
     level = x;	/* get the new level and put in working storage*/
     for (i = 0; i < MAXY ; i++) {
         for (j = 0 ; j < MAXX ; j++) {
-            know[j][i] = 0;
-            mitem[j][i] = 0;
+            been_here_before[j][i] = 0;
+            monster_identification[j][i] = 0;
         }
     }
     makemaze(x);
@@ -61,7 +61,7 @@ newcavelevel(int x)
     if (wizard || x==0)
         for (j=0; j<MAXY; j++)
             for (i=0; i<MAXX; i++)
-                know[i][j]=1;
+                been_here_before[i][j]=1;
 
     checkgen();	/* wipe out any genocided monsters */
 }

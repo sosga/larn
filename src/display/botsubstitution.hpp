@@ -14,8 +14,8 @@
 
 #include <cstdlib>
 
-template<typename T>
-inline T THungerTime(const T& x)
+class FLDisplay
 {
-  return(TIMELIMIT() - gtime == x);
-}
+public:
+	void BotSubstitution(int,int,int,const char *);
+};

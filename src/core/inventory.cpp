@@ -29,7 +29,7 @@ static int qshowstr(char);
 /* declare the player's inventory.  These should only be referenced
 in this module.
 iven     - objects in the player's inventory
-ivenarg  - attribute of each item ( + values, etc )
+ivenarg  - attribute of each object_identification ( + values, etc )
 ivensort - sorted inventory (so we don't sort each time)
 */
 int iven[MAXINVEN];
@@ -53,8 +53,8 @@ fl_init_inventory ( void )
     ivensort[MAXINVEN] = END_SENTINEL;
     iven[0] = OLEATHER;
     iven[1] = ODAGGER;
-    ivenarg[0] = ivenarg[1] = cdesc[WEAR] = ivensort[0] = 0;
-    ivensort[1] = cdesc[WIELD] = 1;
+    ivenarg[0] = ivenarg[1] = cdesc[FL_WEAR] = ivensort[0] = 0;
+    ivensort[1] = cdesc[FL_WIELD] = 1;
 }
 
 /*
@@ -156,9 +156,9 @@ fl_display_inventory(int index, char select_allowed)
 			lprintf( " %d", ivenarg[index]);
         break;
     }
-    if (cdesc[WIELD] == index)
+    if (cdesc[FL_WIELD] == index)
         fl_display_message(" (weapon in hand)");
-    if ((cdesc[WEAR] == index) || (cdesc[SHIELD] == index))
+    if ((cdesc[FL_WEAR] == index) || (cdesc[FL_SHIELD] == index))
         fl_display_message(" (being worn)");
     if (++srcount >= 23) {
         srcount = 0;
@@ -177,8 +177,8 @@ take ( int itm, int arg )
 {
     int i, limit;
 
-    /*  cursors(); */
-    if ( ( limit = 15 + ( cdesc[LEVEL] >> 1 ) ) > MAXINVEN ) {
+    /*  cursor(1,24); */
+    if ( ( limit = 15 + ( cdesc[FL_LEVEL] >> 1 ) ) > MAXINVEN ) {
         limit = MAXINVEN;
     }
     for ( i = 0; i < limit; i++ )
@@ -193,11 +193,11 @@ take ( int itm, int arg )
                 limit = 1;
                 break;
             case ODEXRING:
-                cdesc[DEXTERITY] += ivenarg[i] + 1;
+                cdesc[FL_DEXTERITY] += ivenarg[i] + 1;
                 limit = 1;
                 break;
             case OSTRRING:
-                cdesc[STREXTRA] += ivenarg[i] + 1;
+                cdesc[FL_STREXTRA] += ivenarg[i] + 1;
                 limit = 1;
                 break;
             case OCLEVERRING:
@@ -205,8 +205,8 @@ take ( int itm, int arg )
                 limit = 1;
                 break;
             case OHAMMER:
-                cdesc[DEXTERITY] += 10;
-                cdesc[STREXTRA] += 10;
+                cdesc[FL_DEXTERITY] += 10;
+                cdesc[FL_STREXTRA] += 10;
                 cdesc[INTELLIGENCE] -= 10;
                 limit = 1;
                 break;
@@ -223,7 +223,7 @@ take ( int itm, int arg )
                 cdesc[NOTHEFT]++;
                 break;
             case OSWORDofSLASHING:
-                cdesc[DEXTERITY] += 5;
+                cdesc[FL_DEXTERITY] += 5;
                 limit = 1;
                 break;
             };
@@ -251,39 +251,39 @@ drop_object ( int k )
         return ( 0 );
     }
     itm = iven[k];
-    cursors ();
+    cursor(1,24);
 
     if ( itm == 0 ) {
-        lprintf ( "\nYou don't have item %c! ", k + 'a' );
+        lprintf ( "\nYou don't have object_identification %c! ", k + 'a' );
         return ( 1 );
     }
-    if ( item[playerx][playery] ) {
+    if ( object_identification[playerx][playery] ) {
         lprintf ( "\nThere's something here already: %s",
-                  objectname[item[playerx][playery]] );
+                  objectname[object_identification[playerx][playery]] );
         dropflag = 1;
         return ( 1 );
     }
     if ( playery == MAXY - 1 && playerx == 33 ) {
         return ( 1 );  /* not in entrance */
     }
-    item[playerx][playery] = itm;
-    iarg[playerx][playery] = ivenarg[k];
+    object_identification[playerx][playery] = itm;
+    object_argument[playerx][playery] = ivenarg[k];
     fl_display_message ( "\n  You drop:" );
-    fl_display_inventory ( k,0);			/* show what item you dropped */
-    know[playerx][playery] = 0;
+    fl_display_inventory ( k,0);			/* show what object_identification you dropped */
+    been_here_before[playerx][playery] = 0;
     iven[k] = 0;
 	
-    if ( cdesc[WIELD] == k ) {
-        cdesc[WIELD] = -1;
+    if ( cdesc[FL_WIELD] == k ) {
+        cdesc[FL_WIELD] = -1;
     }
-    if ( cdesc[WEAR] == k ) {
-        cdesc[WEAR] = -1;
+    if ( cdesc[FL_WEAR] == k ) {
+        cdesc[FL_WEAR] = -1;
     }
-    if ( cdesc[SHIELD] == k ) {
-        cdesc[SHIELD] = -1;
+    if ( cdesc[FL_SHIELD] == k ) {
+        cdesc[FL_SHIELD] = -1;
     }
     adjustcvalues ( itm, ivenarg[k] );
     dropflag =
-        1;			/* say dropped an item so wont ask to pick it up right away */
+        1;			/* say dropped an object_identification so wont ask to pick it up right away */
     return ( 0 );
 }

@@ -2,20 +2,14 @@
 
 inline const int MEG = 1000000;
 
-/*
-*
-* types
-*
-*/
-
 /*  this is the structure that holds the entire dungeon specifications  */
 struct cel
 {
-    int hitp;			/*  monster's hit points    */
-    int mitem;			/*  the monster ID          */
-    int item;			/*  the object's ID         */
-    int iarg;			/*  the object's argument   */
-    int know;			/*  have we been here before */
+    int monster_hit_points;
+    int monster_identification;
+    int object_identification;
+    int object_argument;
+    int been_here_before;
 };
 
 /* this is the structure for maintaining & moving the spheres of annihilation */
@@ -23,8 +17,8 @@ struct sphere
 {
     struct sphere *p;		/* pointer to next structure */
     int x, y, lev;		/* location of the sphere */
-    int dir;			/* direction sphere is going in */
-    int lifetime;			/* duration of the sphere */
+    int sphere_direction;
+    int sphere_duration;
 };
 
 /*  this is the structure definition of the monster data
@@ -65,13 +59,13 @@ extern char floorc, wallc;
 extern char waterc;
 extern int beenhere[], cheat;
 extern int course[];
-extern int item[MAXX][MAXY], iven[], know[MAXX][MAXY];
+extern int object_identification[MAXX][MAXY], iven[], been_here_before[MAXX][MAXY];
 extern char aborted[];
 extern const char *classname[];
 extern char lastmonst[];
 extern char *lpnt, *lpbuf, *lpend, *inbuffer;
 extern int level;
-extern int mitem[MAXX][MAXY], monstlevel[];
+extern int monster_identification[MAXX][MAXY], monstlevel[];
 extern int nch[], ndgg[], nlpts[], nomove;
 extern int nplt[], nsw[];
 extern int potion_probability[];
@@ -95,8 +89,8 @@ extern const char *spelcode[];
 extern const char *spelname[];
 extern int splev[], stealth[MAXX][MAXY], wizard;
 extern int diroffx[], diroffy[], hitflag, hit2flag, hit3flag,
-       hitp[MAXX][MAXY];
-extern int iarg[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
+       monster_hit_points[MAXX][MAXY];
+extern int object_argument[MAXX][MAXY], ivenarg[], lasthx, lasthy, lastnum, lastpx,
        lastpy;
 extern int oldx, oldy, playerx, playery;
 extern int enable_scroll, y_larn_rep, wisid, lfd, fd;
@@ -144,5 +138,5 @@ extern int move_no_pickup;
 template<class T>
 T disappear(T x, T y)
 {
-    return (mitem[x][y]=know[x][y]=0);
+    return (monster_identification[x][y]=been_here_before[x][y]=0);
 }

@@ -19,7 +19,6 @@ int lappend ( char * );
 void lrclose ( void );
 void lwclose ( void );
 void cursor ( int, int );
-void cursors ( void );
 void init_term ( void );
 void cl_line ( int, int );
 void cl_up ( int, int );

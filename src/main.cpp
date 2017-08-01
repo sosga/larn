@@ -29,6 +29,7 @@
 #include "strings/utf8.h"
 #include "player/hunger.hpp"
 #include "core/newgame.hpp"
+#include "core/funcs.hpp"
 
 using std::cout;
 
@@ -45,7 +46,7 @@ static void consume(int, const char *);
 static int whatitem(const char *);
 
 int dropflag =
-    0;		/* if 1 then don't lookforobject() next round */
+    0;		/* if 1 then don't fl_look_for_an_object_and_give_options() next round */
 int rmst = 80;			/*  random monster creation counter     */
 int nomove =
     0;			/* if (nomove) then don't count next iteration as a
@@ -135,7 +136,7 @@ int main()
 
     setupvt100();		/*  setup the terminal special mode             */
 
-    if(cdesc[HP] == 0) {	/* create new game */
+    if(cdesc[FL_HP] == 0) {	/* create new game */
         predostuff =
             1;		/* tell signals that we are in the welcome screen */
         welcome();		/* welcome the player to the game */
@@ -170,24 +171,24 @@ int main()
                If in prompt mode, identify and prompt; else
                identify, never prompt.
              */
-            lookforobject(1, 0, 0);
+            fl_look_for_an_object_and_give_options(1, 0, 0);
         }
 
         else {
-            dropflag = 0;		/* don't show it just dropped an item */
+            dropflag = 0;		/* don't show it just dropped an object_identification */
         }
 
         /* handle global activity
            update game time, move spheres, move walls, move monsters
-           all the stuff affected by TIMESTOP and HASTESELF
+           all the stuff affected by FL_TIMESTOP and FL_HASTESELF
          */
-        if(cdesc[TIMESTOP] <= 0)
-            if(cdesc[HASTESELF] == 0 || (cdesc[HASTESELF] & 1) == 0) {
+        if(cdesc[FL_TIMESTOP] <= 0)
+            if(cdesc[FL_HASTESELF] == 0 || (cdesc[FL_HASTESELF] & 1) == 0) {
                 gtime++;
                 movsphere();
 
                 if(hitflag == 0) {
-                    if(cdesc[HASTEMONST]) {
+                    if(cdesc[FL_HASTEMONST]) {
                         movemonst();
                     }
 
@@ -235,7 +236,7 @@ int main()
         regen();			/*  regenerate hp and spells            */
 		FLHunger.HungerLose();
 
-        if(cdesc[TIMESTOP] == 0)
+        if(cdesc[FL_TIMESTOP] == 0)
             if(--rmst <= 0) {
                 rmst = 120 - (level << 2);
                 fillmonst(makemonst(level));
@@ -250,7 +251,7 @@ static void
 randmonst(void)
 {
     /*  don't make monsters if time is stopped  */
-    if(cdesc[TIMESTOP]) {
+    if(cdesc[FL_TIMESTOP]) {
         return;
     }
 
@@ -268,6 +269,7 @@ randmonst(void)
 static void
 parse(void)
 {
+    FLCoreFuncs CoreFuncs;
 
     int i, j, k, flag;
     Save save;
@@ -355,7 +357,7 @@ parse(void)
         case 'd':
             y_larn_rep = 0;
 
-            if(cdesc[TIMESTOP] == 0) {
+            if(cdesc[FL_TIMESTOP] == 0) {
                 dropobj();
             }
 
@@ -364,7 +366,7 @@ parse(void)
         case 'e':
             y_larn_rep = 0;
 
-            if(cdesc[TIMESTOP] == 0)
+            if(cdesc[FL_TIMESTOP] == 0)
                 if(!floor_consume(OCOOKIE, "eat")) {
                     consume(OCOOKIE, "eat");
 					cdesc[HUNGER] += 10;
@@ -374,7 +376,7 @@ parse(void)
 
         case 'g':
             y_larn_rep = 0;
-            cursors();
+            cursor(1,24);
             lprintf("\nThe stuff you are carrying presently weighs %d pounds",
                     (int) packweight());
             break;
@@ -393,7 +395,7 @@ parse(void)
             screen_clear();
             enable_scroll = 0;
             showscores (0);    /* if we updated the scoreboard */
-            cursors ();
+            cursor(1,24);
             fl_display_message ( "\nPress any key to exit. " );
             scbr ();
             ttgetch ();
@@ -404,7 +406,7 @@ parse(void)
         case 'q':		/* quaff a potion */
             y_larn_rep = 0;
 
-            if(cdesc[TIMESTOP] == 0)
+            if(cdesc[FL_TIMESTOP] == 0)
                 if(!floor_consume(OPOTION, "quaff")) {
                     consume(OPOTION, "quaff");
                 }
@@ -414,12 +416,12 @@ parse(void)
         case 'r':
             y_larn_rep = 0;
 
-            if(cdesc[BLINDCOUNT]) {
-                cursors();
+            if(cdesc[FL_BLINDCOUNT]) {
+                cursor(1,24);
                 fl_display_message("\nYou can't read anything when you're blind!");
             }
 
-            else if(cdesc[TIMESTOP] == 0)
+            else if(cdesc[FL_TIMESTOP] == 0)
                 if(!floor_consume(OSCROLL, "read"))
                     if(!floor_consume(OBOOK, "read"))
                         if(!floor_consume(OPRAYERBOOK, "read")) {
@@ -441,7 +443,7 @@ parse(void)
         case 'v':
             y_larn_rep = 0;
             nomove = 1;
-            cursors();
+            cursor(1,24);
             lprintf("\nFreelarn, Version: %s",VERSION);
 
             if(wizard) {
@@ -497,7 +499,7 @@ parse(void)
             return;
 
         case 'P':
-            cursors();
+            cursor(1,24);
             y_larn_rep = 0;
             nomove = 1;
 
@@ -528,7 +530,7 @@ parse(void)
             It's much better now!
             ~Gibbon
              */
-            cursors();
+            cursor(1,24);
             lflush();
             save_mode = 1;
             save.savegame(savefilename);
@@ -539,16 +541,16 @@ parse(void)
 
         case 'T':
             y_larn_rep = 0;
-            cursors();
+            cursor(1,24);
 
-            if(cdesc[SHIELD] != -1) {
-                cdesc[SHIELD] = -1;
+            if(cdesc[FL_SHIELD] != -1) {
+                cdesc[FL_SHIELD] = -1;
                 fl_display_message("\nYour shield is off");
                 bottomline();
             }
 
-            else if(cdesc[WEAR] != -1) {
-                cdesc[WEAR] = -1;
+            else if(cdesc[FL_WEAR] != -1) {
+                cdesc[FL_WEAR] = -1;
                 fl_display_message("\nYour armor is off");
                 bottomline();
             }
@@ -567,12 +569,12 @@ parse(void)
         case 'Z':
             y_larn_rep = 0;
 
-            if(cdesc[LEVEL] > 9) {
-                oteleport(1);
+            if(cdesc[FL_LEVEL] > 9) {
+                fl_teleport(1);
                 return;
             }
 
-            cursors();
+            cursor(1,24);
             fl_display_message
             ("\nAs yet, you don't have enough experience to use teleportation");
             return;		/*  teleport yourself   */
@@ -598,16 +600,16 @@ parse(void)
             down_stairs();
             return;
 
-        case ',':		/* pick up an item */
+        case ',':		/* pick up an object_identification */
             y_larn_rep = 0;
             /* pickup, don't identify or prompt for action */
-            lookforobject(0, 1, 0);
+            fl_look_for_an_object_and_give_options(0, 1, 0);
             return;
 
         case ':':		/* look at object */
             y_larn_rep = 0;
             /* identify, don't pick up or prompt for action */
-            lookforobject(1, 0, 0);
+            fl_look_for_an_object_and_give_options(1, 0, 0);
             nomove = 1;		/* assumes look takes no time */
             return;
 
@@ -619,7 +621,7 @@ parse(void)
 
         case '^':		/* identify traps */
             flag = y_larn_rep = 0;
-            cursors();
+            cursor(1,24);
             lprc('\n');
 
             for(j = playery - 1; j < playery + 2; j++) {
@@ -640,14 +642,14 @@ parse(void)
                         break;
                     }
 
-                    switch(item[i][j]) {
+                    switch(object_identification[i][j]) {
                     case OTRAPDOOR:
                     case ODARTRAP:
                     case OTRAPARROW:
                     case OTELEPORTER:
                     case OPIT:
                         fl_display_message("\nIts ");
-                        fl_display_message(objectname[item[i][j]]);
+                        fl_display_message(objectname[object_identification[i][j]]);
                         flag++;
                     };
                 }
@@ -661,7 +663,7 @@ parse(void)
             if (WIZID == true) {
             case '_':		/*  this is the fudge player password for wizard mode */
                 y_larn_rep = 0;
-                cursors();
+                cursor(1,24);
                 nomove = 1;
                 wizard = 1;		/* disable to easily test win condition */
                 scbr();		/* system("stty -echo cbreak"); */
@@ -676,14 +678,14 @@ parse(void)
                 /* lets nerf it a little bit.
                  * ~Gibbon */
                 take(OGREATSWORD, 24);
-                cdesc[WIELD] = 1;
+                cdesc[FL_WIELD] = 1;
                 cdesc[GREATSWORDDEATH] = 1;
-                raiseexperience(6000000L);
-                cdesc[AWARENESS] += 25000;
+                CoreFuncs.IncreaseExperience(6000000L);
+                cdesc[FL_AWARENESS] += 25000;
                 {
                     for(i = 0; i < MAXY; i++)
                         for(j = 0; j < MAXX; j++) {
-                            know[j][i] = KNOWALL;
+                            been_here_before[j][i] = KNOWALL;
                         }
 
                     for(i = 0; i < SPNUM; i++) {
@@ -703,31 +705,31 @@ parse(void)
 
                     /* no null items */
                     if(utf8len(scrollname[i]) > 2) {
-                        item[i][0] = OSCROLL;
-                        iarg[i][0] = i;
+                        object_identification[i][0] = OSCROLL;
+                        object_argument[i][0] = i;
                     }
 
                 for(i = MAXX - 1; i > MAXX - 1 - MAXPOTION; i--)
 
                     /* no null items */
                     if(utf8len(potionname[i - MAXX + MAXPOTION]) > 2) {
-                        item[i][0] = OPOTION;
-                        iarg[i][0] = i - MAXX + MAXPOTION;
+                        object_identification[i][0] = OPOTION;
+                        object_argument[i][0] = i - MAXX + MAXPOTION;
                     }
 
                 for(i = 1; i < MAXY; i++) {
-                    item[0][i] = i;
-                    iarg[0][i] = 0;
+                    object_identification[0][i] = i;
+                    object_argument[0][i] = 0;
                 }
 
                 for(i = MAXY; i < MAXY + MAXX; i++) {
-                    item[i - MAXY][MAXY - 1] = i;
-                    iarg[i - MAXY][MAXY - 1] = 0;
+                    object_identification[i - MAXY][MAXY - 1] = i;
+                    object_argument[i - MAXY][MAXY - 1] = 0;
                 }
 
                 for(i = MAXX + MAXY; i < MAXOBJECT; i++) {
-                    item[MAXX - 1][i - MAXX - MAXY] = i;
-                    iarg[MAXX - 1][i - MAXX - MAXY] = 0;
+                    object_identification[MAXX - 1][i - MAXX - MAXY] = i;
+                    object_argument[MAXX - 1][i - MAXX - MAXY] = 0;
                 }
 
                 cdesc[GOLD] += 250000;
@@ -745,7 +747,7 @@ parse2(void)
 {
 	FLHunger FLHunger;
     /* move the monsters */
-    if(cdesc[HASTEMONST]) {
+    if(cdesc[FL_HASTEMONST]) {
         movemonst();
     }
 
@@ -758,17 +760,17 @@ parse2(void)
 
 
 static void
-run(int dir)
+run(int sphere_direction)
 {
 	FLHunger FLHunger;
     int i;
     i = 1;
 
     while(i) {
-        i = moveplayer(dir);
+        i = moveplayer(sphere_direction);
 
         if(i > 0) {
-            if(cdesc[HASTEMONST]) {
+            if(cdesc[FL_HASTEMONST]) {
                 movemonst();
             }
 
@@ -807,7 +809,7 @@ wield(void)
 
         if(i != '.') {
             if(i == '-') {
-                cdesc[WIELD] = -1;
+                cdesc[FL_WIELD] = -1;
                 bottomline();
                 return;
             }
@@ -831,20 +833,20 @@ wield(void)
                 return;
             }
 
-            else if(cdesc[SHIELD] != -1
+            else if(cdesc[FL_SHIELD] != -1
                     && iven[i - 'a'] == O2SWORD) {
                 fl_display_message("\nBut one arm is busy with your shield!");
                 return;
             }
 
-            else if(cdesc[SHIELD] != -1
+            else if(cdesc[FL_SHIELD] != -1
                     && iven[i - 'a'] == OHSWORD) {
                 fl_display_message("\nA longsword of Hymie cannot be used while a shield is equipped!");
                 return;
             }
 
             else {
-                cdesc[WIELD] = i - 'a';
+                cdesc[FL_WIELD] = i - 'a';
 
                 if(iven[i - 'a'] == OGREATSWORD) {
                     cdesc[GREATSWORDDEATH] = 1;
@@ -864,25 +866,25 @@ wield(void)
 
 
 /*
-* common routine to say you don't have an item
+* common routine to say you don't have an object_identification
 */
 static void
 ydhi(int x)
 {
-    cursors();
-    lprintf("\nYou don't have item %c!", x);
+    cursor(1,24);
+    lprintf("\nYou don't have object_identification %c!", x);
 }
 
 
 
 /*
-* common routine to say you can't wield an item
+* common routine to say you can't wield an object_identification
 */
 static void
 ycwi(int x)
 {
-    cursors();
-    lprintf("\nYou can't wield item %c!", x);
+    cursor(1,24);
+    lprintf("\nYou can't wield object_identification %c!", x);
 }
 
 
@@ -915,33 +917,33 @@ wear(void)
                 case OPLATEARMOR:
                 case OSTUDLEATHER:
                 case OSSPLATE:
-                    if(cdesc[WEAR] != -1) {
+                    if(cdesc[FL_WEAR] != -1) {
                         fl_display_message("\nYou're already wearing some armor");
                         return;
                     }
 
-                    cdesc[WEAR] = i - 'a';
+                    cdesc[FL_WEAR] = i - 'a';
                     bottomline();
                     return;
 
                 case OSHIELD:
-                    if(cdesc[SHIELD] != -1) {
+                    if(cdesc[FL_SHIELD] != -1) {
                         fl_display_message("\nYou are already wearing a shield");
                         return;
                     }
 
-                    if(iven[cdesc[WIELD]] == O2SWORD) {
+                    if(iven[cdesc[FL_WIELD]] == O2SWORD) {
                         fl_display_message
                         ("\nYour hands are busy with the two handed sword!");
                         return;
                     }
 
-                    if(iven[cdesc[WIELD]] == OHSWORD) {
+                    if(iven[cdesc[FL_WIELD]] == OHSWORD) {
                         fl_display_message("\nYou are holding a longsword of Hymie!");
                         return;
                     }
 
-                    cdesc[SHIELD] = i - 'a';
+                    cdesc[FL_SHIELD] = i - 'a';
                     bottomline();
                     return;
 
@@ -964,7 +966,7 @@ dropobj(void)
     int i;
     int *p;
     int amt;
-    p = &item[playerx][playery];
+    p = &object_identification[playerx][playery];
 
     for(;;) {
         if((i = whatitem("drop")) == '\33') {
@@ -974,7 +976,7 @@ dropobj(void)
             if(i == '.') {	/* drop some gold */
                 if(*p) {
                     lprintf("\nThere's something here already: %s",
-                            objectname[item[playerx][playery]]);
+                            objectname[object_identification[playerx][playery]]);
                     dropflag = 1;
                     return;
                 }
@@ -1024,9 +1026,9 @@ dropobj(void)
 
                 cdesc[GOLD] -= amt;
                 lprintf("\nYou drop %d gold pieces", (int) amt);
-                iarg[playerx][playery] = i;
+                object_argument[playerx][playery] = i;
                 bottomgold();
-                know[playerx][playery] = 0;
+                been_here_before[playerx][playery] = 0;
                 dropflag = 1;
                 return;
             }
@@ -1045,33 +1047,33 @@ floor_consume(int search_item, const char *cons_verb)
 {
     int i;
     char tempc;
-    cursors();
-    i = item[playerx][playery];
+    cursor(1,24);
+    i = object_identification[playerx][playery];
 
-    /* item not there, quit
+    /* object_identification not there, quit
      */
     if(i != search_item) {
         return (0);
     }
 
-    /* item there.  does the player want to consume it?
+    /* object_identification there.  does the player want to consume it?
      */
     lprintf("\nThere is %s", objectname[i]);
 
     if(i == OSCROLL)
-        if(scrollname[iarg[playerx][playery]][0]) {
-            lprintf("%s", scrollname[iarg[playerx][playery]]);
+        if(scrollname[object_argument[playerx][playery]][0]) {
+            lprintf("%s", scrollname[object_argument[playerx][playery]]);
         }
 
     if(i == OPOTION)
-        if(potionname[iarg[playerx][playery]][0]) {
-            lprintf("%s", potionname[iarg[playerx][playery]]);
+        if(potionname[object_argument[playerx][playery]][0]) {
+            lprintf("%s", potionname[object_argument[playerx][playery]]);
         }
 
     lprintf(" here.  Do you want to %s it?", cons_verb);
 
     if((tempc = getyn()) == 'n') {
-        return (0);    /* item there, not consumed */
+        return (0);    /* object_identification there, not consumed */
     }
 
     else if(tempc != 'y') {
@@ -1079,7 +1081,7 @@ floor_consume(int search_item, const char *cons_verb)
         return (-1);		/* abort */
     }
 
-    /* consume the item.
+    /* consume the object_identification.
      */
     switch(i) {
     case OCOOKIE:
@@ -1087,27 +1089,27 @@ floor_consume(int search_item, const char *cons_verb)
         break;
 
     case OBOOK:
-        readbook(iarg[playerx][playery]);
+        readbook(object_argument[playerx][playery]);
         forget();
         break;
 
     case OPRAYERBOOK:
-        readprayerbook(iarg[playerx][playery]);
+        readprayerbook(object_argument[playerx][playery]);
         forget();
         break;
 
     case OPOTION:
-        quaffpotion(iarg[playerx][playery], 1);
+        fl_drink_potion(object_argument[playerx][playery], 1);
         forget();
         break;
 
     case OSCROLL:
         /* scrolls are tricky because of teleport.
          */
-        i = iarg[playerx][playery];
-        know[playerx][playery] = 0;
-        item[playerx][playery] = iarg[playerx][playery] = 0;
-        read_scroll(i);
+        i = object_argument[playerx][playery];
+        been_here_before[playerx][playery] = 0;
+        object_identification[playerx][playery] = object_argument[playerx][playery] = 0;
+        fl_read_scroll(i);
         break;
     }
 
@@ -1135,7 +1137,7 @@ consume(int search_item, const char *prompt)
                         return;
                     }
 
-                    read_scroll(ivenarg[i - 'a']);
+                    fl_read_scroll(ivenarg[i - 'a']);
                     break;
 
                 case OBOOK:
@@ -1169,7 +1171,7 @@ consume(int search_item, const char *prompt)
                         return;
                     }
 
-                    quaffpotion(ivenarg[i - 'a'], 1);
+                    fl_drink_potion(ivenarg[i - 'a'], 1);
                     break;
 
                 case 0:
@@ -1197,12 +1199,10 @@ static int
 whatitem(const char *str)
 {
     int i = 0;
-    cursors();
+    cursor(1,24);
     lprintf("\nWhat do you want to %s? ", str);
 
-    while(i > 'z'
-            || (i < 'a' && i != '-' && i != '*' && i != '\33'
-                && i != '.')) {
+    while(i > 'z' || (i < 'a' && i != '-' && i != '*' && i != '\33' && i != '.')) {
         i = ttgetch();
     }
 

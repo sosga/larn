@@ -39,13 +39,13 @@ display_help_text ( void )
     lstandout ( "Help File for Larn\n" );
     lprintf ( "b  move southwest          B  run southwest            A  desecrate an altar\n" );
     lprintf ( "c  cast a spell            C  close a door             Z  teleport yourself	\n" );
-    lprintf ( "d  drop an item            D  drink at a fountain      <  go up stairs or	\n" );
+    lprintf ( "d  drop an object_identification            D  drink at a fountain      <  go up stairs or	\n" );
     lprintf ( "e  eat something           E  enter a store, dungeon      volcanic shaft	\n" );
     lprintf ( "g  get present pack weight                             >  go down stairs or	\n" );
     lprintf ( "h  move left               H  run left                    volcanic shaft	\n" );
     lprintf ( "i  inventory your pockets  I  list all known items							\n" );
     lprintf ( "j  move down               J  run down                 ^  identify a trap	\n" );
-    lprintf ( "k  move up                 K  run up                   ,  pick up item		\n" );
+    lprintf ( "k  move up                 K  run up                   ,  pick up object_identification		\n" );
     lprintf ( "l  move right              L  run right                :  look at object you\n" );
     lprintf ( "n  move southeast          N  run southeast               are standing on	\n" );
     lprintf ( "                           O  open a door or chest     .  stay here			\n" );

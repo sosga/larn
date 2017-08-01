@@ -47,7 +47,7 @@ junk_mail1(int gold_count)
     fl_display_message("\nCongratulations..");
     fl_display_message("\n\nWe received news that you have received");
     lprintf("\n%d Gold Coins.", gold_count);
-    fl_display_message("\nAs you know, Larn is in economic trouble, thus we have prepared your tax bill.");
+    fl_display_message("\nAs you been_here_before, Larn is in economic trouble, thus we have prepared your tax bill.");
     lprintf("\nYou owe %d Gold Coins.", gold_count * TAXRATE);
     fl_display_message("\nPlease pay within 5 days or there will be consequences.\n");
     retcont();

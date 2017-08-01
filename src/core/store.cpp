@@ -7,7 +7,7 @@ dnd_2hed
 dnd_hed
 dndstore      The DND store main routine
 handsfull     To tell the player he can carry no more
-out_of_stock  To tell the player an item is out of stock
+out_of_stock  To tell the player an object_identification is out of stock
 no_gold       To tell the player he has no gold
 dnditem       Display DND store items
 sch_head      print the school header
@@ -218,7 +218,7 @@ dndstore ( void )
         ( "They have also told us that you owe %d gp in back taxes, and as we must\n", outstanding_taxes );
         fl_display_message
         ( "comply with the law, we cannot serve you at this time.  Soo Sorry.\n" );
-        cursors ();
+        cursor(1,24);
         fl_display_message ( "\nPress " );
         lstandout ( "escape" );
         fl_display_message ( " to leave: " );
@@ -335,7 +335,7 @@ handsfull ( void )
 static void
 outofstock ( void )
 {
-    fl_display_message ( "\nSorry, but we are out of that item." );
+    fl_display_message ( "\nSorry, but we are out of that object_identification." );
     lflush ();
     nap ( NAPTIME );
 }
@@ -352,7 +352,7 @@ nogold ( void )
 /*
 dnditem(index)
 
-to print the item list;  used in dndstore() enter with the index into itm
+to print the object_identification list;  used in dndstore() enter with the index into itm
 */
 static void
 dnditem ( int i )
@@ -469,7 +469,7 @@ oschool ( void )
         cursor ( 1, 19 );
         lprintf ( "%d ", cdesc[GOLD] );
         lprintf ( "gold pieces." );
-        cursors ();
+        cursor(1,24);
         fl_display_message ( "\nWhat is your choice [" );
         lstandout ( "escape" );
         fl_display_message ( " to leave] ? " );
@@ -507,7 +507,7 @@ oschool ( void )
 
             switch ( i ) {
             case 'a':
-                cdesc[STRENGTH] += 2;
+                cdesc[FL_STRENGTH] += 2;
                 cdesc[CONSTITUTION]++;
                 fl_display_message ( "\nYou feel stronger!" );
                 cl_line ( 16, 7 );
@@ -524,7 +524,7 @@ oschool ( void )
 
                 fl_display_message ( "\nYou feel much stronger!" );
                 cl_line ( 16, 8 );
-                cdesc[STRENGTH] += 2;
+                cdesc[FL_STRENGTH] += 2;
                 cdesc[CONSTITUTION] += 2;
                 break;
 
@@ -549,7 +549,7 @@ oschool ( void )
                 break;
 
             case 'e':
-                cdesc[CHARISMA] += 3;
+                cdesc[FL_CHARISMA] += 3;
                 fl_display_message ( "\nYou now feel like a born leader!" );
                 cl_line ( 16, 11 );
                 break;
@@ -562,7 +562,7 @@ oschool ( void )
                 break;
 
             case 'g':
-                cdesc[DEXTERITY] += 3;
+                cdesc[FL_DEXTERITY] += 3;
                 fl_display_message ( "\nYou feel like dancing!" );
                 cl_line ( 16, 13 );
                 break;
@@ -583,18 +583,18 @@ oschool ( void )
                 gtime += time_used;
                 course[i -
                          'a']++;	/*  remember that he has taken that course  */
-                cdesc[HP] = cdesc[HPMAX];
-                cdesc[SPELLS] = cdesc[SPELLMAX];	/* he regenerated */
+                cdesc[FL_HP] = cdesc[FL_HPMAX];
+                cdesc[FL_SPELLS] = cdesc[FL_SPELLMAX];	/* he regenerated */
 
-                if ( cdesc[BLINDCOUNT] ) {
-                    cdesc[BLINDCOUNT] = 1;  /* cure blindness too!  */
+                if ( cdesc[FL_BLINDCOUNT] ) {
+                    cdesc[FL_BLINDCOUNT] = 1;  /* cure blindness too!  */
                 }
 
-                if ( cdesc[CONFUSE] ) {
-                    cdesc[CONFUSE] = 1;  /*  end confusion   */
+                if ( cdesc[FL_CONFUSE] ) {
+                    cdesc[FL_CONFUSE] = 1;  /*  end confusion   */
                 }
 
-                adjtimel (time_used );	/* adjust parameters for time change */
+                fl_adjust_time (time_used );	/* adjust parameters for time change */
             }
 
             nap ( NAPTIME );
@@ -641,7 +641,7 @@ banktitle ( const char *str )
         fl_display_message
         ( "taxes, and we must comply with them. We cannot serve you at this time.  Sorry.\n" );
         fl_display_message ( "We suggest you go to the LRS office and pay your taxes.\n" );
-        cursors ();
+        cursor(1,24);
         fl_display_message ( "\nPress " );
         lstandout ( "escape" );
         fl_display_message ( " to leave: " );
@@ -995,7 +995,7 @@ otradepost ( void )
 
     for ( ;; ) {
         cursor ( 1, 23 );
-        fl_display_message ( "\nWhat item do you want to sell to us [" );
+        fl_display_message ( "\nWhat object_identification do you want to sell to us [" );
         lstandout ( "escape" );
         fl_display_message ( "] ? " );
         /* display gold in inventory ~Gibbon */
@@ -1008,7 +1008,7 @@ otradepost ( void )
         }
 
         if ( i == '\33' ) {
-            recalc ();
+            fl_recalculate_armor_class ();
             drawscreen ();
             return;
         }
@@ -1024,7 +1024,7 @@ otradepost ( void )
             isub = i - 'a';
 
             if ( iven[isub] == 0 ) {
-                lprintf ( "\nYou don't have item %c!", isub + 'a' );
+                lprintf ( "\nYou don't have object_identification %c!", isub + 'a' );
                 nap ( NAPTIME );
                 break;		/* leave inner while */
             }
@@ -1067,7 +1067,7 @@ otradepost ( void )
 
                 if ( found == MAXITM ) {
                     fl_display_message
-                    ( "\nSo sorry, but we are not authorized to accept that item." );
+                    ( "\nSo sorry, but we are not authorized to accept that object_identification." );
                     nap ( NAPTIME );
                     break;	/* leave inner while */
                 }
@@ -1090,7 +1090,7 @@ otradepost ( void )
                 }
             }
 
-            /* we have now found the value of the item, and dealt with any error
+            /* we have now found the value of the object_identification, and dealt with any error
                cases.  Print the object's value, let the user sell it.
              */
             lprintf
@@ -1102,16 +1102,16 @@ otradepost ( void )
                 fl_display_message ( "yes\n" );
                 cdesc[GOLD] += value;
 
-                if ( cdesc[WEAR] == isub ) {
-                    cdesc[WEAR] = -1;
+                if ( cdesc[FL_WEAR] == isub ) {
+                    cdesc[FL_WEAR] = -1;
                 }
 
-                if ( cdesc[WIELD] == isub ) {
-                    cdesc[WIELD] = -1;
+                if ( cdesc[FL_WIELD] == isub ) {
+                    cdesc[FL_WIELD] = -1;
                 }
 
-                if ( cdesc[SHIELD] == isub ) {
-                    cdesc[SHIELD] = -1;
+                if ( cdesc[FL_SHIELD] == isub ) {
+                    cdesc[FL_SHIELD] = -1;
                 }
 
                 adjustcvalues ( iven[isub], ivenarg[isub] );

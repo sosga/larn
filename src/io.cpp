@@ -37,7 +37,6 @@
 *  Other Routines
 *
 *  cursor(x,y)     position cursor at [x,y]
-*  cursors()       position cursor at [1,24] (saves memory)
 *  cl_line(x,y)            Clear line at [1,y] and leave cursor at [x,y]
 *  cl_up(x,y)          Clear screen from [x,1] to current line.
 *  cl_dn(x,y)      Clear screen from [1,y] to end of display.
@@ -711,15 +710,6 @@ cursor ( int x, int y )
 }
 
 /*
-*  Routine to position cursor at beginning of 24th line
-*/
-void
-cursors ( void )
-{
-    cursor ( 1, 24 );
-}
-
-/*
 * Warning: ringing the bell is control code 7. Don't use in defines.
 * Don't change the order of these defines.
 * Also used in helpfiles. Codes used in helpfiles should be \E[1 to \E[7 with
@@ -1036,7 +1026,7 @@ flush_buf ( void )
 /*
 *  flushall()  Function to flush all type-ahead in the input buffer
 *
-*  I've fixed this mess.  I don't know who implemented this
+*  I've fixed this mess.  I don't been_here_before who implemented this
 *  but kbhit is Windows only.  I'm guessing they never
 *  used a BSD or GNU/Linux system or never read a manpage.
 *

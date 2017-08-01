@@ -14,8 +14,13 @@
 
 #include <cstdlib>
 
-template<typename T>
-inline T THungerTime(const T& x)
+class FLCoreFuncs
 {
-  return(TIMELIMIT() - gtime == x);
-}
+public:
+	void IncreasePlayerLevel(void);
+	void DecreasePlayerLevel(void);
+	void IncreaseExperience(long);
+	void DecreaseExperience(long);
+	void DecreasePHealth(int);
+	void IncreasePHealth(int);
+};

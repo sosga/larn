@@ -43,11 +43,11 @@ fillmonst(int what)
         x = TRnd(MAXX - 2);
         y = TRnd(MAXY - 2);
 
-        if((item[x][y] == 0) && (mitem[x][y] == 0)
+        if((object_identification[x][y] == 0) && (monster_identification[x][y] == 0)
                 && ((playerx != x) || (playery != y))) {
-            mitem[x][y] = what;
-            know[x][y] &= ~KNOWHERE;
-            hitp[x][y] = monster[what].hitpoints;
+            monster_identification[x][y] = what;
+            been_here_before[x][y] &= ~KNOWHERE;
+            monster_hit_points[x][y] = monster[what].hitpoints;
             return (0);
         }
     }

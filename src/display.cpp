@@ -15,16 +15,9 @@
 #include "../includes/io.h"
 #include "../includes/monster.h"
 #include "strings/utf8.h"
+#include "display/botsubstitution.hpp"
 
 using std::cout;
-
-#define botsub( _idx, _x, _y, _str )        \
-	if ( cdesc[(_idx)] != cbak[(_idx)] )        \
-	{                                   \
-		cbak[(_idx)] = cdesc[(_idx)];           \
-		cursor( (_x), (_y) );               \
-		lprintf( (_str), (int)cdesc[(_idx)] ); \
-	}
 
 #define nlprc(_ch) lprc(_ch)
 
@@ -45,7 +38,7 @@ now for the bottom line of the display
 void
 bottomline(void)
 {
-    recalc();
+    fl_recalculate_armor_class();
     bot1f = 1;
 }
 
@@ -84,6 +77,7 @@ bottomdo(void)
 void
 bot_linex(void)
 {
+	FLDisplay Display;
     int i;
 
     if(regen_bottom || (always)) {
@@ -92,41 +86,41 @@ bot_linex(void)
         cursor(1,18);
         lprintf("%s",logname);
 
-        if(cdesc[SPELLMAX] > 99) {
+        if(cdesc[FL_SPELLMAX] > 99) {
             cursor(69, 10);
             lprintf("SPL:");
             cursor(73, 10);
-            lprintf("%3d/%3d", (int) cdesc[SPELLS],
-                    (int) cdesc[SPELLMAX]);
+            lprintf("%3d/%3d", (int) cdesc[FL_SPELLS],
+                    (int) cdesc[FL_SPELLMAX]);
         }
 
         else {
             cursor(69, 10);
             lprintf("SPL:");
             cursor(73, 10);
-            lprintf("%3d/%2d", (int) cdesc[SPELLS],
-                    (int) cdesc[SPELLMAX]);
+            lprintf("%3d/%2d", (int) cdesc[FL_SPELLS],
+                    (int) cdesc[FL_SPELLMAX]);
         }
         cursor(1, 19);
         lprintf("LVL:");
 
-        if(cdesc[LEVEL] > 99) {
+        if(cdesc[FL_LEVEL] > 99) {
             cursor(5, 19);
-            lprintf("%3d", (int) cdesc[LEVEL]);
+            lprintf("%3d", (int) cdesc[FL_LEVEL]);
         }
 
         else {
             cursor(5, 19);
-            lprintf("%-2d", (int) cdesc[LEVEL]);
+            lprintf("%-2d", (int) cdesc[FL_LEVEL]);
         }
         cursor(69, 1);
         lprintf("HP:");
         cursor(72, 1);
-        lprintf("%3d/%3d", (int) cdesc[HP], (int) cdesc[HPMAX]);
+        lprintf("%3d/%3d", (int) cdesc[FL_HP], (int) cdesc[FL_HPMAX]);
         cursor(69, 2);
         lprintf("STR:");
         cursor(73, 2);
-        lprintf("%-2d", (int)(cdesc[STRENGTH] + cdesc[STREXTRA]));
+        lprintf("%-2d", (int)(cdesc[FL_STRENGTH] + cdesc[FL_STREXTRA]));
         cursor(69, 3);
         lprintf("INT:");
         cursor(73, 3);
@@ -142,11 +136,11 @@ bot_linex(void)
         cursor(69, 6);
         lprintf("DEX:");
         cursor(73, 6);
-        lprintf("%-2d", (int) cdesc[DEXTERITY]);
+        lprintf("%-2d", (int) cdesc[FL_DEXTERITY]);
         cursor(69, 7);
         lprintf("CHA:");
         cursor(73, 7);
-        lprintf("%-2d", (int) cdesc[CHARISMA]);
+        lprintf("%-2d", (int) cdesc[FL_CHARISMA]);
         cursor(69, 8);
         lprintf("ACC:");
         cursor(73, 8);
@@ -182,10 +176,10 @@ bot_linex(void)
         cursor(28, 19);
         lprintf("%-9d",(int)cdesc[EXPERIENCE]);
         cursor(52, 18);
-        lprintf("%s",classname[cdesc[LEVEL] - 1]);
+        lprintf("%s",classname[cdesc[FL_LEVEL] - 1]);
         always = 1;
         botside();
-        cdesc[TMP] = cdesc[STRENGTH] + cdesc[STREXTRA];
+        cdesc[TMP] = cdesc[FL_STRENGTH] + cdesc[FL_STREXTRA];
 
         for(i = 0; i < 100; i++) {
             cbak[i] = cdesc[i];
@@ -193,43 +187,43 @@ bot_linex(void)
 
         return;
     }
-    botsub(SPELLS, 73, 10, "%3d");
+    Display.BotSubstitution(FL_SPELLS, 73, 10, "%3d");
 
-    if(cdesc[SPELLMAX] > 99) {
-        botsub(SPELLMAX, 73, 10, "%3d)");
+    if(cdesc[FL_SPELLMAX] > 99) {
+        Display.BotSubstitution(FL_SPELLMAX, 73, 10, "%3d)");
     }
 
     else {
-        botsub(SPELLMAX, 73, 10, "%2d) ");
+        Display.BotSubstitution(FL_SPELLMAX, 73, 10, "%2d) ");
     }
-    botsub(HP, 69, 1, "%3d");
-    botsub(HPMAX, 69, 1, "%3d");
-	botsub(HUNGER, 69, 11, "%3d");
-    botsub(HUNGERMAX, 73, 11, "%3d");
-    botsub(AC, 73, 8, "%-3d");
-    botsub(WCLASS, 73, 9, "%-3d");
-    botsub(EXPERIENCE, 28, 19, "%-9d");
+    Display.BotSubstitution(FL_HP, 69, 1, "%3d");
+    Display.BotSubstitution(FL_HPMAX, 69, 1, "%3d");
+	Display.BotSubstitution(HUNGER, 69, 11, "%3d");
+    Display.BotSubstitution(HUNGERMAX, 73, 11, "%3d");
+    Display.BotSubstitution(AC, 73, 8, "%-3d");
+    Display.BotSubstitution(WCLASS, 73, 9, "%-3d");
+    Display.BotSubstitution(EXPERIENCE, 28, 19, "%-9d");
 
-    if(cdesc[LEVEL] != cbak[LEVEL]) {
+    if(cdesc[FL_LEVEL] != cbak[FL_LEVEL]) {
         cursor(50, 18);
-        lprintf(classname[cdesc[LEVEL] - 1]);
+        lprintf(classname[cdesc[FL_LEVEL] - 1]);
     }
 
-    if(cdesc[LEVEL] > 99) {
-        botsub(LEVEL, 5, 19, "%3d");
+    if(cdesc[FL_LEVEL] > 99) {
+        Display.BotSubstitution(FL_LEVEL, 5, 19, "%3d");
     }
 
     else {
-        botsub(LEVEL, 5, 19, " %-2d");
+        Display.BotSubstitution(FL_LEVEL, 5, 19, " %-2d");
     }
 
-    cdesc[TMP] = cdesc[STRENGTH] + cdesc[STREXTRA];
-    botsub(TMP, 73, 2, "%-2d");
-    botsub(INTELLIGENCE, 73, 3, "%-2d");
-    botsub(WISDOM, 73, 4, "%-2d");
-    botsub(CONSTITUTION, 73, 5, "%-2d");
-    botsub(DEXTERITY, 73, 6, "%-2d");
-    botsub(CHARISMA, 73, 7, "%-2d");
+    cdesc[TMP] = cdesc[FL_STRENGTH] + cdesc[FL_STREXTRA];
+    Display.BotSubstitution(TMP, 73, 2, "%-2d");
+    Display.BotSubstitution(INTELLIGENCE, 73, 3, "%-2d");
+    Display.BotSubstitution(WISDOM, 73, 4, "%-2d");
+    Display.BotSubstitution(CONSTITUTION, 73, 5, "%-2d");
+    Display.BotSubstitution(FL_DEXTERITY, 73, 6, "%-2d");
+    Display.BotSubstitution(FL_CHARISMA, 73, 7, "%-2d");
 
     if((level != cbak[CAVELEVEL])
             || (cdesc[TELEFLAG] != cbak[TELEFLAG])) {
@@ -249,18 +243,19 @@ bot_linex(void)
         }
     }
 
-    botsub(GOLD, 44, 18, "%-6d");
+    Display.BotSubstitution(GOLD, 44, 18, "%-6d");
     botside();
 }
 
 /*
 special subroutine to update only the gold number on the bottomlines
-called from ogold()
+called from fl_gold()
 */
 void
 bottomgold(void)
 {
-    botsub(GOLD, 44, 18, "%-6d");
+	FLDisplay Display;
+    Display.BotSubstitution(GOLD, 44, 18, "%-6d");
 }
 
 /*
@@ -270,19 +265,20 @@ called in monster.c hitplayer() and spattack()
 static void
 bot_hpx(void)
 {
+	FLDisplay Display;
 
     cursor(69, 1);
     lprintf("HP:");
     cursor(72, 1);
-    lprintf("%3d", (int) cdesc[HP]);
+    lprintf("%3d", (int) cdesc[FL_HP]);
 
     if(cdesc[EXPERIENCE] != cbak[EXPERIENCE]) {
-        recalc();
+        fl_recalculate_armor_class();
         bot_linex();
     }
 
     else {
-        botsub(HP, 72, 1, "%3d");
+        Display.BotSubstitution(FL_HP, 72, 1, "%3d");
     }
 }
 
@@ -292,7 +288,8 @@ special routine to update number of spells called from regen()
 static void
 bot_spellx(void)
 {
-    botsub(SPELLS, 73, 10, "%2d");
+	FLDisplay Display;
+    Display.BotSubstitution(FL_SPELLS, 73, 10, "%2d");
 }
 
 /*
@@ -307,23 +304,23 @@ struct bot_side_def
 };
 
 static struct bot_side_def bot_data[] = {
-    {STEALTH,"stealth"},
-    {UNDEADPRO,"undead pro"},
-    {SPIRITPRO,"spirit pro"},
-    {CHARMCOUNT,"Charm"},
-    {TIMESTOP,"Time Stop"},
-    {HOLDMONST,"Hold Monst"},
-    {GIANTSTR,"Giant Str"},
-    {FIRERESISTANCE,"Fire Resit"},
-    {DEXCOUNT,"Dexterity"},
-    {STRCOUNT,"Strength"},
-    {SCAREMONST,"Scare"},
-    {HASTESELF,"Haste Self"},
-    {CANCELLATION,"Cancel"},
-    {INVISIBILITY,"Invisible"},
-    {ALTPRO,"Protect 3"},
-    {PROTECTIONTIME,"Protect 2"},
-    {WTW,"Wall-Walk"}
+    {FL_STEALTH,"stealth"},
+    {FL_UNDEADPRO,"undead pro"},
+    {FL_SPIRITPRO,"spirit pro"},
+    {FL_CHARMCOUNT,"Charm"},
+    {FL_TIMESTOP,"Time Stop"},
+    {FL_HOLDMONST,"Hold Monst"},
+    {FL_GIANTSTR,"Giant Str"},
+    {FL_FIRERESISTANCE,"Fire Resit"},
+    {FL_DEXCOUNT,"Dexterity"},
+    {FL_STRCOUNT,"Strength"},
+    {FL_SCAREMONST,"Scare"},
+    {FL_HASTESELF,"Haste Self"},
+    {FL_CANCELLATION,"Cancel"},
+    {FL_INVISIBILITY,"Invisible"},
+    {FL_ALTPRO,"Protect 3"},
+    {FL_PROTECTIONTIME,"Protect 2"},
+    {FL_WTW,"Wall-Walk"}
 };
 
 static void
@@ -340,13 +337,13 @@ botside(void)
                     cursor(53, 19);
                     lprintf(bot_data[i].spell_text);
                     /*Reset cursor position. ~Gibbon */
-                    cursors();
+                    cursor(1,24);
                 }
             } else if(cdesc[idx] == 0) {
                 cursor(53, 19);
                 lprintf("          ");
                 /*Reset cursor position. ~Gibbon */
-                cursors();
+                cursor(1,24);
             }
             cbak[idx] = cdesc[idx];
         }
@@ -429,22 +426,22 @@ drawscreen(void)
     /* display lines of the screen */
     for(j = d_ymin; j < d_ymax; j++) {
         /* When we show a spot of the dungeon, we have 4 cases:
-           squares we know nothing about
-           - know == 0
-           squares we've been at and still know whats there
-           - know == KNOWALL (== KNOWHERE | HAVESEEN)
+           squares we been_here_before nothing about
+           - been_here_before == 0
+           squares we've been at and still been_here_before whats there
+           - been_here_before == KNOWALL (== KNOWHERE | HAVESEEN)
            squares we've been at, but don't still recall because
            something else happened there.
-           - know == HAVESEEN
+           - been_here_before == HAVESEEN
            squares we recall, but haven't been at (an error condition)
-           - know == KNOWHERE
+           - been_here_before == KNOWHERE
 
            to minimize printing of spaces, scan from left of line until
            we reach a location that the user knows.
          */
         ileft = d_xmin - 1;
         while(++ileft < d_xmax) {
-            if(know[ileft][j]) {
+            if(been_here_before[ileft][j]) {
                 break;
             }
         }
@@ -457,7 +454,7 @@ drawscreen(void)
          */
         iright = d_xmax;
         while(--iright > ileft) {
-            if(know[iright][j]) {
+            if(been_here_before[iright][j]) {
                 break;
             }
         }
@@ -472,9 +469,9 @@ drawscreen(void)
                for we might have an unknown spot in the middle of
                an otherwise known line.
              */
-            if(know[i][j] == 0) {
+            if(been_here_before[i][j] == 0) {
                 nlprc(' ');
-            } else if(know[i][j] & HAVESEEN) {
+            } else if(been_here_before[i][j] & HAVESEEN) {
                 /*
                  * if monster there and the user still knows the place,
                  * then show the monster.  Otherwise, show what was
@@ -485,12 +482,12 @@ drawscreen(void)
                     continue;
                 }
 
-                k = mitem[i][j];
+                k = monster_identification[i][j];
 
-                if(k && know[i][j] & KNOWHERE) {
+                if(k && been_here_before[i][j] & KNOWHERE) {
                     nlprc(monstnamelist[k]);
                 } else {
-                    nlprc(objnamelist[item[i][j]]);
+                    nlprc(objnamelist[object_identification[i][j]]);
                 }
             } else {
                 /*
@@ -498,7 +495,7 @@ drawscreen(void)
                  * to an 'unknown' state.
                  */
                 nlprc(' ');
-                mitem[i][j] = item[i][j] = 0;
+                monster_identification[i][j] = object_identification[i][j] = 0;
             }
         }
     }
@@ -525,11 +522,11 @@ showcell(int x, int y)
 {
     int i, j, k, m;
 
-    if(cdesc[BLINDCOUNT]) {
+    if(cdesc[FL_BLINDCOUNT]) {
         return;  /* see nothing if blind     */
     }
 
-    if(cdesc[AWARENESS]) {
+    if(cdesc[FL_AWARENESS]) {
         minx = x - 3;
         maxx = x + 3;
         miny = y - 3;
@@ -561,21 +558,21 @@ showcell(int x, int y)
 
     for(j = miny; j <= maxy; j++)
         for(m = minx; m <= maxx; m++)
-            if((know[m][j] & KNOWHERE) == 0) {
+            if((been_here_before[m][j] & KNOWHERE) == 0) {
                 cursor(m + 1, j + 1);
                 x = maxx;
 
-                while(know[x][j] & KNOWHERE) {
+                while(been_here_before[x][j] & KNOWHERE) {
                     --x;
                 }
 
                 for(i = m; i <= x; i++) {
-                    if((k = mitem[i][j]) != 0) {
+                    if((k = monster_identification[i][j]) != 0) {
                         lprc(monstnamelist[k]);
                     }
 
                     else
-                        switch(k = item[i][j]) {
+                        switch(k = object_identification[i][j]) {
                         case OWALL:
                         case 0:
                         case OIVTELETRAP:
@@ -590,7 +587,7 @@ showcell(int x, int y)
                             break;
                         };
 
-                    know[i][j] = KNOWALL;
+                    been_here_before[i][j] = KNOWALL;
                 }
 
                 m = maxx;
@@ -598,18 +595,16 @@ showcell(int x, int y)
 }
 
 /*
-this routine shows only the spot that is given it.  the spaces around
-these coordinated are not shown
 used in godirect() in monster.c for missile weapons display
 */
 void
-show1cell(int x, int y)
+fl_show_designated_cell_only(int x, int y)
 {
     int k;
     cursor(x + 1, y + 1);
 
     /* see nothing if blind, but clear previous player position */
-    if(cdesc[BLINDCOUNT]) {
+    if(cdesc[FL_BLINDCOUNT]) {
         if(x == oldx && y == oldy) {
             lprc(' ');
         }
@@ -617,14 +612,14 @@ show1cell(int x, int y)
         return;
     }
 
-    k = mitem[x][y];
+    k = monster_identification[x][y];
 
     if(k) {
         lprc(monstnamelist[k]);
     }
 
     else {
-        k = item[x][y];
+        k = object_identification[x][y];
 
         switch(k) {
         case OWALL:
@@ -642,7 +637,7 @@ show1cell(int x, int y)
     }
 
     /* we end up knowing about it */
-    know[x][y] = KNOWALL;
+    been_here_before[x][y] = KNOWALL;
 }
 
 /*
@@ -654,7 +649,7 @@ cursor values start from 1 up
 void
 showplayer(void)
 {
-    show1cell(oldx, oldy);
+    fl_show_designated_cell_only(oldx, oldy);
     cursor(playerx + 1, playery + 1);
     lprc('@');
     cursor(playerx + 1, playery + 1);
@@ -664,7 +659,7 @@ showplayer(void)
 }
 
 /*
-moveplayer(dir)
+moveplayer(sphere_direction)
 
 subroutine to move the player from one room to another
 returns 0 if can't move in that direction or hit a monster or on an object
@@ -675,7 +670,7 @@ players when walking into walls) if player walks off screen or into wall
 int diroffx[] = { 0, 0, 1, 0, -1, 1, -1, 1, -1 };
 int diroffy[] = { 0, 1, 0, -1, 0, -1, -1, 1, 1 };
 int
-moveplayer(int dir)
+moveplayer(int sphere_direction)
 /*  from = present room #  direction = [1-north]
 [2-east] [3-south] [4-west] [5-northeast]
 [6-northwest] [7-southeast] [8-southwest]
@@ -683,26 +678,26 @@ if direction=0, don't move--just show where he is */
 {
     int k, m, i, j;
 
-    if(cdesc[CONFUSE])
-        if(cdesc[LEVEL] < TRnd(30)) {
-            dir = TRund(9);     /*if confused any dir */
+    if(cdesc[FL_CONFUSE])
+        if(cdesc[FL_LEVEL] < TRnd(30)) {
+            sphere_direction = TRund(9);     /*if confused any sphere_direction */
         }
 
-    k = playerx + diroffx[dir];
-    m = playery + diroffy[dir];
+    k = playerx + diroffx[sphere_direction];
+    m = playery + diroffy[sphere_direction];
 
     if(k < 0 || k >= MAXX || m < 0 || m >= MAXY) {
         nomove = 1;
         return (y_larn_rep = 0);
     }
 
-    i = item[k][m];
-    j = mitem[k][m];
+    i = object_identification[k][m];
+    j = monster_identification[k][m];
 
     /* prevent the player from moving onto a wall, or a closed door,
        unless the character has Walk-Through-Walls.
      */
-    if((i == OCLOSEDDOOR || i == OWALL) && cdesc[WTW] == 0) {
+    if((i == OCLOSEDDOOR || i == OWALL) && cdesc[FL_WTW] == 0) {
         nomove = 1;
         return (y_larn_rep = 0);
     }
@@ -712,7 +707,7 @@ if direction=0, don't move--just show where he is */
 
         for(k = 0; k < MAXX; k++)
             for(m = 0; m < MAXY; m++)
-                if(item[k][m] == OENTRANCE) {
+                if(object_identification[k][m] == OENTRANCE) {
                     playerx = k;
                     playery = m;
                     positionplayer();
@@ -730,8 +725,8 @@ if direction=0, don't move--just show where he is */
 
     /* check for the player ignoring an altar
      */
-    if(item[playerx][playery] == OALTAR && !prayed) {
-        cursors();
+    if(object_identification[playerx][playery] == OALTAR && !prayed) {
+        cursor(1,24);
         lprintf("\nYou have ignored the altar!");
         act_ignore_altar();
     }
@@ -757,14 +752,14 @@ if direction=0, don't move--just show where he is */
 *  function to show what magic items have been discovered thus far
 *  enter with -1 for just spells, anything else will give scrolls & potions
 */
-static int lincount, count;
+static int lincount, flcount;
 void
 seemagic(int arg)
 {
     int i, j, k, number;
     int sort[SPNUM +
                    1];		/* OK as long as SPNUM > MAXSCROLL,MAXPOTION */
-    count = lincount = 0;
+    flcount = lincount = 0;
 
     /* count and sort the known spell codes
      */
@@ -817,8 +812,8 @@ seemagic(int arg)
 
     lincount += 3;
 
-    if(count != 0) {
-        count = 2;
+    if(flcount != 0) {
+        flcount = 2;
         seepage();
     }
 
@@ -848,7 +843,7 @@ seemagic(int arg)
         }
 
     lprintf("\nThe magic scrolls you have found to date are:\n\n");
-    count = 0;
+    flcount = 0;
 
     for(i = 0; i < number; i++) {
         lprintf("a magic scroll %-26s", &scrollname[sort[i]][1]);
@@ -857,8 +852,8 @@ seemagic(int arg)
 
     lincount += 3;
 
-    if(count != 0) {
-        count = 2;
+    if(flcount != 0) {
+        flcount = 2;
         seepage();
     }
 
@@ -888,7 +883,7 @@ seemagic(int arg)
         }
 
     lprintf("\nThe magic potions you have found to date are:\n\n");
-    count = 0;
+    flcount = 0;
 
     for(i = 0; i < number; i++) {
         lprintf("a magic potion %-26s", &potionname[sort[i]][1]);
@@ -909,9 +904,9 @@ seemagic(int arg)
 static void
 seepage(void)
 {
-    if(++count == 3) {
+    if(++flcount == 3) {
         lincount++;
-        count = 0;
+        flcount = 0;
         lprc('\n');
 
         if(lincount > 17) {

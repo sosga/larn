@@ -44,7 +44,7 @@ const char *classname[] = {
 
 /*
 table of experience needed to be a certain level of player
-skill[cdesc[LEVEL]] is the experience required to attain the next level
+skill[cdesc[FL_LEVEL]] is the experience required to attain the next level
 */
 int skill[] = {
     0,      10,      20,      40,      80,     160,     320,     640,    1280,    2560,
@@ -65,11 +65,11 @@ int skill[] = {
 char *lpbuf, *lpnt, *inbuffer, *lpend;	/* input/output pointers to the buffers */
 
 struct cel *cell[(MAXX * MAXY) * (MAXLEVEL + MAXVLEVEL)]; /* dungeon storage */
-int hitp[MAXX][MAXY];		/*  monster hp on level     */
-int iarg[MAXX][MAXY];		/*  arg for the item array  */
-int item[MAXX][MAXY];		/*  objects in maze if any  */
-int know[MAXX][MAXY];		/*  1 or 0 if here before   */
-int mitem[MAXX][MAXY];		/*  monster item array      */
+int monster_hit_points[MAXX][MAXY];		/*  monster hp on level     */
+int object_argument[MAXX][MAXY];		/*  arg for the object_identification array  */
+int object_identification[MAXX][MAXY];		/*  objects in maze if any  */
+int been_here_before[MAXX][MAXY];		/*  1 or 0 if here before   */
+int monster_identification[MAXX][MAXY];		/*  monster object_identification array      */
 int stealth[MAXX][MAXY];	/*  0=sleeping 1=awake monst */
 char lastmonst[40];		/*  this has the name of the current monster    */
 int beenhere[MAXLEVEL + MAXVLEVEL];	/*  1 if have been on this level */
@@ -106,7 +106,7 @@ struct sphere *spheres = 0;	/*pointer to linked list for spheres of annihilation
 
 const char *levelname[14] = {
     "H","1","2","3","4","5","6","7","8","9","10",
-    "V1","V2","V3"
+    "T1","T2","T3"
 };
 
 /* This char array was too short.  MAXOBJECT is defined as 92 and having this
@@ -170,8 +170,8 @@ int objnamelist[87] = {
     '*',  //an enchanting emerald
     '*',  //a sparkling sapphire
     '8',  //the dungeon entrance
-    '9',  //a volcanic shaft leading downward
-    '9',  //the base of a volcanic shaft
+    '9',  //the Temple of Larn
+    '9',  //the base of the Temple of Larn
     ')',  //a battle axe
     ')',  //a longsword
     ')',  //a flail
@@ -301,7 +301,7 @@ const char *objectname[] = {
     "a scarab of negate spirit", "a cube of undead control",
     "device of theft prevention", "a brilliant diamond", "a ruby",
     "an enchanting emerald", "a sparkling sapphire", "the dungeon entrance",
-    "a volcanic shaft leaning downward", "the base of a volcanic shaft",
+    "the Temple of Larn", "the exit of the Temple of Larn",
     "a battle axe", "a longsword", "a longsword of Hymie", "ring mail",
     "Studded Leather Armor",
     "Splint Mail", "Plate Armor", "Stainless Plate Armor",
@@ -947,7 +947,7 @@ const char *spelmes[] = { "",
 *  occurrence
 *
 *  0 - armor           1 - weapon      2 - enlightenment   3 - paper
-*  4 - create monster  5 - create item 6 - aggravate       7 - time warp
+*  4 - create monster  5 - create object_identification 6 - aggravate       7 - time warp
 *  8 - teleportation   9 - expanded awareness              10 - haste monst
 *  11 - heal monster   12 - spirit protection      13 - undead protection
 *  14 - stealth        15 - magic mapping          16 - hold monster

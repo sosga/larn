@@ -24,6 +24,7 @@
 #include "../core/sysdep.hpp"
 #include "../dungeon/dungeon.hpp"
 #include "save.hpp"
+#include "../core/funcs.hpp"
 /*
  *  routine to save the present level into storage
  */
@@ -40,19 +41,19 @@ Save::save(void)
     /* pointer to past end of this level's cells */
     pecel = pcel;
 
-    pitem = item[0];
-    piarg = iarg[0];
-    pknow = know[0];
-    pmitem = mitem[0];
-    phitp = hitp[0];
+    pitem = object_identification[0];
+    piarg = object_argument[0];
+    pknow = been_here_before[0];
+    pmitem = monster_identification[0];
+    phitp = monster_hit_points[0];
 
     while(pcel < pecel) {
 
-        pcel->mitem = *pmitem++;
-        pcel->hitp = *phitp++;
-        pcel->item = *pitem++;
-        pcel->know = *pknow++;
-        pcel->iarg = *piarg++;
+        pcel->monster_identification = *pmitem++;
+        pcel->monster_hit_points = *phitp++;
+        pcel->object_identification = *pitem++;
+        pcel->been_here_before = *pknow++;
+        pcel->object_argument = *piarg++;
         pcel++;
     }
 }
@@ -74,19 +75,19 @@ Load::load(void)
     /* pointer to past end of this level's cells */
     pecel = pcel;
 
-    pitem = item[0];
-    piarg = iarg[0];
-    pknow = know[0];
-    pmitem = mitem[0];
-    phitp = hitp[0];
+    pitem = object_identification[0];
+    piarg = object_argument[0];
+    pknow = been_here_before[0];
+    pmitem = monster_identification[0];
+    phitp = monster_hit_points[0];
 
     while(pcel < pecel) {
 
-        *pmitem++ = pcel->mitem;
-        *phitp++ = pcel->hitp;
-        *pitem++ = pcel->item;
-        *pknow++ = pcel->know;
-        *piarg++ = pcel->iarg;
+        *pmitem++ = pcel->monster_identification;
+        *phitp++ = pcel->monster_hit_points;
+        *pitem++ = pcel->object_identification;
+        *pknow++ = pcel->been_here_before;
+        *piarg++ = pcel->object_argument;
         pcel++;
     }
 }
@@ -170,13 +171,14 @@ Save::savegame(char *fname)
 void
 Load::restoregame(char *fname)
 {
+    FLCoreFuncs CoreFuncs;
     int i, k;
     struct sphere *sp, *sp2;
     /*struct stat filetimes; */
     time_t temptime;
     Load load;
 
-    cursors();
+    cursor(1,24);
     fl_display_message("\nRestoring . . .");
     lflush();
     if(lopen(fname) <= 0) {
@@ -251,17 +253,17 @@ Load::restoregame(char *fname)
     oldx = oldy = 0;
 
     /* died a post mortem death */
-    if(cdesc[HP] < 0) {
+    if(cdesc[FL_HP] < 0) {
         died(284);
         return;
     }
 
     /* if patch up lev 25 player */
-    if(cdesc[LEVEL] == 25 && cdesc[EXPERIENCE] > skill[24]) {
+    if(cdesc[FL_LEVEL] == 25 && cdesc[EXPERIENCE] > skill[24]) {
         long tmp;
         tmp = cdesc[EXPERIENCE] - skill[24];	/* amount to go up */
         cdesc[EXPERIENCE] = skill[24];
-        raiseexperience(tmp);
+        CoreFuncs.IncreaseExperience(tmp);
     }
 
     load.load();

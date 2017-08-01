@@ -12,10 +12,12 @@
    limitations under the License.
 */
 
-#include <cstdlib>
+#include "funcs.hpp"
+#include "../config/larncons.h"
+#include "../config/data.h"
 
-template<typename T>
-inline T THungerTime(const T& x)
-{
-  return(TIMELIMIT() - gtime == x);
+void FLCoreFuncs::IncreasePHealth(int x) {
+    if ((cdesc[FL_HP] += x) > cdesc[FL_HPMAX]) {
+        cdesc[FL_HP] = cdesc[FL_HPMAX];
+    }
 }

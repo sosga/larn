@@ -49,16 +49,16 @@ makeplayer(void)
     scbr();
     screen_clear();
     fl_json_config_reader.parse(fl_json_file, fl_json_config_value);
-    cdesc[HPMAX] = cdesc[HP] = fl_json_config_value["HP"].asUInt();
+    cdesc[FL_HPMAX] = cdesc[FL_HP] = fl_json_config_value["HP"].asUInt();
     cdesc[HUNGERMAX] = cdesc[HUNGER] = fl_json_config_value["HGR"].asInt();
     /*  player starts at level one          */
-    cdesc[LEVEL] = fl_json_config_value["LEVEL"].asUInt();
+    cdesc[FL_LEVEL] = fl_json_config_value["LEVEL"].asUInt();
     /*  total # spells starts off as 3  */
-    cdesc[SPELLMAX] = cdesc[SPELLS] = fl_json_config_value["SPELLS"].asUInt();
+    cdesc[FL_SPELLMAX] = cdesc[FL_SPELLS] = fl_json_config_value["SPELLS"].asUInt();
     /* start regeneration correctly */
-    cdesc[REGENCOUNTER] = fl_json_config_value["REGENCOUNTER"].asUInt();
-    cdesc[ECOUNTER] = fl_json_config_value["ECOUNTER"].asUInt();
-    cdesc[SHIELD] = cdesc[WEAR] = cdesc[WIELD] = -1;
+    cdesc[FL_REGENCOUNTER] = fl_json_config_value["REGENCOUNTER"].asUInt();
+    cdesc[FL_ECOUNTER] = fl_json_config_value["ECOUNTER"].asUInt();
+    cdesc[FL_SHIELD] = cdesc[FL_WEAR] = cdesc[FL_WIELD] = -1;
 
     for(i = 0; i < MAXINVEN; i++) {
         iven[i] = 0;
@@ -70,8 +70,8 @@ makeplayer(void)
     iven[0] = fl_json_config_value["STARTING-ARMOR"].asInt();
     iven[1] = fl_json_config_value["STARTING-WEAPON"].asInt();
     iven[2] = 0;
-    ivenarg[1] = ivenarg[0] = cdesc[WEAR] = 0;
-    cdesc[WIELD] = 1;
+    ivenarg[1] = ivenarg[0] = cdesc[FL_WEAR] = 0;
+    cdesc[FL_WIELD] = 1;
 
     playerx = TRnd(MAXX - 2);
     playery = TRnd(MAXY - 2);
@@ -82,7 +82,7 @@ makeplayer(void)
         cdesc[i] = MAXINVEN;
     }
 
-    recalc();
+    fl_recalculate_armor_class();
     screen_clear();
     enter_name();
 }

@@ -12,10 +12,16 @@
    limitations under the License.
 */
 
-#include <cstdlib>
+#include "botsubstitution.hpp"
+#include "../config/larncons.h"
+#include "../config/data.h"
+#include "../../includes/display.h"
+#include "../../includes/io.h"
 
-template<typename T>
-inline T THungerTime(const T& x)
-{
-  return(TIMELIMIT() - gtime == x);
+void FLDisplay::BotSubstitution(int idx, int x, int y, const char *str) {
+	if (cdesc[(idx)] != cbak[(idx)]) {
+		cbak[(idx)] = cdesc[(idx)];
+		cursor((x),(y));
+		lprintf((str),static_cast<int>(cdesc[(idx)]));
+	}
 }

@@ -49,11 +49,11 @@ movemonst ( void )
 {
     int i, j, movecnt = 0, smart_count, min_int;
 
-    if ( cdesc[HOLDMONST] ) {
+    if ( cdesc[FL_HOLDMONST] ) {
         return;  /* no action if monsters are held */
     }
 
-    if ( cdesc[AGGRAVATE] ) {	/* determine window of monsters to move */
+    if ( cdesc[FL_AGGRAVATE] ) {	/* determine window of monsters to move */
         tmp1 = playery - 5;
         tmp2 = playery + 6;
         tmp3 = playerx - 10;
@@ -124,14 +124,14 @@ movemonst ( void )
     smart_count = 0;
     min_int = 10; /* minimum monster intelligence to move smart */
 
-    if ( cdesc[AGGRAVATE] || !cdesc[STEALTH] ) {
+    if ( cdesc[FL_AGGRAVATE] || !cdesc[FL_STEALTH] ) {
         for ( j = tmp1; j < tmp2; j++ )
             for ( i = tmp3; i < tmp4; i++ )
-                if ( mitem[i][j] ) {
+                if ( monster_identification[i][j] ) {
                     movelist[movecnt].x = i;
                     movelist[movecnt].y = j;
 
-                    if ( monster[mitem[i][j]].intelligence > min_int ) {
+                    if ( monster[monster_identification[i][j]].intelligence > min_int ) {
                         movelist[movecnt].smart = 1;
                         smart_count++;
                     }
@@ -151,7 +151,7 @@ movemonst ( void )
        monster movement.
      */
     if ( movecnt > 0 ) {
-        if ( cdesc[SCAREMONST] )
+        if ( cdesc[FL_SCAREMONST] )
             for ( i = 0; i < movecnt; i++ ) {
                 move_scared ( movelist[i].x, movelist[i].y );
             }
@@ -187,18 +187,18 @@ movemonst ( void )
        the player from getting free hits on a monster with long range
        spells or when stealthed.
      */
-    if ( cdesc[AGGRAVATE] || !cdesc[STEALTH] ) {
+    if ( cdesc[FL_AGGRAVATE] || !cdesc[FL_STEALTH] ) {
         /* If the last monster hit is within the move window, its already
            been moved.
          */
         if ( ( ( lasthx < tmp3 || lasthx >= tmp4 ) ||
                 ( lasthy < tmp1 || lasthy >= tmp2 ) )
-                && mitem[lasthx][lasthy] ) {
-            if ( cdesc[SCAREMONST] ) {
+                && monster_identification[lasthx][lasthy] ) {
+            if ( cdesc[FL_SCAREMONST] ) {
                 move_scared ( lasthx, lasthy );
             }
 
-            else if ( monster[mitem[lasthx][lasthy]].intelligence >
+            else if ( monster[monster_identification[lasthx][lasthy]].intelligence >
                       min_int ) {
                 if ( smart_count == 0 ) {
                     build_proximity_ripple ();
@@ -224,12 +224,12 @@ movemonst ( void )
          */
         if ( ( ( ( lasthx < tmp3 || lasthx >= tmp4 ) ||
                  ( lasthy < tmp1 || lasthy >= tmp2 ) ) &&
-                mitem[lasthx][lasthy] ) || !stealth[lasthx][lasthy] ) {
-            if ( cdesc[SCAREMONST] ) {
+                monster_identification[lasthx][lasthy] ) || !stealth[lasthx][lasthy] ) {
+            if ( cdesc[FL_SCAREMONST] ) {
                 move_scared ( lasthx, lasthy );
             }
 
-            else if ( monster[mitem[lasthx][lasthy]].intelligence >
+            else if ( monster[monster_identification[lasthx][lasthy]].intelligence >
                       min_int ) {
                 if ( smart_count == 0 ) {
                     build_proximity_ripple ();
@@ -312,7 +312,7 @@ build_proximity_ripple ( void )
 
     for ( k = yl; k <= yh; k++ )
         for ( m = xl; m <= xh; m++ ) {
-            switch ( item[m][k] ) {
+            switch ( object_identification[m][k] ) {
             case OWALL:
             case OPIT:
             case OTRAPARROW:
@@ -384,12 +384,12 @@ move_scared ( int i, int j )
     /* check for a half-speed monster, and check if not to move.  Could be
        done in the monster list build.
      */
-    switch ( mitem[i][j] ) {
+    switch ( monster_identification[i][j] ) {
     case TROGLODYTE:
     case HOBGOBLIN:
     case METAMORPH:
     case XVART:
-    case INVISIBLESTALKER:
+    case FL_INVISIBLESTALKER:
     case ICELIZARD:
         if ( ( gtime & 1 ) == 1 ) {
             return;
@@ -412,9 +412,9 @@ move_scared ( int i, int j )
         yl = MAXY - 1;
     }
 
-    if ( ( tmp = item[xl][yl] ) != OWALL )
-        if ( mitem[xl][yl] == 0 )
-            if ( ( mitem[i][j] != VAMPIRE ) || ( tmp != OMIRROR ) )
+    if ( ( tmp = object_identification[xl][yl] ) != OWALL )
+        if ( monster_identification[xl][yl] == 0 )
+            if ( ( monster_identification[i][j] != VAMPIRE ) || ( tmp != OMIRROR ) )
                 if ( tmp != OCLOSEDDOOR ) {
                     mmove ( i, j, xl, yl );
                 }
@@ -437,12 +437,12 @@ move_smart ( int i, int j )
     /* check for a half-speed monster, and check if not to move.  Could be
        done in the monster list build.
      */
-    switch ( mitem[i][j] ) {
+    switch ( monster_identification[i][j] ) {
     case TROGLODYTE:
     case HOBGOBLIN:
     case METAMORPH:
     case XVART:
-    case INVISIBLESTALKER:
+    case FL_INVISIBLESTALKER:
     case ICELIZARD:
         if ( ( gtime & 1 ) == 1 ) {
             return;
@@ -453,13 +453,13 @@ move_smart ( int i, int j )
        closer to the player (has a lower value) than the monster's
        current position.
      */
-    if ( mitem[i][j] != VAMPIRE )
+    if ( monster_identification[i][j] != VAMPIRE )
         for ( z = 1; z < 9; z++ ) {	/* go around in a circle */
             x = i + diroffx[z];
             y = j + diroffy[z];
 
             if ( screen[x][y] < screen[i][j] )
-                if ( !mitem[x][y] ) {
+                if ( !monster_identification[x][y] ) {
                     mmove ( i, j, w1x[0] = x, w1y[0] = y );
                     return;
                 }
@@ -474,8 +474,8 @@ move_smart ( int i, int j )
             y = j + diroffy[z];
 
             if ( ( screen[x][y] < screen[i][j] )
-                    && ( item[x][y] != OMIRROR ) )
-                if ( !mitem[x][y] ) {
+                    && ( object_identification[x][y] != OMIRROR ) )
+                if ( !monster_identification[x][y] ) {
                     mmove ( i, j, w1x[0] = x, w1y[0] = y );
                     return;
                 }
@@ -500,12 +500,12 @@ move_dumb ( int i, int j )
     /* check for a half-speed monster, and check if not to move.  Could be
        done in the monster list build.
      */
-    switch ( mitem[i][j] ) {
+    switch ( monster_identification[i][j] ) {
     case TROGLODYTE:
     case HOBGOBLIN:
     case METAMORPH:
     case XVART:
-    case INVISIBLESTALKER:
+    case FL_INVISIBLESTALKER:
     case ICELIZARD:
         if ( ( gtime & 1 ) == 1 ) {
             return;
@@ -575,10 +575,10 @@ move_dumb ( int i, int j )
                 break;		/* exitloop */
             }
 
-            else if ( ( item[k][m] != OWALL ) &&
-                      ( item[k][m] != OCLOSEDDOOR ) &&
-                      ( ( mitem[k][m] == 0 ) || ( ( k == i ) && ( m == j ) ) ) &&
-                      ( ( mitem[i][j] != VAMPIRE ) || ( item[k][m] != OMIRROR ) ) ) {
+            else if ( ( object_identification[k][m] != OWALL ) &&
+                      ( object_identification[k][m] != OCLOSEDDOOR ) &&
+                      ( ( monster_identification[k][m] == 0 ) || ( ( k == i ) && ( m == j ) ) ) &&
+                      ( ( monster_identification[i][j] != VAMPIRE ) || ( object_identification[k][m] != OMIRROR ) ) ) {
                 tmp = ( playerx - k ) * ( playerx - k ) + ( playery - m ) *
                       ( playery - m );
 
@@ -628,10 +628,10 @@ mmove ( int aa, int bb, int cc, int dd )
         return;
     }
 
-    i = item[cc][dd];
+    i = object_identification[cc][dd];
 
     if ( ( i == OPIT ) || ( i == OTRAPDOOR ) )
-        switch ( mitem[aa][bb] ) {
+        switch ( monster_identification[aa][bb] ) {
         case BAT:
         case EYE:
         case SPIRITNAGA:
@@ -651,31 +651,31 @@ mmove ( int aa, int bb, int cc, int dd )
             break;
 
         default:
-            mitem[aa][bb] = 0;	/* fell in a pit or trapdoor */
+            monster_identification[aa][bb] = 0;	/* fell in a pit or trapdoor */
         };
 
-    tmp = mitem[aa][bb];
-    mitem[cc][dd] = tmp;
+    tmp = monster_identification[aa][bb];
+    monster_identification[cc][dd] = tmp;
 
-    if ( i == OANNIHILATION ) {
+    if ( i == FL_OBJECT_SPHERE_OF_ANNIHILATION ) {
         if ( tmp >= DEMONLORD + 3 ) {	/* demons dispel spheres */
-            cursors ();
+            cursor(1,24);
             lprintf ( "\nThe %s dispels the sphere!", monster[tmp].name );
-            rmsphere ( cc, dd );	/* delete the sphere */
+            fl_remove_sphere_of_annihilation ( cc, dd );	/* delete the sphere */
         }
 
         else {
-            mitem[cc][dd] = i = tmp = 0;
+            monster_identification[cc][dd] = i = tmp = 0;
         }
     }
 
     stealth[cc][dd] = 1;
 
-    if ( ( hitp[cc][dd] = hitp[aa][bb] ) < 0 ) {
-        hitp[cc][dd] = 1;
+    if ( ( monster_hit_points[cc][dd] = monster_hit_points[aa][bb] ) < 0 ) {
+        monster_hit_points[cc][dd] = 1;
     }
 
-    mitem[aa][bb] = 0;
+    monster_identification[aa][bb] = 0;
 
     if ( tmp == LEPRECHAUN )
         switch ( i ) {
@@ -687,20 +687,20 @@ mmove ( int aa, int bb, int cc, int dd )
         case ORUBY:
         case OEMERALD:
         case OSAPPHIRE:
-            item[cc][dd] = 0;	/* leprechaun takes gold */
+            object_identification[cc][dd] = 0;	/* leprechaun takes gold */
         };
 
     if ( tmp == TROLL )		/* if a troll regenerate him */
         if ( ( gtime & 1 ) == 0 )
-            if ( monster[tmp].hitpoints > hitp[cc][dd] ) {
-                hitp[cc][dd]++;
+            if ( monster[tmp].hitpoints > monster_hit_points[cc][dd] ) {
+                monster_hit_points[cc][dd]++;
             }
 
     if ( i == OTRAPARROW ) {	/* arrow hits monster */
         who = "An arrow";
 
-        if ( ( hitp[cc][dd] -= TRnd ( 10 ) + level ) <= 0 ) {
-            mitem[cc][dd] = 0;
+        if ( ( monster_hit_points[cc][dd] -= TRnd ( 10 ) + level ) <= 0 ) {
+            monster_identification[cc][dd] = 0;
             flag = 2;
         }
 
@@ -712,8 +712,8 @@ mmove ( int aa, int bb, int cc, int dd )
     if ( i == ODARTRAP ) {	/* dart hits monster */
         who = "A dart";
 
-        if ( ( hitp[cc][dd] -= TRnd ( 6 ) ) <= 0 ) {
-            mitem[cc][dd] = 0;
+        if ( ( monster_hit_points[cc][dd] -= TRnd ( 6 ) ) <= 0 ) {
+            monster_identification[cc][dd] = 0;
             flag = 2;
         }
 
@@ -724,19 +724,19 @@ mmove ( int aa, int bb, int cc, int dd )
 
     if ( i == OTELEPORTER ) {	/* monster hits teleport trap */
         flag = 3;
-        fillmonst ( mitem[cc][dd] );
-        mitem[cc][dd] = 0;
+        fillmonst ( monster_identification[cc][dd] );
+        monster_identification[cc][dd] = 0;
     }
 
-    if ( cdesc[BLINDCOUNT] ) {
+    if ( cdesc[FL_BLINDCOUNT] ) {
         return;  /* if blind don't show where monsters are   */
     }
 
-    if ( know[cc][dd] & HAVESEEN ) {
+    if ( been_here_before[cc][dd] & HAVESEEN ) {
         p = 0;
 
         if ( flag ) {
-            cursors ();
+            cursor(1,24);
         }
 
         switch ( flag ) {
@@ -759,12 +759,12 @@ mmove ( int aa, int bb, int cc, int dd )
         }
     }
 
-    /*  if (y_larn_rep>1) { know[aa][bb] &= 2;  know[cc][dd] &= 2; return; } */
-    if ( know[aa][bb] & HAVESEEN ) {
-        show1cell ( aa, bb );
+    /*  if (y_larn_rep>1) { been_here_before[aa][bb] &= 2;  been_here_before[cc][dd] &= 2; return; } */
+    if ( been_here_before[aa][bb] & HAVESEEN ) {
+        fl_show_designated_cell_only ( aa, bb );
     }
 
-    if ( know[cc][dd] & HAVESEEN ) {
-        show1cell ( cc, dd );
+    if ( been_here_before[cc][dd] & HAVESEEN ) {
+        fl_show_designated_cell_only ( cc, dd );
     }
 }

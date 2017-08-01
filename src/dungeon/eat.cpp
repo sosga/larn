@@ -36,52 +36,52 @@
 void
 eat (int xx, int yy)
 {
-    int dir, fl_eat_try;
+    int sphere_direction, fl_eat_try;
 
-    dir = TRnd (4);
+    sphere_direction = TRnd (4);
 
     fl_eat_try = 2;
 
     while (fl_eat_try) {
-        switch (dir) {
+        switch (sphere_direction) {
         case 1:
             if (xx <= 2)
                 break;		/*  west    */
-            if ((item[xx - 1][yy] != OWALL) || (item[xx - 2][yy] != OWALL))
+            if ((object_identification[xx - 1][yy] != OWALL) || (object_identification[xx - 2][yy] != OWALL))
                 break;
-            item[xx - 1][yy] = item[xx - 2][yy] = 0;
+            object_identification[xx - 1][yy] = object_identification[xx - 2][yy] = 0;
             eat (xx - 2, yy);
             break;
 
         case 2:
             if (xx >= MAXX - 3)
                 break;		/*  east    */
-            if ((item[xx + 1][yy] != OWALL) || (item[xx + 2][yy] != OWALL))
+            if ((object_identification[xx + 1][yy] != OWALL) || (object_identification[xx + 2][yy] != OWALL))
                 break;
-            item[xx + 1][yy] = item[xx + 2][yy] = 0;
+            object_identification[xx + 1][yy] = object_identification[xx + 2][yy] = 0;
             eat (xx + 2, yy);
             break;
 
         case 3:
             if (yy <= 2)
                 break;		/*  south   */
-            if ((item[xx][yy - 1] != OWALL) || (item[xx][yy - 2] != OWALL))
+            if ((object_identification[xx][yy - 1] != OWALL) || (object_identification[xx][yy - 2] != OWALL))
                 break;
-            item[xx][yy - 1] = item[xx][yy - 2] = 0;
+            object_identification[xx][yy - 1] = object_identification[xx][yy - 2] = 0;
             eat (xx, yy - 2);
             break;
 
         case 4:
             if (yy >= MAXY - 3)
                 break;		/*  north   */
-            if ((item[xx][yy + 1] != OWALL) || (item[xx][yy + 2] != OWALL))
+            if ((object_identification[xx][yy + 1] != OWALL) || (object_identification[xx][yy + 2] != OWALL))
                 break;
-            item[xx][yy + 1] = item[xx][yy + 2] = 0;
+            object_identification[xx][yy + 1] = object_identification[xx][yy + 2] = 0;
             eat (xx, yy + 2);
             break;
         };
-        if (++dir > 4) {
-            dir = 1;
+        if (++sphere_direction > 4) {
+            sphere_direction = 1;
             --fl_eat_try;
         }
     }

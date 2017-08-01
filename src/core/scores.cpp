@@ -118,7 +118,7 @@ const char *whydead[31] = {
     "fell through a trap door",
     "drank some poisonous water",
     "fried by an electric shock",
-    "slipped on a volcano shaft",
+    "killed by the Temple of Larn",
     "",
     "attacked by a revolting demon",
     "hit by own magic",
@@ -547,7 +547,7 @@ new2sub ( int score, int i, char *whoo, int whyded )
 *      272     fell through a trap door
 *      273     drank some poisonous water
 *      274     fried by an electric shock
-*      275     slipped on a volcano shaft
+*      275     killed by the Temple of Larn
 *      276     killed by a stupid act of frustration
 *      277     attacked by a revolting demon
 *      278     hit by his own magic
@@ -575,9 +575,9 @@ died ( int x )
         };
 
         --cdesc[LIFEPROT];
-        cdesc[HP] = cdesc[HPMAX];
+        cdesc[FL_HP] = cdesc[FL_HPMAX];
         --cdesc[CONSTITUTION];
-        cursors ();
+        cursor(1,24);
         fl_display_message ( "\nYou feel wiiieeeeerrrrrd all over! " );
         lflush ();
         nap ( 3000 );
@@ -586,7 +586,7 @@ died ( int x )
 
 cantprotect:
     nap ( 3000 );
-    cursors ();
+    cursor(1,24);
     fl_display_message ( "\nPress any key to continue. " );
     ttgetch ();
     lflush ();
@@ -606,7 +606,7 @@ cantprotect:
     screen_clear();
     enable_scroll = 0;
     showscores (x);    /* if we updated the scoreboard */
-    cursors ();
+    cursor(1,24);
     fl_display_message ( "\nPress any key to exit. " );
     scbr ();
     ttgetch ();

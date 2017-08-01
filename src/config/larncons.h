@@ -53,13 +53,13 @@ inline const int CURSOR = 15;
 #endif
 
 /* Destroy object at present location */
-extern int item[MAXX][MAXY];
+extern int object_identification[MAXX][MAXY];
 extern int playerx;
 extern int playery;
-extern int know[MAXX][MAXY];
+extern int been_here_before[MAXX][MAXY];
 inline int forget(void)
 {
-    return item[playerx][playery]=know[playerx][playery] = 0;
+    return object_identification[playerx][playery]=been_here_before[playerx][playery] = 0;
 }
 
 /* Turn on bold display for the terminal */
@@ -170,7 +170,7 @@ inline const int OSEQUIP = 35;
 inline const int ROTHE = 36;
 inline const int XORN = 37;
 inline const int VAMPIRE = 38;
-inline const int INVISIBLESTALKER = 39;
+inline const int FL_INVISIBLESTALKER = 39;
 inline const int POLTERGEIST = 40;
 inline const int DISENCHANTRESS = 41;
 inline const int SHAMBLINGMOUND = 42;
@@ -194,82 +194,82 @@ inline const int DEMONPRINCE = 64;
 /*
 * defines for the character attribute array   cdesc[]
 */
-inline const int STRENGTH = 0;		/* characters physical strength not due to objects */
+inline const int FL_STRENGTH = 0;		/* characters physical strength not due to objects */
 inline const int INTELLIGENCE = 1;
 inline const int WISDOM = 2;
 inline const int CONSTITUTION = 3;
-inline const int DEXTERITY = 4;
-inline const int CHARISMA = 5;
-inline const int HPMAX = 6;
-inline const int HP = 7;
+inline const int FL_DEXTERITY = 4;
+inline const int FL_CHARISMA = 5;
+inline const int FL_HPMAX = 6;
+inline const int FL_HP = 7;
 inline const int GOLD = 8;
 inline const int EXPERIENCE = 9;
-inline const int LEVEL = 10;
-inline const int REGEN = 11;
+inline const int FL_LEVEL = 10;
+inline const int FL_REGEN = 11;
 inline const int WCLASS = 12;
 inline const int AC = 13;
 inline const int BANKACCOUNT = 14;
-inline const int SPELLMAX = 15;
-inline const int SPELLS = 16;
-inline const int ENERGY = 17;
-inline const int ECOUNTER = 18;
-inline const int MOREDEFENSES = 19;
-inline const int WEAR = 20;
-inline const int PROTECTIONTIME = 21;
-inline const int WIELD = 22;
+inline const int FL_SPELLMAX = 15;
+inline const int FL_SPELLS = 16;
+inline const int FL_ENERGY = 17;
+inline const int FL_ECOUNTER = 18;
+inline const int FL_MOREDEFENSES = 19;
+inline const int FL_WEAR = 20;
+inline const int FL_PROTECTIONTIME = 21;
+inline const int FL_WIELD = 22;
 inline const int AMULET = 23;
-inline const int REGENCOUNTER = 24;
+inline const int FL_REGENCOUNTER = 24;
 inline const int MOREDAM = 25;
-inline const int DEXCOUNT = 26;
-inline const int STRCOUNT = 27;
-inline const int BLINDCOUNT = 28;
+inline const int FL_DEXCOUNT = 26;
+inline const int FL_STRCOUNT = 27;
+inline const int FL_BLINDCOUNT = 28;
 inline const int CAVELEVEL = 29;
-inline const int CONFUSE = 30;
-inline const int ALTPRO = 31;
-inline const int HERO = 32;
-inline const int CHARMCOUNT = 33;
-inline const int INVISIBILITY = 34;
-inline const int CANCELLATION = 35;
-inline const int HASTESELF = 36;
+inline const int FL_CONFUSE = 30;
+inline const int FL_ALTPRO = 31;
+inline const int FL_HERO = 32;
+inline const int FL_CHARMCOUNT = 33;
+inline const int FL_INVISIBILITY = 34;
+inline const int FL_CANCELLATION = 35;
+inline const int FL_HASTESELF = 36;
 inline const int EYEOFLARN = 37;
-inline const int AGGRAVATE = 38;
-inline const int GLOBE = 39;
+inline const int FL_AGGRAVATE = 38;
+inline const int FL_GLOBE = 39;
 inline const int TELEFLAG = 40;
 inline const int SLAYING = 41;
 inline const int NEGATESPIRIT = 42;
-inline const int SCAREMONST = 43;
-inline const int AWARENESS = 44;
-inline const int HOLDMONST = 45;
-inline const int TIMESTOP = 46;
-inline const int HASTEMONST = 47;
+inline const int FL_SCAREMONST = 43;
+inline const int FL_AWARENESS = 44;
+inline const int FL_HOLDMONST = 45;
+inline const int FL_TIMESTOP = 46;
+inline const int FL_HASTEMONST = 47;
 inline const int CUBEofUNDEAD = 48;
-inline const int GIANTSTR = 49;
-inline const int FIRERESISTANCE = 50;
+inline const int FL_GIANTSTR = 49;
+inline const int FL_FIRERESISTANCE = 50;
 inline const int BESSMANN = 51;
 inline const int NOTHEFT = 52;
 inline const int CPUTIME = 54;
 inline const int BYTESIN = 55;
 inline const int BYTESOUT = 56;
-inline const int MOVESMADE = 57;
+inline const int FL_MOVESMADE = 57;
 inline const int MONSTKILLED = 58;
 inline const int SPELLSCAST = 59;
 inline const int GREATSWORDDEATH = 60;
-inline const int SPIRITPRO = 61;
-inline const int UNDEADPRO = 62;
-inline const int SHIELD = 63;
-inline const int STEALTH = 64;
-inline const int ITCHING = 65;
+inline const int FL_SPIRITPRO = 61;
+inline const int FL_UNDEADPRO = 62;
+inline const int FL_SHIELD = 63;
+inline const int FL_STEALTH = 64;
+inline const int FL_ITCHING = 65;
 inline const int LAUGHING = 66;
 inline const int DRAINSTRENGTH = 67;
-inline const int CLUMSINESS = 68;
+inline const int FL_CLUMSINESS = 68;
 inline const int INFEEBLEMENT = 69;
-inline const int HALFDAM = 70;
-inline const int SEEINVISIBLE = 71;
+inline const int FL_HALFDAM = 70;
+inline const int FL_SEEINVISIBLE = 71;
 inline const int FILLROOM = 72;
 inline const int RANDOMWALK = 73;
 inline const int SPHCAST = 74;		/* nz if an active sphere of annihilation */
-inline const int WTW = 75;		/* walk through walls */
-inline const int STREXTRA = 76;		/* character strength due to objects or enchantments */
+inline const int FL_WTW = 75;		/* walk through walls */
+inline const int FL_STREXTRA = 76;		/* character strength due to objects or enchantments */
 inline const int TMP = 77;			/* misc scratch space */
 inline const int LIFEPROT = 78;		/* life protection counter */
 inline const int HUNGER = 79;
@@ -357,8 +357,8 @@ inline const int ORUBY = 51;
 inline const int OEMERALD = 52;
 inline const int OSAPPHIRE = 53;
 inline const int OENTRANCE = 54;
-inline const int OVOLDOWN = 55;
-inline const int OVOLUP = 56;
+inline const int FL_OBJECT_TEMPLE_IN = 55;
+inline const int FL_OBJECT_TEMPLE_OUT = 56;
 inline const int OHOME = 69;
 inline const int OKGOLD = 71;
 inline const int ODGOLD = 72;
@@ -369,7 +369,7 @@ inline const int OIVTRAPDOOR = 76;
 inline const int OTRADEPOST = 77;
 inline const int OIVTELETRAP = 78;
 inline const int ODEADTHRONE = 79;
-inline const int OANNIHILATION = 80;	/* sphere of annihilation */
+inline const int FL_OBJECT_SPHERE_OF_ANNIHILATION = 80;	/* sphere of annihilation */
 inline const int OTHRONE2 = 81;
 inline const int OLRS = 82;		/* Larn Revenue Service */
 inline const int OCOOKIE = 83;
@@ -382,3 +382,27 @@ inline const int OGHANISTATUE = 86;
 //#define OSPHTAILSMAN 87		/* tailsman of the sphere */
 //#define OWWAND 88		/* wand of wonder */
 //#define OPSTAFF 89		/* staff of power */
+
+//Inline functions for raising and losing health and spells
+extern long cdesc[];
+
+inline void FL_RAISEMAXHEALTH(int y)
+{
+	cdesc[FL_HP] += y;
+	cdesc[FL_HPMAX] += y;
+}
+inline void FL_RAISEMAXSPELLS(int y)
+{
+	 cdesc[FL_SPELLS] += y;
+	 cdesc[FL_SPELLMAX] += y;
+}
+inline void FL_LOSEMAXHEALTH(int y)
+{
+	cdesc[FL_HP] -= y;
+	cdesc[FL_HPMAX] -= y;
+}
+inline void FL_LOSEMAXSPELLS(int y)
+{
+	cdesc[FL_SPELLS] -= y;
+	cdesc[FL_SPELLMAX] -= y;
+}

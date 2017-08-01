@@ -7,7 +7,7 @@
 *  int cgood(x,y,itm,monst)    Function to check location for emptiness
 *      int x,y,itm,monst;
 *
-*  createitem(it,arg)          Routine to place an item next to the player
+*  createitem(it,arg)          Routine to place an object_identification next to the player
 *      int it,arg;
 *
 *  vxy(x,y)            Routine to verify/fix (*x,*y) for being within bounds
@@ -28,7 +28,7 @@
 *  dropgold(amount)        Function to drop some gold around player
 *      int amount;
 *
-*  something(level)        Function to create a random item around player
+*  something(level)        Function to create a random object_identification around player
 *      int level;
 *
 *  newobject(lev,i)        Routine to return a randomly selected new object
@@ -58,6 +58,7 @@
 #include "../includes/monster.h"
 #include "../includes/spells.h"
 #include "core/sysdep.hpp"
+#include "core/funcs.hpp"
 
 static int cgood ( int, int, int, int );
 
@@ -99,10 +100,10 @@ createmonster ( int mon )
 
         if ( cgood ( x, y, 0, 1 ) ) {
             /* if we can create here */
-            mitem[x][y] = mon;
-            hitp[x][y] = monster[mon].hitpoints;
+            monster_identification[x][y] = mon;
+            monster_hit_points[x][y] = monster[mon].hitpoints;
             stealth[x][y] = 0;
-            know[x][y] &= ~KNOWHERE;
+            been_here_before[x][y] &= ~KNOWHERE;
 
             switch ( mon ) {
             case ROTHE:
@@ -125,7 +126,7 @@ createmonster ( int mon )
 *  Routine to return TRUE if a location does not have itm or monst there
 *  returns 0 (0) otherwise
 *  Enter with itm or monst TRUE or 0 if checking it
-*  Example:  if itm==TRUE check for no item at this location
+*  Example:  if itm==TRUE check for no object_identification at this location
 *            if monst==TRUE check for no monster at this location
 *  This routine will return 0 if at a wall,door or the dungeon exit
 *  on level 1
@@ -134,7 +135,7 @@ static int
 cgood ( int x, int y, int itm, int monst )
 {
     /*
-     * cannot create either monster or item if:
+     * cannot create either monster or object_identification if:
      * - out of bounds
      * - wall
      * - closed door
@@ -142,14 +143,14 @@ cgood ( int x, int y, int itm, int monst )
      */
     if ( ( ( y < 0 ) || ( y > MAXY - 1 ) || ( x < 0 )
             || ( x > MAXX - 1 ) ) ||
-            ( item[x][y] == OWALL ) ||
-            ( item[x][y] == OCLOSEDDOOR ) ||
+            ( object_identification[x][y] == OWALL ) ||
+            ( object_identification[x][y] == OCLOSEDDOOR ) ||
             ( ( level == 1 ) && ( x == 33 ) && ( y == MAXY - 1 ) ) ) {
         return 0;
     }
 
-    /* if checking for an item, return False if one there already */
-    if ( itm && item[x][y] ) {
+    /* if checking for an object_identification, return False if one there already */
+    if ( itm && object_identification[x][y] ) {
         return 0;
     }
 
@@ -158,7 +159,7 @@ cgood ( int x, int y, int itm, int monst )
      * there is a pit/trap there.
      */
     if ( monst ) {
-        if ( mitem[x][y] ) {
+        if ( monster_identification[x][y] ) {
             return 0;
         }
 
@@ -166,9 +167,9 @@ cgood ( int x, int y, int itm, int monst )
          * note: not invisible traps, since monsters are
          * not affected by them.
          */
-        switch ( item[x][y] ) {
+        switch ( object_identification[x][y] ) {
         case OPIT:
-        case OANNIHILATION:
+        case FL_OBJECT_SPHERE_OF_ANNIHILATION:
         case OTELEPORTER:
         case OTRAPARROW:
         case ODARTRAP:
@@ -184,11 +185,11 @@ cgood ( int x, int y, int itm, int monst )
 
 
 /*
-*  createitem(it,arg)      Routine to place an item next to the player
+*  createitem(it,arg)      Routine to place an object_identification next to the player
 *      int it,arg;
 *
-*  Enter with the item number and its argument (iven[], ivenarg[])
-*  Returns no value, thus we don't know about createitem() failures.
+*  Enter with the object_identification number and its argument (iven[], ivenarg[])
+*  Returns no value, thus we don't been_here_before about createitem() failures.
 */
 void
 createitem ( int it, int arg )
@@ -210,9 +211,9 @@ createitem ( int it, int arg )
 
         if ( cgood ( x, y, 1, 0 ) ) {
             /* if we can create here */
-            item[x][y] = it;
-            know[x][y] = 0;
-            iarg[x][y] = arg;
+            object_identification[x][y] = it;
+            been_here_before[x][y] = 0;
+            object_argument[x][y] = arg;
             return;
         }
     }
@@ -274,21 +275,21 @@ hitmonster ( int x, int y )
     int tmp, monst, flag, damag = 0;
     HitMonster hitpoints;
 
-    if ( cdesc[TIMESTOP] ) {
+    if ( cdesc[FL_TIMESTOP] ) {
         return;  /* not if time stopped */
     }
 
     vxy ( &x, &y );			/* verify coordinates are within range */
 
-    if ( ( monst = mitem[x][y] ) == 0 ) {
+    if ( ( monst = monster_identification[x][y] ) == 0 ) {
         return;
     }
 
     hit3flag = 1;
-    ifblind ( x, y );
-    tmp = monster[monst].armorclass + cdesc[LEVEL] +
-          cdesc[DEXTERITY] + cdesc[WCLASS] / 4 - 12;
-    cursors ();
+    fl_player_is_blind ( x, y );
+    tmp = monster[monst].armorclass + cdesc[FL_LEVEL] +
+          cdesc[FL_DEXTERITY] + cdesc[WCLASS] / 4 - 12;
+    cursor(1,24);
 
     if ( ( TRnd ( 20 ) < tmp)
             || ( TRnd ( 71 ) <
@@ -313,19 +314,19 @@ hitmonster ( int x, int y )
     if ( flag )			/* if the monster was hit */
         if ( ( monst == RUSTMONSTER ) || ( monst == DISENCHANTRESS )
                 || ( monst == CUBE ) )
-            if ( cdesc[WIELD] >= 0 )
-                if ( ivenarg[cdesc[WIELD]] > -10 ) {
+            if ( cdesc[FL_WIELD] >= 0 )
+                if ( ivenarg[cdesc[FL_WIELD]] > -10 ) {
                     lprintf ( "\nYour weapon is dulled by the %s", lastmonst );
-                    --ivenarg[cdesc[WIELD]];
+                    --ivenarg[cdesc[FL_WIELD]];
 
                     /* fix for dulled rings of strength, cleverness, dexterity bug. */
-                    switch ( iven[cdesc[WIELD]] ) {
+                    switch ( iven[cdesc[FL_WIELD]] ) {
                     case ODEXRING:
-                        cdesc[DEXTERITY]--;
+                        cdesc[FL_DEXTERITY]--;
                         break;
 
                     case OSTRRING:
-                        cdesc[STREXTRA]--;
+                        cdesc[FL_STREXTRA]--;
                         break;
 
                     case OCLEVERRING:
@@ -341,10 +342,10 @@ hitmonster ( int x, int y )
     }
 
     if ( monst == VAMPIRE )
-        if ( hitp[x][y] < 25 ) {
+        if ( monster_hit_points[x][y] < 25 ) {
             /* vampire turns into bat */
-            mitem[x][y] = BAT;
-            know[x][y] = 0;
+            monster_identification[x][y] = BAT;
+            been_here_before[x][y] = 0;
         }
 }
 
@@ -359,12 +360,13 @@ hitmonster ( int x, int y )
 int
 HitMonster::hitm(int x, int y, int amt)
 {
+    FLCoreFuncs CoreFuncs;
     int monst;
     vxy ( &x, &y );			/* verify coordinates are within range */
     amt2 = amt;			/* save initial damage so we can return it */
-    monst = mitem[x][y];
+    monst = monster_identification[x][y];
 
-    if ( cdesc[HALFDAM] ) {
+    if ( cdesc[FL_HALFDAM] ) {
         amt >>= 1;  /* if half damage curse adjust damage points */
     }
 
@@ -376,7 +378,7 @@ HitMonster::hitm(int x, int y, int amt)
     lasthy = y;
     stealth[x][y] =
         1;		/* make sure hitting monst breaks stealth condition */
-    cdesc[HOLDMONST] =
+    cdesc[FL_HOLDMONST] =
         0;		/* hit a monster breaks hold monster spell  */
 
     switch ( monst ) {
@@ -392,16 +394,16 @@ HitMonster::hitm(int x, int y, int amt)
     }
 
     /* invincible monster fix is here */
-    if ( hitp[x][y] > monster[monst].hitpoints ) {
-        hitp[x][y] = monster[monst].hitpoints;
+    if ( monster_hit_points[x][y] > monster[monst].hitpoints ) {
+        monster_hit_points[x][y] = monster[monst].hitpoints;
     }
 
-    if ( ( hpoints = hitp[x][y] ) <= amt ) {
+    if ( ( hpoints = monster_hit_points[x][y] ) <= amt ) {
         cdesc[MONSTKILLED]++;
         lprintf ( "\nThe" );
         lprintf ( " %s ", lastmonst );
         lprintf ( "died!\n" );
-        raiseexperience ( monster[monst].experience );
+        CoreFuncs.IncreaseExperience ( monster[monst].experience );
         amt = monster[monst].gold;
 
         if ( amt > 0 ) {
@@ -414,7 +416,7 @@ HitMonster::hitm(int x, int y, int amt)
         return 0;
     }
 
-    hitp[x][y] = hpoints - amt;
+    monster_hit_points[x][y] = hpoints - amt;
     return 0;
 }
 
@@ -429,34 +431,35 @@ HitMonster::hitm(int x, int y, int amt)
 void
 hitplayer ( int x, int y )
 {
+	FLCoreFuncs CoreFuncs;
     int dam, tmp, mster, bias;
     vxy ( &x, &y );			/* verify coordinates are within range */
-    lastnum = mster = mitem[x][y];
+    lastnum = mster = monster_identification[x][y];
 
     /*  spirit naga's and poltergeist's do nothing if scarab of negate spirit   */
-    if ( cdesc[NEGATESPIRIT] || cdesc[SPIRITPRO] )
+    if ( cdesc[NEGATESPIRIT] || cdesc[FL_SPIRITPRO] )
         if ( ( mster == POLTERGEIST ) || ( mster == SPIRITNAGA ) ) {
             return;
         }
 
     /*  if undead and cube of undead control    */
-    if ( cdesc[CUBEofUNDEAD] || cdesc[UNDEADPRO] )
+    if ( cdesc[CUBEofUNDEAD] || cdesc[FL_UNDEADPRO] )
         if ( ( mster == VAMPIRE ) || ( mster == WRAITH )
                 || ( mster == ZOMBIE ) ) {
             return;
         }
 
-    if ( ( know[x][y] & KNOWHERE ) == 0 ) {
-        show1cell ( x, y );
+    if ( ( been_here_before[x][y] & KNOWHERE ) == 0 ) {
+        fl_show_designated_cell_only ( x, y );
     }
 
     bias = + 1;
     hitflag = hit2flag = hit3flag = 1;
     y_larn_rep = 0;
-    cursors ();
-    ifblind ( x, y );
+    cursor(1,24);
+    fl_player_is_blind ( x, y );
 
-    if ( cdesc[INVISIBILITY] )
+    if ( cdesc[FL_INVISIBILITY] )
         if ( TRnd ( 33 ) < 20 ) {
             lprintf ( "\nThe" );
             lprintf ( " %s ", lastmonst );
@@ -464,8 +467,8 @@ hitplayer ( int x, int y )
             return;
         }
 
-    if ( cdesc[CHARMCOUNT] )
-        if ( TRnd ( 30 ) + 5 * monster[mster].level - cdesc[CHARISMA] <
+    if ( cdesc[FL_CHARMCOUNT] )
+        if ( TRnd ( 30 ) + 5 * monster[mster].level - cdesc[FL_CHARISMA] <
                 30 ) {
             lprintf ( "\nThe" );
             lprintf ( " %s ", lastmonst );
@@ -500,7 +503,7 @@ hitplayer ( int x, int y )
 
             tmp = 1;
             bias -= 2;
-            cursors ();
+            cursor(1,24);
         }
 
     if ( ( ( dam + bias ) > cdesc[AC] )
@@ -515,7 +518,7 @@ hitplayer ( int x, int y )
         }
 
         if ( dam > 0 ) {
-            losehp ( dam );
+            CoreFuncs.DecreasePHealth ( dam );
             bottomhp ();
 #if defined WINDOWS
             lflushall();
@@ -596,10 +599,10 @@ dropgold ( int amount )
 
 
 /*
-*  something(level)    Function to create a random item around player
+*  something(level)    Function to create a random object_identification around player
 *      int level;
 *
-*  Function to create an item from a designed probability around player
+*  Function to create an object_identification from a designed probability around player
 *  Enter with the cave level on which something is to be dropped
 *  Returns nothing of value.
 */
@@ -613,7 +616,7 @@ something ( int lv )
     }
 
     if ( TRnd ( 101 ) < 8 ) {
-        something ( lv );  /* possibly more than one item */
+        something ( lv );  /* possibly more than one object_identification */
     }
 
     j = newobject ( lv, &i );
@@ -789,7 +792,7 @@ newobject ( int lev, int *i )
 *
 *  Enter with the special attack number, and the coordinates (xx,yy)
 *      of the monster that is special attacking
-*  Returns 1 if must do a show1cell(xx,yy) upon return, 0 otherwise
+*  Returns 1 if must do a fl_show_designated_cell_only(xx,yy) upon return, 0 otherwise
 *
 * atckno   monster     effect
 * ---------------------------------------------------
@@ -834,10 +837,11 @@ static char spsel[] = { 1, 2, 3, 5, 6, 8, 9, 11, 13, 14 };
 static int
 spattack ( int x, int xx, int yy )
 {
+    FLCoreFuncs CoreFuncs;
     int i, j = 0, k, m;
     const char *p = 0;
 
-    if ( cdesc[CANCELLATION] ) {
+    if ( cdesc[FL_CANCELLATION] ) {
         return ( 0 );
     }
 
@@ -845,8 +849,8 @@ spattack ( int x, int xx, int yy )
 
     switch ( x ) {
     case 1:			/* rust your armor, j=1 when rusting has occurred */
-        m = k = cdesc[WEAR];
-        i = cdesc[SHIELD];
+        m = k = cdesc[FL_WEAR];
+        i = cdesc[FL_SHIELD];
 
         if ( i != -1 ) {
             if ( --ivenarg[i] < -1 ) {
@@ -898,7 +902,7 @@ spattack ( int x, int xx, int yy )
 spout:
         p = "\nThe %s breathes fire at you!";
 
-        if ( cdesc[FIRERESISTANCE] ) {
+        if ( cdesc[FL_FIRERESISTANCE] ) {
             p = "\nThe %s's flame doesn't phase you!";
         }
 
@@ -916,9 +920,9 @@ spout2:
         goto spout;
 
     case 4:
-        if ( cdesc[STRENGTH] > 3 ) {
+        if ( cdesc[FL_STRENGTH] > 3 ) {
             p = "\nThe %s stung you!  You feel weaker";
-            --cdesc[STRENGTH];
+            --cdesc[FL_STRENGTH];
         }
 
         else {
@@ -936,7 +940,7 @@ spout2:
         lprintf ( "\nThe " );
         lprintf ( "%s", lastmonst );
         lprintf ( " drains you of your life energy!" );
-        loselevel ();
+        CoreFuncs.DecreasePlayerLevel();
         return ( 0 );
 
     case 7:
@@ -977,7 +981,7 @@ spout2:
     case 9:
         for ( j = 50;; ) {	/* disenchant */
             i = TRund ( 26 );
-            m = iven[i];		/* randomly select item */
+            m = iven[i];		/* randomly select object_identification */
 
             if ( m > 0 && ivenarg[i] > 0 && m != OSCROLL
                     && m != OPOTION ) {
@@ -1010,7 +1014,7 @@ spout2:
 
     case 11:
         p = "\nThe %s has confused you";
-        cdesc[CONFUSE] += 10 + TRnd ( 10 );
+        cdesc[FL_CONFUSE] += 10 + TRnd ( 10 );
         break;
 
     case 12:			/*  performs any number of other special attacks    */
@@ -1070,13 +1074,14 @@ spout3:
 *
 *  Routine to subtract hitpoints from the user and flag the bottomline display
 *  Enter with the number of hit points to lose
-*  Note: if x > cdesc[HP] this routine could kill the player!
+*  Note: if x > cdesc[FL_HP] this routine could kill the player!
 */
 void
 checkloss ( int x )
 {
+	FLCoreFuncs CoreFuncs;
     if ( x > 0 ) {
-        losehp ( x );
+        CoreFuncs.DecreasePHealth ( x );
         bottomhp ();
     }
 }

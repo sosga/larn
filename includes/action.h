@@ -10,9 +10,9 @@ void act_drink_fountain ( void );
 
 void act_wash_fountain ( void );
 
-void act_down_shaft ( void );
+void fl_act_enter_temple ( void );
 
-void act_up_shaft ( void );
+void fl_act_exit_temple ( void );
 
 void act_desecrate_altar ( void );
 

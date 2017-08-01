@@ -1,5 +1,5 @@
 SOURCES = $(wildcard ../src/*.cpp) $(wildcard ../src/**/*.cpp)
-EXEC = larn-next.exe
+EXEC = freelarn.exe
 CXXFLAGS = -std=c++1z -Winline -fno-elide-constructors -pipe -Wall -Wextra -pedantic-errors -Wpointer-arith -Woverloaded-virtual -Wuninitialized -Wshadow -Winit-self -Wmissing-declarations -fomit-frame-pointer -DWINDOWS -DMULTIPLE_SCORE_ENTRY
 CXX = g++
 LIBS = -lpdcurses -ljsoncpp

@@ -36,14 +36,13 @@ pray_at_altar()
 #include "../includes/object.h"
 #include "../includes/spells.h"
 #include "core/store.hpp"
+#include "core/funcs.hpp"
+
 
 static void fch ( int, long * );
 static void specify_obj_nocurs ( void );
 static void specify_obj_cursor ( void );
 static void move_cursor ( int *, int *, int );
-
-
-
 
 /*
 * subroutine to process an altar object
@@ -88,7 +87,7 @@ oaltar ( void )
 
         case 'i':
         case '\33':
-            ignore ();
+            fl_ignore ();
             act_ignore_altar ();
             return;
         };
@@ -121,7 +120,7 @@ othrone ( int arg )
 
             case 'i':
             case '\33':
-                ignore ();
+                fl_ignore ();
                 return;
             };
         }
@@ -146,7 +145,7 @@ odeadthrone ( void )
 
             case 'i':
             case '\33':
-                ignore ();
+                fl_ignore ();
                 return;
             };
         }
@@ -174,15 +173,15 @@ ochest ( void )
         case 't':
             fl_display_message ( " take" );
 
-            if ( take ( OCHEST, iarg[playerx][playery] ) == 0 ) {
-                item[playerx][playery] = know[playerx][playery] = 0;
+            if ( take ( OCHEST, object_argument[playerx][playery] ) == 0 ) {
+                object_identification[playerx][playery] = been_here_before[playerx][playery] = 0;
             }
 
             return;
 
         case 'i':
         case '\33':
-            ignore ();
+            fl_ignore ();
             return;
         };
     }
@@ -196,7 +195,7 @@ ochest ( void )
 void
 ofountain ( void )
 {
-    cursors ();
+    cursor(1,24);
     fl_display_message ( "\nDo you (d) drink, (w) wash yourself" );
     iopts ();
 
@@ -208,7 +207,7 @@ ofountain ( void )
 
         case '\33':
         case 'i':
-            ignore ();
+            fl_ignore ();
             return;
 
         case 'w':
@@ -227,13 +226,14 @@ ofountain ( void )
 void
 fntchange ( int how )
 {
+    FLCoreFuncs CoreFuncs;
     int j;
     lprc ( '\n' );
 
     switch ( TRnd ( 9 ) ) {
     case 1:
         fl_display_message ( "Your strength" );
-        fch ( how, &cdesc[STRENGTH] );
+        fch ( how, &cdesc[FL_STRENGTH] );
         break;
 
     case 2:
@@ -253,12 +253,12 @@ fntchange ( int how )
 
     case 5:
         fl_display_message ( "Your dexterity" );
-        fch ( how, &cdesc[DEXTERITY] );
+        fch ( how, &cdesc[FL_DEXTERITY] );
         break;
 
     case 6:
         fl_display_message ( "Your charm" );
-        fch ( how, &cdesc[CHARISMA] );
+        fch ( how, &cdesc[FL_CHARISMA] );
         break;
 
     case 7:
@@ -275,7 +275,7 @@ fntchange ( int how )
                 lprc ( '!' );
             }
 
-            losemhp ( ( int ) j );
+            FL_LOSEMAXHEALTH ( ( int ) j );
         }
 
         else {
@@ -289,7 +289,7 @@ fntchange ( int how )
                 lprc ( '!' );
             }
 
-            raisemhp ( ( int ) j );
+            FL_RAISEMAXHEALTH((int)j);
         }
 
         bottomline ();
@@ -300,7 +300,7 @@ fntchange ( int how )
 
         if ( how > 0 ) {
             lprintf ( "You just gained %d spell", ( int ) j );
-            raisemspells ( ( int ) j );
+            FL_RAISEMAXHEALTH((int)j);
 
             if ( j > 1 ) {
                 fl_display_message ( "s!" );
@@ -313,7 +313,7 @@ fntchange ( int how )
 
         else {
             lprintf ( "You just lost %d spell", ( int ) j );
-            losemspells ( ( int ) j );
+            FL_LOSEMAXSPELLS ( ( int ) j );
 
             if ( j > 1 ) {
                 fl_display_message ( "s!" );
@@ -341,7 +341,7 @@ fntchange ( int how )
                 lprc ( '!' );
             }
 
-            loseexperience ( j );
+            CoreFuncs.DecreaseExperience(j);
         }
 
         else {
@@ -355,13 +355,13 @@ fntchange ( int how )
                 lprc ( '!' );
             }
 
-            raiseexperience ( j );
+            CoreFuncs.IncreaseExperience( j );
         }
 
         break;
     }
 
-    cursors ();
+    cursor(1,24);
 }
 
 
@@ -393,13 +393,13 @@ For command mode.  Perform drinking at a fountain.
 void
 drink_fountain ( void )
 {
-    cursors ();
+    cursor(1,24);
 
-    if ( item[playerx][playery] == ODEADFOUNTAIN ) {
+    if ( object_identification[playerx][playery] == ODEADFOUNTAIN ) {
         fl_display_message ( "\nThere is no water to drink!" );
     }
 
-    else if ( item[playerx][playery] != OFOUNTAIN ) {
+    else if ( object_identification[playerx][playery] != OFOUNTAIN ) {
         fl_display_message ( "\nI see no fountain to drink from here!" );
     }
 
@@ -419,13 +419,13 @@ For command mode.  Perform washing (tidying up) at a fountain.
 void
 wash_fountain ( void )
 {
-    cursors ();
+    cursor(1,24);
 
-    if ( item[playerx][playery] == ODEADFOUNTAIN ) {
+    if ( object_identification[playerx][playery] == ODEADFOUNTAIN ) {
         fl_display_message ( "\nThere is no water to wash in!" );
     }
 
-    else if ( item[playerx][playery] != OFOUNTAIN ) {
+    else if ( object_identification[playerx][playery] != OFOUNTAIN ) {
         fl_display_message ( "\nI see no fountain to wash at here!" );
     }
 
@@ -436,33 +436,23 @@ wash_fountain ( void )
     return;
 }
 
-
-
-/*
-For command mode.  Perform entering a building.
-*/
 void
 enter ( void )
 {
-    cursors ();
-
-    switch ( item[playerx][playery] ) {
+    cursor(1,24);
+    switch ( object_identification[playerx][playery] ) {
     case OSCHOOL:
         oschool ();
         break;
-
     case OBANK:
         obank ();
         break;
-
     case OBANK2:
         obank2 ();
         break;
-
     case ODNDSTORE:
         dndstore ();
         break;
-
     case OENTRANCE:
         /* place player in front of entrance on level 1.  newcavelevel()
            prevents player from landing on a monster/object.
@@ -470,32 +460,32 @@ enter ( void )
         playerx = 33;
         playery = MAXY - 2;
         newcavelevel ( 1 );
-        know[33][MAXY - 1] = KNOWALL;
-        mitem[33][MAXY - 1] = 0;
+        been_here_before[33][MAXY - 1] = KNOWALL;
+        monster_identification[33][MAXY - 1] = 0;
         draws ( 0, MAXX, 0, MAXY );
         showcell ( playerx, playery );	/* to show around player */
         bot_linex ();
         break;
-
     case OTRADEPOST:
         otradepost ();
         break;
-
     case OLRS:
         olrs ();
         break;
-
     case OHOME:
         ohome ();
-        break;
-
+        break;	
+	case FL_OBJECT_TEMPLE_IN:
+		fl_act_enter_temple();
+		break;
+	case FL_OBJECT_TEMPLE_OUT:
+		fl_act_exit_temple();
+		break;
     default:
         fl_display_message ( "\nThere is no place to enter here!\n" );
         break;
     }
 }
-
-
 
 /*
 For command mode.  Perform removal of gems from a jeweled throne.
@@ -503,17 +493,17 @@ For command mode.  Perform removal of gems from a jeweled throne.
 void
 remove_gems ( void )
 {
-    cursors ();
+    cursor(1,24);
 
-    if ( item[playerx][playery] == ODEADTHRONE ) {
+    if ( object_identification[playerx][playery] == ODEADTHRONE ) {
         fl_display_message ( "\nThere are no gems to remove!" );
     }
 
-    else if ( item[playerx][playery] == OTHRONE ) {
+    else if ( object_identification[playerx][playery] == OTHRONE ) {
         act_remove_gems ( 0 );
     }
 
-    else if ( item[playerx][playery] == OTHRONE2 ) {
+    else if ( object_identification[playerx][playery] == OTHRONE2 ) {
         act_remove_gems ( 1 );
     }
 
@@ -532,14 +522,14 @@ For command mode.  Perform sitting on a throne.
 void
 sit_on_throne ( void )
 {
-    cursors ();
+    cursor(1,24);
 
-    if ( item[playerx][playery] == OTHRONE ) {
+    if ( object_identification[playerx][playery] == OTHRONE ) {
         act_sit_throne ( 0 );
     }
 
-    else if ( ( item[playerx][playery] == OTHRONE2 ) ||
-              ( item[playerx][playery] == ODEADTHRONE ) ) {
+    else if ( ( object_identification[playerx][playery] == OTHRONE2 ) ||
+              ( object_identification[playerx][playery] == ODEADTHRONE ) ) {
         act_sit_throne ( 1 );
     }
 
@@ -550,8 +540,6 @@ sit_on_throne ( void )
     return;
 }
 
-
-
 /*
 For command mode.  Checks that player is actually standing at a set up
 up stairs or volcanic shaft.
@@ -559,55 +547,36 @@ up stairs or volcanic shaft.
 void
 up_stairs ( void )
 {
-    cursors ();
-
-    if ( item[playerx][playery] == OSTAIRSDOWN ) {
+    cursor(1,24);
+    if ( object_identification[playerx][playery] == OSTAIRSDOWN ) {
         fl_display_message ( "\nThe stairs don't go up!" );
     }
-
-    else if ( item[playerx][playery] == OVOLUP ) {
-        act_up_shaft ();
-    }
-
-    else if ( item[playerx][playery] != OSTAIRSUP ) {
+    else if ( object_identification[playerx][playery] != OSTAIRSUP ) {
         fl_display_message ( "\nI see no way to go up here!" );
     }
-
     else {
         act_up_stairs ();
     }
 }
 
-
-
-
 /*
-For command mode.  Checks that player is actually standing at a set of
-down stairs or volcanic shaft.
+Checks that player is actually standing at a set of
+down stairs.
 */
 void
 down_stairs ( void )
 {
-    cursors ();
-
-    if ( item[playerx][playery] == OSTAIRSUP ) {
+    cursor(1,24);
+    if ( object_identification[playerx][playery] == OSTAIRSUP ) {
         fl_display_message ( "\nThe stairs don't go down!" );
     }
-
-    else if ( item[playerx][playery] == OVOLDOWN ) {
-        act_down_shaft ();
-    }
-
-    else if ( item[playerx][playery] != OSTAIRSDOWN ) {
+    else if ( object_identification[playerx][playery] != OSTAIRSDOWN ) {
         fl_display_message ( "\nI see no way to go down here!" );
     }
-
     else {
         act_down_stairs ();
     }
 }
-
-
 
 /*
 For command mode.  Perform opening an object (door, chest).
@@ -617,11 +586,11 @@ open_something ( void )
 {
     int x, y;			/* direction to open */
     char tempc;			/* result of prompting to open a chest */
-    cursors ();
+    cursor(1,24);
 
     /* check for confusion.
      */
-    if ( cdesc[CONFUSE] ) {
+    if ( cdesc[FL_CONFUSE] ) {
         fl_display_message ( "You're too confused!" );
         return;
     }
@@ -630,7 +599,7 @@ open_something ( void )
        let him open it.  If player ESCs from prompt, quit the Open
        command.
      */
-    if ( item[playerx][playery] == OCHEST ) {
+    if ( object_identification[playerx][playery] == OCHEST ) {
         fl_display_message ( "There is a chest here.  Open it?" );
 
         if ( ( tempc = getyn () ) == 'y' ) {
@@ -648,9 +617,9 @@ open_something ( void )
     /* get direction of object to open.  test 'openability' of object
        indicated, call common command/prompt mode routines to actually open.
      */
-    dirsub ( &x, &y );
+    fl_direction ( &x, &y );
 
-    switch ( item[x][y] ) {
+    switch ( object_identification[x][y] ) {
     case OOPENDOOR:
         fl_display_message ( "The door is already open!" );
         break;
@@ -680,11 +649,11 @@ void
 close_something ( void )
 {
     int x, y;
-    cursors ();
+    cursor(1,24);
 
     /* check for confusion.
      */
-    if ( cdesc[CONFUSE] ) {
+    if ( cdesc[FL_CONFUSE] ) {
         fl_display_message ( "You're too confused!" );
         return;
     }
@@ -692,22 +661,22 @@ close_something ( void )
     /* get direction of object to close.  test 'closeability' of object
        indicated.
      */
-    dirsub ( &x, &y );
+    fl_direction ( &x, &y );
 
-    switch ( item[x][y] ) {
+    switch ( object_identification[x][y] ) {
     case OCLOSEDDOOR:
         fl_display_message ( "The door is already closed!" );
         break;
 
     case OOPENDOOR:
-        if ( mitem[x][y] ) {
+        if ( monster_identification[x][y] ) {
             fl_display_message ( "Theres a monster in the way!" );
             return;
         }
 
-        item[x][y] = OCLOSEDDOOR;
-        know[x][y] = 0;
-        iarg[x][y] = 0;
+        object_identification[x][y] = OCLOSEDDOOR;
+        been_here_before[x][y] = 0;
+        object_argument[x][y] = 0;
         break;
 
     default:
@@ -725,9 +694,9 @@ close_something ( void )
 void
 desecrate_altar ( void )
 {
-    cursors ();
+    cursor(1,24);
 
-    if ( item[playerx][playery] == OALTAR ) {
+    if ( object_identification[playerx][playery] == OALTAR ) {
         act_desecrate_altar ();
     }
 
@@ -746,9 +715,9 @@ For command mode.  Perform the act of praying at an altar.
 void
 pray_at_altar ( void )
 {
-    cursors ();
+    cursor(1,24);
 
-    if ( item[playerx][playery] != OALTAR ) {
+    if ( object_identification[playerx][playery] != OALTAR ) {
         fl_display_message ( "\nI see no altar to pray at here!" );
     }
 
@@ -767,7 +736,7 @@ Identify objects for the player.
 void
 specify_object ( void )
 {
-    cursors ();
+    cursor(1,24);
     fl_display_message ( "\nIdentify unknown object by cursor [ynq]?" );
 
     for ( ;; ) {
@@ -855,7 +824,7 @@ specify_obj_cursor ( void )
 {
     int objx, objy;
     int i;
-    fl_display_message ( "\nMove the cursor to an unknown item." );
+    fl_display_message ( "\nMove the cursor to an unknown object_identification." );
     fl_display_message ( "\n(For instructions type a ?)" );
     objx = playerx;
     objy = playery;
@@ -866,7 +835,7 @@ specify_obj_cursor ( void )
     for ( ;; ) {
         switch ( ttgetch () ) {
         case '?':
-            cursors ();
+            cursor(1,24);
             fl_display_message
             ( "\nUse [hjklnbyu] to move the cursor to the unknown object." );
             fl_display_message ( "\nType a . when the cursor is at the desired place." );
@@ -886,16 +855,16 @@ specify_obj_cursor ( void )
             /* reset cursor
              */
             cursor ( playerx + 1, playery + 1 );
-            cursors ();
+            cursor(1,24);
 
             if ( ( objx == playerx ) && ( objy == playery ) ) {
                 lprintf ( "\n@: %s", logname );
                 return;
             }
 
-            i = mitem[objx][objy];
+            i = monster_identification[objx][objy];
 
-            if ( i && ( know[objx][objy] & KNOWHERE ) )
+            if ( i && ( been_here_before[objx][objy] & KNOWHERE ) )
 
                 /* check for invisible monsters and not display
                  */
@@ -906,7 +875,7 @@ specify_obj_cursor ( void )
 
             /* handle floor separately so as not to display traps, etc.
              */
-            i = item[objx][objy];
+            i = object_identification[objx][objy];
 
             if ( i == 0 ) {
                 lprc ( '\n' );
@@ -915,7 +884,7 @@ specify_obj_cursor ( void )
                 return;
             }
 
-            if ( know[objx][objy] & HAVESEEN ) {
+            if ( been_here_before[objx][objy] & HAVESEEN ) {
                 lprc ( '\n' );
                 lprc ( objnamelist[i] );
                 lprintf ( ": %s", objectname[i] );

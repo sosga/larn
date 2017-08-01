@@ -12,10 +12,17 @@
    limitations under the License.
 */
 
-#include <cstdlib>
+#include "funcs.hpp"
+#include "../config/larncons.h"
+#include "../config/data.h"
 
-template<typename T>
-inline T THungerTime(const T& x)
-{
-  return(TIMELIMIT() - gtime == x);
+/*
+* uses the skill[] array to find level boundarys
+* uses cdesc[EXPERIENCE]  cdesc[FL_LEVEL]
+*/
+void FLCoreFuncs::IncreasePlayerLevel(void) {
+	FLCoreFuncs CoreFuncs;
+	if (cdesc[FL_LEVEL] < MAXPLEVEL) {
+		CoreFuncs.IncreaseExperience((skill[cdesc[FL_LEVEL]] - cdesc[EXPERIENCE]));
+	}
 }

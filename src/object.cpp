@@ -20,53 +20,54 @@
 #include "../includes/spells.h"
 #include "core/sysdep.hpp"
 #include "player/hunger.hpp"
+#include "core/funcs.hpp"
 
 using std::cout;
 
-static void ostairs ( int );
-static void opotion ( int );
-static void oscroll ( int );
-static void opit ( void );
-static void obottomless ( void );
-static void ostatue ( void );
-static void omirror ( void );
-static void obook ( void );
-static void oprayerbook ( void );
-static void ocookie ( void );
-static void ogold ( int );
-static void prompt_enter ( void );
-static void prompt_volshaft ( int );
-static void o_open_door ( void );
-static void o_closed_door ( void );
+static void fl_stairs ( int );
+static void fl_potion ( int );
+static void fl_scroll ( int );
+static void fl_non_bottomless_pit ( void );
+static void fl_bottomless_pit ( void );
+static void fl_statue ( void );
+static void fl_mirror ( void );
+static void fl_book ( void );
+static void fl_prayer_book ( void );
+static void fl_fortune_cookie ( void );
+static void fl_gold ( int );
+static void fl_prompt_for_entrance ( void );
+static void fl_prompt_for_temple_entrance ( int );
+static void fl_open_door ( void );
+static void fl_closed_door ( void );
 
-/* LOOK_FOR_OBJECT
-subroutine to look for an object and give the player his options if an object
-was found.
+//do_ident;   identify object_identification: T/F
+//do_pickup;  pickup object_identification:   T/F
+//do_action;  prompt for actions on object: T/F
 
-do_ident;   identify item: T/F
-do_pickup;  pickup item:   T/F
-do_action;  prompt for actions on object: T/F
-*/
 void
-lookforobject ( char do_ident, char do_pickup,
-                char do_action )
+fl_look_for_an_object_and_give_options(
+	char do_ident,
+	char do_pickup,
+	char do_action
+	)
 {
+	FLCoreFuncs CoreFuncs;
     int i, j;
 
     /* can't find objects if time is stopped    */
-    if ( cdesc[TIMESTOP] ) {
+    if ( cdesc[FL_TIMESTOP] ) {
         return;
     }
 
-    i = item[playerx][playery];
+    i = object_identification[playerx][playery];
 
     if ( i == 0 ) {
         return;
     }
 
-    j = iarg[playerx][playery];
+    j = object_argument[playerx][playery];
     showcell ( playerx, playery );
-    cursors ();
+    cursor(1,24);
     y_larn_rep = 0;
 
     switch ( i ) {
@@ -75,7 +76,7 @@ lookforobject ( char do_ident, char do_pickup,
     case OKGOLD:
     case ODGOLD:
         fl_display_message ( "\nYou have found some gold!" );
-        ogold ( i );
+        fl_gold ( i );
         break;
 
     case OPOTION:
@@ -93,7 +94,7 @@ lookforobject ( char do_ident, char do_pickup,
             }
 
         if ( do_action ) {
-            opotion ( j );
+            fl_potion ( j );
         }
 
         break;
@@ -113,7 +114,7 @@ lookforobject ( char do_ident, char do_pickup,
             }
 
         if ( do_action ) {
-            oscroll ( j );
+            fl_scroll ( j );
         }
 
         break;
@@ -141,7 +142,7 @@ lookforobject ( char do_ident, char do_pickup,
             }
 
         if ( do_action ) {
-            obook ();
+            fl_book ();
         }
 
         break;
@@ -157,7 +158,7 @@ lookforobject ( char do_ident, char do_pickup,
             }
 
         if ( do_action ) {
-            oprayerbook();
+            fl_prayer_book();
         }
 
         break;
@@ -173,7 +174,7 @@ lookforobject ( char do_ident, char do_pickup,
             }
 
         if ( do_action ) {
-            ocookie ();
+            fl_fortune_cookie ();
         }
 
         break;
@@ -213,7 +214,7 @@ lookforobject ( char do_ident, char do_pickup,
     case OPIT:
         /* always perform these actions. */
         fl_display_message ( "\nYou're standing at the top of a pit." );
-        opit ();
+        fl_non_bottomless_pit ();
         break;
 
     case OSTAIRSUP:		/* up */
@@ -222,7 +223,7 @@ lookforobject ( char do_ident, char do_pickup,
         }
 
         if ( do_action ) {
-            ostairs ( 1 );
+            fl_stairs ( 1 );
         }
 
         refresh();
@@ -247,7 +248,7 @@ lookforobject ( char do_ident, char do_pickup,
 
         if ( do_ident ) {
             fl_display_message ( "\nYou are standing in front of a statue" );
-            ostatue ();
+            fl_statue ();
         }
 
         break;
@@ -278,7 +279,7 @@ lookforobject ( char do_ident, char do_pickup,
         }
 
         if ( do_action ) {
-            prompt_enter ();
+            fl_prompt_for_entrance ();
         }
 
         break;
@@ -290,7 +291,7 @@ lookforobject ( char do_ident, char do_pickup,
 
         if ( do_ident ) {
             fl_display_message ( "\nThere is a mirror here" );
-            omirror ();
+            fl_mirror ();
         }
 
         break;
@@ -305,7 +306,7 @@ lookforobject ( char do_ident, char do_pickup,
         }
 
         if ( do_action ) {
-            prompt_enter ();
+            fl_prompt_for_entrance ();
         }
 
         break;
@@ -320,7 +321,7 @@ lookforobject ( char do_ident, char do_pickup,
         }
 
         if ( do_action ) {
-            prompt_enter ();
+            fl_prompt_for_entrance ();
         }
 
         break;
@@ -346,7 +347,7 @@ lookforobject ( char do_ident, char do_pickup,
         }
 
         if ( do_action ) {
-            prompt_enter ();
+            fl_prompt_for_entrance ();
         }
 
         break;
@@ -357,7 +358,7 @@ lookforobject ( char do_ident, char do_pickup,
         }
 
         if ( do_action ) {
-            ostairs ( -1 );
+            fl_stairs ( -1 );
         }
 
         refresh();
@@ -369,7 +370,7 @@ lookforobject ( char do_ident, char do_pickup,
         }
 
         if ( do_action ) {
-            o_open_door ();
+            fl_open_door ();
         }
 
         break;
@@ -380,7 +381,7 @@ lookforobject ( char do_ident, char do_pickup,
         }
 
         if ( do_action ) {
-            o_closed_door ();
+            fl_closed_door ();
         }
 
         break;
@@ -393,12 +394,12 @@ lookforobject ( char do_ident, char do_pickup,
         fl_display_message ( objectname[i] );
 
         if ( do_action ) {
-            prompt_enter ();
+            fl_prompt_for_entrance ();
         }
 
         break;
 
-    case OVOLDOWN:
+    case FL_OBJECT_TEMPLE_IN:
         if ( do_ident ) {
             fl_display_message ( "\nYou have found " );
         }
@@ -406,12 +407,12 @@ lookforobject ( char do_ident, char do_pickup,
         fl_display_message ( objectname[i] );
 
         if ( do_action ) {
-            prompt_volshaft ( -1 );
+            fl_prompt_for_temple_entrance ( -1 );
         }
 
         break;
 
-    case OVOLUP:
+    case FL_OBJECT_TEMPLE_OUT:
         if ( do_ident ) {
             fl_display_message ( "\nYou have found " );
         }
@@ -419,7 +420,7 @@ lookforobject ( char do_ident, char do_pickup,
         fl_display_message ( objectname[i] );
 
         if ( do_action ) {
-            prompt_volshaft ( 1 );
+            fl_prompt_for_temple_entrance ( 1 );
         }
 
         break;
@@ -429,22 +430,22 @@ lookforobject ( char do_ident, char do_pickup,
             return;
         }
 
-        item[playerx][playery] = OTELEPORTER;
-        know[playerx][playery] = KNOWALL;
+        object_identification[playerx][playery] = OTELEPORTER;
+        been_here_before[playerx][playery] = KNOWALL;
 
         /* fall through to OTELEPORTER case below!!! */
         [[fallthrough]];
     case OTELEPORTER:
         if (TRnd(20) < 15) {
             nap(NAPTIME);
-            oteleport(0);
-            know[playerx][playery] = KNOWALL;
+            fl_teleport(0);
+            been_here_before[playerx][playery] = KNOWALL;
 			cdesc[TELEFLAG]=0;
             fl_display_message("\n\nThe teleporter has miraculously made this maze known!");
         } else {
             fl_display_message("\nYou have been teleported!\n");
             nap(NAPTIME);
-            oteleport(0);
+            fl_teleport(0);
             refresh();
         }
         break;
@@ -454,15 +455,15 @@ lookforobject ( char do_ident, char do_pickup,
             return;
         }
 
-        item[playerx][playery] = OTRAPARROW;
-        know[playerx][playery] = 0;
+        object_identification[playerx][playery] = OTRAPARROW;
+        been_here_before[playerx][playery] = 0;
 
         /* fall through to OTRAPARROW case below!!! */
         [[fallthrough]];
     case OTRAPARROW:
         fl_display_message ( "\nYou are hit by an arrow" );
         lastnum = 259;
-        losehp ( TRnd ( 10 ) + level );
+        CoreFuncs.DecreasePHealth ( TRnd ( 10 ) + level );
         bottomhp ();
         return;
 
@@ -470,18 +471,18 @@ lookforobject ( char do_ident, char do_pickup,
         if ( TRnd ( 17 ) < 13 ) {
             return;
         }
-        item[playerx][playery] = ODARTRAP;
-        know[playerx][playery] = 0;
+        object_identification[playerx][playery] = ODARTRAP;
+        been_here_before[playerx][playery] = 0;
 
         /* fall through to ODARTTRAP case below!!! */
         [[fallthrough]];
     case ODARTRAP:
         fl_display_message ( "\nYou are hit by a dart" );
         lastnum = 260;
-        losehp ( TRnd ( 5 ) );
+        CoreFuncs.DecreasePHealth ( TRnd ( 5 ) );
 
-        if ( ( --cdesc[STRENGTH] ) < 3 ) {
-            cdesc[STRENGTH] = 3;
+        if ( ( --cdesc[FL_STRENGTH] ) < 3 ) {
+            cdesc[FL_STRENGTH] = 3;
         }
 
         bottomline ();
@@ -491,8 +492,8 @@ lookforobject ( char do_ident, char do_pickup,
         if ( TRnd ( 17 ) < 13 ) {
             return;
         }
-        item[playerx][playery] = OTRAPDOOR;
-        know[playerx][playery] = KNOWALL;
+        object_identification[playerx][playery] = OTRAPDOOR;
+        been_here_before[playerx][playery] = KNOWALL;
 
         /* fall through to OTRAPDOOR case below!!! */
         [[fallthrough]];
@@ -509,7 +510,7 @@ lookforobject ( char do_ident, char do_pickup,
         i = TRnd ( 5 + level );
         lprintf ( "\nYou fall through a trap door!  You lose %d hit points.",
                   ( long ) i );
-        losehp ( i );
+        CoreFuncs.DecreasePHealth ( i );
         nap ( NAPTIME );
         newcavelevel ( level + 1 );
         draws ( 0, MAXX, 0, MAXY );
@@ -526,7 +527,7 @@ lookforobject ( char do_ident, char do_pickup,
         }
 
         if ( do_action ) {
-            prompt_enter ();
+            fl_prompt_for_entrance ();
         }
 
         return;
@@ -541,7 +542,7 @@ lookforobject ( char do_ident, char do_pickup,
         }
 
         if ( do_action ) {
-            prompt_enter ();
+            fl_prompt_for_entrance ();
         }
 
         return;
@@ -549,7 +550,7 @@ lookforobject ( char do_ident, char do_pickup,
     case OWALL:
         break;
 
-    case OANNIHILATION:
+    case FL_OBJECT_SPHERE_OF_ANNIHILATION:
         died ( 283 );		/* annihilated by sphere of annihilation */
         return;
 
@@ -563,7 +564,7 @@ lookforobject ( char do_ident, char do_pickup,
         }
 
         if ( do_action ) {
-            prompt_enter ();
+            fl_prompt_for_entrance ();
         }
 
         break;
@@ -620,7 +621,7 @@ lookforobject ( char do_ident, char do_pickup,
                 return;
             }
 
-            ignore ();
+            fl_ignore ();
         }
 
         break;
@@ -628,14 +629,14 @@ lookforobject ( char do_ident, char do_pickup,
 }
 
 /*
-* subroutine to process the stair cases if dir > 0 the up else down
+* subroutine to process the stair cases if sphere_direction > 0 the up else down
 */
 static void
-ostairs ( int dir )
+fl_stairs ( int sphere_direction )
 {
     fl_display_message ( "\nDo you (s) stay here " );
 
-    if ( dir > 0 ) {
+    if ( sphere_direction > 0 ) {
         fl_display_message ( "or (u) go up? " );
     }
 
@@ -670,7 +671,7 @@ ostairs ( int dir )
 * subroutine to handle a teleport trap +/- 1 level maximum
 */
 void
-oteleport ( int err )
+fl_teleport ( int err )
 {
     int tmp;
 
@@ -730,7 +731,7 @@ oteleport ( int err )
 * function to process a potion
 */
 static void
-opotion ( int pot )
+fl_potion ( int pot )
 {
     fl_display_message ( "\nDo you (d) drink it, (t) take it" );
     iopts ();
@@ -739,13 +740,13 @@ opotion ( int pot )
         switch ( ttgetch () ) {
         case '\33':
         case 'i':
-            ignore ();
+            fl_ignore ();
             return;
 
         case 'd':
             fl_display_message ( "drink\n" );
             forget ();		/* destroy potion  */
-            quaffpotion ( pot, 1 );
+            fl_drink_potion ( pot, 1 );
             return;
 
         case 't':
@@ -769,8 +770,9 @@ opotion ( int pot )
 * invisible capability when drinking from a fountain).
 */
 void
-quaffpotion ( int pot, int set_known )
+fl_drink_potion ( int pot, int set_known )
 {
+    FLCoreFuncs CoreFuncs;
     int i, j, k;
 
     /* check for within bounds */
@@ -779,7 +781,7 @@ quaffpotion ( int pot, int set_known )
     }
 
     /*
-     * if player is to know this potion (really quaffing one), make it
+     * if player is to been_here_before this potion (really quaffing one), make it
      * known
      */
     if ( set_known ) {
@@ -796,28 +798,28 @@ quaffpotion ( int pot, int set_known )
             nap ( NAPTIME );
         }
 
-        cursors ();
+        cursor(1,24);
         fl_display_message ( "\nYou woke up!" );
         return;
 
     case 1:
         fl_display_message ( "\nYou feel better" );
 
-        if ( cdesc[HP] == cdesc[HPMAX] ) {
-            raisemhp ( 1 );
+        if ( cdesc[FL_HP] == cdesc[FL_HPMAX] ) {
+            FL_RAISEMAXHEALTH(1);
         }
 
-        else if ( ( cdesc[HP] += TRnd ( 20 ) + 20 + cdesc[LEVEL] ) >
-                  cdesc[HPMAX] ) {
-            cdesc[HP] = cdesc[HPMAX];
+        else if ( ( cdesc[FL_HP] += TRnd ( 20 ) + 20 + cdesc[FL_LEVEL] ) >
+                  cdesc[FL_HPMAX] ) {
+            cdesc[FL_HP] = cdesc[FL_HPMAX];
         }
 
         break;
 
     case 2:
         fl_display_message ( "\nSuddenly, you feel much more skillful!" );
-        raiselevel ();
-        raisemhp ( 1 );
+        CoreFuncs.IncreasePlayerLevel();
+        FL_RAISEMAXHEALTH(1);
         return;
 
     case 3:
@@ -833,26 +835,26 @@ quaffpotion ( int pot, int set_known )
     case 5:
         fl_display_message ( "\nWow!  You feel great!" );
 
-        if ( cdesc[STRENGTH] < 12 ) {
-            cdesc[STRENGTH] = 12;
+        if ( cdesc[FL_STRENGTH] < 12 ) {
+            cdesc[FL_STRENGTH] = 12;
         }
 
         else {
-            cdesc[STRENGTH]++;
+            cdesc[FL_STRENGTH]++;
         }
 
         break;
 
     case 6:
         fl_display_message ( "\nYour charm went up by one!" );
-        cdesc[CHARISMA]++;
+        cdesc[FL_CHARISMA]++;
         break;
 
     case 7:
         fl_display_message ( "\nYou become dizzy!" );
 
-        if ( --cdesc[STRENGTH] < 3 ) {
-            cdesc[STRENGTH] = 3;
+        if ( --cdesc[FL_STRENGTH] < 3 ) {
+            cdesc[FL_STRENGTH] = 3;
         }
 
         break;
@@ -866,13 +868,13 @@ quaffpotion ( int pot, int set_known )
         fl_display_message ( "\nYou sense the presence of objects!" );
         nap ( NAPTIME );
 
-        if ( cdesc[BLINDCOUNT] ) {
+        if ( cdesc[FL_BLINDCOUNT] ) {
             return;
         }
 
         for ( i = 0; i < MAXY; i++ )
             for ( j = 0; j < MAXX; j++ )
-                switch ( item[j][i] ) {
+                switch ( object_identification[j][i] ) {
                 case OPLATE:
                 case OCHAIN:
                 case OLEATHER:
@@ -912,8 +914,8 @@ quaffpotion ( int pot, int set_known )
                 case OCUBEofUNDEAD:
                 case ONOTHEFT:
                 case OCOOKIE:
-                    know[j][i] = HAVESEEN;
-                    show1cell ( j, i );
+                    been_here_before[j][i] = HAVESEEN;
+                    fl_show_designated_cell_only ( j, i );
                     break;
                 }
 
@@ -924,15 +926,15 @@ quaffpotion ( int pot, int set_known )
         fl_display_message ( "\nYou detect the presence of monsters!" );
         nap ( NAPTIME );
 
-        if ( cdesc[BLINDCOUNT] ) {
+        if ( cdesc[FL_BLINDCOUNT] ) {
             return;
         }
 
         for ( i = 0; i < MAXY; i++ )
             for ( j = 0; j < MAXX; j++ )
-                if ( mitem[j][i] && ( monstnamelist[mitem[j][i]] != floorc ) ) {
-                    know[j][i] = HAVESEEN;
-                    show1cell ( j, i );
+                if ( monster_identification[j][i] && ( monstnamelist[monster_identification[j][i]] != floorc ) ) {
+                    been_here_before[j][i] = HAVESEEN;
+                    fl_show_designated_cell_only ( j, i );
                 }
 
         return;
@@ -942,7 +944,7 @@ quaffpotion ( int pot, int set_known )
 
         for ( i = 0; i < MAXY; i++ )
             for ( j = 0; j < MAXX; j++ ) {
-                know[j][i] = 0;
+                been_here_before[j][i] = 0;
             }
 
         nap ( 1000 );
@@ -955,23 +957,23 @@ quaffpotion ( int pot, int set_known )
 
     case 13:
         fl_display_message ( "\nYou can't see anything!" );	/* blindness */
-        cdesc[BLINDCOUNT] += 500;
+        cdesc[FL_BLINDCOUNT] += 500;
         return;
 
     case 14:
         fl_display_message ( "\nYou feel confused" );
-        cdesc[CONFUSE] += 20 + TRnd ( 9 );
+        cdesc[FL_CONFUSE] += 20 + TRnd ( 9 );
         return;
 
     case 15:
         fl_display_message ( "\nWOW!!!  You feel Super-fantastic!!!" );
 
-        if ( cdesc[HERO] == 0 )
+        if ( cdesc[FL_HERO] == 0 )
             for ( i = 0; i < 6; i++ ) {
                 cdesc[i] += 11;
             }
 
-        cdesc[HERO] += 250;
+        cdesc[FL_HERO] += 250;
         break;
 
     case 16:
@@ -982,37 +984,37 @@ quaffpotion ( int pot, int set_known )
     case 17:
         fl_display_message ( "\nYou now have incredibly bulging muscles!!!" );
 
-        if ( cdesc[GIANTSTR] == 0 ) {
-            cdesc[STREXTRA] += 21;
+        if ( cdesc[FL_GIANTSTR] == 0 ) {
+            cdesc[FL_STREXTRA] += 21;
         }
 
-        cdesc[GIANTSTR] += 700;
+        cdesc[FL_GIANTSTR] += 700;
         break;
 
     case 18:
         fl_display_message ( "\nYou feel a chill run up your spine!" );
-        cdesc[FIRERESISTANCE] += 1000;
+        cdesc[FL_FIRERESISTANCE] += 1000;
         break;
 
     case 19:
         fl_display_message ( "\nYou feel greedy . . ." );
         nap ( NAPTIME );
 
-        if ( cdesc[BLINDCOUNT] ) {
+        if ( cdesc[FL_BLINDCOUNT] ) {
             return;
         }
 
         for ( i = 0; i < MAXY; i++ )
             for ( j = 0; j < MAXX; j++ ) {
-                k = item[j][i];
+                k = object_identification[j][i];
 
                 if ( ( k == ODIAMOND ) ||
                         ( k == ORUBY ) ||
                         ( k == OEMERALD ) ||
                         ( k == OMAXGOLD ) ||
                         ( k == OSAPPHIRE ) || ( k == OLARNEYE ) || ( k == OGOLDPILE ) ) {
-                    know[j][i] = HAVESEEN;
-                    show1cell ( j, i );
+                    been_here_before[j][i] = HAVESEEN;
+                    fl_show_designated_cell_only ( j, i );
                 }
             }
 
@@ -1021,7 +1023,7 @@ quaffpotion ( int pot, int set_known )
 
     case 20:
         fl_display_message ( "\nYou feel all better now!" );
-        cdesc[HP] = cdesc[HPMAX];
+        cdesc[FL_HP] = cdesc[FL_HPMAX];
         break;			/* instant healing */
 
     case 21:
@@ -1030,13 +1032,13 @@ quaffpotion ( int pot, int set_known )
 
     case 22:
         fl_display_message ( "\nYou feel a sickness engulf you" );	/* poison */
-        cdesc[HALFDAM] += 200 + TRnd ( 200 );
+        cdesc[FL_HALFDAM] += 200 + TRnd ( 200 );
         return;
 
     case 23:
         fl_display_message ( "\nYou feel your vision sharpen" );	/* see invisible */
-        cdesc[SEEINVISIBLE] += TRnd ( 1000 ) + 400;
-        monstnamelist[INVISIBLESTALKER] = 'I';
+        cdesc[FL_SEEINVISIBLE] += TRnd ( 1000 ) + 400;
+        monstnamelist[FL_INVISIBLESTALKER] = 'I';
         return;
     };
 
@@ -1051,11 +1053,11 @@ quaffpotion ( int pot, int set_known )
 * function to process a magic scroll
 */
 static void
-oscroll ( int typ )
+fl_scroll ( int typ )
 {
     fl_display_message ( "\nDo you " );
 
-    if ( cdesc[BLINDCOUNT] == 0 ) {
+    if ( cdesc[FL_BLINDCOUNT] == 0 ) {
         fl_display_message ( "(r) read it, " );
     }
 
@@ -1066,11 +1068,11 @@ oscroll ( int typ )
         switch ( ttgetch () ) {
         case '\33':
         case 'i':
-            ignore ();
+            fl_ignore ();
             return;
 
         case 'r':
-            if ( cdesc[BLINDCOUNT] ) {
+            if ( cdesc[FL_BLINDCOUNT] ) {
                 break;
             }
 
@@ -1078,11 +1080,11 @@ oscroll ( int typ )
             forget ();
 
             if ( typ == 2 || typ == 15 ) {
-                show1cell ( playerx, playery );
-                cursors ();
+                fl_show_designated_cell_only ( playerx, playery );
+                cursor(1,24);
             }
 
-            /* destroy it  */ read_scroll ( typ );
+            /* destroy it  */ fl_read_scroll ( typ );
             return;
 
         case 't':
@@ -1101,23 +1103,23 @@ oscroll ( int typ )
 * data for the function to read a scroll
 */
 static int xh, yh, yl, xl;
-static int curse[] = { BLINDCOUNT, CONFUSE, AGGRAVATE, HASTEMONST, ITCHING,
-                       LAUGHING, DRAINSTRENGTH, CLUMSINESS, INFEEBLEMENT,
-                       HALFDAM
+static int curse[] = { FL_BLINDCOUNT, FL_CONFUSE, FL_AGGRAVATE, FL_HASTEMONST, FL_ITCHING,
+                       LAUGHING, DRAINSTRENGTH, FL_CLUMSINESS, INFEEBLEMENT,
+                       FL_HALFDAM
                      };
 
-static int exten[] = { PROTECTIONTIME, DEXCOUNT, STRCOUNT, CHARMCOUNT,
-                       INVISIBILITY, CANCELLATION, HASTESELF, GLOBE,
-                       SCAREMONST, HOLDMONST, TIMESTOP
+static int exten[] = { FL_PROTECTIONTIME, FL_DEXCOUNT, FL_STRCOUNT, FL_CHARMCOUNT,
+                       FL_INVISIBILITY, FL_CANCELLATION, FL_HASTESELF, FL_GLOBE,
+                       FL_SCAREMONST, FL_HOLDMONST, FL_TIMESTOP
                      };
 
 static int time_change[] = {
-    HASTESELF, HERO, ALTPRO, PROTECTIONTIME, DEXCOUNT,
-    STRCOUNT, GIANTSTR, CHARMCOUNT, INVISIBILITY,
-    CANCELLATION, HASTESELF, AGGRAVATE, SCAREMONST,
-    STEALTH, AWARENESS, HOLDMONST, HASTEMONST,
-    FIRERESISTANCE, GLOBE, SPIRITPRO, UNDEADPRO,
-    HALFDAM, SEEINVISIBLE, ITCHING, CLUMSINESS, WTW
+    FL_HASTESELF, FL_HERO, FL_ALTPRO, FL_PROTECTIONTIME, FL_DEXCOUNT,
+    FL_STRCOUNT, FL_GIANTSTR, FL_CHARMCOUNT, FL_INVISIBILITY,
+    FL_CANCELLATION, FL_HASTESELF, FL_AGGRAVATE, FL_SCAREMONST,
+    FL_STEALTH, FL_AWARENESS, FL_HOLDMONST, FL_HASTEMONST,
+    FL_FIRERESISTANCE, FL_GLOBE, FL_SPIRITPRO, FL_UNDEADPRO,
+    FL_HALFDAM, FL_SEEINVISIBLE, FL_ITCHING, FL_CLUMSINESS, FL_WTW
 };
 
 
@@ -1126,7 +1128,7 @@ static int time_change[] = {
 * function to adjust time when time warping and taking courses in school
 */
 void
-adjtimel ( int tim )
+fl_adjust_time ( int tim )
 {
 	FLHunger FLHunger;
     int j;
@@ -1148,7 +1150,7 @@ adjtimel ( int tim )
 * function to read a scroll
 */
 void
-read_scroll ( int typ )
+fl_read_scroll ( int typ )
 {
     int i, j;
 
@@ -1178,7 +1180,7 @@ read_scroll ( int typ )
 
         for ( i = yl; i < yh; i++ )
             for ( j = xl; j < xh; j++ ) {
-                know[j][i] = KNOWALL;
+                been_here_before[j][i] = KNOWALL;
             }
 
         draws ( xl, xh, yl, yh );
@@ -1199,7 +1201,7 @@ read_scroll ( int typ )
 
     case 6:
         fl_display_message ( "\nSomething isn't right..." );
-        cdesc[AGGRAVATE] += 800;
+        cdesc[FL_AGGRAVATE] += 800;
         return;			/* aggravate monsters */
 
     case 7:
@@ -1213,23 +1215,23 @@ read_scroll ( int typ )
             lprintf ( "\nYou went backward in time by %d mobuls",
                       ( int ) ( - ( i + 99 ) / 100 ) );
 
-        adjtimel ( ( int ) i );	/* adjust time for time warping */
+        fl_adjust_time ( ( int ) i );	/* adjust time for time warping */
         return;
 
     case 8:
         fl_display_message ( "\nYour surroundings change" );
-        oteleport ( 0 );
+        fl_teleport ( 0 );
         refresh();
         return;			/* teleportation */
 
     case 9:
         fl_display_message ( "\nYou feel extra alert" );
-        cdesc[AWARENESS] += 1800;
+        cdesc[FL_AWARENESS] += 1800;
         return;			/* expanded awareness   */
 
     case 10:
         fl_display_message ( "\nSomething isn't right..." );
-        cdesc[HASTEMONST] += TRnd ( 55 ) + 12;
+        cdesc[FL_HASTEMONST] += TRnd ( 55 ) + 12;
         return;			/* haste monster */
 
     case 11:
@@ -1237,24 +1239,24 @@ read_scroll ( int typ )
 
         for ( i = 0; i < MAXY; i++ )
             for ( j = 0; j < MAXX; j++ )
-                if ( mitem[j][i] ) {
-                    hitp[j][i] = monster[mitem[j][i]].hitpoints;
+                if ( monster_identification[j][i] ) {
+                    monster_hit_points[j][i] = monster[monster_identification[j][i]].hitpoints;
                 }
 
         return;			/* monster healing */
 
     case 12:
-        cdesc[SPIRITPRO] += 300 + TRnd ( 200 );
+        cdesc[FL_SPIRITPRO] += 300 + TRnd ( 200 );
         bottomline ();
         return;			/* spirit protection */
 
     case 13:
-        cdesc[UNDEADPRO] += 300 + TRnd ( 200 );
+        cdesc[FL_UNDEADPRO] += 300 + TRnd ( 200 );
         bottomline ();
         return;			/* undead protection */
 
     case 14:
-        cdesc[STEALTH] += 250 + TRnd ( 250 );
+        cdesc[FL_STEALTH] += 250 + TRnd ( 250 );
         bottomline ();
         return;			/* stealth */
 
@@ -1263,7 +1265,7 @@ read_scroll ( int typ )
 
         for ( i = 0; i < MAXY; i++ )
             for ( j = 0; j < MAXX; j++ ) {
-                know[j][i] = KNOWALL;
+                been_here_before[j][i] = KNOWALL;
             }
 
         draws ( 0, MAXX, 0, MAXY );
@@ -1271,7 +1273,7 @@ read_scroll ( int typ )
         return;
 
     case 16:
-        cdesc[HOLDMONST] += 30;
+        cdesc[FL_HOLDMONST] += 30;
         bottomline ();
         return;			/* hold monster */
 
@@ -1350,19 +1352,20 @@ read_scroll ( int typ )
 
 /* FIXES for bool bug */
 static void
-opit ( void )
+fl_non_bottomless_pit ( void )
 {
+	FLCoreFuncs CoreFuncs;
     int i;
 
     if ( TRnd ( 101 ) < 81 ) {
-        if ( TRnd ( 70 ) > 9 * cdesc[DEXTERITY] - packweight ()
+        if ( TRnd ( 70 ) > 9 * cdesc[FL_DEXTERITY] - packweight ()
                 || TRnd ( 101 ) < 5 ) {
             if ( level == MAXLEVEL - 1 ) {
-                obottomless ();
+                fl_bottomless_pit ();
             }
 
             else if ( level == MAXLEVEL + MAXVLEVEL - 1 ) {
-                obottomless ();
+                fl_bottomless_pit ();
             }
 
             else {
@@ -1380,7 +1383,7 @@ opit ( void )
                     lastnum = 261;	/* if he dies scoreboard * will say so */
                 }
 
-                losehp ( i );
+                CoreFuncs.DecreasePHealth ( i );
                 nap ( 2000 );
                 newcavelevel ( level + 1 );
                 draws ( 0, MAXX, 0, MAXY );
@@ -1390,7 +1393,7 @@ opit ( void )
 }
 
 static void
-obottomless ( void )
+fl_bottomless_pit ( void )
 {
     fl_display_message ( "\nYou fell into a bottomless pit!" );
     nap ( 3000 );
@@ -1399,23 +1402,23 @@ obottomless ( void )
 
 
 static void
-ostatue ( void )
+fl_statue ( void )
 {
 }
 
 /* I will add something here, for now it's a placeholder -Gibbon*/
 static void
-omirror ( void )
+fl_mirror ( void )
 {
     fl_display_message ( "\nMirror mirror on the wall.." );
 }
 
 static void
-obook ( void )
+fl_book ( void )
 {
     fl_display_message ( "\nDo you " );
 
-    if ( cdesc[BLINDCOUNT] == 0 ) {
+    if ( cdesc[FL_BLINDCOUNT] == 0 ) {
         fl_display_message ( "(r) read it, " );
     }
 
@@ -1426,23 +1429,23 @@ obook ( void )
         switch ( ttgetch () ) {
         case '\33':
         case 'i':
-            ignore ();
+            fl_ignore ();
             return;
 
         case 'r':
-            if ( cdesc[BLINDCOUNT] ) {
+            if ( cdesc[FL_BLINDCOUNT] ) {
                 break;
             }
 
             fl_display_message ( "read" );
-            /* no more book */ readbook ( iarg[playerx][playery] );
+            /* no more book */ readbook ( object_argument[playerx][playery] );
             forget ();
             return;
 
         case 't':
             fl_display_message ( "take" );
 
-            if ( take ( OBOOK, iarg[playerx][playery] ) == 0 ) {
+            if ( take ( OBOOK, object_argument[playerx][playery] ) == 0 ) {
                 forget ();  /* no more book */
             }
 
@@ -1452,11 +1455,11 @@ obook ( void )
 }
 
 static void
-oprayerbook ( void )
+fl_prayer_book ( void )
 {
     fl_display_message ( "\nDo you " );
 
-    if ( cdesc[BLINDCOUNT] == 0 ) {
+    if ( cdesc[FL_BLINDCOUNT] == 0 ) {
         fl_display_message ( "(r) read it, " );
     }
 
@@ -1467,23 +1470,23 @@ oprayerbook ( void )
         switch ( ttgetch () ) {
         case '\33':
         case 'i':
-            ignore ();
+            fl_ignore ();
             return;
 
         case 'r':
-            if ( cdesc[BLINDCOUNT] ) {
+            if ( cdesc[FL_BLINDCOUNT] ) {
                 break;
             }
 
             fl_display_message ( "read" );
-            /* no more book */ readprayerbook ( iarg[playerx][playery] );
+            /* no more book */ readprayerbook ( object_argument[playerx][playery] );
             forget ();
             return;
 
         case 't':
             fl_display_message ( "take" );
 
-            if ( take ( OPRAYERBOOK, iarg[playerx][playery] ) == 0 ) {
+            if ( take ( OPRAYERBOOK, object_argument[playerx][playery] ) == 0 ) {
                 forget ();  /* no more book */
             }
 
@@ -1573,7 +1576,7 @@ readprayerbook ( int lev )
 }
 
 static void
-ocookie ( void )
+fl_fortune_cookie ( void )
 {
     fl_display_message ( "\nDo you (e) eat it, (t) take it" );
     iopts ();
@@ -1582,7 +1585,7 @@ ocookie ( void )
         switch ( ttgetch () ) {
         case '\33':
         case 'i':
-            ignore ();
+            fl_ignore ();
             return;
 
         case 'e':
@@ -1609,10 +1612,10 @@ ocookie ( void )
 * 100* the argument
 */
 static void
-ogold ( int arg )
+fl_gold ( int arg )
 {
     int i;
-    i = iarg[playerx][playery];
+    i = object_argument[playerx][playery];
 
     if ( arg == OMAXGOLD ) {
         i *= 100;
@@ -1629,7 +1632,7 @@ ogold ( int arg )
     fl_display_message("\nIt is worth %d!", (int) i);
     cdesc[GOLD] += i;
     bottomgold ();
-    item[playerx][playery] = know[playerx][playery] =
+    object_identification[playerx][playery] = been_here_before[playerx][playery] =
                                  0;	/* destroy gold    */
 }
 
@@ -1726,7 +1729,7 @@ iopts ( void )
 
 
 void
-ignore ( void )
+fl_ignore ( void )
 {
     fl_display_message ( "ignore\n" );
 }
@@ -1739,7 +1742,7 @@ ignore ( void )
 * For prompt mode, prompt for entering a building.
 */
 static void
-prompt_enter ( void )
+fl_prompt_for_entrance ( void )
 {
     char i;
     fl_display_message ( "\nDo you (g) go inside, or (i) stay here? " );
@@ -1758,56 +1761,39 @@ prompt_enter ( void )
     }
 }
 
-
-
-
-
-/*
-* For prompt mode, prompt for climbing up/down the volcanic shaft.
-*
-* Takes one parameter: if it is negative, going down the shaft, otherwise,
-* going up the shaft.
-*/
 static void
-prompt_volshaft ( int dir )
+fl_prompt_for_temple_entrance ( int sphere_direction )
 {
     char i;
-    fl_display_message ( "\nDo you (c) climb " );
+    fl_display_message ( "\nDo you (e) enter " );
 
-    if ( dir > 0 ) {
-        fl_display_message ( "up" );
+    if ( sphere_direction > 0 ) {
+        fl_display_message("enter");
     }
 
     else {
-        fl_display_message ( "down" );
+        fl_display_message("leave");
     }
-
-    iopts ();
+    iopts();
     i = 0;
-
-    while ( ( i != 'c' ) && ( i != 'i' ) && ( i != '\33' ) ) {
+	
+    while ( ( i != 'e' ) && ( i != 'i' ) && ( i != '\33' ) ) {
         i = ttgetch ();
     }
-
     if ( ( i == '\33' ) || ( i == 'i' ) ) {
-        ignore ();
+        fl_ignore ();
         return;
     }
-
-    if ( dir > 0 ) {
-        act_up_shaft ();
+    if ( sphere_direction > 0 ) {
+        fl_act_exit_temple();
     }
-
     else {
-        act_down_shaft ();
+        fl_act_enter_temple();
     }
 }
 
-
-
-
 static void
-o_open_door ( void )
+fl_open_door ( void )
 {
     char i;
     fl_display_message ( "\nDo you (c) close it" );
@@ -1819,14 +1805,14 @@ o_open_door ( void )
     }
 
     if ( ( i == '\33' ) || ( i == 'i' ) ) {
-        ignore ();
+        fl_ignore ();
         return;
     }
 
     fl_display_message ( "close" );
     forget ();
-    item[playerx][playery] = OCLOSEDDOOR;
-    iarg[playerx][playery] = 0;
+    object_identification[playerx][playery] = OCLOSEDDOOR;
+    object_argument[playerx][playery] = 0;
     playerx = lastpx;
     playery = lastpy;
 }
@@ -1834,7 +1820,7 @@ o_open_door ( void )
 
 
 static void
-o_closed_door ( void )
+fl_closed_door ( void )
 {
     char i;
     fl_display_message ( "\nDo you (o) try to open it" );
@@ -1846,7 +1832,7 @@ o_closed_door ( void )
     }
 
     if ( ( i == '\33' ) || ( i == 'i' ) ) {
-        ignore ();
+        fl_ignore ();
         playerx = lastpx;
         playery = lastpy;
         return;

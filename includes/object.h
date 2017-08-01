@@ -1,12 +1,12 @@
-void lookforobject ( char, char, char );
+void fl_look_for_an_object_and_give_options ( char, char, char );
 
-void oteleport ( int );
+void fl_teleport ( int );
 
-void quaffpotion ( int, int );
+void fl_drink_potion ( int, int );
 
-void adjtimel ( int );
+void fl_adjust_time ( int );
 
-void read_scroll ( int );
+void fl_read_scroll ( int );
 
 void readbook ( int );
 
@@ -16,4 +16,4 @@ void ohome ( void );
 
 void iopts ( void );
 
-void ignore ( void );
+void fl_ignore ( void );

@@ -45,12 +45,12 @@ makemaze (int k)
         tmp = OWALL;
     }
 
-    for (i=0; i<MAXY; i++) for (j=0; j<MAXX; j++) item[j][i] = tmp;
+    for (i=0; i<MAXY; i++) for (j=0; j<MAXX; j++) object_identification[j][i] = tmp;
     if (k == 0) {
         return;
     }
     eat(1, 1);
-    if (k == 1) item[33][MAXY-1] = OENTRANCE;
+    if (k == 1) object_identification[33][MAXY-1] = OENTRANCE;
 
     /*  now for open spaces -- not on level 10  */
     if (k != MAXLEVEL-1) {
@@ -75,9 +75,9 @@ makemaze (int k)
 
             for (i=mxl; i<mxh; i++)
                 for (j=myl; j<myh; j++) {
-                    item[i][j] = 0;
-                    mitem[i][j] = z;
-                    if (mitem[i][j] != 0) hitp[i][j] = monster[z].hitpoints;
+                    object_identification[i][j] = 0;
+                    monster_identification[i][j] = z;
+                    if (monster_identification[i][j] != 0) monster_hit_points[i][j] = monster[z].hitpoints;
                 }
         }
     }
@@ -85,7 +85,7 @@ makemaze (int k)
     if (k != MAXLEVEL-1) {
         my = TRnd(MAXY-2);
         for (i=1; i<MAXX-1; i++) {
-            item[i][my] = 0;
+            object_identification[i][my] = 0;
         }
     }
     if (k > 1) {
@@ -150,11 +150,11 @@ cannedlevel (int dungeon_level)
                 it = newobject(dungeon_level + 1, &arg);
                 break;
             }
-            item[j][i] = it;
-            iarg[j][i] = arg;
-            mitem[j][i] = mit;
-            hitp[j][i] = marg;
-            know[j][i] = 0;
+            object_identification[j][i] = it;
+            object_argument[j][i] = arg;
+            monster_identification[j][i] = mit;
+            monster_hit_points[j][i] = marg;
+            been_here_before[j][i] = 0;
         }
     return 1;
 }
@@ -195,26 +195,26 @@ troom (int lv, int xsize, int ysize, int tx, int ty, int glyph)
 
     for (j = ty - 1; j <= ty + ysize; j++)
         for (i = tx - 1; i <= tx + xsize; i++)	/* clear out space for room */
-            item[i][j] = 0;
+            object_identification[i][j] = 0;
     for (j = ty; j < ty + ysize; j++)
         for (i = tx; i < tx + xsize; i++) {	/* now put in the walls */
-            item[i][j] = OWALL;
-            mitem[i][j] = 0;
+            object_identification[i][j] = OWALL;
+            monster_identification[i][j] = 0;
         }
     for (j = ty + 1; j < ty + ysize - 1; j++)
         for (i = tx + 1; i < tx + xsize - 1; i++)	/* now clear out interior */
-            item[i][j] = 0;
+            object_identification[i][j] = 0;
 
     switch (TRnd (2)) {	/* locate the door on the treasure room */
     case 1:
-        item[i = tx + TRund (xsize)][j = ty + (ysize - 1) * TRund (2)] =
+        object_identification[i = tx + TRund (xsize)][j = ty + (ysize - 1) * TRund (2)] =
             OCLOSEDDOOR;
-        iarg[i][j] = glyph;	/* on horizontal walls */
+        object_argument[i][j] = glyph;	/* on horizontal walls */
         break;
     case 2:
-        item[i = tx + (xsize - 1) * TRund (2)][j = ty + TRund (ysize)] =
+        object_identification[i = tx + (xsize - 1) * TRund (2)][j = ty + TRund (ysize)] =
             OCLOSEDDOOR;
-        iarg[i][j] = glyph;	/* on vertical walls */
+        object_argument[i][j] = glyph;	/* on vertical walls */
         break;
     };
 
@@ -246,7 +246,7 @@ makeobject(int j)
         fillroom(ODNDSTORE, 0);
         fillroom(OSCHOOL, 0);	/*  college of Larn             */
         fillroom(OBANK, 0);	/*  1st national bank of larn   */
-        fillroom(OVOLDOWN, 0);	/*  volcano shaft to temple     */
+        fillroom(FL_OBJECT_TEMPLE_IN, 0);
         fillroom(OHOME, 0);	/*  the players home & family   */
         fillroom(OTRADEPOST, 0);	/*  the trading post            */
         fillroom(OLRS, 0);	/*  the larn revenue service    */
@@ -254,7 +254,7 @@ makeobject(int j)
     }
 
     if(j == MAXLEVEL) {
-        fillroom(OVOLUP, 0);     /* volcano shaft up from the temple */
+        fillroom(FL_OBJECT_TEMPLE_OUT, 0);
     }
 
     /*  make the fixed objects in the maze STAIRS   */
@@ -383,7 +383,7 @@ fillroom(int what, int arg)
     x = TRnd(MAXX - 2);
     y = TRnd(MAXY - 2);
 
-    while(item[x][y]) {
+    while(object_identification[x][y]) {
         /* count up these random walks */
         cdesc[RANDOMWALK]++;
         x += TRnd(3) - 2;
@@ -407,8 +407,8 @@ fillroom(int what, int arg)
         }
     }
 
-    item[x][y] = what;
-    iarg[x][y] = arg;
+    object_identification[x][y] = what;
+    object_argument[x][y] = arg;
 }
 
 /*
@@ -429,7 +429,7 @@ sethp(int flg)
         }
     }
 
-    /* if teleported and found level 1 then know level we are on */
+    /* if teleported and found level 1 then been_here_before level we are on */
     if(level == 0) {
         cdesc[TELEFLAG] = 0;
         return;
@@ -458,6 +458,6 @@ checkgen(void)
 
     for (y=0; y<MAXY; y++)
         for (x=0; x<MAXX; x++)
-            if(monster[mitem[x][y]].genocided)
-                mitem[x][y]=0; /* no more monster */
+            if(monster[monster_identification[x][y]].genocided)
+                monster_identification[x][y]=0; /* no more monster */
 }

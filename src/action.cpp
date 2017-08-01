@@ -23,9 +23,9 @@ act_up_stairs           go up stairs
 act_down_stairs         go down stairs
 act_drink_fountain      drink from a fountain
 act_wash_fountain       wash at a fountain
-act_up_shaft            up volcanic shaft
-act_down_shaft          down volcanic shaft
-volshaft_climbed        place player near volcanic shaft
+fl_act_exit_temple
+fl_act_enter_temple
+fl_temple_actions
 act_desecrate_altar     desecrate an altar
 act_donation_pray       pray, donating money
 act_just_pray           pray, not donating money
@@ -52,10 +52,11 @@ act_open_door           open a door
 #include "../includes/object.h"
 #include "core/scores.hpp"
 #include "core/sysdep.hpp"
+#include "core/funcs.hpp"
 
 using std::cout;
 
-static void volshaft_climbed ( int );
+static void fl_temple_actions ( int );
 
 static void act_prayer_heard ( void );
 
@@ -84,14 +85,14 @@ act_remove_gems ( int arg )
             creategem ();
         }
 
-        item[playerx][playery] = ODEADTHRONE;
-        know[playerx][playery] = 0;
+        object_identification[playerx][playery] = ODEADTHRONE;
+        been_here_before[playerx][playery] = 0;
     }
 
     else if ( k < 40 && arg == 0 ) {
         createmonster ( GNOMEKING );
-        item[playerx][playery] = OTHRONE2;
-        know[playerx][playery] = 0;
+        object_identification[playerx][playery] = OTHRONE2;
+        been_here_before[playerx][playery] = 0;
     }
 
     else {
@@ -118,13 +119,13 @@ act_sit_throne ( int arg )
 
     if ( k < 30 && arg == 0 ) {
         createmonster ( GNOMEKING );
-        item[playerx][playery] = OTHRONE2;
-        know[playerx][playery] = 0;
+        object_identification[playerx][playery] = OTHRONE2;
+        been_here_before[playerx][playery] = 0;
     }
 
     else if ( k < 35 ) {
         fl_display_message ( "\nZaaaappp!  You've been teleported!\n" );
-        oteleport ( 0 );
+        fl_teleport ( 0 );
     }
 
     else {
@@ -197,13 +198,13 @@ act_drink_fountain ( void )
     x = TRnd ( 100 );
 
     if ( x < 7 ) {
-        cdesc[HALFDAM] += 200 + TRnd ( 200 );
+        cdesc[FL_HALFDAM] += 200 + TRnd ( 200 );
         fl_display_message ( "\nYou feel a sickness coming on" );
     }
 
     else if ( x < 13 )
-        quaffpotion ( 23,
-                      0 );	/* see invisible,but don't know the potion */
+        fl_drink_potion ( 23,
+                      0 );	/* see invisible,but don't been_here_before the potion */
     else if ( x < 45 ) {
         fl_display_message ( "\nnothing seems to have happened" );
     }
@@ -218,8 +219,8 @@ act_drink_fountain ( void )
 
     if ( TRnd ( 12 ) < 3 ) {
         fl_display_message ( "\nThe fountains bubbling slowly quiets" );
-        item[playerx][playery] = ODEADFOUNTAIN;	/* dead fountain */
-        know[playerx][playery] = 0;
+        object_identification[playerx][playery] = ODEADFOUNTAIN;	/* dead fountain */
+        been_here_before[playerx][playery] = 0;
     }
 	
 	if (TRnd(10) < (6)) {
@@ -228,7 +229,7 @@ act_drink_fountain ( void )
 			cdesc[HUNGER] += 5;
 		} else {
 			fl_display_message("\nThe refreshing water gives you strength!");
-			cdesc[STRENGTH] += 1;
+			cdesc[FL_STRENGTH] += 1;
 		}
 	}
     return;
@@ -242,6 +243,7 @@ the player is actually standing at a live fountain.
 void
 act_wash_fountain ( void )
 {
+	FLCoreFuncs CoreFuncs;
     int x;
 
     if ( TRnd ( 100 ) < 11 ) {
@@ -249,9 +251,9 @@ act_wash_fountain ( void )
         lprintf ( "\nOh no!  The water was foul!  You suffer %d hit points!",
                   ( int ) x );
         lastnum = 273;
-        losehp ( x );
+        CoreFuncs.DecreasePHealth ( x );
         bottomline ();
-        cursors ();
+        cursor(1,24);
     }
 
     else if ( TRnd ( 100 ) < 29 ) {
@@ -269,89 +271,57 @@ act_wash_fountain ( void )
     else {
         fl_display_message ( "\nnothing seems to have happened" );
     }
-
     return;
 }
 
-
-
-/*
-Perform the act of climbing down the volcanic shaft.  Assumes
-cursors() has been called and that a check has been made that
-are actually at a down shaft.
-*/
-void
-act_down_shaft ( void )
+void fl_act_enter_temple(void)
 {
-    if ( level != 0 ) {
-        fl_display_message ( "\nThe hole only extends 5 feet downward!" );
-        return;
-    }
-
-    if ( packweight () > 45 + 3 * ( cdesc[STRENGTH] +
-                                    cdesc[STREXTRA] ) ) {
-        fl_display_message ( "\nYou slip down the hole" );
+	FLCoreFuncs CoreFuncs;
+	
+    if (cdesc[FL_STRENGTH] < 20 && TRnd(42)) {
+        fl_display_message("\nThe temple doors begin to burn you");
         lastnum = 275;
-        losehp ( 30 + TRnd ( 20 ) );
-        bottomhp ();
+        CoreFuncs.DecreasePHealth(50 + TRnd(26));
+        bottomhp();
     }
-
-    newcavelevel ( MAXLEVEL );
-    draws ( 0, MAXX, 0, MAXY );
-    bot_linex ();
+    newcavelevel(MAXLEVEL);
+    draws(0,MAXX,0,MAXY);
+    bot_linex();
     return;
 }
 
-
-
-/*
-Perform the action of climbing up the volcanic shaft. Assumes
-cursors() has been called and that a check has been made that
-are actually at an up shaft.
-
-*/
 void
-act_up_shaft ( void )
+fl_act_exit_temple ( void )
 {
+	FLCoreFuncs CoreFuncs;
     if ( level != 11 ) {
         fl_display_message
-        ( "\nThe hole only extends 8 feet upwards before you find a blockage!" );
+        ( "\nThese doors cannot be opened." );
         return;
     }
-
-    if ( packweight () > 45 + 5 * ( cdesc[STRENGTH] +
-                                    cdesc[STREXTRA] ) ) {
-        fl_display_message ( "\nDown the hatch!" );
+    if (cdesc[FL_STRENGTH] < 20 + TRnd(2)) {
+        fl_display_message ( "\nYou suddenly feel weaker." );
         lastnum = 275;
-        losehp ( 15 + TRnd ( 20 ) );
+        CoreFuncs.DecreasePHealth ( 15 + TRnd ( 20 ) );
         bottomhp ();
         return;
     }
 
     lflush ();
     newcavelevel ( 0 );
-    volshaft_climbed ( OVOLDOWN );
+    fl_temple_actions ( FL_OBJECT_TEMPLE_IN );
     return;
 }
 
-
-
-/*
-Perform the action of placing the player near the volcanic shaft
-after it has been climbed.
-
-Takes one parameter:  the volcanic shaft object to be found.  If have
-climbed up, search for OVOLDOWN, otherwise search for OVOLUP.
-*/
 static void
-volshaft_climbed ( int object )
+fl_temple_actions ( int object )
 {
     int i, j;
 
     /* place player near the volcanic shaft */
     for ( i = 0; i < MAXY; i++ )
         for ( j = 0; j < MAXX; j++ )
-            if ( item[j][i] == object ) {
+            if ( object_identification[j][i] == object ) {
                 playerx = j;
                 playery = i;
                 positionplayer ();
@@ -372,11 +342,12 @@ Perform the actions associated with Altar desecration.
 void
 act_desecrate_altar ( void )
 {
+	FLCoreFuncs CoreFuncs;
     if ( TRnd ( 100 ) < 60 ) {
         createmonster ( makemonst ( level + 2 ) + 8 );
         fl_display_message ( "\nThe altar explodes violently and spawns a monster!" );
-        losehp (5);
-        cdesc[AGGRAVATE] += 2500;
+        CoreFuncs.DecreasePHealth (5);
+        cdesc[FL_AGGRAVATE] += 2500;
         forget ();
     }
 
@@ -433,7 +404,7 @@ act_donation_pray ( void )
                 /* added by ~Gibbon */
                 fl_display_message("You have offended the Gods.");
                 createmonster ( makemonst ( level + 1 ) );
-                cdesc[AGGRAVATE] += 200;
+                cdesc[FL_AGGRAVATE] += 200;
                 return;
             }
 
@@ -443,7 +414,7 @@ act_donation_pray ( void )
             }
 
             if ( TRnd ( 43 ) == 5 ) {
-                if ( cdesc[WEAR] ) {
+                if ( cdesc[FL_WEAR] ) {
                     fl_display_message ( "You feel your armor vibrate for a moment" );
                 }
 
@@ -452,7 +423,7 @@ act_donation_pray ( void )
             }
 
             if ( TRnd ( 43 ) == 8 ) {
-                if ( cdesc[WIELD] ) {
+                if ( cdesc[FL_WIELD] ) {
                     fl_display_message ( "You feel your weapon vibrate for a moment" );
                 }
 
@@ -489,7 +460,7 @@ act_just_pray ( void )
     }
 
     else if ( TRnd ( 43 ) == 10 ) {
-        if ( cdesc[WEAR] ) {
+        if ( cdesc[FL_WEAR] ) {
             fl_display_message ( "You feel your armor vibrate for a moment" );
         }
 
@@ -498,7 +469,7 @@ act_just_pray ( void )
     }
 
     else if ( TRnd ( 43 ) == 10 ) {
-        if ( cdesc[WIELD] ) {
+        if ( cdesc[FL_WIELD] ) {
             fl_display_message ( "You feel your weapon vibrate for a moment" );
         }
 
@@ -525,6 +496,7 @@ Assumes cursors(), and that any leading \n have been printed
 void
 act_give_thanks(void)
 {
+    FLCoreFuncs CoreFuncs;
     int i;
 
     //The below math is to identify if the player has the ghani statue in their inventory or not. ~Gibbon
@@ -540,8 +512,8 @@ act_give_thanks(void)
         if (iven[i] == OGHANISTATUE) {
             fl_display_message("You place the statues on the altar and close your eyes reverently..");
             fl_display_message("\nWe hear your prayers.\nBehold your increased strength and experience!");
-            cdesc[STRENGTH] += 4;
-            raiseexperience(600);
+            cdesc[FL_STRENGTH] += 4;
+            CoreFuncs.IncreaseExperience(600);
             //Then we remove the statue from the inventory.  If the user has more than 1 all will be removed. ~Gibbon
             iven[i] = 0;
             forget();
@@ -557,12 +529,12 @@ act_prayer_heard ( void )
 {
     fl_display_message ( "You have been heard!" );
 
-    if ( cdesc[ALTPRO] == 0 ) {
-        cdesc[MOREDEFENSES] += 3;
+    if ( cdesc[FL_ALTPRO] == 0 ) {
+        cdesc[FL_MOREDEFENSES] += 3;
     }
 
     /* protection field */
-    cdesc[ALTPRO] += 500;
+    cdesc[FL_ALTPRO] += 500;
     bottomline ();
     forget();
 }
@@ -578,7 +550,7 @@ act_ignore_altar ( void )
     if ( TRnd ( 100 ) < 30 ) {
         createmonster ( makemonst ( level + 1 ) );
         fl_display_message("The altar turns into a monster!");
-        cdesc[AGGRAVATE] += TRnd ( 450 );
+        cdesc[FL_AGGRAVATE] += TRnd ( 450 );
         forget();
     }
 
@@ -613,31 +585,31 @@ act_open_chest ( int x, int y )
 
         switch ( TRnd ( 10 ) ) {	/* see if he gets a curse */
         case 1:
-            cdesc[ITCHING] += TRnd ( 1000 ) + 100;
+            cdesc[FL_ITCHING] += TRnd ( 1000 ) + 100;
             fl_display_message ( "\nYou feel an irritation spread over your skin!" );
             break;
 
         case 2:
-            cdesc[CLUMSINESS] += TRnd ( 1600 ) + 200;
+            cdesc[FL_CLUMSINESS] += TRnd ( 1600 ) + 200;
             fl_display_message ( "\nYou begin to lose hand to eye coordination!" );
             break;
 
         case 3:
-            cdesc[HALFDAM] += TRnd ( 1600 ) + 200;
+            cdesc[FL_HALFDAM] += TRnd ( 1600 ) + 200;
             fl_display_message ( "\nA sickness engulfs you!" );
             break;
         };
 
-        item[x][y] = know[x][y] = 0;	/* destroy the chest */
+        object_identification[x][y] = been_here_before[x][y] = 0;	/* destroy the chest */
 
         if ( TRnd ( 100 ) < 69 ) {
             creategem ();  /* gems from the chest */
         }
 
-        dropgold ( TRnd ( 110 * iarg[playerx][playery] + 200 ) );
+        dropgold ( TRnd ( 110 * object_argument[playerx][playery] + 200 ) );
 
         for ( i = 0; i < TRnd ( 4 ); i++ ) {
-            something ( iarg[playerx][playery] + 2 );
+            something ( object_argument[playerx][playery] + 2 );
         }
     }
 
@@ -660,30 +632,31 @@ Return value:   TRUE if successful in opening the door, false if not.
 int
 act_open_door ( int x, int y )
 {
+    FLCoreFuncs CoreFuncs;
     if ( TRnd ( 11 ) < 7 ) {
-        switch ( iarg[x][y] ) {
+        switch ( object_argument[x][y] ) {
         case 6:
             fl_display_message ( "\nThe door makes an awful groan, but remains stuck" );
-            cdesc[AGGRAVATE] += TRnd ( 400 );
+            cdesc[FL_AGGRAVATE] += TRnd ( 400 );
             break;
 
         case 7:
             fl_display_message ( "\nYou are jolted by an electric shock" );
             lastnum = 274;
-            losehp ( TRnd ( 20 ) );
+            CoreFuncs.DecreasePHealth ( TRnd ( 20 ) );
             bottomline ();
             break;
 
         case 8:
             fl_display_message ( "\nYou feel drained" );
-            loselevel ();
+            CoreFuncs.DecreasePlayerLevel();
             break;
 
         case 9:
             fl_display_message ( "\nYou suddenly feel weaker" );
 
-            if ( cdesc[STRENGTH] > 3 ) {
-                cdesc[STRENGTH]--;
+            if ( cdesc[FL_STRENGTH] > 3 ) {
+                cdesc[FL_STRENGTH]--;
             }
 
             bottomline ();
@@ -699,8 +672,8 @@ act_open_door ( int x, int y )
 
     else {
         fl_display_message ( "\nThe door opens" );
-        know[x][y] = 0;
-        item[x][y] = OOPENDOOR;
+        been_here_before[x][y] = 0;
+        object_identification[x][y] = OOPENDOOR;
         return ( 1 );
     }
 }

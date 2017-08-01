@@ -36,10 +36,10 @@ regen(void)
     int i, flag;
     long *larn_cdesc_id;
     larn_cdesc_id = cdesc;
-    larn_cdesc_id[MOVESMADE]++;
+    larn_cdesc_id[FL_MOVESMADE]++;
 
-    if (larn_cdesc_id[TIMESTOP]) {
-        if (--larn_cdesc_id[TIMESTOP] <= 0) {
+    if (larn_cdesc_id[FL_TIMESTOP]) {
+        if (--larn_cdesc_id[FL_TIMESTOP] <= 0) {
             bottomline();
         }
         return;
@@ -47,166 +47,166 @@ regen(void)
 
     flag = 0;
 
-    if (larn_cdesc_id[STRENGTH] < 3) {
-        larn_cdesc_id[STRENGTH] = 3;
+    if (larn_cdesc_id[FL_STRENGTH] < 3) {
+        larn_cdesc_id[FL_STRENGTH] = 3;
         flag = 1;
     }
 
-    if (larn_cdesc_id[HP] != larn_cdesc_id[HPMAX])
+    if (larn_cdesc_id[FL_HP] != larn_cdesc_id[FL_HPMAX])
 
-        if (larn_cdesc_id[REGENCOUNTER]-- <= 0) {	/* regenerate hit points */
-            larn_cdesc_id[REGENCOUNTER] = 20 + larn_cdesc_id[LEVEL];
+        if (larn_cdesc_id[FL_REGENCOUNTER]-- <= 0) {	/* regenerate hit points */
+            larn_cdesc_id[FL_REGENCOUNTER] = 20 + larn_cdesc_id[FL_LEVEL];
 
-            if ((larn_cdesc_id[HP] += larn_cdesc_id[REGEN]) > larn_cdesc_id[HPMAX]) {
-                larn_cdesc_id[HP] = larn_cdesc_id[HPMAX];
+            if ((larn_cdesc_id[FL_HP] += larn_cdesc_id[FL_REGEN]) > larn_cdesc_id[FL_HPMAX]) {
+                larn_cdesc_id[FL_HP] = larn_cdesc_id[FL_HPMAX];
             }
             bottomhp();
         }
     /* regenerate spells */
-    if (larn_cdesc_id[SPELLS] < larn_cdesc_id[SPELLMAX])
-        if (larn_cdesc_id[ECOUNTER]-- <= 0) {
-            larn_cdesc_id[ECOUNTER] = 100 + 4 * larn_cdesc_id[LEVEL] - larn_cdesc_id[ENERGY];
-            larn_cdesc_id[SPELLS]++;
+    if (larn_cdesc_id[FL_SPELLS] < larn_cdesc_id[FL_SPELLMAX])
+        if (larn_cdesc_id[FL_ECOUNTER]-- <= 0) {
+            larn_cdesc_id[FL_ECOUNTER] = 100 + 4 * larn_cdesc_id[FL_LEVEL] - larn_cdesc_id[FL_ENERGY];
+            larn_cdesc_id[FL_SPELLS]++;
             bottomspell();
         }
-    if (larn_cdesc_id[HERO])
-        if (--larn_cdesc_id[HERO] <= 0 ) {
+    if (larn_cdesc_id[FL_HERO])
+        if (--larn_cdesc_id[FL_HERO] <= 0 ) {
             for (i = 0; i < 5; i++) {
                 larn_cdesc_id[i] -= 10;
             }
             flag = 1;
         }
-    if (larn_cdesc_id[ALTPRO])
-        if (--larn_cdesc_id[ALTPRO] <= 0) {
-            larn_cdesc_id[MOREDEFENSES] -= 3;
+    if (larn_cdesc_id[FL_ALTPRO])
+        if (--larn_cdesc_id[FL_ALTPRO] <= 0) {
+            larn_cdesc_id[FL_MOREDEFENSES] -= 3;
             flag = 1;
         }
-    if (larn_cdesc_id[PROTECTIONTIME])
-        if (--larn_cdesc_id[PROTECTIONTIME] <= 0) {
-            larn_cdesc_id[MOREDEFENSES] -= 2;
+    if (larn_cdesc_id[FL_PROTECTIONTIME])
+        if (--larn_cdesc_id[FL_PROTECTIONTIME] <= 0) {
+            larn_cdesc_id[FL_MOREDEFENSES] -= 2;
             flag = 1;
         }
-    if (larn_cdesc_id[DEXCOUNT])
-        if (--larn_cdesc_id[DEXCOUNT] <= 0) {
-            larn_cdesc_id[DEXTERITY] -= 3;
+    if (larn_cdesc_id[FL_DEXCOUNT])
+        if (--larn_cdesc_id[FL_DEXCOUNT] <= 0) {
+            larn_cdesc_id[FL_DEXTERITY] -= 3;
             flag = 1;
         }
-    if (larn_cdesc_id[STRCOUNT])
-        if (--larn_cdesc_id[STRCOUNT] <= 0) {
-            larn_cdesc_id[STREXTRA] -= 3;
+    if (larn_cdesc_id[FL_STRCOUNT])
+        if (--larn_cdesc_id[FL_STRCOUNT] <= 0) {
+            larn_cdesc_id[FL_STREXTRA] -= 3;
             flag = 1;
         }
-    if (larn_cdesc_id[BLINDCOUNT])
-        if (--larn_cdesc_id[BLINDCOUNT] <= 0) {
-            cursors();
+    if (larn_cdesc_id[FL_BLINDCOUNT])
+        if (--larn_cdesc_id[FL_BLINDCOUNT] <= 0) {
+            cursor(1,24);
             fl_display_message("\nThe blindness subsides");
         }
-    if (larn_cdesc_id[CONFUSE])
-        if (--larn_cdesc_id[CONFUSE] <= 0) {
-            cursors();
+    if (larn_cdesc_id[FL_CONFUSE])
+        if (--larn_cdesc_id[FL_CONFUSE] <= 0) {
+            cursor(1,24);
             fl_display_message("\nYou regain your senses");
         }
-    if (larn_cdesc_id[GIANTSTR])
-        if (--larn_cdesc_id[GIANTSTR] <= 0) {
-            larn_cdesc_id[STREXTRA] -= 20;
+    if (larn_cdesc_id[FL_GIANTSTR])
+        if (--larn_cdesc_id[FL_GIANTSTR] <= 0) {
+            larn_cdesc_id[FL_STREXTRA] -= 20;
             flag = 1;
         }
-    if (larn_cdesc_id[CHARMCOUNT])
-        if ((--larn_cdesc_id[CHARMCOUNT]) <= 0) {
+    if (larn_cdesc_id[FL_CHARMCOUNT])
+        if ((--larn_cdesc_id[FL_CHARMCOUNT]) <= 0) {
             flag = 1;
         }
-    if (larn_cdesc_id[INVISIBILITY])
-        if ((--larn_cdesc_id[INVISIBILITY]) <= 0) {
+    if (larn_cdesc_id[FL_INVISIBILITY])
+        if ((--larn_cdesc_id[FL_INVISIBILITY]) <= 0) {
             flag = 1;
         }
-    if (larn_cdesc_id[CANCELLATION])
-        if ((--larn_cdesc_id[CANCELLATION]) <= 0) {
+    if (larn_cdesc_id[FL_CANCELLATION])
+        if ((--larn_cdesc_id[FL_CANCELLATION]) <= 0) {
             flag = 1;
         }
-    if (larn_cdesc_id[WTW])
-        if ((--larn_cdesc_id[WTW]) <= 0) {
+    if (larn_cdesc_id[FL_WTW])
+        if ((--larn_cdesc_id[FL_WTW]) <= 0) {
             flag = 1;
         }
-    if (larn_cdesc_id[HASTESELF])
-        if ((--larn_cdesc_id[HASTESELF]) <= 0) {
+    if (larn_cdesc_id[FL_HASTESELF])
+        if ((--larn_cdesc_id[FL_HASTESELF]) <= 0) {
             flag = 1;
         }
-    if (larn_cdesc_id[AGGRAVATE]) {
-        --larn_cdesc_id[AGGRAVATE];
+    if (larn_cdesc_id[FL_AGGRAVATE]) {
+        --larn_cdesc_id[FL_AGGRAVATE];
     }
-    if (larn_cdesc_id[SCAREMONST])
-        if ((--larn_cdesc_id[SCAREMONST]) <= 0) {
+    if (larn_cdesc_id[FL_SCAREMONST])
+        if ((--larn_cdesc_id[FL_SCAREMONST]) <= 0) {
             flag = 1;
         }
-    if (larn_cdesc_id[STEALTH])
-        if ((--larn_cdesc_id[STEALTH]) <= 0) {
+    if (larn_cdesc_id[FL_STEALTH])
+        if ((--larn_cdesc_id[FL_STEALTH]) <= 0) {
             flag = 1;
         }
-    if (larn_cdesc_id[AWARENESS]) {
-        --larn_cdesc_id[AWARENESS];
+    if (larn_cdesc_id[FL_AWARENESS]) {
+        --larn_cdesc_id[FL_AWARENESS];
     }
-    if (larn_cdesc_id[HOLDMONST])
-        if ((--larn_cdesc_id[HOLDMONST]) <= 0) {
+    if (larn_cdesc_id[FL_HOLDMONST])
+        if ((--larn_cdesc_id[FL_HOLDMONST]) <= 0) {
             flag = 1;
         }
-    if (larn_cdesc_id[HASTEMONST]) {
-        --larn_cdesc_id[HASTEMONST];
+    if (larn_cdesc_id[FL_HASTEMONST]) {
+        --larn_cdesc_id[FL_HASTEMONST];
     }
-    if (larn_cdesc_id[FIRERESISTANCE])
-        if ((--larn_cdesc_id[FIRERESISTANCE]) <= 0) {
+    if (larn_cdesc_id[FL_FIRERESISTANCE])
+        if ((--larn_cdesc_id[FL_FIRERESISTANCE]) <= 0) {
             flag = 1;
         }
-    if (larn_cdesc_id[GLOBE])
-        if (--larn_cdesc_id[GLOBE] <= 0) {
-            larn_cdesc_id[MOREDEFENSES] -= 10;
+    if (larn_cdesc_id[FL_GLOBE])
+        if (--larn_cdesc_id[FL_GLOBE] <= 0) {
+            larn_cdesc_id[FL_MOREDEFENSES] -= 10;
             flag = 1;
         }
-    if (larn_cdesc_id[SPIRITPRO])
-        if (--larn_cdesc_id[SPIRITPRO] <= 0) {
+    if (larn_cdesc_id[FL_SPIRITPRO])
+        if (--larn_cdesc_id[FL_SPIRITPRO] <= 0) {
             flag = 1;
         }
-    if (larn_cdesc_id[UNDEADPRO])
-        if (--larn_cdesc_id[UNDEADPRO] <= 0) {
+    if (larn_cdesc_id[FL_UNDEADPRO])
+        if (--larn_cdesc_id[FL_UNDEADPRO] <= 0) {
             flag = 1;
         }
-    if (larn_cdesc_id[HALFDAM])
-        if ( --larn_cdesc_id[HALFDAM] <= 0) {
-            cursors();
+    if (larn_cdesc_id[FL_HALFDAM])
+        if ( --larn_cdesc_id[FL_HALFDAM] <= 0) {
+            cursor(1,24);
             fl_display_message("\nYou're feeling better");
         }
-    if (larn_cdesc_id[SEEINVISIBLE])
-        if (--larn_cdesc_id[SEEINVISIBLE] <= 0) {
-            monstnamelist[INVISIBLESTALKER] = floorc;
+    if (larn_cdesc_id[FL_SEEINVISIBLE])
+        if (--larn_cdesc_id[FL_SEEINVISIBLE] <= 0) {
+            monstnamelist[FL_INVISIBLESTALKER] = floorc;
 
-            if (!larn_cdesc_id[BLINDCOUNT]) {
-                cursors();
+            if (!larn_cdesc_id[FL_BLINDCOUNT]) {
+                cursor(1,24);
                 fl_display_message("\nYour vision returns to normal");
             }
         }
-    if (larn_cdesc_id[ITCHING]) {
-        if (larn_cdesc_id[ITCHING] > 1)
-            if ((larn_cdesc_id[WEAR] != -1 ) || (larn_cdesc_id[SHIELD] != -1 ))
+    if (larn_cdesc_id[FL_ITCHING]) {
+        if (larn_cdesc_id[FL_ITCHING] > 1)
+            if ((larn_cdesc_id[FL_WEAR] != -1 ) || (larn_cdesc_id[FL_SHIELD] != -1 ))
                 if (TRnd(100) < 50) {
-                    larn_cdesc_id[WEAR] = larn_cdesc_id[SHIELD] = -1;
-                    cursors();
+                    larn_cdesc_id[FL_WEAR] = larn_cdesc_id[FL_SHIELD] = -1;
+                    cursor(1,24);
                     fl_display_message("\nThe unbareable itching forces you to remove your armor!");
-                    recalc();
+                    fl_recalculate_armor_class();
                     bottomline();
                 }
-        if (--larn_cdesc_id[ITCHING] <= 0) {
-            cursors();
+        if (--larn_cdesc_id[FL_ITCHING] <= 0) {
+            cursor(1,24);
             fl_display_message("\nThe irritation subsides!");
         }
     }
-    if (larn_cdesc_id[CLUMSINESS]) {
-        if (larn_cdesc_id[WIELD] != -1)
-            if (larn_cdesc_id[CLUMSINESS] > 1)
-                if (item[playerx][playery] == 0)	/* only if nothing there */
+    if (larn_cdesc_id[FL_CLUMSINESS]) {
+        if (larn_cdesc_id[FL_WIELD] != -1)
+            if (larn_cdesc_id[FL_CLUMSINESS] > 1)
+                if (object_identification[playerx][playery] == 0)	/* only if nothing there */
                     if (TRnd(100) < 33) {		/* drop your weapon due to clumsiness */
-                        drop_object((int)larn_cdesc_id[WIELD]);
+                        drop_object((int)larn_cdesc_id[FL_WIELD]);
                     }
-        if (--larn_cdesc_id[CLUMSINESS] <= 0) {
-            cursors();
+        if (--larn_cdesc_id[FL_CLUMSINESS] <= 0) {
+            cursor(1,24);
             fl_display_message("\nYou feel less awkward!");
         }
     }

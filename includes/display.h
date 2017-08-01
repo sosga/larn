@@ -7,7 +7,7 @@ void bottomgold ( void );
 void draws ( int, int, int, int );
 void drawscreen ( void );
 void showcell ( int, int );
-void show1cell ( int, int );
+void fl_show_designated_cell_only ( int, int );
 void showplayer ( void );
 int moveplayer ( int );
 void seemagic ( int );
