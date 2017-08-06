@@ -1,4 +1,4 @@
-/* Copyright 2016 Gibbon aka 'atsb'
+/* Copyright 2017 Gibbon aka 'atsb'
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
@@ -12,17 +12,19 @@
    limitations under the License.
 */
 
-/*
- *  config.cpp	This defines the installation dependent variables.
- *              Some strings are modified later.  ANSI C would
- *              allow compile time string concatenation, we must
- *              do runtime concatenation, in main.
- */
-#include "larncons.h"
-#include "data.h"
+#include "funcs.hpp"
+#include "sysdep.hpp"
+#include "scores.hpp"
 #include "../templates/math.t.hpp"
+#include "../../includes/main.h"
+#include "../config/data.h"
+#include "../../includes/display.h"
+#include "../../includes/io.h"
 
-char scorefile[PATHLEN];
-char logfile[PATHLEN];
-char playerids[PATHLEN];
-char savefilename[PATHLEN];
+void FLCoreFuncs::DecreasePHealth(int x) {
+	if ((cdesc[FL_HP] -= x) <= 0) {
+        fl_display_message("\nYou have died!");
+        fl_wait(FL_WAIT_DURATION);
+        fl_player_death(lastnum);
+    }
+}

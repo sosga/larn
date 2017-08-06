@@ -13,14 +13,13 @@
    limitations under the License.
 */
 
-#include "../config/larncons.h"
+#include "../../includes/main.h"
 #include "../config/data.h"
 #include "../templates/math.t.hpp"
 #include "../../includes/display.h"
 #include "../../includes/global.h"
 #include "inventory.hpp"
 #include "../../includes/io.h"
-#include <curses.h>
 
 static void fl_clear_for_inventory(void);
 static void fl_draw_after_inventory(void);
@@ -177,7 +176,7 @@ take ( int itm, int arg )
 {
     int i, limit;
 
-    /*  cursor(1,24); */
+    /*  fl_termcap_cursor_position(1,24); */
     if ( ( limit = 15 + ( cdesc[FL_LEVEL] >> 1 ) ) > MAXINVEN ) {
         limit = MAXINVEN;
     }
@@ -251,7 +250,7 @@ drop_object ( int k )
         return ( 0 );
     }
     itm = iven[k];
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 
     if ( itm == 0 ) {
         lprintf ( "\nYou don't have object_identification %c! ", k + 'a' );

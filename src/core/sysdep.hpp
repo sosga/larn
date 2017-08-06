@@ -1,1 +1,1 @@
-void nap(int milliseconds);
+void fl_wait(int milliseconds);

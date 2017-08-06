@@ -1,9 +1,6 @@
 /* object.c */
-#include <iostream>
-#include <cstdlib>
-#include <curses.h>
+
 #include "../includes/action.h"
-#include "config/larncons.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
 #include "dungeon/dungeon.hpp"
@@ -15,7 +12,7 @@
 #include "../includes/monster.h"
 #include "../includes/moreobj.h"
 #include "../includes/object.h"
-#include "../includes/regen.h"
+#include "player/regen.hpp"
 #include "core/scores.hpp"
 #include "../includes/spells.h"
 #include "core/sysdep.hpp"
@@ -67,7 +64,7 @@ fl_look_for_an_object_and_give_options(
 
     j = object_argument[playerx][playery];
     showcell ( playerx, playery );
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
     y_larn_rep = 0;
 
     switch ( i ) {
@@ -437,14 +434,14 @@ fl_look_for_an_object_and_give_options(
         [[fallthrough]];
     case OTELEPORTER:
         if (TRnd(20) < 15) {
-            nap(NAPTIME);
+            fl_wait(FL_WAIT_DURATION);
             fl_teleport(0);
             been_here_before[playerx][playery] = KNOWALL;
 			cdesc[TELEFLAG]=0;
             fl_display_message("\n\nThe teleporter has miraculously made this maze known!");
         } else {
             fl_display_message("\nYou have been teleported!\n");
-            nap(NAPTIME);
+            fl_wait(FL_WAIT_DURATION);
             fl_teleport(0);
             refresh();
         }
@@ -503,15 +500,15 @@ fl_look_for_an_object_and_give_options(
         if ( ( level == MAXLEVEL - 1 )
                 || ( level == MAXLEVEL + MAXVLEVEL - 1 ) ) {
             fl_display_message ( "\nYou fell through a bottomless trap door!" );
-            nap ( NAPTIME );
-            died ( 271 );
+            fl_wait ( FL_WAIT_DURATION );
+            fl_player_death ( 271 );
         }
 
         i = TRnd ( 5 + level );
         lprintf ( "\nYou fall through a trap door!  You lose %d hit points.",
                   ( long ) i );
         CoreFuncs.DecreasePHealth ( i );
-        nap ( NAPTIME );
+        fl_wait ( FL_WAIT_DURATION );
         newcavelevel ( level + 1 );
         draws ( 0, MAXX, 0, MAXY );
         bot_linex();
@@ -551,7 +548,7 @@ fl_look_for_an_object_and_give_options(
         break;
 
     case FL_OBJECT_SPHERE_OF_ANNIHILATION:
-        died ( 283 );		/* annihilated by sphere of annihilation */
+        fl_player_death ( 283 );		/* annihilated by sphere of annihilation */
         return;
 
     case OLRS:
@@ -678,10 +675,10 @@ fl_teleport ( int err )
     if ( err )
         if ( TRnd ( 151 ) < 3 ) {
             /* Fix for bug #10 ~Gibbon*/
-            cursor ( 1, 19 );
-            fl_display_message ( "\nYou died by teleporting into solid rock." );
-            nap ( 4000 );
-            died ( 264 );	/* stuck in a rock */
+            fl_termcap_cursor_position( 1, 19 );
+            fl_display_message ( "\nYou were killed by teleporting into solid rock." );
+            fl_wait ( 4000 );
+            fl_player_death ( 264 );	/* stuck in a rock */
         }
 
     cdesc[TELEFLAG] =
@@ -795,10 +792,10 @@ fl_drink_potion ( int pot, int set_known )
 
         while ( --i > 0 ) {
             parse2 ();
-            nap ( NAPTIME );
+            fl_wait ( FL_WAIT_DURATION );
         }
 
-        cursor(1,24);
+        fl_termcap_cursor_position(1,24);
         fl_display_message ( "\nYou woke up!" );
         return;
 
@@ -866,7 +863,7 @@ fl_drink_potion ( int pot, int set_known )
 
     case 9:
         fl_display_message ( "\nYou sense the presence of objects!" );
-        nap ( NAPTIME );
+        fl_wait ( FL_WAIT_DURATION );
 
         if ( cdesc[FL_BLINDCOUNT] ) {
             return;
@@ -924,7 +921,7 @@ fl_drink_potion ( int pot, int set_known )
 
     case 10:			/* monster detection */
         fl_display_message ( "\nYou detect the presence of monsters!" );
-        nap ( NAPTIME );
+        fl_wait ( FL_WAIT_DURATION );
 
         if ( cdesc[FL_BLINDCOUNT] ) {
             return;
@@ -947,7 +944,7 @@ fl_drink_potion ( int pot, int set_known )
                 been_here_before[j][i] = 0;
             }
 
-        nap ( 1000 );
+        fl_wait ( 1000 );
         draws ( 0, MAXX, 0, MAXY );	/* potion of forgetfulness */
         return;
 
@@ -998,7 +995,7 @@ fl_drink_potion ( int pot, int set_known )
 
     case 19:
         fl_display_message ( "\nYou feel greedy . . ." );
-        nap ( NAPTIME );
+        fl_wait ( FL_WAIT_DURATION );
 
         if ( cdesc[FL_BLINDCOUNT] ) {
             return;
@@ -1081,7 +1078,7 @@ fl_scroll ( int typ )
 
             if ( typ == 2 || typ == 15 ) {
                 fl_show_designated_cell_only ( playerx, playery );
-                cursor(1,24);
+                fl_termcap_cursor_position(1,24);
             }
 
             /* destroy it  */ fl_read_scroll ( typ );
@@ -1140,7 +1137,7 @@ fl_adjust_time ( int tim )
                 cdesc[time_change[j]] = 1;
             }
 
-    regen();
+    fl_regen_hp_and_spells();
 	FLHunger.HungerLose();
 }
 
@@ -1384,7 +1381,7 @@ fl_non_bottomless_pit ( void )
                 }
 
                 CoreFuncs.DecreasePHealth ( i );
-                nap ( 2000 );
+                fl_wait ( 2000 );
                 newcavelevel ( level + 1 );
                 draws ( 0, MAXX, 0, MAXY );
             }
@@ -1396,8 +1393,8 @@ static void
 fl_bottomless_pit ( void )
 {
     fl_display_message ( "\nYou fell into a bottomless pit!" );
-    nap ( 3000 );
-    died ( 262 );
+    fl_wait ( 3000 );
+    fl_player_death ( 262 );
 }
 
 
@@ -1655,11 +1652,11 @@ ohome ( void )
 
                 if ( gtime > TIMELIMIT() ) {
                     lprintf
-                    ( "\nThe doctor has the sad duty to inform you that your daughter died" );
+                    ( "\nThe doctor has the sad duty to inform you that your daughter passed away.." );
                     lprintf
                     ( "\nbefore your return.  There was nothing he could do without the potion.\n" );
-                    nap ( NAPTIME );
-                    died ( 269 );
+                    fl_wait ( FL_WAIT_DURATION );
+                    fl_player_death ( 269 );
                 }
 
                 else {
@@ -1667,14 +1664,14 @@ ohome ( void )
                     ( "\nThe doctor is now administering the potion, and in a few moments\n" );
                     lprintf
                     ( "your daughter should be well on her way to recovery.\n" );
-                    nap ( NAPTIME );
+                    fl_wait ( FL_WAIT_DURATION );
                     lprintf ( "\nThe potion is" );
-                    nap ( NAPTIME );
+                    fl_wait ( FL_WAIT_DURATION );
                     lprintf ( " working!  The doctor thinks that\n" );
                     lprintf
                     ( "your daughter will recover in a few days.  Congratulations!\n" );
-                    nap ( NAPTIME );
-                    died ( 263 );
+                    fl_wait ( FL_WAIT_DURATION );
+                    fl_player_death ( 263 );
                 }
             }
 
@@ -1685,11 +1682,11 @@ ohome ( void )
 
         if ( gtime > TIMELIMIT() ) {
             lprintf
-            ( "\nThe doctor has the sad duty to inform you that your daughter died!\n" );
+            ( "\nThe doctor has the sad duty to inform you that your daughter passed away..\n" );
             lprintf
             ( "You didn't make it in time.  There was nothing he could do without the potion.\n" );
-            nap ( NAPTIME );
-            died ( 269 );
+            fl_wait ( FL_WAIT_DURATION );
+            fl_player_death ( 269 );
         }
 
         lprintf

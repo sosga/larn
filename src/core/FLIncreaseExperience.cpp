@@ -1,6 +1,6 @@
 #include "funcs.hpp"
 #include "../templates/math.t.hpp"
-#include "../config/larncons.h"
+#include "../../includes/main.h"
 #include "../config/data.h"
 #include "../../includes/display.h"
 #include "../../includes/io.h"
@@ -26,7 +26,7 @@ void FLCoreFuncs::IncreaseExperience (long x) {
         }
 	}
     if (cdesc[FL_LEVEL] != i) {
-        cursor(1,24);
+        fl_termcap_cursor_position(1,24);
         fl_display_message("\nWelcome to level %d",cdesc[FL_LEVEL]);	/* if we changed levels */
     }
     bottomline();

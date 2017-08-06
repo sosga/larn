@@ -21,13 +21,10 @@ sethard()
 #include <fcntl.h>
 #endif
 
-#include <curses.h>
-#include <cstdlib>
-#include <cstring>
 #include <ctype.h>
 #include <sys/types.h>
 
-#include "../config/larncons.h"
+#include "../../includes/main.h"
 #include "../config/data.h"
 #include "../templates/math.t.hpp"
 #include "tok.hpp"
@@ -64,7 +61,7 @@ yylex(void)
         showplayer();		/* show where the player is */
         move_no_pickup = 0;	/* clear 'm' flag */
     }
-    lflush();
+    fl_output_buffer_flush();
     for(;;) {
         cdesc[BYTESIN]++;
         cc = ttgetch();
@@ -77,13 +74,13 @@ yylex(void)
             /* show count to player for feedback
              */
             if (y_larn_rep >= 10) {
-                cursor(1,24);
+                fl_termcap_cursor_position(1,24);
                 if (first_time) {
                     fl_display_message ("\n");
                 }
                 lprintf("count: %d", (int) y_larn_rep);
                 first_time = 0;
-                lflush();	/* show count */
+                fl_output_buffer_flush();	/* show count */
             }
         } else {
             /* check for multi-character commands and handle.

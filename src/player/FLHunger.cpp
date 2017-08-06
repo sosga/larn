@@ -12,10 +12,7 @@
    limitations under the License.
 */
 
-#include <curses.h>
-#include <cstdlib>
-
-#include "../config/larncons.h"
+#include "../../includes/main.h"
 #include "../config/data.h"
 #include "../../includes/display.h"
 #include "../../includes/io.h"
@@ -54,6 +51,6 @@ void FLHunger::HungerLose(void) {
     if (cdesc[HUNGER] == 0) {
         cdesc[FL_HP] = 0;
 		fl_display_message("You have died of starvation!");
-		died(-300); //it's not right but I'll fix it :)
+		fl_player_death(-300); //it's not right but I'll fix it :)
         }
 }

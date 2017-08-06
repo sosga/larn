@@ -7,7 +7,7 @@ Currently a conversion of the C code of Larn to C++ is underway, in order to de-
 code and make it a good, clean game with a great codebase.
 
 NOTE: A change in accepting commits.  All pull-requests that deal with code changes
-will be placed under the Apache 2.0 License.  See [docs/LICENSE](https://github.com/atsb/RL_M/blob/master/docs/LICENSE) or bug #61 for more info.
+will be placed under the Apache 2.0 License.  See [docs/LICENSE.txt](https://github.com/atsb/RL_M/blob/master/docs/LICENSE.txt) or bug #61 for more info.
 
 <b>Future Planned Changes</b>
 * ~~Make it harder.~~

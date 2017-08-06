@@ -13,14 +13,7 @@
    limitations under the License.
 */
 
-#include <iostream>
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <errno.h>
-#include <setjmp.h>
-#include <curses.h>
-#include <cstring>
+#include "../../includes/main.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -35,7 +28,6 @@
 #endif
 
 #include "bill.hpp"
-#include "../config/larncons.h"
 #include "../config/data.h"
 #include "../templates/math.t.hpp"
 #include "../terminal/term.hpp"
@@ -43,7 +35,6 @@
 #include "scores.hpp"
 #include "sysdep.hpp"
 #include "../../includes/io.h"
-#include "../strings/utf8.h"
 
 using std::cout;
 
@@ -146,7 +137,7 @@ readboard ( void )
 
     if ( pFile == NULL ) {
         cout << "ERROR: scorefile is not readable \n";
-        lflush();
+        fl_output_buffer_flush();
         return ( -1 );
     }
 
@@ -185,7 +176,7 @@ writeboard ( void )
 
     if ( pFile == NULL ) {
         cout << "ERROR: scorefile is not writable \n";
-        lflush();
+        fl_output_buffer_flush();
         return ( -1 );
     }
 
@@ -249,7 +240,7 @@ checkmail ( void )
     /* search through winners scoreboard */
     for ( i = 0; i < SCORESIZE;
             i++ ) /* search through winners scoreboard */
-        if ( utf8cmp ( winr[i].who, logname ) == 0 && winr[i].score > 0
+        if ( strcmp ( winr[i].who, logname ) == 0 && winr[i].score > 0
                 && winr[i].hasmail ) {
             winr[i].hasmail = 0;
             gold = taxes = winr[i].taxes;
@@ -288,7 +279,7 @@ paytaxes ( int x )
 
     /* search for a winning entry for the player */
     for (i=0; i<SCORESIZE; i++)
-        if (utf8cmp(winr[i].who, logname) == 0)
+        if (strcmp(winr[i].who, logname) == 0)
             if (winr[i].score > 0) {
                 amt = winr[i].taxes;
                 if (amt > x) amt = x;
@@ -423,7 +414,7 @@ sortboard ( void )
 *      char *whoo;
 *
 *  Enter with the total score in gp in score,  players name in whoo,
-*      died() reason # in whyded, and TRUE/0 in winner if a winner
+*      fl_player_death() reason # in whyded, and TRUE/0 in winner if a winner
 *  ex.     newscore(1000, "player 1", 32, 0);
 */
 static void
@@ -433,13 +424,13 @@ newscore ( int score, char *whoo, int whyded, int winner )
 
     /* if a winner then delete all non-winning scores */
     if (winner) {
-        for (i=0; i<SCORESIZE; i++) if (utf8cmp(sco[i].who, logname) == 0) sco[i].score = 0;
+        for (i=0; i<SCORESIZE; i++) if (strcmp(sco[i].who, logname) == 0) sco[i].score = 0;
 
         taxes = score*TAXRATE;
         score += 100000; /* bonus for winning */
 
         /* if he has a slot on the winning scoreboard update it if greater score */
-        for (i=0; i<SCORESIZE; i++) if (utf8cmp(winr[i].who, logname) == 0) {
+        for (i=0; i<SCORESIZE; i++) if (strcmp(winr[i].who, logname) == 0) {
                 new1sub(score, i, whoo, taxes);
                 return;
             }
@@ -451,7 +442,7 @@ newscore ( int score, char *whoo, int whyded, int winner )
             }
     } else { /* for not winning scoreboard */
         /* if he has a slot on the scoreboard update it if greater score */
-        for (i=0; i<SCORESIZE; i++) if (utf8cmp(sco[i].who, logname) == 0) {
+        for (i=0; i<SCORESIZE; i++) if (strcmp(sco[i].who, logname) == 0) {
                 new2sub(score, i, whoo, whyded);
                 return;
             }
@@ -470,7 +461,7 @@ newscore ( int score, char *whoo, int whyded, int winner )
 *      char *whoo;                       is high enough
 *
 *  Enter with the total score in gp in score,  players name in whoo,
-*      died() reason # in whyded, and TRUE/0 in winner if a winner
+*      fl_player_death() reason # in whyded, and TRUE/0 in winner if a winner
 *      slot in scoreboard in i, and the tax bill in taxes.
 *  Returns nothing of value
 */
@@ -483,7 +474,7 @@ new1sub ( int score, int i, char *whoo, int taxes )
     p->taxes += taxes;
 
     if ((score >= p->score)) {
-        utf8cpy(p->who, whoo);
+        strcpy(p->who, whoo);
         p->score = score;
         p->timeused = gtime/100;
         p->hasmail = 1;
@@ -496,7 +487,7 @@ new1sub ( int score, int i, char *whoo, int taxes )
 *      char *whoo;                       score is high enough
 *
 *  Enter with the total score in gp in score,  players name in whoo,
-*      died() reason # in whyded, and slot in scoreboard in i.
+*      fl_player_death() reason # in whyded, and slot in scoreboard in i.
 *  Returns nothing of value
 */
 static void
@@ -508,7 +499,7 @@ new2sub ( int score, int i, char *whoo, int whyded )
     p = &sco[i];
 
     if ((score >= p->score)) {
-        utf8cpy(p->who, whoo);
+        strcpy(p->who, whoo);
         p->score = score;
         p->what = whyded;
         p->level = level;
@@ -521,11 +512,11 @@ new2sub ( int score, int i, char *whoo, int whyded )
 }
 
 /*
-*  died(x)     Subroutine to record who played larn, and what the score was
+*  fl_player_death(x)     Subroutine to record who played larn, and what the score was
 *      int x;
 *
 *  if x < 0 then don't show scores
-*  died() never returns! (unless cdesc[LIFEPROT] and a reincarnatable death!)
+*  fl_player_death() never returns! (unless cdesc[LIFEPROT] and a reincarnatable death!)
 *
 *      < 256   killed by the monster number
 *      256     quit
@@ -562,7 +553,7 @@ new2sub ( int score, int i, char *whoo, int whyded )
 */
 
 void
-died ( int x )
+fl_player_death ( int x )
 {
     int win = 0;
     if (cdesc[LIFEPROT] > 0) {
@@ -577,19 +568,19 @@ died ( int x )
         --cdesc[LIFEPROT];
         cdesc[FL_HP] = cdesc[FL_HPMAX];
         --cdesc[CONSTITUTION];
-        cursor(1,24);
+        fl_termcap_cursor_position(1,24);
         fl_display_message ( "\nYou feel wiiieeeeerrrrrd all over! " );
-        lflush ();
-        nap ( 3000 );
-        return;     /* only case where died() returns */
+        fl_output_buffer_flush ();
+        fl_wait ( 3000 );
+        return;
     }
 
 cantprotect:
-    nap ( 3000 );
-    cursor(1,24);
+    fl_wait ( 3000 );
+    fl_termcap_cursor_position(1,24);
     fl_display_message ( "\nPress any key to continue. " );
     ttgetch ();
-    lflush ();
+    fl_output_buffer_flush ();
     screen_clear();
     enable_scroll = 0;
 
@@ -602,11 +593,11 @@ cantprotect:
         if (sortboard()) {
             writeboard();
         }
-    lflush ();
+    fl_output_buffer_flush ();
     screen_clear();
     enable_scroll = 0;
     showscores (x);    /* if we updated the scoreboard */
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
     fl_display_message ( "\nPress any key to exit. " );
     scbr ();
     ttgetch ();

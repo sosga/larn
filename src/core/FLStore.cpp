@@ -23,7 +23,6 @@ cnsitm
 olrs          larn revenue service function
 */
 
-#include "../config/larncons.h"
 #include "../config/data.h"
 #include "../templates/math.t.hpp"
 #include "../../includes/display.h"
@@ -35,7 +34,6 @@ olrs          larn revenue service function
 #include "scores.hpp"
 #include "store.hpp"
 #include "sysdep.hpp"
-#include <curses.h>
 
 static void dnd_2hed ( void );
 static void dnd_hed ( void );
@@ -218,11 +216,11 @@ dndstore ( void )
         ( "They have also told us that you owe %d gp in back taxes, and as we must\n", outstanding_taxes );
         fl_display_message
         ( "comply with the law, we cannot serve you at this time.  Soo Sorry.\n" );
-        cursor(1,24);
+        fl_termcap_cursor_position(1,24);
         fl_display_message ( "\nPress " );
         lstandout ( "escape" );
         fl_display_message ( " to leave: " );
-        lflush ();
+        fl_output_buffer_flush ();
         i = 0;
 
         while ( i != '\33' ) {
@@ -236,7 +234,7 @@ dndstore ( void )
     dnd_hed ();
 
     for ( ;; ) {
-        cursor ( 1, 19 );
+        fl_termcap_cursor_position( 1, 19 );
         fl_display_message ( "You have " );
         lprintf ( "%ld ", cdesc[GOLD] );
         lprintf ( "gold pieces" );
@@ -313,8 +311,8 @@ dndstore ( void )
                     dnditem ( i );
                 }
 
-                lflush ();
-                nap ( NAPTIME );
+                fl_output_buffer_flush ();
+                fl_wait ( FL_WAIT_DURATION );
             }
         }
     }
@@ -327,8 +325,8 @@ static void
 handsfull ( void )
 {
     fl_display_message ( "\nYou can't carry anything more!" );
-    lflush ();
-    nap ( NAPTIME );
+    fl_output_buffer_flush ();
+    fl_wait ( FL_WAIT_DURATION );
 }
 
 
@@ -336,16 +334,16 @@ static void
 outofstock ( void )
 {
     fl_display_message ( "\nSorry, but we are out of that object_identification." );
-    lflush ();
-    nap ( NAPTIME );
+    fl_output_buffer_flush ();
+    fl_wait ( FL_WAIT_DURATION );
 }
 
 static void
 nogold ( void )
 {
     fl_display_message ( "\nYou don't have enough gold to pay for that!" );
-    lflush ();
-    nap ( 2200 );
+    fl_output_buffer_flush ();
+    fl_wait ( 2200 );
 }
 
 
@@ -364,7 +362,7 @@ dnditem ( int i )
         return;
     }
 
-    cursor ( ( j = ( i & 1 ) * 40 + 1 ), ( k = ( ( i % MAXDNDSIZE ) >> 1 ) + 5 ) );
+    fl_termcap_cursor_position( ( j = ( i & 1 ) * 40 + 1 ), ( k = ( ( i % MAXDNDSIZE ) >> 1 ) + 5 ) );
 
     if ( dnd_item[i].qty == 0 ) {
         lprintf ( "%39s", "" );
@@ -387,7 +385,7 @@ dnditem ( int i )
         lprintf ( "%s", objectname[dnd_item[i].obj] );
     }
 
-    cursor ( j + 31, k );
+    fl_termcap_cursor_position( j + 31, k );
     price = ( dnd_item[i].price ) * 10L;
     lprintf ( "%6ld", price );
 }
@@ -454,7 +452,7 @@ sch_hed ( void )
     }
 
     fl_display_message ( "\n\n\t\tAll courses cost 250 gold pieces." );
-    cursor ( 1, 19 );
+    fl_termcap_cursor_position( 1, 19 );
     fl_display_message ( "You are presently carrying " );
 }
 
@@ -466,10 +464,10 @@ oschool ( void )
     sch_hed ();
 
     for ( ;; ) {
-        cursor ( 1, 19 );
+        fl_termcap_cursor_position( 1, 19 );
         lprintf ( "%d ", cdesc[GOLD] );
         lprintf ( "gold pieces." );
-        cursor(1,24);
+        fl_termcap_cursor_position(1,24);
         fl_display_message ( "\nWhat is your choice [" );
         lstandout ( "escape" );
         fl_display_message ( " to leave] ? " );
@@ -498,7 +496,7 @@ oschool ( void )
 
         else if ( course[i - 'a'] ) {
             fl_display_message ( "\nSorry, but that class is filled." );
-            nap ( NAPTIME );
+            fl_wait ( FL_WAIT_DURATION );
         }
 
         else if ( i <= 'h' ) {
@@ -597,7 +595,7 @@ oschool ( void )
                 fl_adjust_time (time_used );	/* adjust parameters for time change */
             }
 
-            nap ( NAPTIME );
+            fl_wait ( FL_WAIT_DURATION );
         }
     }
 }
@@ -641,11 +639,11 @@ banktitle ( const char *str )
         fl_display_message
         ( "taxes, and we must comply with them. We cannot serve you at this time.  Sorry.\n" );
         fl_display_message ( "We suggest you go to the LRS office and pay your taxes.\n" );
-        cursor(1,24);
+        fl_termcap_cursor_position(1,24);
         fl_display_message ( "\nPress " );
         lstandout ( "escape" );
         fl_display_message ( " to leave: " );
-        lflush ();
+        fl_output_buffer_flush ();
         i = 0;
 
         while ( i != '\33' ) {
@@ -723,9 +721,9 @@ obanksub ( void )
             }
 
             gemorder[i] = k;
-            cursor ( ( k % 2 ) * 40 + 1, ( k >> 1 ) + 4 );
+            fl_termcap_cursor_position( ( k % 2 ) * 40 + 1, ( k >> 1 ) + 4 );
             lprintf ( "%c) %s", i + 'a', objectname[iven[i]] );
-            cursor ( ( k % 2 ) * 40 + 33, ( k >> 1 ) + 4 );
+            fl_termcap_cursor_position( ( k % 2 ) * 40 + 33, ( k >> 1 ) + 4 );
             lprintf ( "%5d", ( int ) gemvalue[i] );
             k++;
             break;
@@ -736,23 +734,23 @@ obanksub ( void )
         };
 
     /* Cleaning up the awful UI here for the text. -Gibbon */
-    cursor ( 1, 13 );
+    fl_termcap_cursor_position( 1, 13 );
 
     lprintf ( "Account Summary:" );
 
-    cursor ( 1, 15 );
+    fl_termcap_cursor_position( 1, 15 );
 
     lprintf ( "Gold in Bank Account" );
 
-    cursor ( 1, 16 );
+    fl_termcap_cursor_position( 1, 16 );
 
     lprintf ( "%8d", cdesc[BANKACCOUNT] );
 
-    cursor ( 1, 18 );
+    fl_termcap_cursor_position( 1, 18 );
 
     lprintf ( "Gold in inventory" );
 
-    cursor ( 1, 19 );
+    fl_termcap_cursor_position( 1, 19 );
 
     lprintf ( "%8d", cdesc[GOLD] );
 
@@ -787,13 +785,13 @@ obanksub ( void )
 
             if ( amt > cdesc[GOLD] ) {
                 fl_display_message ( "You don't have that much." );
-                nap ( NAPTIME );
+                fl_wait ( FL_WAIT_DURATION );
             }
 
             /* Added if statement for catching 0 value to deposit. -Gibbon */
             if ( amt == 0 ) {
                 fl_display_message ( "You cannot deposit nothing" );
-                nap ( NAPTIME );
+                fl_wait ( FL_WAIT_DURATION );
             }
 
             else {
@@ -809,7 +807,7 @@ obanksub ( void )
 
             if ( amt > cdesc[BANKACCOUNT] ) {
                 fl_display_message ( "\nYou don't have that much in the bank!" );
-                nap ( NAPTIME );
+                fl_wait ( FL_WAIT_DURATION );
             }
 
             else {
@@ -835,21 +833,21 @@ obanksub ( void )
                         iven[i] = 0;
                         gemvalue[i] = 0;
                         k = gemorder[i];
-                        cursor ( ( k % 2 ) * 40 + 1, ( k >> 1 ) + 4 );
+                        fl_termcap_cursor_position( ( k % 2 ) * 40 + 1, ( k >> 1 ) + 4 );
                         lprintf ( "%39s", "" );
                     }
                 }
 
                 if ( !gems_sold ) {
                     fl_display_message ( "\nYou have no gems to sell!" );
-                    nap ( NAPTIME );
+                    fl_wait ( FL_WAIT_DURATION );
                 }
             }
 
             else if ( i != '\33' ) {
                 if ( gemvalue[i = i - 'a'] == 0 ) {
                     lprintf ( "\nItem %c is not a gemstone!", i + 'a' );
-                    nap ( NAPTIME );
+                    fl_wait ( FL_WAIT_DURATION );
                     break;
                 }
 
@@ -857,7 +855,7 @@ obanksub ( void )
                 iven[i] = 0;
                 gemvalue[i] = 0;
                 k = gemorder[i];
-                cursor ( ( k % 2 ) * 40 + 1, ( k >> 1 ) + 4 );
+                fl_termcap_cursor_position( ( k % 2 ) * 40 + 1, ( k >> 1 ) + 4 );
                 lprintf ( "%39s", "" );
             }
 
@@ -868,10 +866,10 @@ obanksub ( void )
         };
 
         /*Fix for #38 -Gibbon*/
-        cursor ( 1, 16 );
+        fl_termcap_cursor_position( 1, 16 );
         lprintf ( "%8d", cdesc[BANKACCOUNT] );
 
-        cursor ( 1, 19 );
+        fl_termcap_cursor_position( 1, 19 );
         lprintf ( "%8d", cdesc[GOLD] );
 
     }
@@ -908,7 +906,7 @@ otradiven ( void )
     /* Print user's inventory like bank */
     for ( j = i = 0; i < MAXINVEN; i++ )
         if ( iven[i] ) {
-            cursor ( ( j % 2 ) * 40 + 1, ( j >> 1 ) + 8 );
+            fl_termcap_cursor_position( ( j % 2 ) * 40 + 1, ( j >> 1 ) + 8 );
             tradorder[i] = 0;	/* init position on screen to zero */
 
             switch ( iven[i] ) {
@@ -976,7 +974,7 @@ cleartradiven ( int i )
 {
     int j;
     j = tradorder[i];
-    cursor ( ( j % 2 ) * 40 + 1, ( j >> 1 ) + 8 );
+    fl_termcap_cursor_position( ( j % 2 ) * 40 + 1, ( j >> 1 ) + 8 );
     lprintf ( "%39s", "" );
     tradorder[i] = 0;
 }
@@ -994,12 +992,12 @@ otradepost ( void )
     FLStore Store;
 
     for ( ;; ) {
-        cursor ( 1, 23 );
+        fl_termcap_cursor_position( 1, 23 );
         fl_display_message ( "\nWhat object_identification do you want to sell to us [" );
         lstandout ( "escape" );
         fl_display_message ( "] ? " );
         /* display gold in inventory ~Gibbon */
-        cursor ( 1, 22 );
+        fl_termcap_cursor_position( 1, 22 );
         Store.AmountGoldTrad();
         i = 0;
 
@@ -1025,7 +1023,7 @@ otradepost ( void )
 
             if ( iven[isub] == 0 ) {
                 lprintf ( "\nYou don't have object_identification %c!", isub + 'a' );
-                nap ( NAPTIME );
+                fl_wait ( FL_WAIT_DURATION );
                 break;		/* leave inner while */
             }
 
@@ -1068,7 +1066,7 @@ otradepost ( void )
                 if ( found == MAXITM ) {
                     fl_display_message
                     ( "\nSo sorry, but we are not authorized to accept that object_identification." );
-                    nap ( NAPTIME );
+                    fl_wait ( FL_WAIT_DURATION );
                     break;	/* leave inner while */
                 }
 
@@ -1141,7 +1139,7 @@ static void
 cnsitm ( void )
 {
     fl_display_message ( "\nSorry, we can't accept unidentified objects." );
-    nap ( 2000 );
+    fl_wait ( 2000 );
 }
 
 
@@ -1170,7 +1168,7 @@ olrs ( void )
         }
 
         enable_scroll = 1;
-        cursor ( 1, 21 );
+        fl_termcap_cursor_position( 1, 21 );
         fl_display_message ( "\n\nYour wish? [(" );
         lstandout ( "p" );
         fl_display_message ( ") pay taxes, or " );
@@ -1207,7 +1205,7 @@ olrs ( void )
         };
 
 nxt:
-        cursor ( 1, 6 );
+        fl_termcap_cursor_position( 1, 6 );
 
         if ( outstanding_taxes > 0 ) {
             lprintf ( "You presently owe %d gp in taxes.  ", outstanding_taxes );
@@ -1217,7 +1215,7 @@ nxt:
             fl_display_message ( "You do not owe us any taxes.           " );
         }
 
-        cursor ( 1, 19 );
+        fl_termcap_cursor_position( 1, 19 );
 
         if ( cdesc[GOLD] > 0 ) {
             Store.AmountGoldTrad();

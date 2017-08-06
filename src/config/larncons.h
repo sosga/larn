@@ -32,7 +32,7 @@ inline const int CL_LINE = 6;
 inline const int T_INIT = 7;
 inline const int T_END = 8;
 inline const int CL_DOWN = 14;
-inline const int CURSOR = 15;
+inline const int FL_CURSOR = 15;
 
 #if defined NIX
 	inline const char* SCORENAME =	"/var/tmp/fl_scorefile";
@@ -63,23 +63,23 @@ inline int forget(void)
 }
 
 /* Turn on bold display for the terminal */
-extern char *lpnt;
+extern char *fl_buffer_pointer;
 inline int setbold(void)
 {
-    return *lpnt++ = ST_START;
+    return *fl_buffer_pointer++ = ST_START;
 }
 
 /* Turn off bold display for the terminal */
 inline int resetbold(void)
 {
-    return *lpnt++ = ST_END;
+    return *fl_buffer_pointer++ = ST_END;
 }
 
 /* Clear the screen and home the cursor */
 inline int screen_clear(void)
 {
     int regen_bottom = 1;
-    return *lpnt++ = CLEAR, regen_bottom;
+    return *fl_buffer_pointer++ = CLEAR, regen_bottom;
 }
 inline int BOLD(void)
 {
@@ -98,10 +98,10 @@ inline int TIMELIMIT(void)
 }
 inline const char* VERSION = "Xvart";
 
-extern char *lpnt;
+extern char *fl_buffer_pointer;
 inline int CLEAR_EOL(void)
 {
-    return *lpnt++ = CL_LINE;
+    return *fl_buffer_pointer++ = CL_LINE;
 }
 
 inline const int MAXLEVEL = 11;
@@ -274,8 +274,8 @@ inline const int TMP = 77;			/* misc scratch space */
 inline const int LIFEPROT = 78;		/* life protection counter */
 inline const int HUNGER = 79;
 inline const int HUNGERMAX = 80;
-/* nap related */
-inline const int NAPTIME = 1000;
+/* fl_wait related */
+inline const int FL_WAIT_DURATION = 1000;
 
 /*
 * object related

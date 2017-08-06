@@ -24,7 +24,7 @@
 #include <time.h>
 #endif
 
-void nap (int milliseconds) {
+void fl_wait (int milliseconds) {
 #if defined WINDOWS
   Sleep (milliseconds);
 #endif

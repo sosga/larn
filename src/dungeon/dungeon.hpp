@@ -13,6 +13,8 @@
    limitations under the License.
 */
 
+#include <curses.h>
+
 void makeplayer(void);
 void newcavelevel(int);
 void eat(int,int);
@@ -21,3 +23,11 @@ void checkgen(void);
 void sethp(int);
 void makeobject(int);
 void makemaze(int);
+int newsphere(int, int, int, int);
+int fl_remove_sphere_of_annihilation(int, int);
+void fl_effect_of_sphere_detonation ( int x, int y );
+void movsphere(void);
+int fl_sphere_boom(int, int);
+
+/* maximum number of spheres movsphere can handle */
+inline const int SPHMAX = 20;

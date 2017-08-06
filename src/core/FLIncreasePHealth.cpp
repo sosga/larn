@@ -13,7 +13,7 @@
 */
 
 #include "funcs.hpp"
-#include "../config/larncons.h"
+#include "../../includes/main.h"
 #include "../config/data.h"
 
 void FLCoreFuncs::IncreasePHealth(int x) {

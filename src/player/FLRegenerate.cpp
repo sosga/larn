@@ -12,26 +12,17 @@
    limitations under the License.
 */
 
-#include <curses.h>
-#include <cstdlib>
+#include "../../includes/main.h"
+#include "../config/data.h"
+#include "../templates/math.t.hpp"
+#include "../../includes/display.h"
+#include "../../includes/global.h"
+#include "../core/inventory.hpp"
+#include "../../includes/io.h"
+#include "regen.hpp"
 
-#include "config/larncons.h"
-#include "config/data.h"
-#include "templates/math.t.hpp"
-#include "../includes/display.h"
-#include "../includes/global.h"
-#include "core/inventory.hpp"
-#include "../includes/io.h"
-#include "../includes/regen.h"
-
-/*
-* regen()
-*
-* subroutine to regenerate player hp and spells
-*
-*/
 void
-regen(void)
+fl_regen_hp_and_spells(void)
 {
     int i, flag;
     long *larn_cdesc_id;
@@ -98,12 +89,12 @@ regen(void)
         }
     if (larn_cdesc_id[FL_BLINDCOUNT])
         if (--larn_cdesc_id[FL_BLINDCOUNT] <= 0) {
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
             fl_display_message("\nThe blindness subsides");
         }
     if (larn_cdesc_id[FL_CONFUSE])
         if (--larn_cdesc_id[FL_CONFUSE] <= 0) {
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
             fl_display_message("\nYou regain your senses");
         }
     if (larn_cdesc_id[FL_GIANTSTR])
@@ -171,7 +162,7 @@ regen(void)
         }
     if (larn_cdesc_id[FL_HALFDAM])
         if ( --larn_cdesc_id[FL_HALFDAM] <= 0) {
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
             fl_display_message("\nYou're feeling better");
         }
     if (larn_cdesc_id[FL_SEEINVISIBLE])
@@ -179,7 +170,7 @@ regen(void)
             monstnamelist[FL_INVISIBLESTALKER] = floorc;
 
             if (!larn_cdesc_id[FL_BLINDCOUNT]) {
-                cursor(1,24);
+                fl_termcap_cursor_position(1,24);
                 fl_display_message("\nYour vision returns to normal");
             }
         }
@@ -188,13 +179,13 @@ regen(void)
             if ((larn_cdesc_id[FL_WEAR] != -1 ) || (larn_cdesc_id[FL_SHIELD] != -1 ))
                 if (TRnd(100) < 50) {
                     larn_cdesc_id[FL_WEAR] = larn_cdesc_id[FL_SHIELD] = -1;
-                    cursor(1,24);
+                    fl_termcap_cursor_position(1,24);
                     fl_display_message("\nThe unbareable itching forces you to remove your armor!");
                     fl_recalculate_armor_class();
                     bottomline();
                 }
         if (--larn_cdesc_id[FL_ITCHING] <= 0) {
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
             fl_display_message("\nThe irritation subsides!");
         }
     }
@@ -206,7 +197,7 @@ regen(void)
                         drop_object((int)larn_cdesc_id[FL_WIELD]);
                     }
         if (--larn_cdesc_id[FL_CLUMSINESS] <= 0) {
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
             fl_display_message("\nYou feel less awkward!");
         }
     }

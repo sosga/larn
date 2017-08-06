@@ -15,17 +15,10 @@ dirpoly(spnum)     Routine to ask for a direction and polymorph a monst
 annihilate()   Routine to annihilate monsters around player, playerx,playery
 genmonst()         Function to ask for monster and genocide from game
 */
-#include <iostream>
-#include <cstdlib>
-#include <ctype.h>
-#include <cstring>
-#include <curses.h>
 
 #include "dungeon/dungeon.hpp"
-#include "config/larncons.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
-#include "strings/utf8.h"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/io.h"
@@ -34,7 +27,6 @@ genmonst()         Function to ask for monster and genocide from game
 #include "../includes/object.h"
 #include "core/scores.hpp"
 #include "../includes/spells.h"
-#include "../includes/spheres.h"
 #include "core/sysdep.hpp"
 #include "core/funcs.hpp"
 
@@ -72,7 +64,7 @@ void
 cast ( void )
 {
     int i, j, a, b, d;
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 
     if ( cdesc[FL_SPELLS] <= 0 ) {
         move ( 10, 19 );
@@ -88,7 +80,7 @@ cast ( void )
 
     while ( ( a = ttgetch () ) == 'I' ) {
         seemagic ( -1 );
-        cursor(1,24);
+        fl_termcap_cursor_position(1,24);
         fl_display_message ( eys );
     }
 
@@ -385,8 +377,8 @@ speldamage ( int x )
     case 26:
         if ( TRnd ( 151 ) == 63 ) {
             fl_display_message ( "\nYour heart stopped!\n" );
-            nap ( NAPTIME );
-            died ( 270 );
+            fl_wait ( FL_WAIT_DURATION );
+            fl_player_death ( 270 );
             return;
         }
 
@@ -426,8 +418,8 @@ speldamage ( int x )
         if ( ( TRnd ( 23 ) == 5 )
                 && ( wizard == 0 ) ) {	/* sphere of annihilation */
             fl_display_message ( "\n You have been enveloped by the zone of nothingness!\n" );
-            nap ( NAPTIME );
-            died ( 258 );
+            fl_wait ( FL_WAIT_DURATION );
+            fl_player_death ( 258 );
             return;
         }
 
@@ -657,7 +649,7 @@ nospell ( int x, int monst )
         return ( 0 );
     }
 
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
     lprc ( '\n' );
     lprintf ( spelmes[tmp], monster[monst].name );
     return ( 1 );
@@ -732,7 +724,7 @@ fool:
 
             while ( arg-- > 0 ) {
                 parse2 ();
-                nap ( NAPTIME );
+                fl_wait ( FL_WAIT_DURATION );
             }
 
             return;
@@ -822,7 +814,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
 
         /* if energy hits player */
         if ( ( x == playerx ) && ( y == playery ) ) {
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
             fl_display_message("\nYou are hit by your own magic!");
             lastnum = 278;
             CoreFuncs.DecreasePHealth(dam);
@@ -831,9 +823,9 @@ godirect ( int spnum, int dam, const char *str, int delay,
 
         /* if not blind show effect */
         if ( cdesc[FL_BLINDCOUNT] == 0 ) {
-            cursor ( x + 1, y + 1 );
+            fl_termcap_cursor_position( x + 1, y + 1 );
             lprc ( cshow );
-            nap ( delay );
+            fl_wait ( delay );
             fl_show_designated_cell_only ( x, y );
         }
 
@@ -849,7 +841,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
                 return;
             }
 
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
             lprc ( '\n' );
             lprintf ( str, lastmonst );
             hitpoints.hitm(x,y,dam);
@@ -862,7 +854,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
         else
             switch ( * ( p = &object_identification[x][y] ) ) {
             case OWALL:
-                cursor(1,24);
+                fl_termcap_cursor_position(1,24);
                 lprc ( '\n' );
                 lprintf ( str, "wall" );
 
@@ -882,7 +874,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
                 break;
 
             case OCLOSEDDOOR:
-                cursor(1,24);
+                fl_termcap_cursor_position(1,24);
                 lprc ( '\n' );
                 lprintf ( str, "door" );
 
@@ -897,7 +889,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
                 break;
 
             case OSTATUE:
-                cursor(1,24);
+                fl_termcap_cursor_position(1,24);
                 lprc ( '\n' );
                 lprintf ( str, "statue" );
 
@@ -913,7 +905,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
                 break;
 
             case OTHRONE:
-                cursor(1,24);
+                fl_termcap_cursor_position(1,24);
                 lprc ( '\n' );
                 lprintf ( str, "throne" );
 
@@ -927,7 +919,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
                 break;
 
             case OALTAR:
-                cursor(1,24);
+                fl_termcap_cursor_position(1,24);
                 lprc ( '\n' );
                 lprintf ( str, "altar" );
 
@@ -940,7 +932,7 @@ godirect ( int spnum, int dam, const char *str, int delay,
                 break;
 
             case OFOUNTAIN:
-                cursor(1,24);
+                fl_termcap_cursor_position(1,24);
                 lprc ( '\n' );
                 lprintf ( str, "fountain" );
 
@@ -1006,7 +998,7 @@ fl_player_is_blind ( int x, int y )
         p = monster[lastnum].name;
     }
 
-    utf8ncpy(lastmonst, p, 50);
+    strncpy(lastmonst, p, 50);
 }
 
 
@@ -1087,11 +1079,11 @@ omnidirect ( int spnum, int dam, const char *str )
 
             if ( nospell ( spnum, m ) == 0 ) {
                 fl_player_is_blind ( x, y );
-                cursor(1,24);
+                fl_termcap_cursor_position(1,24);
                 lprc ( '\n' );
                 lprintf ( str, lastmonst );
                 hitpoints.hitm ( x, y, dam );
-                nap ( NAPTIME );
+                fl_wait ( FL_WAIT_DURATION );
             }
 
             else {
@@ -1264,7 +1256,7 @@ static void
 genmonst ( void )
 {
     int i, j;
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
     fl_display_message ( "\nGenocide what monster? " );
 
     for ( i = 0; !isalpha ( i ) && i != ' '; i = ttgetch () ) {

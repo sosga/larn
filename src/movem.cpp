@@ -8,9 +8,9 @@
 *  move_dumb()     Move dumb monsters
 *  mmove(x,y,xd,yd)    Function to actually perform the monster movement
 */
-#include <cstdlib>
+
 #include "dungeon/dungeon.hpp"
-#include "config/larncons.h"
+#include "../includes/main.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
 #include "../includes/display.h"
@@ -18,7 +18,6 @@
 #include "../includes/io.h"
 #include "../includes/monster.h"
 #include "../includes/movem.h"
-#include "../includes/spheres.h"
 
 static void build_proximity_ripple ( void );
 static void move_scared ( int, int );
@@ -27,7 +26,7 @@ static void move_dumb ( int, int );
 static void mmove ( int, int, int, int );
 
 static int w1x[9], w1y[9];
-static int tmp1, tmp2, tmp3, tmp4, distance;
+static int tmp1, tmp2, tmp3, tmp4, distance_from;
 
 /* list of monsters to move */
 static struct foo
@@ -58,7 +57,7 @@ movemonst ( void )
         tmp2 = playery + 6;
         tmp3 = playerx - 10;
         tmp4 = playerx + 11;
-        distance =
+        distance_from =
             IDISTAGGR;	/* depth of intelligent monster movement */
     }
 
@@ -67,7 +66,7 @@ movemonst ( void )
         tmp2 = playery + 4;
         tmp3 = playerx - 5;
         tmp4 = playerx + 6;
-        distance =
+        distance_from =
             IDISTNORM;	/* depth of intelligent monster movement */
     }
 
@@ -256,7 +255,7 @@ static struct queue_entry
 {
     int x;
     int y;
-    int distance;
+    int distance_from;
 } queue[MAX_QUEUE];
 static int queue_head = 0;
 static int queue_tail = 0;
@@ -267,7 +266,7 @@ static int queue_tail = 0;
 	{                                   \
 		queue[queue_tail].x = (_x) ;        \
 		queue[queue_tail].y = (_y) ;        \
-		queue[queue_tail].distance = (_d);  \
+		queue[queue_tail].distance_from = (_d);  \
 		queue_tail++;                       \
 		if (queue_tail == MAX_QUEUE)        \
 			queue_tail = 0 ;                \
@@ -279,7 +278,7 @@ static int queue_tail = 0;
 	{                                   \
 		(_x) = queue[queue_head].x ;        \
 		(_y) = queue[queue_head].y ;        \
-		(_d) = queue[queue_head].distance ; \
+		(_d) = queue[queue_head].distance_from ; \
 		queue_head++;                       \
 		if (queue_head == MAX_QUEUE)        \
 			queue_head = 0 ;                \
@@ -659,7 +658,7 @@ mmove ( int aa, int bb, int cc, int dd )
 
     if ( i == FL_OBJECT_SPHERE_OF_ANNIHILATION ) {
         if ( tmp >= DEMONLORD + 3 ) {	/* demons dispel spheres */
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
             lprintf ( "\nThe %s dispels the sphere!", monster[tmp].name );
             fl_remove_sphere_of_annihilation ( cc, dd );	/* delete the sphere */
         }
@@ -736,7 +735,7 @@ mmove ( int aa, int bb, int cc, int dd )
         p = 0;
 
         if ( flag ) {
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
         }
 
         switch ( flag ) {

@@ -207,7 +207,7 @@ April 5 2016
    and it was a waste of keystrokes to keep typing it.
 6. Removed the wearing of a shield by default in WIZARD mode.  Cheaters shouldn't get
    extra help ;)
-7. Posix-ify the nap function.
+7. Posix-ify the fl_wait function.
 
 Flail was removed because I'll need to do some curses stuff to add an extra length to the
 objects, otherwise curses goes nuts and it ain't pretty :)

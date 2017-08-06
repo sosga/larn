@@ -1,11 +1,4 @@
-#include <curses.h>
-#include <iostream>
-#include <cstdlib>
-#include <cstring>
-#include <string>
-
 #include "../includes/action.h"
-#include "config/larncons.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
 #include "terminal/term.hpp"
@@ -14,8 +7,8 @@
 #include "../includes/global.h"
 #include "../includes/io.h"
 #include "../includes/monster.h"
-#include "strings/utf8.h"
 #include "display/botsubstitution.hpp"
+#include "../includes/main.h"
 
 using std::cout;
 
@@ -83,77 +76,77 @@ bot_linex(void)
     if(regen_bottom || (always)) {
         regen_bottom = 1;
 
-        cursor(1,18);
+        fl_termcap_cursor_position(1,18);
         lprintf("%s",logname);
 
         if(cdesc[FL_SPELLMAX] > 99) {
-            cursor(69, 10);
+            fl_termcap_cursor_position(69, 10);
             lprintf("SPL:");
-            cursor(73, 10);
+            fl_termcap_cursor_position(73, 10);
             lprintf("%3d/%3d", (int) cdesc[FL_SPELLS],
                     (int) cdesc[FL_SPELLMAX]);
         }
 
         else {
-            cursor(69, 10);
+            fl_termcap_cursor_position(69, 10);
             lprintf("SPL:");
-            cursor(73, 10);
+            fl_termcap_cursor_position(73, 10);
             lprintf("%3d/%2d", (int) cdesc[FL_SPELLS],
                     (int) cdesc[FL_SPELLMAX]);
         }
-        cursor(1, 19);
+        fl_termcap_cursor_position(1, 19);
         lprintf("LVL:");
 
         if(cdesc[FL_LEVEL] > 99) {
-            cursor(5, 19);
+            fl_termcap_cursor_position(5, 19);
             lprintf("%3d", (int) cdesc[FL_LEVEL]);
         }
 
         else {
-            cursor(5, 19);
+            fl_termcap_cursor_position(5, 19);
             lprintf("%-2d", (int) cdesc[FL_LEVEL]);
         }
-        cursor(69, 1);
+        fl_termcap_cursor_position(69, 1);
         lprintf("HP:");
-        cursor(72, 1);
+        fl_termcap_cursor_position(72, 1);
         lprintf("%3d/%3d", (int) cdesc[FL_HP], (int) cdesc[FL_HPMAX]);
-        cursor(69, 2);
+        fl_termcap_cursor_position(69, 2);
         lprintf("STR:");
-        cursor(73, 2);
+        fl_termcap_cursor_position(73, 2);
         lprintf("%-2d", (int)(cdesc[FL_STRENGTH] + cdesc[FL_STREXTRA]));
-        cursor(69, 3);
+        fl_termcap_cursor_position(69, 3);
         lprintf("INT:");
-        cursor(73, 3);
+        fl_termcap_cursor_position(73, 3);
         lprintf("%-2d", (int) cdesc[INTELLIGENCE]);
-        cursor(69, 4);
+        fl_termcap_cursor_position(69, 4);
         lprintf("WIS:");
-        cursor(73, 4);
+        fl_termcap_cursor_position(73, 4);
         lprintf("%-2d", (int) cdesc[WISDOM]);
-        cursor(69, 5);
+        fl_termcap_cursor_position(69, 5);
         lprintf("CON:");
-        cursor(73, 5);
+        fl_termcap_cursor_position(73, 5);
         lprintf("%-2d", (int) cdesc[CONSTITUTION]);
-        cursor(69, 6);
+        fl_termcap_cursor_position(69, 6);
         lprintf("DEX:");
-        cursor(73, 6);
+        fl_termcap_cursor_position(73, 6);
         lprintf("%-2d", (int) cdesc[FL_DEXTERITY]);
-        cursor(69, 7);
+        fl_termcap_cursor_position(69, 7);
         lprintf("CHA:");
-        cursor(73, 7);
+        fl_termcap_cursor_position(73, 7);
         lprintf("%-2d", (int) cdesc[FL_CHARISMA]);
-        cursor(69, 8);
+        fl_termcap_cursor_position(69, 8);
         lprintf("ACC:");
-        cursor(73, 8);
+        fl_termcap_cursor_position(73, 8);
         lprintf("%-3d", (int) cdesc[AC]);
-        cursor(69, 9);
+        fl_termcap_cursor_position(69, 9);
         lprintf("WCL:");
-        cursor(73, 9);
+        fl_termcap_cursor_position(73, 9);
         lprintf("%-3d", (int) cdesc[WCLASS]);
-		cursor(69, 11);
+		fl_termcap_cursor_position(69, 11);
 		lprintf("HGR:");
-        cursor(73, 11);
+        fl_termcap_cursor_position(73, 11);
         lprintf("%3d/%3d",cdesc[HUNGER],cdesc[HUNGERMAX]);
-        cursor(24, 18);
+        fl_termcap_cursor_position(24, 18);
         lprintf("Cave Level:");
 
         if((level == 0) || (wizard)) {
@@ -167,15 +160,15 @@ bot_linex(void)
         else {
             lprintf(levelname[level]);
         }
-        cursor(39, 18);
+        fl_termcap_cursor_position(39, 18);
         lprintf("Gold:");
-        cursor(44, 18);
+        fl_termcap_cursor_position(44, 18);
         lprintf("%-6d", (int) cdesc[GOLD]);
-        cursor(24, 19);
+        fl_termcap_cursor_position(24, 19);
         lprintf("EXP:");
-        cursor(28, 19);
+        fl_termcap_cursor_position(28, 19);
         lprintf("%-9d",(int)cdesc[EXPERIENCE]);
-        cursor(52, 18);
+        fl_termcap_cursor_position(52, 18);
         lprintf("%s",classname[cdesc[FL_LEVEL] - 1]);
         always = 1;
         botside();
@@ -205,7 +198,7 @@ bot_linex(void)
     Display.BotSubstitution(EXPERIENCE, 28, 19, "%-9d");
 
     if(cdesc[FL_LEVEL] != cbak[FL_LEVEL]) {
-        cursor(50, 18);
+        fl_termcap_cursor_position(50, 18);
         lprintf(classname[cdesc[FL_LEVEL] - 1]);
     }
 
@@ -233,7 +226,7 @@ bot_linex(void)
 
         cbak[TELEFLAG] = cdesc[TELEFLAG];
         cbak[CAVELEVEL] = level;
-        cursor(70, 18);
+        fl_termcap_cursor_position(70, 18);
         if(cdesc[TELEFLAG]) {
             lprintf(" ?");
         }
@@ -267,9 +260,9 @@ bot_hpx(void)
 {
 	FLDisplay Display;
 
-    cursor(69, 1);
+    fl_termcap_cursor_position(69, 1);
     lprintf("HP:");
-    cursor(72, 1);
+    fl_termcap_cursor_position(72, 1);
     lprintf("%3d", (int) cdesc[FL_HP]);
 
     if(cdesc[EXPERIENCE] != cbak[EXPERIENCE]) {
@@ -283,7 +276,7 @@ bot_hpx(void)
 }
 
 /*
-special routine to update number of spells called from regen()
+special routine to update number of spells called from fl_regen_hp_and_spells()
 */
 static void
 bot_spellx(void)
@@ -334,16 +327,16 @@ botside(void)
         if((always) || (cdesc[idx] != cbak[idx])) {
             if((always) || (cbak[idx] == 0)) {
                 if(cdesc[idx]) {
-                    cursor(53, 19);
+                    fl_termcap_cursor_position(53, 19);
                     lprintf(bot_data[i].spell_text);
                     /*Reset cursor position. ~Gibbon */
-                    cursor(1,24);
+                    fl_termcap_cursor_position(1,24);
                 }
             } else if(cdesc[idx] == 0) {
-                cursor(53, 19);
+                fl_termcap_cursor_position(53, 19);
                 lprintf("          ");
                 /*Reset cursor position. ~Gibbon */
-                cursor(1,24);
+                fl_termcap_cursor_position(1,24);
             }
             cbak[idx] = cdesc[idx];
         }
@@ -390,7 +383,7 @@ draws(int xmin, int xmax, int ymin, int ymax)
             idx = bot_data[i].typ;
 
             if(cdesc[idx]) {
-                cursor(53, 19);
+                fl_termcap_cursor_position(53, 19);
                 lprintf(bot_data[i].spell_text);
             }
 
@@ -417,7 +410,7 @@ drawscreen(void)
         screen_clear();
     } else {
         d_flag = 0;
-        cursor(1, 1);
+        fl_termcap_cursor_position(1, 1);
     }
     if(d_xmin < 0) {
         /* d_xmin=-1 means display all without bottomline */
@@ -463,7 +456,7 @@ drawscreen(void)
          * print the line with bold objects in a different
          * loop for effeciency
          */
-        cursor(ileft + 1, j + 1);
+        fl_termcap_cursor_position(ileft + 1, j + 1);
         for(i = ileft; i <= iright; i++) {
             /* we still need to check for the location being known,
                for we might have an unknown spot in the middle of
@@ -559,7 +552,7 @@ showcell(int x, int y)
     for(j = miny; j <= maxy; j++)
         for(m = minx; m <= maxx; m++)
             if((been_here_before[m][j] & KNOWHERE) == 0) {
-                cursor(m + 1, j + 1);
+                fl_termcap_cursor_position(m + 1, j + 1);
                 x = maxx;
 
                 while(been_here_before[x][j] & KNOWHERE) {
@@ -601,7 +594,7 @@ void
 fl_show_designated_cell_only(int x, int y)
 {
     int k;
-    cursor(x + 1, y + 1);
+    fl_termcap_cursor_position(x + 1, y + 1);
 
     /* see nothing if blind, but clear previous player position */
     if(cdesc[FL_BLINDCOUNT]) {
@@ -650,9 +643,9 @@ void
 showplayer(void)
 {
     fl_show_designated_cell_only(oldx, oldy);
-    cursor(playerx + 1, playery + 1);
+    fl_termcap_cursor_position(playerx + 1, playery + 1);
     lprc('@');
-    cursor(playerx + 1, playery + 1);
+    fl_termcap_cursor_position(playerx + 1, playery + 1);
     oldx = playerx;
     oldy = playery;
     refresh();
@@ -726,7 +719,7 @@ if direction=0, don't move--just show where he is */
     /* check for the player ignoring an altar
      */
     if(object_identification[playerx][playery] == OALTAR && !prayed) {
-        cursor(1,24);
+        fl_termcap_cursor_position(1,24);
         lprintf("\nYou have ignored the altar!");
         act_ignore_altar();
     }
@@ -772,7 +765,7 @@ seemagic(int arg)
             number++;
             j = 0;
 
-            while(utf8ncmp(spelcode[sort[j]], spelcode[i], 3) < 0) {
+            while(strncmp(spelcode[sort[j]], spelcode[i], 3) < 0) {
                 j++;
             }
 
@@ -788,7 +781,7 @@ seemagic(int arg)
     if(arg == -1) {	/* if display spells while casting one */
         cl_up(79, ((number + 2) / 3 +
                    4));	/* lines needed for display */
-        cursor(1, 1);
+        fl_termcap_cursor_position(1, 1);
     }
 
     else {
@@ -828,7 +821,7 @@ seemagic(int arg)
             number++;
             j = 0;
 
-            while(utf8cmp(&scrollname[sort[j]][1],
+            while(strcmp(&scrollname[sort[j]][1],
                          &scrollname[i][1]) < 0) {
                 j++;
             }
@@ -868,7 +861,7 @@ seemagic(int arg)
             number++;
             j = 0;
 
-            while(utf8cmp(&potionname[sort[j]][1],
+            while(strcmp(&potionname[sort[j]][1],
                          &potionname[i][1]) < 0) {
                 j++;
             }

@@ -14,7 +14,7 @@
 
 #include "funcs.hpp"
 #include "../templates/math.t.hpp"
-#include "../config/larncons.h"
+#include "../../includes/main.h"
 #include "../config/data.h"
 #include "../../includes/display.h"
 #include "../../includes/io.h"
@@ -40,7 +40,7 @@ void FLCoreFuncs::DecreaseExperience(long x) {
         FL_LOSEMAXHEALTH(TRund(3));	/*  lose spells     */
     }
     if (i != cdesc[FL_LEVEL]) {
-        cursor(1,24);
+        fl_termcap_cursor_position(1,24);
         lprintf("\nYou went down to level %d!",cdesc[FL_LEVEL]);
     }
     bottomline();

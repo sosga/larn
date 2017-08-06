@@ -13,13 +13,7 @@
    limitations under the License.
 */
 
-#include <iostream>
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <errno.h>
-#include <setjmp.h>
-#include "../config/larncons.h"
+#include "../../includes/main.h"
 #include "../config/data.h"
 #include "../templates/math.t.hpp"
 #include "../terminal/term.hpp"

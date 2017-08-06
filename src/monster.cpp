@@ -41,13 +41,10 @@
 *      int x;
 *
 */
-#include <stdlib.h>
-#include <ctype.h>
-#include <curses.h>
+
 #include <string>
-#include <iostream>
 #include "terminal/term.hpp"
-#include "config/larncons.h"
+#include "../includes/main.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
 #include <stdio.h>
@@ -81,7 +78,7 @@ createmonster ( int mon )
     if ( mon < 1 || mon > MAXMONST + 8 ) {
         /* check for monster number out of bounds */
         lprintf ( "\ncan't createmonst(%d)\n", mon );
-        nap ( 3000 );
+        fl_wait ( 3000 );
         return;
     }
 
@@ -289,7 +286,7 @@ hitmonster ( int x, int y )
     fl_player_is_blind ( x, y );
     tmp = monster[monst].armorclass + cdesc[FL_LEVEL] +
           cdesc[FL_DEXTERITY] + cdesc[WCLASS] / 4 - 12;
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 
     if ( ( TRnd ( 20 ) < tmp)
             || ( TRnd ( 71 ) <
@@ -402,7 +399,7 @@ HitMonster::hitm(int x, int y, int amt)
         cdesc[MONSTKILLED]++;
         lprintf ( "\nThe" );
         lprintf ( " %s ", lastmonst );
-        lprintf ( "died!\n" );
+        lprintf ( "was killed\n" );
         CoreFuncs.IncreaseExperience ( monster[monst].experience );
         amt = monster[monst].gold;
 
@@ -456,7 +453,7 @@ hitplayer ( int x, int y )
     bias = + 1;
     hitflag = hit2flag = hit3flag = 1;
     y_larn_rep = 0;
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
     fl_player_is_blind ( x, y );
 
     if ( cdesc[FL_INVISIBILITY] )
@@ -503,7 +500,7 @@ hitplayer ( int x, int y )
 
             tmp = 1;
             bias -= 2;
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
         }
 
     if ( ( ( dam + bias ) > cdesc[AC] )
@@ -717,7 +714,7 @@ newobject ( int lev, int *i )
 
     case 23:
     case 32:
-    case 38:			/* regen ring, shield, 2-hand sword */
+    case 38:			/* regenerate ring, shield, 2-hand sword */
         *i = TRund ( lev / 3 + 1 );
         break;
 

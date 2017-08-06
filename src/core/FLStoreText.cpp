@@ -1,5 +1,5 @@
 #include "store.hpp"
-#include "../config/larncons.h"
+#include "../../includes/main.h"
 #include "../config/data.h"
 #include "../../includes/io.h"
 

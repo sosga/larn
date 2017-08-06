@@ -12,9 +12,8 @@
    limitations under the License.
 */
 
-#include <iostream>
 #include <string>
-#include "../config/larncons.h"
+#include "../../includes/main.h"
 #include "../config/data.h"
 #include "../templates/math.t.hpp"
 #include "../../includes/global.h"
@@ -102,7 +101,7 @@ Save::savegame(char *fname)
     time_t temptime;
     Save save;
 
-    lflush();
+    fl_output_buffer_flush();
     save.save();
     ointerest();
     if(lcreat(fname) < 0) {
@@ -178,15 +177,15 @@ Load::restoregame(char *fname)
     time_t temptime;
     Load load;
 
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
     fl_display_message("\nRestoring . . .");
-    lflush();
+    fl_output_buffer_flush();
     if(lopen(fname) <= 0) {
         lcreat(reinterpret_cast<char *>(0));
         lprintf("\nCan't open file <%s>to restore game\n", fname);
-        nap(NAPTIME);
+        fl_wait(FL_WAIT_DURATION);
         cdesc[GOLD] = cdesc[BANKACCOUNT] = 0;
-        died(-265);
+        fl_player_death(-265);
         return;
     }
 
@@ -254,7 +253,7 @@ Load::restoregame(char *fname)
 
     /* died a post mortem death */
     if(cdesc[FL_HP] < 0) {
-        died(284);
+        fl_player_death(284);
         return;
     }
 

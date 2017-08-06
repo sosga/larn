@@ -12,16 +12,27 @@
    limitations under the License.
 */
 
-#include "botsubstitution.hpp"
-#include "../config/larncons.h"
-#include "../config/data.h"
-#include "../../includes/display.h"
+#include <time.h>
+#include "newgame.hpp"
 #include "../../includes/io.h"
+#include "../../includes/main.h"
+#include "../config/data.h"
 
-void FLDisplay::BotSubstitution(int idx, int x, int y, const char *str) {
-	if (cdesc[(idx)] != cbak[(idx)]) {
-		cbak[(idx)] = cdesc[(idx)];
-		cursor((x),(y));
-		lprintf((str),static_cast<int>(cdesc[(idx)]));
-	}
+/*
+* Subroutine to save the initial time and seed TRnd()
+*/
+void FLGame::NewGame(void) {
+
+  long *p, *pe;
+  for (p = cdesc, pe = cdesc + 100; p < pe; p++) {
+    *p = 0;
+  }
+  time(&initialtime);
+#if defined NIX || NIX_LOCAL
+  srand(reinterpret_cast<long>(initialtime));
+#else
+  srand(reinterpret_cast<long long>(initialtime));
+#endif
+//buffering for output
+  lcreat(reinterpret_cast<char *>(0));
 }

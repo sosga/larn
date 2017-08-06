@@ -21,10 +21,9 @@ close_something()
 desecrate_altar()
 pray_at_altar()
 */
-#include <curses.h>
-#include <cstdlib>
+
 #include "../includes/action.h"
-#include "config/larncons.h"
+#include "../includes/main.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
 #include "dungeon/dungeon.hpp"
@@ -195,7 +194,7 @@ ochest ( void )
 void
 ofountain ( void )
 {
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
     fl_display_message ( "\nDo you (d) drink, (w) wash yourself" );
     iopts ();
 
@@ -361,7 +360,7 @@ fntchange ( int how )
         break;
     }
 
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 }
 
 
@@ -393,7 +392,7 @@ For command mode.  Perform drinking at a fountain.
 void
 drink_fountain ( void )
 {
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 
     if ( object_identification[playerx][playery] == ODEADFOUNTAIN ) {
         fl_display_message ( "\nThere is no water to drink!" );
@@ -419,7 +418,7 @@ For command mode.  Perform washing (tidying up) at a fountain.
 void
 wash_fountain ( void )
 {
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 
     if ( object_identification[playerx][playery] == ODEADFOUNTAIN ) {
         fl_display_message ( "\nThere is no water to wash in!" );
@@ -439,7 +438,7 @@ wash_fountain ( void )
 void
 enter ( void )
 {
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
     switch ( object_identification[playerx][playery] ) {
     case OSCHOOL:
         oschool ();
@@ -493,7 +492,7 @@ For command mode.  Perform removal of gems from a jeweled throne.
 void
 remove_gems ( void )
 {
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 
     if ( object_identification[playerx][playery] == ODEADTHRONE ) {
         fl_display_message ( "\nThere are no gems to remove!" );
@@ -522,7 +521,7 @@ For command mode.  Perform sitting on a throne.
 void
 sit_on_throne ( void )
 {
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 
     if ( object_identification[playerx][playery] == OTHRONE ) {
         act_sit_throne ( 0 );
@@ -547,7 +546,7 @@ up stairs or volcanic shaft.
 void
 up_stairs ( void )
 {
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
     if ( object_identification[playerx][playery] == OSTAIRSDOWN ) {
         fl_display_message ( "\nThe stairs don't go up!" );
     }
@@ -566,7 +565,7 @@ down stairs.
 void
 down_stairs ( void )
 {
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
     if ( object_identification[playerx][playery] == OSTAIRSUP ) {
         fl_display_message ( "\nThe stairs don't go down!" );
     }
@@ -586,7 +585,7 @@ open_something ( void )
 {
     int x, y;			/* direction to open */
     char tempc;			/* result of prompting to open a chest */
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 
     /* check for confusion.
      */
@@ -649,7 +648,7 @@ void
 close_something ( void )
 {
     int x, y;
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 
     /* check for confusion.
      */
@@ -694,7 +693,7 @@ close_something ( void )
 void
 desecrate_altar ( void )
 {
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 
     if ( object_identification[playerx][playery] == OALTAR ) {
         act_desecrate_altar ();
@@ -715,7 +714,7 @@ For command mode.  Perform the act of praying at an altar.
 void
 pray_at_altar ( void )
 {
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
 
     if ( object_identification[playerx][playery] != OALTAR ) {
         fl_display_message ( "\nI see no altar to pray at here!" );
@@ -736,7 +735,7 @@ Identify objects for the player.
 void
 specify_object ( void )
 {
-    cursor(1,24);
+    fl_termcap_cursor_position(1,24);
     fl_display_message ( "\nIdentify unknown object by cursor [ynq]?" );
 
     for ( ;; ) {
@@ -828,19 +827,19 @@ specify_obj_cursor ( void )
     fl_display_message ( "\n(For instructions type a ?)" );
     objx = playerx;
     objy = playery;
-    cursor ( objx + 1, objy + 1 );
+    fl_termcap_cursor_position( objx + 1, objy + 1 );
 
     /* make cursor visible.
      */
     for ( ;; ) {
         switch ( ttgetch () ) {
         case '?':
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
             fl_display_message
             ( "\nUse [hjklnbyu] to move the cursor to the unknown object." );
             fl_display_message ( "\nType a . when the cursor is at the desired place." );
             fl_display_message ( "\nType q, Return, or Escape to exit." );
-            cursor ( objx + 1, objy + 1 );
+            fl_termcap_cursor_position( objx + 1, objy + 1 );
             break;
 
         case '\33':
@@ -848,14 +847,14 @@ specify_obj_cursor ( void )
         case '\n':
             /* reset cursor
              */
-            cursor ( playerx + 1, playery + 1 );
+            fl_termcap_cursor_position( playerx + 1, playery + 1 );
             return;
 
         case '.':
             /* reset cursor
              */
-            cursor ( playerx + 1, playery + 1 );
-            cursor(1,24);
+            fl_termcap_cursor_position( playerx + 1, playery + 1 );
+            fl_termcap_cursor_position(1,24);
 
             if ( ( objx == playerx ) && ( objy == playery ) ) {
                 lprintf ( "\n@: %s", logname );
@@ -964,5 +963,5 @@ move_cursor ( int *xx, int *yy, int cdir )
         *xx = 0;
     }
 
-    cursor ( *xx + 1, *yy + 1 );
+    fl_termcap_cursor_position( *xx + 1, *yy + 1 );
 }

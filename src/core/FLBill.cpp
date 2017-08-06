@@ -13,10 +13,9 @@
    limitations under the License.
 */
 
-#include <curses.h>
 #include "bill.hpp"
 #include "help.hpp"
-#include "../config/larncons.h"
+#include "../../includes/main.h"
 #include "../config/data.h"
 #include "../templates/math.t.hpp"
 #include "../../includes/io.h"

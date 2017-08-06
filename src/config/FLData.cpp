@@ -1,4 +1,4 @@
-#include "larncons.h"
+#include "../../includes/main.h"
 #include "data.h"
 #include "../templates/math.t.hpp"
 #include <time.h>
@@ -62,7 +62,11 @@ int skill[] = {
 
 #undef MEG
 
-char *lpbuf, *lpnt, *inbuffer, *lpend;	/* input/output pointers to the buffers */
+//if viewflag then we have done a 99 stay here
+//and don't showcell in the main loop 
+char viewflag = 0;
+
+char *lpbuf, *fl_buffer_pointer, *inbuffer, *fl_buffer_pending;	/* input/output pointers to the buffers */
 
 struct cel *cell[(MAXX * MAXY) * (MAXLEVEL + MAXVLEVEL)]; /* dungeon storage */
 int monster_hit_points[MAXX][MAXY];		/*  monster hp on level     */

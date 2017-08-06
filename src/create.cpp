@@ -1,10 +1,4 @@
-#include <iostream>
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <errno.h>
-#include <setjmp.h>
-#include "config/larncons.h"
+#include "../includes/main.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
 #include "terminal/term.hpp"
@@ -328,7 +322,7 @@ makeobject(int j)
     froom(3, OORBOFDRAGON, 0);	/* orb of dragon slaying */
     froom(4, OSPIRITSCARAB, 0);	/* scarab of negate spirit */
     froom(4, OCUBEofUNDEAD, 0);	/* cube of undead control   */
-    froom(2, ORINGOFEXTRA, 0);	/* ring of extra regen      */
+    froom(2, ORINGOFEXTRA, 0);	/* ring of extra regeneneration      */
     froom(3, ONOTHEFT, 0);	/* device of antitheft      */
     froom(2, OSWORDofSLASHING, 0);	/* sword of slashing */
 

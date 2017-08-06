@@ -29,23 +29,17 @@
 *  packweight()
 */
 
-#include <curses.h>
-#include <cstdlib>
-#include <cstring>
-#include <ctype.h>
-
 #include "core/inventory.hpp"
 #include "core/scores.hpp"
 #include "core/sysdep.hpp"
 #include "core/funcs.hpp"
-#include "strings/utf8.h"
-#include "config/larncons.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/io.h"
 #include "../includes/monster.h"
+#include "../includes/main.h"
 
 /*
  *   makemonst(lev)
@@ -278,8 +272,8 @@ void
 quit ( void )
 {
     int i;
-    cursor(1,24);
-    utf8cpy ( lastmonst, "" );
+    fl_termcap_cursor_position(1,24);
+    strcpy ( lastmonst, "" );
     fl_display_message ( "\nDo you really want to quit (all progress will be lost)?" );
 
     for ( ;; ) {
@@ -292,7 +286,7 @@ quit ( void )
 
         if ( ( i == 'n' ) || ( i == 'N' ) || ( i == '\33' ) ) {
             fl_display_message ( " no" );
-            lflush();
+            fl_output_buffer_flush();
             return;
         }
     }
@@ -348,7 +342,7 @@ enchantarmor ( void )
 
     if ( cdesc[FL_WEAR] < 0 ) {
         if ( cdesc[FL_SHIELD] < 0 ) {
-            cursor(1,24);
+            fl_termcap_cursor_position(1,24);
             fl_display_message ( "\nYou feel a sense of loss" );
             return;
         }
@@ -384,7 +378,7 @@ enchweapon ( void )
     int tmp;
 
     if ( cdesc[FL_WIELD] < 0 ) {
-        cursor(1,24);
+        fl_termcap_cursor_position(1,24);
         fl_display_message ( "\nYou feel a sense of loss" );
         return;
     }

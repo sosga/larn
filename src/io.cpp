@@ -32,11 +32,11 @@
 *  lappend(filename)       open for append to an existing file
 *  lrclose()           close the input file
 *  lwclose()           close output file
-*  lflush()            flush the output buffer
+*  fl_output_buffer_flush()            flush the output buffer
 *
 *  Other Routines
 *
-*  cursor(x,y)     position cursor at [x,y]
+*  fl_termcap_cursor_position(x,y)     position cursor at [x,y]
 *  cl_line(x,y)            Clear line at [1,y] and leave cursor at [x,y]
 *  cl_up(x,y)          Clear screen from [x,1] to current line.
 *  cl_dn(x,y)      Clear screen from [1,y] to end of display.
@@ -50,10 +50,6 @@
 * Note: ** entries are available only in termcap mode.
 */
 
-#include <iostream>
-#include <fstream>
-#include <cstdlib>
-#include <cstdio>
 #include <stdarg.h>
 #include <time.h>
 #include <ctype.h>
@@ -75,13 +71,13 @@
 #endif
 #endif
 
+#include "../includes/main.h"
 #include "../includes/display.h"
 #include "../includes/global.h"
 #include "../includes/io.h"
 #include "../includes/monster.h"
 #include "core/scores.hpp"
 #include "termcap/termcap.hpp"
-#include "config/larncons.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
 #include "terminal/getch.hpp"
@@ -145,7 +141,7 @@ ttgetch ( void )
 {
     char byt;
     cdesc[BYTESIN]++;
-    lflush ();			/* be sure output buffer is flushed */
+    fl_output_buffer_flush ();			/* be sure output buffer is flushed */
     byt = ( char ) ( *getchfn ) ();
 
     if ( byt == '\r' ) {
@@ -260,14 +256,14 @@ fl_display_message ( const char *fmt, ... )
 void
 lprint ( int x )
 {
-    if ( lpnt >= lpend ) {
-        lflush ();
+    if ( fl_buffer_pointer >= fl_buffer_pending ) {
+        fl_output_buffer_flush ();
     }
 
-    *lpnt++ = 255 & x;
-    *lpnt++ = 255 & ( x >> 8 );
-    *lpnt++ = 255 & ( x >> 16 );
-    *lpnt++ = 255 & ( x >> 24 );
+    *fl_buffer_pointer++ = 255 & x;
+    *fl_buffer_pointer++ = 255 & ( x >> 8 );
+    *fl_buffer_pointer++ = 255 & ( x >> 16 );
+    *fl_buffer_pointer++ = 255 & ( x >> 24 );
 }
 
 
@@ -278,13 +274,13 @@ lprint ( int x )
 void
 lprc ( char ch )
 {
-    *lpnt++ = ch;
+    *fl_buffer_pointer++ = ch;
 
-    if ( lpnt >= lpend ) {
-        lflush ();
+    if ( fl_buffer_pointer >= fl_buffer_pending ) {
+        fl_output_buffer_flush ();
     }
 
-    lflush();
+    fl_output_buffer_flush();
 }
 
 /*
@@ -311,25 +307,25 @@ lwrite ( char *buf, int len )
 
     else
         while ( len ) {
-            if ( lpnt >= lpend ) {
-                lflush ();  /* if buffer is full flush it   */
+            if ( fl_buffer_pointer >= fl_buffer_pending ) {
+                fl_output_buffer_flush ();  /* if buffer is full flush it   */
             }
 
             num2 = lpbuf + BUFBIG -
-                   lpnt;	/*  # bytes left in output buffer   */
+                   fl_buffer_pointer;	/*  # bytes left in output buffer   */
 
             if ( num2 > len ) {
                 num2 = len;
             }
 
-            str = lpnt;
+            str = fl_buffer_pointer;
             len -= num2;
 
             while ( num2-- ) {
                 *str++ = *buf++;  /* copy in the bytes */
             }
 
-            lpnt = str;
+            fl_buffer_pointer = str;
         }
 }
 
@@ -547,8 +543,8 @@ ot:
 int
 lcreat ( char *str )
 {
-    lpnt = lpbuf;
-    lpend = lpbuf + BUFBIG;
+    fl_buffer_pointer = lpbuf;
+    fl_buffer_pending = lpbuf + BUFBIG;
 
     if ( str == NULL ) {
         return ( lfd = 1 );
@@ -565,7 +561,7 @@ lcreat ( char *str )
             {
                 lfd = 1;
                 lprintf ( "error creating file <%s>\n", str );
-                lflush();
+                fl_output_buffer_flush();
                 return ( -1 );
             }
 
@@ -603,7 +599,7 @@ lopen ( char *str )
         {
             lwclose ();
             lfd = 1;
-            lpnt = lpbuf;
+            fl_buffer_pointer = lpbuf;
             return ( -1 );
         }
 
@@ -625,8 +621,8 @@ lopen ( char *str )
 int
 lappend ( char *str )
 {
-    lpnt = lpbuf;
-    lpend = lpbuf + BUFBIG;
+    fl_buffer_pointer = lpbuf;
+    fl_buffer_pending = lpbuf + BUFBIG;
 
     if ( str == NULL ) {
         return ( lfd = 1 );
@@ -682,7 +678,7 @@ lrclose ( void )
 void
 lwclose ( void )
 {
-    lflush();
+    fl_output_buffer_flush();
 
     if ( lfd > 2 ) {
 #if defined WINDOWS
@@ -695,18 +691,17 @@ lwclose ( void )
 }
 
 /*
-* cursor(x,y)    Put cursor at specified coordinates staring at [1,1] (termcap)
+* fl_termcap_cursor_position(x,y)    Put cursor at specified coordinates staring at [1,1] (termcap)
 */
 void
-cursor ( int x, int y )
+fl_termcap_cursor_position( int x, int y )
 {
-    if ( lpnt >= lpend ) {
-        lflush();
+    if ( fl_buffer_pointer >= fl_buffer_pending ) {
+        fl_output_buffer_flush();
     }
-
-    *lpnt++ = CURSOR;
-    *lpnt++ = ( char ) x;
-    *lpnt++ = ( char ) y;
+    *fl_buffer_pointer++ = FL_CURSOR;
+    *fl_buffer_pointer++ = static_cast<char>(x);
+    *fl_buffer_pointer++ = static_cast<char>(y);
 }
 
 /*
@@ -762,7 +757,7 @@ init_term ( void )
         fprintf ( stderr,
                   "Error malloc'ing memory for decoded output buffer\n" );
         /* malloc() failure */
-        died ( -285 );
+        fl_player_death ( -285 );
     }
 
     ansiterm_init ();
@@ -774,9 +769,9 @@ init_term ( void )
 void
 cl_line ( int x, int y )
 {
-    cursor ( 1, y );
-    *lpnt++ = CL_LINE;
-    cursor ( x, y );
+    fl_termcap_cursor_position( 1, y );
+    *fl_buffer_pointer++ = CL_LINE;
+    fl_termcap_cursor_position( x, y );
 }
 
 /*
@@ -786,14 +781,14 @@ void
 cl_up ( int x, int y )
 {
     int i;
-    cursor ( 1, 1 );
+    fl_termcap_cursor_position( 1, 1 );
 
     for ( i = 1; i <= y; i++ ) {
-        *lpnt++ = CL_LINE;
-        *lpnt++ = '\n';
+        *fl_buffer_pointer++ = CL_LINE;
+        *fl_buffer_pointer++ = '\n';
     }
 
-    cursor ( x, y );
+    fl_termcap_cursor_position( x, y );
 }
 
 /*
@@ -803,27 +798,27 @@ void
 cl_dn ( int x, int y )
 {
     int i;
-    cursor ( 1, y );
+    fl_termcap_cursor_position( 1, y );
 
     if ( CD == NULL ) {
-        *lpnt++ = CL_LINE;
+        *fl_buffer_pointer++ = CL_LINE;
 
         for ( i = y; i <= 24; i++ ) {
-            *lpnt++ = CL_LINE;
+            *fl_buffer_pointer++ = CL_LINE;
 
             if ( i != 24 ) {
-                *lpnt++ = '\n';
+                *fl_buffer_pointer++ = '\n';
             }
         }
 
-        cursor ( x, y );
+        fl_termcap_cursor_position( x, y );
     }
 
     else {
-        *lpnt++ = CL_DOWN;
+        *fl_buffer_pointer++ = CL_DOWN;
     }
 
-    cursor ( x, y );
+    fl_termcap_cursor_position( x, y );
 }
 
 /*
@@ -832,13 +827,13 @@ cl_dn ( int x, int y )
 void
 lstandout ( const char* str )
 {
-    *lpnt++ = ST_START;
+    *fl_buffer_pointer++ = ST_START;
 
     while ( *str ) {
-        *lpnt++ = *str++;
+        *fl_buffer_pointer++ = *str++;
     }
 
-    *lpnt++ = ST_END;
+    *fl_buffer_pointer++ = ST_END;
 }
 
 /*
@@ -851,7 +846,7 @@ set_score_output ( void )
 }
 
 /*
-*  lflush()                        Flush the output buffer
+*  fl_output_buffer_flush()                        Flush the output buffer
 *
 *  Returns nothing of value.
 *  for termcap version: Flush output in output buffer according to output
@@ -862,7 +857,7 @@ static int scrline =
 
 
 void
-lflush ( void )
+fl_output_buffer_flush ( void )
 {
     Termcap termcap;
     int lpoint;
@@ -870,7 +865,7 @@ lflush ( void )
     static int curx = 0;
     static int cury = 0;
 
-    if ( ( lpoint = lpnt - lpbuf ) > 0 ) {
+    if ( ( lpoint = fl_buffer_pointer - lpbuf ) > 0 ) {
         cdesc[BYTESOUT] += lpoint;
 
         if ( enable_scroll <= -1 ) {
@@ -888,11 +883,11 @@ lflush ( void )
                     fprintf ( stderr, "Error writing output file\n" );
                 }
 
-            lpnt = lpbuf;		/* point back to beginning of buffer */
+            fl_buffer_pointer = lpbuf;		/* point back to beginning of buffer */
             return;
         }
 
-        for ( str = lpbuf; str < lpnt; str++ ) {
+        for ( str = lpbuf; str < fl_buffer_pointer; str++ ) {
             if ( *str >= 32 ) {
                 ttputch ( *str );
                 curx++;
@@ -921,7 +916,7 @@ lflush ( void )
                     tputs ( SE );
                     break;
 
-                case CURSOR:
+                case FL_CURSOR:
                     curx = *++str - 1;
                     cury = *++str - 1;
                     tputs (termcap.atgoto ( CM, curx, cury ) );
@@ -962,7 +957,7 @@ lflush ( void )
         }
     }
 
-    lpnt = lpbuf;
+    fl_buffer_pointer = lpbuf;
     flush_buf ();			/* flush real output buffer now */
 }
 

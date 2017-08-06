@@ -39,7 +39,6 @@ act_open_door           open a door
 #include <cstdlib>
 #include <curses.h>
 #include "../includes/action.h"
-#include "config/larncons.h"
 #include "config/data.h"
 #include "templates/math.t.hpp"
 #include "dungeon/dungeon.hpp"
@@ -189,9 +188,9 @@ act_drink_fountain ( void )
 
     if ( TRnd ( 1501 ) < 2 ) {
         fl_display_message ( "\nOops!  You seem to have caught the dreadful sleep!" );
-        lflush ();
-        nap ( NAPTIME );
-        died ( 280 );
+        fl_output_buffer_flush ();
+        fl_wait ( FL_WAIT_DURATION );
+        fl_player_death ( 280 );
         return;
     }
 
@@ -253,7 +252,7 @@ act_wash_fountain ( void )
         lastnum = 273;
         CoreFuncs.DecreasePHealth ( x );
         bottomline ();
-        cursor(1,24);
+        fl_termcap_cursor_position(1,24);
     }
 
     else if ( TRnd ( 100 ) < 29 ) {
@@ -307,7 +306,7 @@ fl_act_exit_temple ( void )
         return;
     }
 
-    lflush ();
+    fl_output_buffer_flush ();
     newcavelevel ( 0 );
     fl_temple_actions ( FL_OBJECT_TEMPLE_IN );
     return;
@@ -377,9 +376,9 @@ act_donation_pray ( void )
 
     for ( ;; ) {
         fl_display_message ( "\n\n" );
-        cursor ( 1, 24 );
+        fl_termcap_cursor_position( 1, 24 );
         CLEAR_EOL ();
-        cursor ( 1, 23 );
+        fl_termcap_cursor_position( 1, 23 );
         CLEAR_EOL ();
         fl_display_message ( "how much do you donate? " );
         k = readnum ( ( int ) cdesc[GOLD] );

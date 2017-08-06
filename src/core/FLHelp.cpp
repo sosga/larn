@@ -12,12 +12,7 @@
    limitations under the License.
 */
 
-#include <curses.h>
-#include <cstdio>
-#include <cstdlib>
-#include <string>
-#include <iostream>
-#include "../config/larncons.h"
+#include "../../includes/main.h"
 #include "../config/data.h"
 #include "../templates/math.t.hpp"
 #include "../terminal/term.hpp"
@@ -130,7 +125,7 @@ welcome ( void )
 void
 retcont ( void )
 {
-    cursor ( 1, 24 );
+    fl_termcap_cursor_position( 1, 24 );
     lprintf ( "Press " );
     lstandout ( "return" );
     lprintf ( " to continue: " );
@@ -144,7 +139,7 @@ retcont ( void )
 void
 return_to_game ( void )
 {
-    cursor ( 1, 24 );
+    fl_termcap_cursor_position( 1, 24 );
     lprintf ( "Press " );
     lstandout ( "return" );
     lprintf ( " to go back to the game: " );
