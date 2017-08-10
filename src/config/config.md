@@ -10,4 +10,4 @@ This file contains all the data for objects, monsters, spells, scrolls etc..
 
 - config.cpp
 
-This file contains the PATHLEN for scorefiles etc..
+This file contains the FL_MAX_PATH_NAME_LENGTH for scorefiles etc..

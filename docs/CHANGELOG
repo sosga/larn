@@ -8,6 +8,34 @@ August 2017
 	into useful names (self documenting).
 5. Removed the volcano and implemented a 'Temple of Larn'.
 	Much more fun..  who goes exploring underneath a volcano?
+6. Removed all goto statements except cantprotect.
+7. Modified much of the io code and replaced with public domain versions or
+	modified them myself through trial and error.
+8. Display code modified and cleaned.
+9. Bug fixes for cases falling through.
+10. Spells and Monster functions are modified and changed.
+11. Files now have nice camel-case names for easy reading.
+12. Data.h is now gone completely.
+13. Rearranged header files to prevent circular dependencies.
+14. Created some new classes and functions to be self-documenting.
+15. Removed redundant functions and replaced with standard code.
+16. Removed many of the redundant conversions to int, char etc from C.
+	Either replaced with C++ reinterpret_cast, static_cast etc.. or
+	removed them entirely as the new inline data is correct and 
+	does not need converting.
+17. Removed unused variables and structs.
+18. Fixed a bug where saving would not work on Unix-like platforms.
+19. Fixed a bug where the bank would not refresh the terminal correctly.
+20. Fixed a bug where the LRS would not refresh after entering correctly.
+21. Fixed a bug where the percentage sign was calculating in the Store
+	instead of showing it in plain text.
+22. Fixed a bug where quitting the game on Unix-like platforms
+	would not reset the terminal correctly and created a corrupted
+	window.
+23. Fixed a bug where the list of known spells, potions and scrolls
+	would not display correctly and appeared unreadable and
+	corrupted.
+24. Removed the school / college and added a skeleton in it's place.
 
 ~Gibbon
 
@@ -29,20 +57,20 @@ July 2017
 
 June 2017
 
-1. Rewrote the cannedlevel function to be standard C/C++.
+1. Rewrote the fl_maze_from_char function to be standard C/C++.
 2. Rewrote the cave level generation (some bugs remain).
 3. Rewrote the math which generates the mazes.
 4. Cleaned up some functions and squashed some bugs.
 5. Cleaned up UI (finalized).
 6. Templated functions.
 7. Inlined functions for #define's.
-8. Inlined variable for WIZID (more to come).
+8. Inlined variable for FL_WIZARD_MODE_ENABLED (more to come).
 9. Added more mazes to the file.
 10. Removed color.
 11. Removed all #define macros and replaced them with inline functions,
 	variables, templates and declared the rest correctly.
 12. Renamed some variables like scprob to scroll_probability.
-13. Removed larnfunc.h and created templates/math.t.hpp.
+13. Removed larnfunc.h and created templates/FLTMath.hpp.
 14. Now compiles cleanly with GCC 7.1 with very strict rules.
 15. Cleaned up inventory code and made it fullscreen.
 16. Increased mobuls to 699.
@@ -135,7 +163,7 @@ August - September 17th 2016
 July 26th 2016
 
 1. Finally changed the 'clear()' function which was conflicting with curses 'clear()'.
-	This is now called 'screen_clear()' to differentiate it.
+	This is now called 'fl_clear_and_reset_screen()' to differentiate it.
 2. Cleaned up some files.
 3. Implemented initial color stuff (menu stats and player '@').
 
@@ -420,10 +448,10 @@ Larn 12.2.  SPOILER ALERT!
    possesses when praying at the altar.
 
 9. When performing an action and doing an inventory list, a character typed at
-   the "press space for more" prompt is taken as the inventory object_identification to select.
+   the "press space for more" prompt is taken as the inventory object to select.
    That is, if you say 'q' for quaff, '*' to see all the potions you can quaff,
    Larn used to require that you type a space before you could select a potion,
-   causing the list to disappear.  You can now select an object_identification in the list while
+   causing the list to disappear.  You can now select an object in the list while
    the list is displayed.  You can also use Escape and Return in place of a
    space.
 

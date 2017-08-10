@@ -1,8 +1,0 @@
-Below are instructions on how to configure, build and install Larn.  I am assuming whoever decides to compile it themselves is capable of doing it without help.
-
-In the 'build' directory there are system-specific makefiles.  Just type 'make' and it will compile
-providing you have satisfied the dependencies.
-
-That's all.
-
-Enjoy playing Larn!
