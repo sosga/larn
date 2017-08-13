@@ -10,7 +10,6 @@ before_install:
 install:
   - sudo apt-get install libncurses-dev
   - sudo apt-get install libjsoncpp-dev
-  - sudo apt-get install libjsoncpp0
   - sudo apt-get install -qq g++-7
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
 
@@ -18,4 +17,4 @@ before_script:
   - cd build
 
 script:
-  - make
+  - make -f Makefile.debian

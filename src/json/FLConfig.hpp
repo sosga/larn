@@ -15,7 +15,12 @@
 
 #include <iostream>
 #include <fstream>
-#include <json/json.h>
+
+#if defined DEBIAN
+	#include <jsoncpp/json/json.h>
+#else
+	#include <json/json.h>
+#endif
 
 std::ifstream fl_json_file(FL_CONFIG_FILE_NAME);
 Json::Reader fl_json_config_reader;
