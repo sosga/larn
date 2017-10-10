@@ -2,8 +2,9 @@
 I am the official maintainer of Larn.
 
 <b>Master Branch</b></br>
-Currently a conversion of the C code of Larn to C++ is underway, in order to de-spaghettifi the
-code and make it a good, clean game with a great codebase.  This master branch is also Apache 2.0 Licensed.
+This master branch is also Apache 2.0 Licensed.  The code of Larn has now been converted to C++17 and the vast majority of bugs have been squashed.
+
+You will see that there has been no activity for 2 months, I am working on improvements and I have other programs I maintain also.  Don't worry, Larn/FreeLarn is still very much being actively developed.
 
 # Build Status #
 
