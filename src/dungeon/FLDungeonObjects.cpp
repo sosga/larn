@@ -43,6 +43,7 @@ static void fl_prompt_for_entrance(void);
 static void fl_prompt_for_temple_entrance(int);
 static void fl_open_door(void);
 static void fl_closed_door(void);
+static void fl_candle(void);
 
 void
 fl_look_for_an_object_and_give_options(
@@ -167,6 +168,18 @@ fl_look_for_an_object_and_give_options(
 				}
 			if (do_action) {
 				fl_prayer_book();
+			}
+			break;
+		case OCANDLE:
+			if (do_ident) {
+				fl_display_message("\nYou have found a Candle.");
+			}
+			if (do_pickup)
+				if (take(OCANDLE, j) == 0) {
+					fl_forget_data();
+				}
+			if (do_action) {
+			fl_candle();
 			}
 			break;
 		case OCOOKIE:
@@ -1220,6 +1233,31 @@ fl_book(void) {
 					fl_forget_data();   /* no more book */
 				}
 				return;
+		};
+	}
+}
+
+static void
+fl_candle(void) {
+fl_display_message("\nDo you ");
+fl_display_message("(p) say a protection prayer, ");
+fl_display_message("(w) say a wisdom prayer?");
+for (;;) {
+switch (ttgetch()) {
+			case '\33':
+			case 'p':
+			fl_display_message("\nYou feel protected by a spiritual power!");
+			cdesc[FL_LIFE_PROTECTION]++;
+			bottomline();
+			fl_forget_data();
+			return;
+			case 'w':
+			fl_display_message("\nYour Wisdom has increased by 10!");
+			cdesc[FL_WISDOM] += 10;
+			bottomline();
+			fl_forget_data();
+			return;
+			break;
 		};
 	}
 }
