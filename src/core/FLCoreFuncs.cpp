@@ -113,6 +113,8 @@ void fl_recalculate_armor_class(void) {
 			case OSSPLATE:
 				cdesc[FL_AC] += 12 + ivenarg[cdesc[FL_WEAR]];
 				break;
+			case OFIRETUNIC:
+				cdesc[FL_FIRERESISTANCE] += 20 + ivenarg[cdesc[FL_WEAR]];
 		}
 	if (cdesc[FL_SHIELD] >= 0)
 		if (iven[cdesc[FL_SHIELD]] == OSHIELD) {
