@@ -89,7 +89,7 @@ inline int FL_TOTAL_MOBUL_LIMIT(void) {
 	const int timelimit = 70000;
 	return timelimit;
 }
-inline const char* FL_BUILD_VERSION = "Lama Nobe";
+inline const char* FL_BUILD_VERSION = "Kobold";
 inline const char* FL_APACHE2_NOTICE = "FreeLarn is Free Software distributed under the Apache 2.0 License";
 
 extern char *fl_buffer_pointer;
