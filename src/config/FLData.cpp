@@ -128,7 +128,7 @@ const char *levelname[14] = {
     is the minimum required to hold all objects. -Gibbon
 */
 
-int objnamelist[87] = {
+int objnamelist[88] = {
 	'.',  //
 	':',  //a holy altar
 	'\\', //a handsome jewel encrusted throne
@@ -215,7 +215,8 @@ int objnamelist[87] = {
 	',',   //a fortune cookie
 	'?', // A Prayer Book
 	'|', // A Candle
-	';' //Silver Ghani Statue
+	';', //Silver Ghani Statue
+	'[' // A Fire Tunic
 };
 
 int monstnamelist[65] = {
@@ -326,7 +327,7 @@ const char *objectname[] = {
 	"a Teleport Trap", "a Massive Throne",
 	"a Sphere of Annihilation", "a Handsome Jewel Encrusted Throne",
 	"the Larn Revenue Service", "a Fortune Cookie", "a Prayer Book",
-	"a Candle", "a Silver Ghani Statue", "", "", "", "", "", "",
+	"a Candle", "a Silver Ghani Statue","A Fire Tunic", "", "", "", "", "", "",
 	"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
 };
 
