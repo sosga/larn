@@ -779,6 +779,7 @@ fl_drink_potion(int pot, int set_known) {
 						case OSTUDLEATHER:
 						case OSPLINT:
 						case OPLATEARMOR:
+						case OFIRETUNIC:
 						case OSSPLATE:
 						case OSHIELD:
 						case OSWORDofSLASHING:
