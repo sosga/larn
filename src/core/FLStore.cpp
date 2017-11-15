@@ -42,6 +42,7 @@ struct _itm dnd_item[90] = {
 	{220, OSPLINT, 0, 1},
 	{400, OPLATE, 0, 1},
 	{900, OPLATEARMOR, 0, 1},
+	{750, OFIRETUNIC, 0, 1},
 	{2600, OSSPLATE, 0, 1},
 	{150, OSHIELD, 0, 1},
 
