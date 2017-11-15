@@ -204,12 +204,26 @@ fl_a_wash_in_fountain(void) {
 
 void fl_a_enter_the_temple(void) {
 	FLCoreFuncs CoreFuncs;
-	if (cdesc[FL_STRENGTH] < 20 && TRnd(42)) {
-		fl_display_message("\nThe temple doors begin to burn you");
-		lastnum = 275;
-		CoreFuncs.DecreasePHealth(50 + TRnd(26));
-		bottomhp();
-	}
+	
+	if (cdesc[FL_WEAR] >= 0)
+		switch (iven[cdesc[FL_WEAR]]) {
+			case OFIRETUNIC:
+				fl_display_message("\nThe temple doors open and your tunic protects you");
+			break;
+			case OSHIELD:
+			case OLEATHER:
+			case OSTUDLEATHER:
+			case ORING:
+			case OCHAIN:
+			case OSPLINT:
+			case OPLATE:
+			case OPLATEARMOR:
+			case OSSPLATE:
+				fl_display_message("\nThe temple doors begin to burn you");
+				lastnum = 275;
+				CoreFuncs.DecreasePHealth(50 + TRnd(26));
+				bottomhp();
+		}
 	fl_generate_a_new_dungeon_level(FL_MAX_CAVE_OF_LARN_LEVEL);
 	draws(0, FL_MAX_HORIZONTAL_POSITION, 0, FL_MAX_VERTICAL_POSITION);
 	bot_linex();
@@ -646,6 +660,7 @@ wear(void) {
 					case ORING:
 					case OSPLINT:
 					case OPLATEARMOR:
+					case OFIRETUNIC:
 					case OSTUDLEATHER:
 					case OSSPLATE:
 						if (cdesc[FL_WEAR] != -1) {
