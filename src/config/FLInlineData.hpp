@@ -367,6 +367,7 @@ inline const int OCOOKIE = 83;
 inline const int OPRAYERBOOK = 84;
 inline const int OCANDLE = 85;
 inline const int OGHANISTATUE = 86;
+inline const int OFIRETUNIC = 87;
 
 inline int (*get_final_char_keyboard)(void);
 inline const int ARMORTYPES = 6;
