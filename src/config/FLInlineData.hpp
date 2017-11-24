@@ -122,7 +122,7 @@ inline const int FL_STRING_BUFFER_SIZE = 256;
 /* maximum # monsters in the dungeon */
 inline const int FL_MAX_MONSTERS_IN_GAME = 56;
 /* Maximum number of mazes */
-inline const int FL_MAX_MAZES_IN_GAME = 24;
+inline const int FL_MAX_MAZES_IN_GAME = 16;
 
 /*  defines for the monsters as objects  */
 inline const int BAT = 1;
