@@ -23,7 +23,6 @@
 #include "../core/FLFuncs.hpp"
 
 static void fch(int, long *);
-static void move_cursor(int *, int *, int);
 
 /*
     subroutine to process a throne object
@@ -57,7 +56,8 @@ fl_extra_object_func_throne(int arg) {
     if x > 0 they are raised   if x < 0 they are lowered
 */
 void
-fl_change_char_level(int how) {
+fl_change_char_level(int how)
+{
 	FLCoreFuncs CoreFuncs;
 	int j;
 	fl_output_single_byte_to_output_buffer('\n');
@@ -152,13 +152,12 @@ fl_change_char_level(int how) {
 	fl_termcap_cursor_position(1, 24);
 }
 
-
-
 /*
     subroutine to process an up/down of a character attribute for ofountain
 */
 static void
-fch(int how, long *x) {
+fch(int how, long *x)
+{
 	if (how < 0) {
 		fl_display_message(" went down by one!");
 		-- (*x);
@@ -173,7 +172,8 @@ fch(int how, long *x) {
     For command mode.  Perform opening an object (door, chest).
 */
 void
-fl_open_an_object(void) {
+fl_open_an_object(void)
+{
 	int x, y;			/* direction to open */
 	char tempc;			/* result of prompting to open a chest */
 	fl_termcap_cursor_position(1, 24);
@@ -219,14 +219,12 @@ fl_open_an_object(void) {
 	}
 }
 
-
-
-
 /*
     For command mode.  Perform the action of closing fl_create_rand_object_around_player_locationdoor).
 */
 void
-fl_close_an_object(void) {
+fl_close_an_object(void)
+{
 	int x, y;
 	fl_termcap_cursor_position(1, 24);
 	/*  check for confusion.
@@ -262,7 +260,8 @@ fl_close_an_object(void) {
     character typed by the user.  assumes cursors().
 */
 void
-specify_obj_nocurs(void) {
+fl_specify_an_object_by_charater(void)
+{
 	char i;
 	int j, flag;
 	fl_display_message("\nType object character:");
@@ -304,125 +303,4 @@ specify_obj_nocurs(void) {
 			}
 			return;
 	}
-}
-
-void
-specify_obj_cursor(void) {
-	int objx, objy;
-	int i;
-	fl_display_message("\nMove the cursor to an unknown object.");
-	fl_display_message("\n(For instructions type a ?)");
-	objx = player_horizontal_position;
-	objy = player_vertical_position;
-	fl_termcap_cursor_position(objx + 1, objy + 1);
-	/*  make cursor visible.
-	*/
-	for (;;) {
-		switch (ttgetch()) {
-			case '?':
-				fl_termcap_cursor_position(1, 24);
-				fl_display_message
-				("\nUse [hjklnbyu] to move the cursor to the unknown object.");
-				fl_display_message("\nType a . when the cursor is at the desired place.");
-				fl_display_message("\nType q, Return, or Escape to exit.");
-				fl_termcap_cursor_position(objx + 1, objy + 1);
-				break;
-			case '\33':
-			case 'q':
-			case '\n':
-				/*  reset cursor
-				*/
-				fl_termcap_cursor_position(player_horizontal_position + 1, player_vertical_position + 1);
-				return;
-			case '.':
-				/*  reset cursor
-				*/
-				fl_termcap_cursor_position(player_horizontal_position + 1, player_vertical_position + 1);
-				fl_termcap_cursor_position(1, 24);
-				if ((objx == player_horizontal_position) && (objy == player_vertical_position)) {
-					lprintf("\n@: %s", logname);
-					return;
-				}
-				i = monster_identification[objx][objy];
-				if (i && (been_here_before[objx][objy] & KNOWHERE))
-					/*  check for invisible monsters and not display
-					*/
-					if (monstnamelist[i] != floorc) {
-						lprintf("\n%c: %s", monstnamelist[i], monster[i].name);
-						return;
-					}
-				/*  handle floor separately so as not to display traps, etc.
-				*/
-				i = object_identification[objx][objy];
-				if (i == 0) {
-					fl_output_single_byte_to_output_buffer('\n');
-					fl_output_single_byte_to_output_buffer(floorc);
-					lprintf(": the floor of the dungeon");
-					return;
-				}
-				if (been_here_before[objx][objy] & HAVESEEN) {
-					fl_output_single_byte_to_output_buffer('\n');
-					fl_output_single_byte_to_output_buffer(objnamelist[i]);
-					lprintf(": %s", objectname[i]);
-					return;
-				}
-				lprintf("\n : An as-yet-unseen place in the dungeon");
-				return;
-			case 'H':
-			case 'h':
-				move_cursor(&objx, &objy, 4);
-				break;
-			case 'J':
-			case 'j':
-				move_cursor(&objx, &objy, 1);
-				break;
-			case 'K':
-			case 'k':
-				move_cursor(&objx, &objy, 3);
-				break;
-			case 'L':
-			case 'l':
-				move_cursor(&objx, &objy, 2);
-				break;
-			case 'B':
-			case 'b':
-				move_cursor(&objx, &objy, 8);
-				break;
-			case 'N':
-			case 'n':
-				move_cursor(&objx, &objy, 7);
-				break;
-			case 'Y':
-			case 'y':
-				move_cursor(&objx, &objy, 6);
-				break;
-			case 'U':
-			case 'u':
-				move_cursor(&objx, &objy, 5);
-				break;
-			default:
-				break;
-		}
-	}
-}
-
-
-
-static void
-move_cursor(int *xx, int *yy, int cdir) {
-	*xx += diroffx[cdir];
-	*yy += diroffy[cdir];
-	if (*yy < 0) {
-		*yy = FL_MAX_VERTICAL_POSITION - 1;
-	}
-	if (*yy > FL_MAX_VERTICAL_POSITION - 1) {
-		*yy = 0;
-	}
-	if (*xx < 0) {
-		*xx = FL_MAX_HORIZONTAL_POSITION - 1;
-	}
-	if (*xx > FL_MAX_HORIZONTAL_POSITION - 1) {
-		*xx = 0;
-	}
-	fl_termcap_cursor_position(*xx + 1, *yy + 1);
 }

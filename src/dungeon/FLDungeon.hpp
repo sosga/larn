@@ -24,8 +24,7 @@ class HitMonster {
 		int lasty;
 };
 
-void specify_obj_cursor(void);
-void specify_obj_nocurs(void);
+void fl_specify_an_object_by_charater(void);
 void fillmroom(int, int, int);
 void froom(int, int, int);
 void fl_fill_the_room(int, int);
