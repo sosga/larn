@@ -1,3 +1,12 @@
+November 2017
+
+1. Cleaned up functions that were broken
+2. Fixed game breaking crash due to mismatching of maze numbers
+3. Movement and actions can now be user-defined in the fl_config.json file
+
+~Gibbon
+
+=============================================================================
 August 2017
 
 1. Created new folders (core and display) to hold classes that are either
