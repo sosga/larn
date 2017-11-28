@@ -27,91 +27,180 @@
 #include "../save/FLSave.hpp"
 #include "../player/FLHunger.hpp"
 #include "../terminal/FLGetChar.hpp"
+#include "../json/FLKeysConfig.hpp"
 
 extern char viewflag;
-
+	
 void
 parse(void) {
 	FLCoreFuncs CoreFuncs;
 	FLStore Store;
-	int i, j, k, flag;
 	Save save;
+	int i, j, k, flag;
+	
+	//Reading JSON
+	fl_json_config_move_reader.parse(fl_json_file_move, fl_json_config_move_value);
+	
+	//JSON movement variables linking to the configuration file
+	int WEST = fl_json_config_move_value["MOVE-WEST"].asInt();
+	int EAST = fl_json_config_move_value["MOVE-EAST"].asInt();
+	int SOUTH = fl_json_config_move_value["MOVE-SOUTH"].asInt();
+	int NORTH = fl_json_config_move_value["MOVE-NORTH"].asInt();
+	int NORTHEAST = fl_json_config_move_value["MOVE-NORTHEAST"].asInt();
+	int NORTHWEST = fl_json_config_move_value["MOVE-NORTHWEST"].asInt();
+	int SOUTHEAST = fl_json_config_move_value["MOVE-SOUTHEAST"].asInt();
+	int SOUTHWEST = fl_json_config_move_value["MOVE-SOUTHWEST"].asInt();
+	int MOVESTAY = fl_json_config_move_value["MOVE-STAY"].asInt();
+	
+	//JSON lower-case variables linking to the configuration file
+	int KEY_LOWERCASE_C = fl_json_config_move_value["KEY-LOWERCASE-C"].asInt();
+	int KEY_LOWERCASE_D = fl_json_config_move_value["KEY-LOWERCASE-D"].asInt();
+	int KEY_LOWERCASE_E = fl_json_config_move_value["KEY-LOWERCASE-E"].asInt();
+	int KEY_LOWERCASE_I = fl_json_config_move_value["KEY-LOWERCASE-I"].asInt();
+	int KEY_LOWERCASE_P = fl_json_config_move_value["KEY-LOWERCASE-P"].asInt();
+	int KEY_HOME_TILDE = fl_json_config_move_value["KEY-HOME-TILDE"].asInt();
+	int KEY_LOWERCASE_Q = fl_json_config_move_value["KEY-LOWERCASE-Q"].asInt();
+	int KEY_LOWERCASE_R = fl_json_config_move_value["KEY-LOWERCASE-R"].asInt();
+	int KEY_LOWERCASE_S = fl_json_config_move_value["KEY-LOWERCASE-S"].asInt();
+	int KEY_LOWERCASE_T = fl_json_config_move_value["KEY-LOWERCASE-T"].asInt();
+	int KEY_LOWERCASE_V = fl_json_config_move_value["KEY-LOWERCASE-V"].asInt();
+	int KEY_LOWERCASE_W = fl_json_config_move_value["KEY-LOWERCASE-W"].asInt();
+	int KEY_LOWERCASE_G = fl_json_config_move_value["KEY-LOWERCASE-G"].asInt();
+	
+	//JSON upper-case and misc variables linking to the configuration file
+	int KEY_UPPERCASE_A = fl_json_config_move_value["KEY-UPPERCASE-A"].asInt();
+	int KEY_UPPERCASE_C = fl_json_config_move_value["KEY-UPPERCASE-C"].asInt();
+	int KEY_UPPERCASE_D = fl_json_config_move_value["KEY-UPPERCASE-D"].asInt();
+	int KEY_QUESTION_MARK = fl_json_config_move_value["KEY-QUESTION-MARK"].asInt();
+	int KEY_UPPERCASE_E = fl_json_config_move_value["KEY-UPPERCASE-E"].asInt();
+	int KEY_UPPERCASE_I = fl_json_config_move_value["KEY-UPPERCASE-I"].asInt();
+	int KEY_UPPERCASE_O = fl_json_config_move_value["KEY-UPPERCASE-O"].asInt();
+	int KEY_UPPERCASE_P = fl_json_config_move_value["KEY-UPPERCASE-P"].asInt();
+	int KEY_UPPERCASE_Q = fl_json_config_move_value["KEY-UPPERCASE-Q"].asInt();
+	int KEY_UPPERCASE_R = fl_json_config_move_value["KEY-UPPERCASE-R"].asInt();
+	int KEY_UPPERCASE_S = fl_json_config_move_value["KEY-UPPERCASE-S"].asInt();
+	int KEY_UPPERCASE_T = fl_json_config_move_value["KEY-UPPERCASE-T"].asInt();
+	int KEY_UPPERCASE_W = fl_json_config_move_value["KEY-UPPERCASE-W"].asInt();
+	int KEY_UPPERCASE_Z = fl_json_config_move_value["KEY-UPPERCASE-Z"].asInt();
+	int KEY_EMPTY_WHITESPACE = fl_json_config_move_value["KEY-EMPTY-WHITESPACE"].asInt();
+	int KEY_UPPERCASE_L = fl_json_config_move_value["KEY-UPPERCASE-L"].asInt();
+	int KEY_LEFT_ARROW = fl_json_config_move_value["KEY-LEFT-ARROW"].asInt();
+	int KEY_RIGHT_ARROW = fl_json_config_move_value["KEY-RIGHT-ARROW"].asInt();
+	int KEY_COMMA = fl_json_config_move_value["KEY-COMMA"].asInt();
+	int KEY_COLON = fl_json_config_move_value["KEY-COLON"].asInt();
+	int KEY_FORWARD_SLASH = fl_json_config_move_value["KEY-FORWARD-SLASH"].asInt();
+	int KEY_UP_ARROW = fl_json_config_move_value["KEY-UP-ARROW"].asInt();
+	int KEY_UNDERSCORE = fl_json_config_move_value["KEY-UNDERSCORE"].asInt();
+	
 	for (;;) {
 		k = yylex();
-		switch (k) {	/*  get the token from the input and switch on it   */
-			case 'h':
+			if (k == WEST)
+			{
 				moveplayer(4);
-				return;		/*  west        */
-			case 'l':
+				return;
+			}
+			if (k == EAST)
+			{
 				moveplayer(2);
-				return;		/*  east        */
-			case 'j':
+				return;
+			}
+			if (k == SOUTH)
+			{
 				moveplayer(1);
-				return;		/*  south       */
-			case 'k':
+				return;
+			}
+			if (k == NORTH)
+			{
 				moveplayer(3);
-				return;		/*  north       */
-			case 'u':
+				return;
+			}
+			if (k == NORTHEAST)
+			{
 				moveplayer(5);
-				return;		/*  northeast   */
-			case 'y':
+				return;
+			}
+			if (k == NORTHWEST)
+			{
 				moveplayer(6);
-				return;		/*  northwest   */
-			case 'n':
+				return;
+			}
+			if (k == SOUTHEAST)
+			{
 				moveplayer(7);
-				return;		/*  southeast   */
-			case 'b':
+				return;
+			}
+			if (k == SOUTHWEST)
+			{
 				moveplayer(8);
-				return;		/*  southwest   */
-			case '.':		/*  stay here       */
+				return;
+			}
+			if (k == MOVESTAY)
+			{
 				if (y_larn_rep) {
 					viewflag = 1;
 				}
 				return;
-			case 'c':
+			}
+			if (k == KEY_LOWERCASE_C)
+			{
 				y_larn_rep = 0;
 				fl_cast_a_spell();
 				return;		/*  cast a spell    */
-			case 'd':
+			}
+			if (k == KEY_LOWERCASE_D)
+			{
 				y_larn_rep = 0;
-				if (cdesc[FL_TIMESTOP] == 0) {
+				if (cdesc[FL_TIMESTOP] == 0)
+				{
 					dropobj();
 				}
 				return;		/*  to drop an object   */
-			case 'e':
+			}
+			if (k == KEY_LOWERCASE_E)
+			{
 				y_larn_rep = 0;
 				if (cdesc[FL_TIMESTOP] == 0)
-					if (!floor_consume(OCOOKIE, "eat")) {
+					if (!floor_consume(OCOOKIE, "eat"))
+					{
 						consume(OCOOKIE, "eat");
-						if (cdesc[FL_HUNGER] < cdesc[FL_HUNGERMAX]) {
+						if (cdesc[FL_HUNGER] < cdesc[FL_HUNGERMAX])
+						{
 							cdesc[FL_HUNGER] += 10;
 						} else {
 							fl_display_message("\nIt has no affect on your appetite.");
 						}
 					}
 				return;
-			case 'g':
+			}
+			if (k == KEY_LOWERCASE_G)
+			{
 				y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
-				lprintf("\nThe stuff you are carrying presently weighs %d pounds",
-				        (int) packweight());
-				break;
-			case 'i':		/* inventory */
+				lprintf("\nThe stuff you are carrying presently weighs %d pounds", packweight());
+				return;
+			}
+			if (k == KEY_LOWERCASE_I)
+			{
 				y_larn_rep = 0;
 				nomove = 1;
 				showstr(0);
 				return;
-			case 'p':		/* pray at an altar */
+			}
+			if (k == KEY_LOWERCASE_P)
+			{
 				y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
-				if (object_identification[player_horizontal_position][player_vertical_position] != OALTAR) {
+				if (object_identification[player_horizontal_position][player_vertical_position] != OALTAR)
+				{
 					fl_display_message("\nI see no altar to pray at here!");
 				} else {
 					fl_a_give_donation();
 				}
 				prayed = 1;
 				return;
-			case '~':
+			}
+			if (k == KEY_HOME_TILDE)
+			{
 				fl_clear_and_reset_screen();
 				enable_scroll = 0;
 				showscores(0);     /* if we updated the scoreboard */
@@ -122,49 +211,66 @@ parse(void) {
 				enable_scroll = 1;
 				drawscreen();
 				return;
-			case 'q':		/* quaff a potion */
+			}
+			if (k == KEY_LOWERCASE_Q)
+			{
 				y_larn_rep = 0;
 				if (cdesc[FL_TIMESTOP] == 0)
-					if (!floor_consume(OPOTION, "quaff")) {
+					if (!floor_consume(OPOTION, "quaff"))
+					{
 						consume(OPOTION, "quaff");
 					}
 				return;
-			case 'r':
+			}
+			if (k == KEY_LOWERCASE_R)
+			{
 				y_larn_rep = 0;
-				if (cdesc[FL_BLINDCOUNT]) {
+				if (cdesc[FL_BLINDCOUNT])
+				{
 					fl_termcap_cursor_position(1, 24);
 					fl_display_message("\nYou can't read anything when you're blind!");
 				} else if (cdesc[FL_TIMESTOP] == 0)
 					if (!floor_consume(OSCROLL, "read"))
 						if (!floor_consume(OBOOK, "read"))
-							if (!floor_consume(OPRAYERBOOK, "read")) {
+							if (!floor_consume(OPRAYERBOOK, "read"))
+							{
 								consume(OSCROLL, "read");
 							}
-				return;		/*  to read a scroll    */
-			case 's':
+				return;
+			}
+			if (k == KEY_LOWERCASE_S)
+			{
 				y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
-				if (object_identification[player_horizontal_position][player_vertical_position] == OTHRONE) {
+				if (object_identification[player_horizontal_position][player_vertical_position] == OTHRONE)
+				{
 					fl_a_sit_on_throne(0);
 				} else if ((object_identification[player_horizontal_position][player_vertical_position] == OTHRONE2) ||
-				           (object_identification[player_horizontal_position][player_vertical_position] == ODEADTHRONE)) {
+				   (object_identification[player_horizontal_position][player_vertical_position] == ODEADTHRONE))
+				{
 					fl_a_sit_on_throne(1);
 				} else {
 					fl_display_message("\nI see no throne to sit on here!");
 				}
 				return;
-			case 't':		/* Tidy up at fountain */
+			}
+			if (k == KEY_LOWERCASE_T)
+			{
 				y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
-				if (object_identification[player_horizontal_position][player_vertical_position] == ODEADFOUNTAIN) {
+				if (object_identification[player_horizontal_position][player_vertical_position] == ODEADFOUNTAIN)
+				{
 					fl_display_message("\nThere is no water to wash in!");
-				} else if (object_identification[player_horizontal_position][player_vertical_position] != OFOUNTAIN) {
+				} else if (object_identification[player_horizontal_position][player_vertical_position] != OFOUNTAIN)
+				{
 					fl_display_message("\nI see no fountain to wash at here!");
 				} else {
 					fl_a_wash_in_fountain();
 				}
 				return;
-			case 'v':
+			}
+			if (k == KEY_LOWERCASE_V)
+			{
 				y_larn_rep = 0;
 				nomove = 1;
 				fl_termcap_cursor_position(1, 24);
@@ -177,49 +283,64 @@ parse(void) {
 					fl_display_message(" Cheater");
 				}
 				return;
-			case 'w':		/*  wield a weapon */
+			}
+			if (k == KEY_LOWERCASE_W)
+			{
 				y_larn_rep = 0;
 				wield();
 				return;
-			case 'A':
+			}
+			if (k == KEY_UPPERCASE_A)
+			{
 				y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
-				if (object_identification[player_horizontal_position][player_vertical_position] == OALTAR) {
+				if (object_identification[player_horizontal_position][player_vertical_position] == OALTAR)
+				{
 					fl_a_desecrate_an_altar();
 				} else {
 					fl_display_message("\nI see no altar to desecrate here!");
 				}
 				return;
-			case 'C':		/* Close something */
+			}
+			if (k == KEY_UPPERCASE_C)
+			{
 				y_larn_rep = 0;
 				fl_close_an_object();
 				return;
-			case 'D':		/* Drink at fountain */
+			}
+			if (k == KEY_UPPERCASE_D)
+			{
 				y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
-				if (object_identification[player_horizontal_position][player_vertical_position] == ODEADFOUNTAIN) {
+				if (object_identification[player_horizontal_position][player_vertical_position] == ODEADFOUNTAIN)
+				{
 					fl_display_message("\nThere is no water to drink!");
-				} else if (object_identification[player_horizontal_position][player_vertical_position] != OFOUNTAIN) {
+				} else if (object_identification[player_horizontal_position][player_vertical_position] != OFOUNTAIN)
+				{
 					fl_display_message("\nI see no fountain to drink from here!");
 				} else {
 					fl_a_drink_from_fountain();
 				}
 				return;
-			case '?':
+			}
+			if (k == KEY_QUESTION_MARK)
+			{
 				y_larn_rep = 0;
 				display_help_text();
 				nomove = 1;
-				return;	/*give the help screen*/
-			case 'E':		/* Enter a building */
+				return;
+			}
+			if (k == KEY_UPPERCASE_E)
+			{
 				y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
-				switch (object_identification[player_horizontal_position][player_vertical_position]) {
+				switch (object_identification[player_horizontal_position][player_vertical_position])
+				{
 					case OBANK:
 						banktitle("    Welcome to the First National Bank of Larn.");
 						break;
 					case OBANK2:
-						banktitle("Welcome to the 5th level branch office of "
-						          "the First National Bank of Larn.");
+						banktitle("Welcome to the 5th level branch office of the First National Bank of Larn.");
 						/*  because we state the level in the title, clear the '?' in the
 						    level display at the bottom, if the user teleported.
 						*/
@@ -260,46 +381,61 @@ parse(void) {
 						fl_display_message("\nThere is no place to enter here!\n");
 						break;
 				}
-				break;
-			case 'I':		/*  list spells and scrolls */
+				return;
+			}
+			if (k == KEY_UPPERCASE_I)
+			{
 				y_larn_rep = 0;
 				seemagic(0);
 				nomove = 1;
 				return;
-			case 'O':		/* Open something */
+			}
+			if (k == KEY_UPPERCASE_O)
+			{
 				y_larn_rep = 0;
 				fl_open_an_object();
 				return;
-			case 'P':
+			}
+			if (k == KEY_UPPERCASE_P)
+			{
 				fl_termcap_cursor_position(1, 24);
 				y_larn_rep = 0;
 				nomove = 1;
 				if (outstanding_taxes > 0)
-					lprintf("\nYou presently owe %d gp in taxes.",
-					        (int) outstanding_taxes);
-				else {
+					lprintf("\nYou presently owe %d gp in taxes.", outstanding_taxes);
+				else
+				{
 					fl_display_message("\nYou do not owe any taxes.");
 				}
 				return;
-			case 'Q':		/*  quit        */
+			}
+			if (k == KEY_UPPERCASE_Q)
+			{
 				y_larn_rep = 0;
 				fl_exit_the_game();
 				nomove = 1;
 				return;
-			case 'R':		/* remove gems from a throne */
+			}
+			if (k == KEY_UPPERCASE_R)
+			{
 				y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
-				if (object_identification[player_horizontal_position][player_vertical_position] == ODEADTHRONE) {
+				if (object_identification[player_horizontal_position][player_vertical_position] == ODEADTHRONE)
+				{
 					fl_display_message("\nThere are no gems to remove!");
-				} else if (object_identification[player_horizontal_position][player_vertical_position] == OTHRONE) {
+				} else if (object_identification[player_horizontal_position][player_vertical_position] == OTHRONE)
+				{
 					fl_a_remove_the_gems(0);
-				} else if (object_identification[player_horizontal_position][player_vertical_position] == OTHRONE2) {
+				} else if (object_identification[player_horizontal_position][player_vertical_position] == OTHRONE2)
+				{
 					fl_a_remove_the_gems(1);
 				} else {
 					fl_display_message("\nI see no throne here to remove gems from!");
 				}
 				return;
-			case 'S':
+			}
+			if (k == KEY_UPPERCASE_S)
+			{
 				/*
 				    Added the save stuff
 				    It's much better now!
@@ -312,15 +448,19 @@ parse(void) {
 				fl_clear_terminal();
 				get_final_char_keyboard = ansiterm_getch;
 				exit(EXIT_SUCCESS);
-				break;
-			case 'T':
+				return;
+			}
+			if (k == KEY_UPPERCASE_T)
+			{
 				y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
-				if (cdesc[FL_SHIELD] != -1) {
+				if (cdesc[FL_SHIELD] != -1)
+				{
 					cdesc[FL_SHIELD] = -1;
 					fl_display_message("\nYour shield is off");
 					bottomline();
-				} else if (cdesc[FL_WEAR] != -1) {
+				} else if (cdesc[FL_WEAR] != -1)
+				{
 					cdesc[FL_WEAR] = -1;
 					fl_display_message("\nYour armor is off");
 					bottomline();
@@ -328,102 +468,117 @@ parse(void) {
 					fl_display_message("\nYou aren't wearing anything");
 				}
 				return;
-			case 'W':
+			}
+			if (k == KEY_UPPERCASE_W)
+			{
 				y_larn_rep = 0;
 				wear();
 				return;		/*  wear armor  */
-			case 'Z':
+			}
+			if (k == KEY_UPPERCASE_Z)
+			{
 				y_larn_rep = 0;
-				if (cdesc[FL_LEVEL] > 9) {
+				if (cdesc[FL_LEVEL] > 9)
+				{
 					fl_teleport(1);
 					return;
 				}
 				fl_termcap_cursor_position(1, 24);
-				fl_display_message
-				("\nAs yet, you don't have enough experience to use teleportation");
+				fl_display_message("\nAs yet, you don't have enough experience to use teleportation");
 				return;		/*  teleport yourself   */
-			case ' ':
+			}
+			if (k == KEY_EMPTY_WHITESPACE)
+			{
 				y_larn_rep = 0;
 				nomove = 1;
 				return;
-			case 'L' - 64:
+			}
+			if (k == KEY_UPPERCASE_L - 64)
+			{
 				y_larn_rep = 0;
 				drawscreen();
 				nomove = 1;
 				return;		/*  look        */
-			case '<':		/* Go up stairs or vol shaft */
+			}
+			if (k == KEY_LEFT_ARROW)
+			{
 				y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
-				if (object_identification[player_horizontal_position][player_vertical_position] == OSTAIRSDOWN) {
+				if (object_identification[player_horizontal_position][player_vertical_position] == OSTAIRSDOWN)
+				{
 					fl_display_message("\nThe stairs don't go up!");
-				} else if (object_identification[player_horizontal_position][player_vertical_position] != OSTAIRSUP) {
+				} else if (object_identification[player_horizontal_position][player_vertical_position] != OSTAIRSUP)
+				{
 					fl_display_message("\nI see no way to go up here!");
 				} else {
 					fl_a_travel_up_stairs();
 				}
 				return;
-			case '>':		/* Go down stairs or vol shaft */
+			}
+			if (k == KEY_RIGHT_ARROW)
+			{
 				y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
-				if (object_identification[player_horizontal_position][player_vertical_position] == OSTAIRSUP) {
+				if (object_identification[player_horizontal_position][player_vertical_position] == OSTAIRSUP)
+				{
 					fl_display_message("\nThe stairs don't go down!");
-				} else if (object_identification[player_horizontal_position][player_vertical_position] != OSTAIRSDOWN) {
+				} else if (object_identification[player_horizontal_position][player_vertical_position] != OSTAIRSDOWN)
+				{
 					fl_display_message("\nI see no way to go down here!");
 				} else {
 					fl_a_travel_down_stairs();
 				}
 				return;
-			case ',':		/* pick up an object_identification */
+			}
+			if (k == KEY_COMMA)
+			{
 				y_larn_rep = 0;
 				/* pickup, don't identify or prompt for action */
 				fl_look_for_an_object_and_give_options(0, 1, 0);
 				return;
-			case ':':		/* look at object */
+			}
+			if (k == KEY_COLON)
+			{
 				y_larn_rep = 0;
 				/* identify, don't pick up or prompt for action */
 				fl_look_for_an_object_and_give_options(1, 0, 0);
 				nomove = 1;		/* assumes look takes no time */
 				return;
-			case '/':		/* identify object/monster */
+			}
+			if (k == KEY_FORWARD_SLASH)
+			{
 				fl_termcap_cursor_position(1, 24);
-				fl_display_message("\nIdentify unknown object by cursor [ynq]?");
-				for (;;) {
-					switch (ttgetch()) {
-						case '\33':
-						case 'q':
-							return;
-						case 'y':
-						case 'Y':
-							specify_obj_cursor();
-							return;
-						case 'n':
-						case 'N':
-							specify_obj_nocurs();
-							return;
-					}
-				}
+				fl_specify_an_object_by_charater();
 				nomove = 1;
 				y_larn_rep = 0;
 				return;
-			case '^':		/* identify traps */
+			}
+			if (k == KEY_UP_ARROW)
+			{
 				flag = y_larn_rep = 0;
 				fl_termcap_cursor_position(1, 24);
 				fl_output_single_byte_to_output_buffer('\n');
-				for (j = player_vertical_position - 1; j < player_vertical_position + 2; j++) {
-					if (j < 0) {
+				for (j = player_vertical_position - 1; j < player_vertical_position + 2; j++)
+				{
+					if (j < 0)
+					{
 						j = 0;
 					}
-					if (j >= FL_MAX_VERTICAL_POSITION) {
+					if (j >= FL_MAX_VERTICAL_POSITION)
+					{
 						break;
 					}
-					for (i = player_horizontal_position - 1; i < player_horizontal_position + 2; i++) {
+					for (i = player_horizontal_position - 1; i < player_horizontal_position + 2; i++)
+					{
 						if (i < 0) {
 							i = 0;
 						}
-						if (i >= FL_MAX_HORIZONTAL_POSITION) {
+						if (i >= FL_MAX_HORIZONTAL_POSITION)
+						{
 							break;
 						}
-						switch (object_identification[i][j]) {
+						switch (object_identification[i][j])
+						{
 							case OTRAPDOOR:
 							case ODARTRAP:
 							case OTRAPARROW:
@@ -435,12 +590,16 @@ parse(void) {
 						};
 					}
 				}
-				if (flag == 0) {
+				if (flag == 0)
+				{
 					fl_display_message("\nNo traps are visible");
 				}
 				return;
-				if (FL_WIZARD_MODE_ENABLED == true) {
-				case '_':		/*  this is the fudge player password for wizard mode */
+			}
+			if (FL_WIZARD_MODE_ENABLED == true)
+			{
+				if (k == KEY_UNDERSCORE)
+				{
 					y_larn_rep = 0;
 					fl_termcap_cursor_position(1, 24);
 					nomove = 1;
@@ -461,16 +620,20 @@ parse(void) {
 					cdesc[FL_AWARENESS] += 25000;
 					{
 						for (i = 0; i < FL_MAX_VERTICAL_POSITION; i++)
-							for (j = 0; j < FL_MAX_HORIZONTAL_POSITION; j++) {
+							for (j = 0; j < FL_MAX_HORIZONTAL_POSITION; j++)
+							{
 								been_here_before[j][i] = KNOWALL;
 							}
-						for (i = 0; i < FL_MAX_SPELLS_IN_GAME; i++) {
+						for (i = 0; i < FL_MAX_SPELLS_IN_GAME; i++)
+						{
 							spelknow[i] = 1;
 						}
-						for (i = 0; i < MAXSCROLL; i++) {
+						for (i = 0; i < MAXSCROLL; i++)
+						{
 							scrollname[i][0] = ' ';
 						}
-						for (i = 0; i < MAXPOTION; i++) {
+						for (i = 0; i < MAXPOTION; i++)
+						{
 							potionname[i][0] = ' ';
 						}
 					}
@@ -482,19 +645,23 @@ parse(void) {
 						}
 					for (i = FL_MAX_HORIZONTAL_POSITION - 1; i > FL_MAX_HORIZONTAL_POSITION - 1 - MAXPOTION; i--)
 						/* no null items */
-						if (strlen(potionname[i - FL_MAX_HORIZONTAL_POSITION + MAXPOTION]) > 2) {
+						if (strlen(potionname[i - FL_MAX_HORIZONTAL_POSITION + MAXPOTION]) > 2)
+						{
 							object_identification[i][0] = OPOTION;
 							object_argument[i][0] = i - FL_MAX_HORIZONTAL_POSITION + MAXPOTION;
 						}
-					for (i = 1; i < FL_MAX_VERTICAL_POSITION; i++) {
+					for (i = 1; i < FL_MAX_VERTICAL_POSITION; i++)
+					{
 						object_identification[0][i] = i;
 						object_argument[0][i] = 0;
 					}
-					for (i = FL_MAX_VERTICAL_POSITION; i < FL_MAX_VERTICAL_POSITION + FL_MAX_HORIZONTAL_POSITION; i++) {
+					for (i = FL_MAX_VERTICAL_POSITION; i < FL_MAX_VERTICAL_POSITION + FL_MAX_HORIZONTAL_POSITION; i++)
+					{
 						object_identification[i - FL_MAX_VERTICAL_POSITION][FL_MAX_VERTICAL_POSITION - 1] = i;
 						object_argument[i - FL_MAX_VERTICAL_POSITION][FL_MAX_VERTICAL_POSITION - 1] = 0;
 					}
-					for (i = FL_MAX_HORIZONTAL_POSITION + FL_MAX_VERTICAL_POSITION; i < MAXOBJECT; i++) {
+					for (i = FL_MAX_HORIZONTAL_POSITION + FL_MAX_VERTICAL_POSITION; i < MAXOBJECT; i++)
+					{
 						object_identification[FL_MAX_HORIZONTAL_POSITION - 1][i - FL_MAX_HORIZONTAL_POSITION - FL_MAX_VERTICAL_POSITION] = i;
 						object_argument[FL_MAX_HORIZONTAL_POSITION - 1][i - FL_MAX_HORIZONTAL_POSITION - FL_MAX_VERTICAL_POSITION] = 0;
 					}
@@ -502,9 +669,10 @@ parse(void) {
 					drawscreen();
 					return;
 				}
+			}
+			return;
 		};
 	}
-}
 
 void
 parse2(void) {
