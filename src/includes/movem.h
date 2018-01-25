@@ -1,1 +1,0 @@
-void movemonst (void);
