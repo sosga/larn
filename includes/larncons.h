@@ -5,8 +5,8 @@
 */
 
 #define VER    14
-#define SUB_VERSION  1
-#define PATCHLEVEL 4
+#define SUB_VERSION  2
+#define PATCHLEVEL 0
 
 /* defines below are for use in the termcap mode only */
 #define ST_START 1

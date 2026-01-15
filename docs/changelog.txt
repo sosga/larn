@@ -1,5 +1,15 @@
 =============================================================================
 
+Thu  15 Jan 22:31:00 CET 2026
+
+1. Cleaned up project for modern Visual Studio.
+2. Added pdcurseslarn lib and curses files for Windows.
+3. Added Puddles to the maze generation.
+
+~Gibbon
+
+=============================================================================
+
 Fri  17 Dec 10:28:12 CET 2021
 
 1. APPDATA (roaming) is used for system files (please use the bat file for this).
